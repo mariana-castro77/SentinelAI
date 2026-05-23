@@ -1,0 +1,601 @@
+﻿ID,DATA,TIPO INCIDENTE,SEVERIDADE,TEMPO RESOLUÇÃO,ORIGEM,STATUS,PAIS_ATAQUE,PREJUIZO_ESTIMADO,RECEITA_CLIENTE,CLIENTE,NIVEL_AMEACA,LUCRO_EMPRESA,CRESCIMENTO_EMPRESA,RISCO_FINANCEIRO,IP_SUSPEITO,BLOQUEADO_AUTOMATICAMENTE,TEMPO_INATIVIDADE,SATISFACAO_CLIENTE,CUSTO_OPERACIONAL,ATAQUE_REAL
+1,2026-03-11,ataque,crítica,24,aplicação,pendente,China,13016,88516,Nubank,crítico,75500,31,médio,129.211.51.50,Sim,114,52,3863,Sim
+2,2026-03-27,lentidão,crítica,24,aplicação,pendente,Interno,18187,55707,Santander,crítico,37520,24,alto,Nenhum,Não,53,36,1832,Não
+3,2026-04-05,ataque,crítica,78,servidor,resolvido,Alemanha,15719,78030,Mercado Livre,crítico,62311,19,alto,202.202.156.53,Sim,113,91,3491,Sim
+4,2026-03-19,ataque,crítica,46,banco de dados,pendente,China,27393,23375,Mercado Livre,crítico,-4018,10,alto,243.208.99.214,Sim,53,46,4268,Sim
+5,2026-03-07,ataque,média,30,aplicação,pendente,Estados Unidos,5744,39600,Magazine Luiza,médio,33856,32,médio,35.41.188.212,Sim,20,37,1783,Sim
+6,2026-03-08,falha servidor,média,90,servidor,resolvido,Interno,3891,92677,Mercado Livre,médio,88786,15,baixo,Nenhum,Não,14,74,3391,Não
+7,2026-03-02,erro sistema,média,14,aplicação,pendente,Interno,3764,56958,XP Investimentos,médio,53194,11,baixo,Nenhum,Não,24,29,3139,Não
+8,2026-03-11,lentidão,crítica,42,rede,resolvido,Interno,22864,95240,Nubank,crítico,72376,35,alto,Nenhum,Não,44,100,3472,Não
+9,2026-03-16,falha servidor,baixa,79,servidor,resolvido,Interno,2000,30126,Magazine Luiza,baixo,28126,33,baixo,Nenhum,Não,4,90,4819,Não
+10,2026-04-25,erro sistema,baixa,60,banco de dados,pendente,Interno,1467,50669,Magazine Luiza,baixo,49202,8,baixo,Nenhum,Não,8,35,4830,Não
+11,2026-04-20,lentidão,baixa,53,servidor,pendente,Interno,1409,99195,iFood,baixo,97786,35,baixo,Nenhum,Não,7,60,3011,Não
+12,2026-03-26,ataque,crítica,86,aplicação,pendente,Coreia do Norte,17125,73859,Nubank,crítico,56734,25,alto,101.122.189.21,Sim,77,47,3345,Sim
+13,2026-04-15,falha servidor,média,56,servidor,pendente,Interno,4544,68478,Mercado Livre,médio,63934,25,baixo,Nenhum,Não,16,55,4633,Não
+14,2026-03-21,ataque,crítica,32,aplicação,resolvido,Alemanha,29773,27844,iFood,crítico,-1929,19,alto,70.235.51.87,Sim,66,86,2014,Sim
+15,2026-03-18,lentidão,média,68,servidor,resolvido,Interno,3821,33824,iFood,médio,30003,16,baixo,Nenhum,Não,33,80,4059,Não
+16,2026-04-16,falha servidor,baixa,29,servidor,pendente,Interno,1929,67669,iFood,baixo,65740,30,baixo,Nenhum,Não,6,48,4099,Não
+17,2026-03-28,lentidão,baixa,70,aplicação,pendente,Interno,1079,42408,XP Investimentos,baixo,41329,19,baixo,Nenhum,Não,6,29,2742,Não
+18,2026-04-01,lentidão,baixa,99,servidor,resolvido,Interno,871,97612,Nubank,baixo,96741,5,baixo,Nenhum,Não,10,84,1595,Não
+19,2026-03-24,lentidão,média,35,servidor,pendente,Interno,5628,92354,iFood,médio,86726,10,médio,Nenhum,Não,25,58,2055,Não
+20,2026-04-27,falha servidor,crítica,83,rede,resolvido,Interno,13881,82653,XP Investimentos,crítico,68772,28,médio,Nenhum,Não,115,91,4889,Não
+21,2026-03-21,ataque,crítica,32,aplicação,resolvido,Coreia do Norte,23591,61879,XP Investimentos,crítico,38288,19,alto,235.126.138.253,Sim,48,76,4189,Sim
+22,2026-03-07,ataque,média,30,aplicação,pendente,Estados Unidos,5259,42352,Santander,médio,37093,23,médio,118.28.150.121,Sim,31,32,1539,Sim
+23,2026-04-16,falha servidor,baixa,29,servidor,pendente,Interno,1016,51121,Santander,baixo,50105,6,baixo,Nenhum,Não,6,21,3369,Não
+24,2026-03-27,lentidão,crítica,24,aplicação,pendente,Interno,18930,55450,XP Investimentos,crítico,36520,21,alto,Nenhum,Não,119,23,4342,Não
+25,2026-04-17,ataque,baixa,11,servidor,pendente,Coreia do Norte,1145,70707,Santander,baixo,69562,25,baixo,163.213.137.22,Sim,9,48,4705,Sim
+26,2026-03-02,ataque,baixa,33,servidor,resolvido,Alemanha,542,44016,iFood,baixo,43474,31,baixo,89.199.88.13,Sim,4,80,2400,Sim
+27,2026-03-09,ataque,média,69,servidor,resolvido,Alemanha,6863,41287,Nubank,médio,34424,8,médio,130.195.10.16,Sim,33,71,3636,Sim
+28,2026-03-16,erro sistema,crítica,10,banco de dados,resolvido,Interno,14066,77819,Magazine Luiza,crítico,63753,28,médio,Nenhum,Não,119,73,3526,Não
+29,2026-04-22,falha servidor,média,14,rede,pendente,Interno,4496,35003,XP Investimentos,médio,30507,20,baixo,Nenhum,Não,31,27,4666,Não
+30,2026-03-17,ataque,média,90,rede,resolvido,Coreia do Norte,4582,23861,Mercado Livre,médio,19279,35,baixo,44.128.60.139,Sim,39,96,4245,Sim
+31,2026-03-16,erro sistema,média,95,banco de dados,resolvido,Interno,3266,25225,Vivo,médio,21959,21,baixo,Nenhum,Não,31,75,4664,Não
+32,2026-03-11,lentidão,crítica,42,rede,resolvido,Interno,17294,26392,Vivo,crítico,9098,6,alto,Nenhum,Não,96,79,3842,Não
+33,2026-04-14,erro sistema,crítica,44,servidor,resolvido,Interno,23832,33990,Vivo,crítico,10158,34,alto,Nenhum,Não,90,84,1555,Não
+34,2026-04-10,erro sistema,média,87,banco de dados,resolvido,Interno,3061,58905,Nubank,médio,55844,5,baixo,Nenhum,Não,16,87,4806,Não
+35,2026-03-12,lentidão,crítica,46,servidor,pendente,Interno,20736,46422,Santander,crítico,25686,15,alto,Nenhum,Não,120,40,2353,Não
+36,2026-03-08,falha servidor,crítica,79,aplicação,pendente,Interno,10020,99111,XP Investimentos,crítico,89091,12,médio,Nenhum,Não,51,58,1914,Não
+37,2026-03-28,erro sistema,média,40,banco de dados,resolvido,Interno,4038,88049,Santander,médio,84011,9,baixo,Nenhum,Não,23,96,3168,Não
+38,2026-03-09,lentidão,média,27,banco de dados,pendente,Interno,4892,26619,Magazine Luiza,médio,21727,9,baixo,Nenhum,Não,14,35,3813,Não
+39,2026-03-13,lentidão,média,67,rede,pendente,Interno,6666,72146,Mercado Livre,médio,65480,31,médio,Nenhum,Não,13,29,1609,Não
+40,2026-04-24,erro sistema,baixa,75,aplicação,pendente,Interno,665,23433,Mercado Livre,baixo,22768,11,baixo,Nenhum,Não,8,47,2582,Não
+41,2026-03-25,ataque,média,84,banco de dados,pendente,Brasil,6711,52962,Santander,médio,46251,23,médio,76.70.247.225,Sim,18,58,3197,Sim
+42,2026-04-09,erro sistema,média,47,banco de dados,resolvido,Interno,5594,45509,XP Investimentos,médio,39915,12,médio,Nenhum,Não,21,90,1415,Não
+43,2026-04-22,lentidão,média,43,banco de dados,resolvido,Interno,5570,37665,Magazine Luiza,médio,32095,12,médio,Nenhum,Não,11,80,1351,Não
+44,2026-04-26,ataque,baixa,16,rede,pendente,China,1058,66959,Vivo,baixo,65901,7,baixo,192.123.129.147,Sim,10,26,4649,Sim
+45,2026-04-22,lentidão,média,43,banco de dados,resolvido,Interno,4167,64260,Magazine Luiza,médio,60093,11,baixo,Nenhum,Não,36,86,2677,Não
+46,2026-04-01,lentidão,média,36,rede,pendente,Interno,5024,36193,XP Investimentos,médio,31169,22,médio,Nenhum,Não,39,21,4957,Não
+47,2026-04-22,lentidão,baixa,59,banco de dados,resolvido,Interno,675,75790,Mercado Livre,baixo,75115,10,baixo,Nenhum,Não,8,94,1139,Não
+48,2026-04-25,falha servidor,baixa,33,rede,resolvido,Interno,988,60973,iFood,baixo,59985,32,baixo,Nenhum,Não,8,79,3082,Não
+49,2026-03-28,erro sistema,média,40,banco de dados,resolvido,Interno,5975,26568,iFood,médio,20593,5,médio,Nenhum,Não,35,77,2714,Não
+50,2026-04-05,ataque,crítica,78,servidor,resolvido,Estados Unidos,27260,41684,Nubank,crítico,14424,19,alto,209.208.185.247,Sim,93,88,1776,Sim
+51,2026-04-20,lentidão,baixa,53,servidor,pendente,Interno,1640,92177,Mercado Livre,baixo,90537,17,baixo,Nenhum,Não,4,29,4062,Não
+52,2026-03-17,lentidão,crítica,38,servidor,pendente,Interno,19860,89687,Nubank,crítico,69827,14,alto,Nenhum,Não,75,31,1822,Não
+53,2026-03-03,erro sistema,média,94,banco de dados,pendente,Interno,5688,67192,XP Investimentos,médio,61504,14,médio,Nenhum,Não,39,25,4069,Não
+54,2026-03-09,ataque,média,69,servidor,resolvido,China,3366,73159,Mercado Livre,médio,69793,20,baixo,130.142.31.154,Sim,19,80,2579,Sim
+55,2026-03-24,lentidão,média,35,servidor,pendente,Interno,4617,53937,Magazine Luiza,médio,49320,10,baixo,Nenhum,Não,31,44,4609,Não
+56,2026-04-28,ataque,crítica,81,banco de dados,resolvido,Canadá,27760,67888,Nubank,crítico,40128,10,alto,206.215.91.149,Sim,95,86,4811,Sim
+57,2026-03-02,erro sistema,baixa,100,aplicação,resolvido,Interno,1895,68863,XP Investimentos,baixo,66968,17,baixo,Nenhum,Não,1,78,2611,Não
+58,2026-03-16,erro sistema,crítica,81,servidor,resolvido,Interno,29853,73553,XP Investimentos,crítico,43700,29,alto,Nenhum,Não,86,89,1243,Não
+59,2026-04-01,ataque,crítica,60,rede,resolvido,Estados Unidos,18968,99151,Mercado Livre,crítico,80183,23,alto,225.248.182.249,Sim,76,93,2647,Sim
+60,2026-04-13,lentidão,crítica,61,servidor,resolvido,Interno,29122,93121,iFood,crítico,63999,27,alto,Nenhum,Não,72,97,3734,Não
+61,2026-03-27,erro sistema,média,29,servidor,pendente,Interno,3154,34143,XP Investimentos,médio,30989,14,baixo,Nenhum,Não,40,37,3138,Não
+62,2026-03-04,falha servidor,crítica,33,rede,resolvido,Interno,26232,88029,Vivo,crítico,61797,16,alto,Nenhum,Não,98,91,1475,Não
+63,2026-04-21,falha servidor,baixa,84,banco de dados,resolvido,Interno,819,32856,XP Investimentos,baixo,32037,25,baixo,Nenhum,Não,4,77,4662,Não
+64,2026-03-24,ataque,crítica,83,rede,resolvido,Brasil,22147,60079,Nubank,crítico,37932,32,alto,10.12.158.150,Sim,91,93,1996,Sim
+65,2026-03-28,erro sistema,média,40,banco de dados,resolvido,Interno,5616,94225,iFood,médio,88609,7,médio,Nenhum,Não,25,80,1356,Não
+66,2026-04-05,ataque,baixa,47,servidor,resolvido,Alemanha,950,30661,Nubank,baixo,29711,21,baixo,182.35.63.18,Sim,9,99,4822,Sim
+67,2026-03-26,erro sistema,crítica,60,aplicação,pendente,Interno,29077,80446,XP Investimentos,crítico,51369,17,alto,Nenhum,Não,46,26,1123,Não
+68,2026-04-01,falha servidor,crítica,27,rede,resolvido,Interno,12469,33300,XP Investimentos,crítico,20831,28,médio,Nenhum,Não,65,78,3987,Não
+69,2026-04-26,erro sistema,crítica,60,aplicação,resolvido,Interno,18816,61626,Nubank,crítico,42810,22,alto,Nenhum,Não,55,83,4558,Não
+70,2026-04-25,ataque,crítica,56,rede,resolvido,China,27104,52926,Nubank,crítico,25822,33,alto,66.86.35.107,Sim,78,86,1165,Sim
+71,2026-03-19,erro sistema,crítica,83,rede,pendente,Interno,11578,82472,Magazine Luiza,crítico,70894,23,médio,Nenhum,Não,70,43,2232,Não
+72,2026-03-13,falha servidor,baixa,72,banco de dados,resolvido,Interno,1237,90600,Magazine Luiza,baixo,89363,17,baixo,Nenhum,Não,5,72,4842,Não
+73,2026-04-12,ataque,média,70,banco de dados,pendente,Estados Unidos,3878,90340,XP Investimentos,médio,86462,35,baixo,47.206.87.26,Sim,24,54,1780,Sim
+74,2026-03-19,erro sistema,crítica,83,rede,pendente,Interno,29702,43097,Mercado Livre,crítico,13395,17,alto,Nenhum,Não,112,20,4360,Não
+75,2026-04-02,erro sistema,média,41,servidor,pendente,Interno,3009,90939,Vivo,médio,87930,31,baixo,Nenhum,Não,22,34,3523,Não
+76,2026-04-04,falha servidor,baixa,90,rede,resolvido,Interno,813,93019,Magazine Luiza,baixo,92206,35,baixo,Nenhum,Não,8,94,2892,Não
+77,2026-04-24,erro sistema,baixa,75,aplicação,pendente,Interno,981,46676,iFood,baixo,45695,9,baixo,Nenhum,Não,1,29,2245,Não
+78,2026-04-15,lentidão,média,34,rede,pendente,Interno,4428,95519,Vivo,médio,91091,34,baixo,Nenhum,Não,38,31,1939,Não
+79,2026-04-06,erro sistema,baixa,84,servidor,pendente,Interno,1172,70915,Magazine Luiza,baixo,69743,26,baixo,Nenhum,Não,6,27,2161,Não
+80,2026-04-23,lentidão,média,55,rede,resolvido,Interno,5419,27666,iFood,médio,22247,32,médio,Nenhum,Não,21,70,1358,Não
+81,2026-04-01,falha servidor,crítica,27,rede,resolvido,Interno,24922,96884,iFood,crítico,71962,7,alto,Nenhum,Não,85,90,2250,Não
+82,2026-03-07,erro sistema,crítica,98,aplicação,resolvido,Interno,29849,77258,Nubank,crítico,47409,24,alto,Nenhum,Não,60,92,4822,Não
+83,2026-04-23,lentidão,média,39,aplicação,resolvido,Interno,6728,92241,XP Investimentos,médio,85513,15,médio,Nenhum,Não,32,90,4545,Não
+84,2026-03-24,lentidão,média,35,servidor,pendente,Interno,4154,22975,Magazine Luiza,médio,18821,14,baixo,Nenhum,Não,28,34,1479,Não
+85,2026-04-21,erro sistema,média,67,servidor,pendente,Interno,5850,32634,Santander,médio,26784,27,médio,Nenhum,Não,18,56,2010,Não
+86,2026-04-16,falha servidor,baixa,29,servidor,pendente,Interno,963,32423,XP Investimentos,baixo,31460,26,baixo,Nenhum,Não,4,53,4571,Não
+87,2026-04-06,erro sistema,baixa,84,servidor,pendente,Interno,1120,88414,Magazine Luiza,baixo,87294,12,baixo,Nenhum,Não,10,25,4639,Não
+88,2026-03-09,lentidão,média,27,banco de dados,pendente,Interno,4228,65979,Magazine Luiza,médio,61751,26,baixo,Nenhum,Não,37,29,1106,Não
+89,2026-03-09,ataque,média,69,servidor,resolvido,Rússia,6914,21530,Mercado Livre,médio,14616,20,médio,19.173.247.55,Sim,29,94,3986,Sim
+90,2026-03-25,lentidão,média,71,aplicação,pendente,Interno,5591,87530,Magazine Luiza,médio,81939,11,médio,Nenhum,Não,33,27,4218,Não
+91,2026-03-16,erro sistema,crítica,81,servidor,resolvido,Interno,25727,38418,Magazine Luiza,crítico,12691,24,alto,Nenhum,Não,46,89,4712,Não
+92,2026-03-25,lentidão,média,71,aplicação,pendente,Interno,4436,90808,Nubank,médio,86372,10,baixo,Nenhum,Não,15,27,3121,Não
+93,2026-04-05,falha servidor,crítica,61,banco de dados,resolvido,Interno,11068,52309,Vivo,crítico,41241,30,médio,Nenhum,Não,109,74,1929,Não
+94,2026-03-04,erro sistema,crítica,73,servidor,resolvido,Interno,27704,84084,Nubank,crítico,56380,11,alto,Nenhum,Não,74,100,2407,Não
+95,2026-03-11,ataque,crítica,65,servidor,resolvido,Coreia do Norte,12850,83083,Magazine Luiza,crítico,70233,26,médio,57.70.132.191,Sim,82,90,3929,Sim
+96,2026-03-19,ataque,média,48,servidor,pendente,Canadá,3499,84704,Mercado Livre,médio,81205,30,baixo,142.70.243.136,Sim,39,54,1502,Sim
+97,2026-04-22,lentidão,média,64,servidor,resolvido,Interno,3536,43641,Magazine Luiza,médio,40105,24,baixo,Nenhum,Não,18,77,4040,Não
+98,2026-04-12,ataque,média,88,rede,resolvido,Coreia do Norte,3694,75229,Nubank,médio,71535,8,baixo,178.100.255.81,Sim,25,89,4054,Sim
+99,2026-04-07,lentidão,baixa,39,servidor,resolvido,Interno,509,71444,Nubank,baixo,70935,32,baixo,Nenhum,Não,8,82,4419,Não
+100,2026-03-04,falha servidor,crítica,33,rede,resolvido,Interno,21910,24513,Magazine Luiza,crítico,2603,6,alto,Nenhum,Não,98,94,1969,Não
+101,2026-04-16,lentidão,média,54,banco de dados,resolvido,Interno,6159,46783,Vivo,médio,40624,27,médio,Nenhum,Não,35,91,1860,Não
+102,2026-04-23,erro sistema,crítica,91,servidor,resolvido,Interno,11873,86457,Mercado Livre,crítico,74584,34,médio,Nenhum,Não,40,75,4690,Não
+103,2026-04-05,ataque,baixa,47,servidor,resolvido,China,1630,47596,Nubank,baixo,45966,13,baixo,13.44.194.193,Sim,8,81,1352,Sim
+104,2026-03-09,lentidão,baixa,46,rede,pendente,Interno,1804,26182,iFood,baixo,24378,15,baixo,Nenhum,Não,3,58,3947,Não
+105,2026-03-27,falha servidor,média,74,rede,resolvido,Interno,5965,48478,Nubank,médio,42513,15,médio,Nenhum,Não,23,90,3091,Não
+106,2026-03-09,lentidão,crítica,100,banco de dados,resolvido,Interno,17772,45459,Magazine Luiza,crítico,27687,8,alto,Nenhum,Não,89,91,4668,Não
+107,2026-04-13,lentidão,crítica,61,servidor,resolvido,Interno,10297,85341,Santander,crítico,75044,27,médio,Nenhum,Não,82,80,1858,Não
+108,2026-03-19,ataque,crítica,46,banco de dados,pendente,Canadá,16541,47166,Mercado Livre,crítico,30625,24,alto,101.228.88.113,Sim,43,59,3899,Sim
+109,2026-03-18,erro sistema,baixa,88,aplicação,resolvido,Interno,866,67148,Vivo,baixo,66282,16,baixo,Nenhum,Não,2,99,1982,Não
+110,2026-03-07,lentidão,baixa,40,banco de dados,resolvido,Interno,1696,94842,iFood,baixo,93146,30,baixo,Nenhum,Não,6,72,1208,Não
+111,2026-03-19,erro sistema,média,86,aplicação,pendente,Interno,4630,95773,Nubank,médio,91143,10,baixo,Nenhum,Não,15,58,2952,Não
+112,2026-03-11,ataque,crítica,24,aplicação,pendente,Brasil,18785,59633,Mercado Livre,crítico,40848,30,alto,109.132.240.154,Sim,97,23,1578,Sim
+113,2026-03-09,lentidão,crítica,100,banco de dados,resolvido,Interno,14855,70589,Mercado Livre,crítico,55734,15,médio,Nenhum,Não,56,77,4063,Não
+114,2026-03-20,ataque,crítica,81,rede,resolvido,Brasil,28649,44967,Nubank,crítico,16318,18,alto,228.163.27.138,Sim,58,84,4404,Sim
+115,2026-04-16,lentidão,média,54,banco de dados,resolvido,Interno,4907,50809,Santander,médio,45902,23,baixo,Nenhum,Não,28,83,4457,Não
+116,2026-03-25,ataque,média,84,banco de dados,pendente,Rússia,3386,66730,Mercado Livre,médio,63344,20,baixo,22.130.163.49,Sim,24,28,1658,Sim
+117,2026-04-21,erro sistema,média,67,servidor,pendente,Interno,4268,95645,Vivo,médio,91377,32,baixo,Nenhum,Não,11,28,4094,Não
+118,2026-04-17,erro sistema,baixa,44,aplicação,resolvido,Interno,839,38785,Vivo,baixo,37946,31,baixo,Nenhum,Não,2,89,2770,Não
+119,2026-04-08,erro sistema,crítica,23,servidor,pendente,Interno,14869,60338,Mercado Livre,crítico,45469,25,médio,Nenhum,Não,58,38,1797,Não
+120,2026-04-16,lentidão,média,54,banco de dados,resolvido,Interno,6804,73409,XP Investimentos,médio,66605,9,médio,Nenhum,Não,38,91,3071,Não
+121,2026-03-22,ataque,baixa,82,banco de dados,resolvido,Alemanha,502,74268,Vivo,baixo,73766,33,baixo,184.158.46.93,Sim,3,73,4853,Sim
+122,2026-03-26,lentidão,baixa,84,servidor,resolvido,Interno,977,74914,XP Investimentos,baixo,73937,31,baixo,Nenhum,Não,2,96,3045,Não
+123,2026-03-14,erro sistema,baixa,88,banco de dados,resolvido,Interno,1386,95882,Nubank,baixo,94496,17,baixo,Nenhum,Não,4,76,1874,Não
+124,2026-03-07,falha servidor,baixa,36,banco de dados,pendente,Interno,1164,81336,Nubank,baixo,80172,10,baixo,Nenhum,Não,9,54,4041,Não
+125,2026-03-12,falha servidor,média,36,servidor,pendente,Interno,3642,76173,XP Investimentos,médio,72531,17,baixo,Nenhum,Não,14,43,2520,Não
+126,2026-03-03,erro sistema,média,94,banco de dados,pendente,Interno,3637,79358,Magazine Luiza,médio,75721,24,baixo,Nenhum,Não,19,45,2842,Não
+127,2026-04-18,lentidão,média,30,rede,resolvido,Interno,6253,25091,XP Investimentos,médio,18838,26,médio,Nenhum,Não,18,72,3744,Não
+128,2026-04-15,falha servidor,média,56,servidor,pendente,Interno,5884,95375,Santander,médio,89491,10,médio,Nenhum,Não,32,53,2754,Não
+129,2026-03-03,falha servidor,média,23,banco de dados,resolvido,Interno,6392,89932,Santander,médio,83540,7,médio,Nenhum,Não,39,73,3210,Não
+130,2026-03-04,erro sistema,crítica,73,servidor,resolvido,Interno,23913,59862,Nubank,crítico,35949,26,alto,Nenhum,Não,64,86,4489,Não
+131,2026-03-13,lentidão,média,67,rede,pendente,Interno,5987,63782,iFood,médio,57795,6,médio,Nenhum,Não,32,48,1684,Não
+132,2026-03-02,lentidão,baixa,25,banco de dados,pendente,Interno,582,67640,iFood,baixo,67058,10,baixo,Nenhum,Não,2,57,3456,Não
+133,2026-03-12,ataque,média,51,aplicação,resolvido,Canadá,6469,42077,Mercado Livre,médio,35608,16,médio,236.89.143.155,Sim,38,82,2198,Sim
+134,2026-03-10,falha servidor,baixa,73,aplicação,resolvido,Interno,703,26964,Magazine Luiza,baixo,26261,11,baixo,Nenhum,Não,1,83,2511,Não
+135,2026-04-19,lentidão,baixa,33,banco de dados,pendente,Interno,684,85503,iFood,baixo,84819,31,baixo,Nenhum,Não,1,47,2038,Não
+136,2026-04-23,erro sistema,crítica,91,servidor,resolvido,Interno,13952,72211,XP Investimentos,crítico,58259,22,médio,Nenhum,Não,96,81,1994,Não
+137,2026-03-10,lentidão,baixa,44,servidor,resolvido,Interno,1555,50683,Mercado Livre,baixo,49128,34,baixo,Nenhum,Não,4,98,3931,Não
+138,2026-04-04,ataque,crítica,56,banco de dados,pendente,Estados Unidos,25132,22193,iFood,crítico,-2939,30,alto,79.254.193.26,Sim,93,52,3338,Sim
+139,2026-03-20,ataque,crítica,81,rede,resolvido,Rússia,11867,63269,iFood,crítico,51402,12,médio,114.32.167.24,Sim,40,77,3871,Sim
+140,2026-04-22,lentidão,média,43,banco de dados,resolvido,Interno,4491,83645,Mercado Livre,médio,79154,22,baixo,Nenhum,Não,25,83,1318,Não
+141,2026-03-18,lentidão,média,68,servidor,resolvido,Interno,3118,81908,Magazine Luiza,médio,78790,12,baixo,Nenhum,Não,24,95,3490,Não
+142,2026-04-20,lentidão,média,45,aplicação,pendente,Interno,5840,33961,Vivo,médio,28121,16,médio,Nenhum,Não,18,23,1306,Não
+143,2026-03-11,ataque,crítica,24,aplicação,pendente,China,25068,78836,Santander,crítico,53768,23,alto,83.59.25.165,Sim,114,57,4650,Sim
+144,2026-04-01,ataque,crítica,60,rede,resolvido,Estados Unidos,19585,62964,iFood,crítico,43379,26,alto,157.31.129.89,Sim,94,76,1422,Sim
+145,2026-04-25,falha servidor,baixa,33,rede,resolvido,Interno,1887,89788,Nubank,baixo,87901,18,baixo,Nenhum,Não,10,73,1289,Não
+146,2026-03-28,erro sistema,média,40,banco de dados,resolvido,Interno,5197,45886,Mercado Livre,médio,40689,16,médio,Nenhum,Não,18,94,4514,Não
+147,2026-03-14,erro sistema,crítica,68,banco de dados,pendente,Interno,15039,36011,Santander,crítico,20972,5,alto,Nenhum,Não,73,41,3889,Não
+148,2026-04-09,erro sistema,média,47,banco de dados,resolvido,Interno,5843,45685,Santander,médio,39842,15,médio,Nenhum,Não,11,93,3753,Não
+149,2026-03-19,ataque,crítica,12,banco de dados,resolvido,Rússia,29945,61646,Magazine Luiza,crítico,31701,25,alto,206.200.88.162,Sim,45,98,3410,Sim
+150,2026-04-04,falha servidor,baixa,90,rede,resolvido,Interno,578,27537,iFood,baixo,26959,14,baixo,Nenhum,Não,2,95,4947,Não
+151,2026-04-25,erro sistema,baixa,60,banco de dados,pendente,Interno,1788,89614,XP Investimentos,baixo,87826,18,baixo,Nenhum,Não,3,30,1486,Não
+152,2026-03-28,lentidão,baixa,70,aplicação,pendente,Interno,1251,69021,iFood,baixo,67770,26,baixo,Nenhum,Não,7,20,3172,Não
+153,2026-04-28,ataque,crítica,81,banco de dados,resolvido,Canadá,10987,76336,Santander,crítico,65349,17,médio,101.20.222.230,Sim,101,93,1394,Sim
+154,2026-03-19,ataque,crítica,46,banco de dados,pendente,Rússia,12356,67715,Santander,crítico,55359,23,médio,83.134.132.150,Sim,92,41,3850,Sim
+155,2026-04-05,ataque,baixa,47,servidor,resolvido,China,1592,70078,Santander,baixo,68486,14,baixo,26.87.209.251,Sim,1,74,2769,Sim
+156,2026-03-25,erro sistema,baixa,68,rede,pendente,Interno,1790,26473,iFood,baixo,24683,17,baixo,Nenhum,Não,6,43,3207,Não
+157,2026-04-12,lentidão,baixa,11,rede,resolvido,Interno,576,51128,Nubank,baixo,50552,35,baixo,Nenhum,Não,2,78,1824,Não
+158,2026-04-25,erro sistema,crítica,49,servidor,pendente,Interno,28105,94191,Mercado Livre,crítico,66086,28,alto,Nenhum,Não,55,21,4255,Não
+159,2026-04-17,erro sistema,baixa,44,aplicação,resolvido,Interno,1614,63566,Magazine Luiza,baixo,61952,29,baixo,Nenhum,Não,6,83,4564,Não
+160,2026-03-06,falha servidor,média,52,aplicação,pendente,Interno,3610,96250,Mercado Livre,médio,92640,32,baixo,Nenhum,Não,38,40,3068,Não
+161,2026-04-24,erro sistema,baixa,36,servidor,pendente,Interno,1932,83607,Vivo,baixo,81675,26,baixo,Nenhum,Não,8,35,3759,Não
+162,2026-03-21,ataque,baixa,98,aplicação,resolvido,Brasil,1967,62997,iFood,baixo,61030,29,baixo,184.136.16.129,Sim,1,81,4655,Sim
+163,2026-04-26,ataque,baixa,16,rede,pendente,Alemanha,1975,80030,Magazine Luiza,baixo,78055,35,baixo,65.170.204.19,Sim,9,40,3919,Sim
+164,2026-04-17,erro sistema,baixa,44,aplicação,resolvido,Interno,1893,76678,Vivo,baixo,74785,25,baixo,Nenhum,Não,7,80,3990,Não
+165,2026-03-16,erro sistema,crítica,81,servidor,resolvido,Interno,24399,92680,Vivo,crítico,68281,27,alto,Nenhum,Não,86,95,2327,Não
+166,2026-03-20,ataque,crítica,81,rede,resolvido,China,14220,43156,Magazine Luiza,crítico,28936,32,médio,169.180.153.207,Sim,87,96,2046,Sim
+167,2026-03-07,erro sistema,crítica,98,aplicação,resolvido,Interno,14916,93700,Santander,crítico,78784,10,médio,Nenhum,Não,46,73,3971,Não
+168,2026-04-08,erro sistema,crítica,23,servidor,pendente,Interno,28279,35190,XP Investimentos,crítico,6911,19,alto,Nenhum,Não,64,30,2990,Não
+169,2026-03-02,ataque,baixa,33,servidor,resolvido,Alemanha,744,28927,Nubank,baixo,28183,7,baixo,195.204.63.226,Sim,10,89,4333,Sim
+170,2026-03-27,lentidão,crítica,24,aplicação,pendente,Interno,11694,83908,Nubank,crítico,72214,14,médio,Nenhum,Não,83,55,2351,Não
+171,2026-04-01,lentidão,baixa,99,servidor,resolvido,Interno,1301,51751,Magazine Luiza,baixo,50450,5,baixo,Nenhum,Não,7,86,1987,Não
+172,2026-04-26,erro sistema,crítica,60,aplicação,resolvido,Interno,20272,56960,Santander,crítico,36688,34,alto,Nenhum,Não,58,94,4783,Não
+173,2026-04-20,ataque,baixa,26,rede,resolvido,Estados Unidos,1667,28565,Santander,baixo,26898,10,baixo,60.202.154.162,Sim,6,78,2358,Sim
+174,2026-04-22,falha servidor,média,14,rede,pendente,Interno,3416,89315,Mercado Livre,médio,85899,29,baixo,Nenhum,Não,12,31,4813,Não
+175,2026-03-27,lentidão,crítica,47,banco de dados,resolvido,Interno,20182,47690,Nubank,crítico,27508,34,alto,Nenhum,Não,114,98,1928,Não
+176,2026-04-14,erro sistema,crítica,44,servidor,resolvido,Interno,28874,27719,Mercado Livre,crítico,-1155,32,alto,Nenhum,Não,85,83,2423,Não
+177,2026-04-07,lentidão,baixa,39,servidor,resolvido,Interno,1458,24934,Magazine Luiza,baixo,23476,16,baixo,Nenhum,Não,1,80,2345,Não
+178,2026-03-11,lentidão,crítica,42,rede,resolvido,Interno,11842,73881,Nubank,crítico,62039,8,médio,Nenhum,Não,118,78,1576,Não
+179,2026-03-06,falha servidor,média,52,aplicação,pendente,Interno,6097,39910,iFood,médio,33813,35,médio,Nenhum,Não,39,39,3668,Não
+180,2026-03-21,ataque,baixa,98,aplicação,resolvido,Estados Unidos,900,29598,Nubank,baixo,28698,17,baixo,232.122.110.248,Sim,2,79,4256,Sim
+181,2026-03-09,ataque,baixa,64,aplicação,resolvido,Coreia do Norte,1641,74722,XP Investimentos,baixo,73081,24,baixo,93.219.21.91,Sim,8,82,2207,Sim
+182,2026-04-22,lentidão,baixa,59,banco de dados,resolvido,Interno,683,41817,Nubank,baixo,41134,9,baixo,Nenhum,Não,4,81,1080,Não
+183,2026-03-24,ataque,crítica,83,rede,resolvido,Alemanha,16274,96177,Nubank,crítico,79903,27,alto,53.171.164.27,Sim,52,100,4825,Sim
+184,2026-04-10,erro sistema,média,87,banco de dados,resolvido,Interno,5202,45107,Santander,médio,39905,32,médio,Nenhum,Não,31,82,1177,Não
+185,2026-03-17,ataque,média,90,rede,resolvido,Rússia,5879,34306,Nubank,médio,28427,35,médio,54.26.97.179,Sim,16,99,3502,Sim
+186,2026-04-19,lentidão,baixa,33,banco de dados,pendente,Interno,1860,33138,XP Investimentos,baixo,31278,14,baixo,Nenhum,Não,7,55,2471,Não
+187,2026-04-05,falha servidor,crítica,61,banco de dados,resolvido,Interno,18929,26350,iFood,crítico,7421,18,alto,Nenhum,Não,101,96,1045,Não
+188,2026-03-28,ataque,crítica,78,aplicação,resolvido,Estados Unidos,19382,99219,Magazine Luiza,crítico,79837,26,alto,113.201.252.96,Sim,60,90,2582,Sim
+189,2026-04-21,erro sistema,média,67,servidor,pendente,Interno,3274,83333,iFood,médio,80059,15,baixo,Nenhum,Não,32,45,3748,Não
+190,2026-03-09,ataque,baixa,64,aplicação,resolvido,Brasil,940,92143,Santander,baixo,91203,29,baixo,251.38.34.103,Sim,7,94,1940,Sim
+191,2026-03-03,falha servidor,média,23,banco de dados,resolvido,Interno,4694,57044,XP Investimentos,médio,52350,28,baixo,Nenhum,Não,11,83,3982,Não
+192,2026-03-25,erro sistema,baixa,68,rede,pendente,Interno,1276,54533,Nubank,baixo,53257,23,baixo,Nenhum,Não,6,40,2691,Não
+193,2026-03-07,lentidão,baixa,49,aplicação,resolvido,Interno,516,24773,XP Investimentos,baixo,24257,18,baixo,Nenhum,Não,8,85,3167,Não
+194,2026-03-10,lentidão,baixa,44,servidor,resolvido,Interno,677,87211,Mercado Livre,baixo,86534,24,baixo,Nenhum,Não,5,88,1716,Não
+195,2026-04-15,lentidão,média,34,rede,pendente,Interno,4272,46473,Vivo,médio,42201,30,baixo,Nenhum,Não,12,41,1022,Não
+196,2026-03-24,ataque,crítica,91,servidor,resolvido,Coreia do Norte,25725,51859,XP Investimentos,crítico,26134,5,alto,69.196.189.49,Sim,109,96,4051,Sim
+197,2026-04-26,ataque,baixa,16,rede,pendente,Alemanha,1257,95758,Nubank,baixo,94501,5,baixo,13.134.108.141,Sim,1,44,1281,Sim
+198,2026-03-09,ataque,baixa,64,aplicação,resolvido,Estados Unidos,1858,48199,iFood,baixo,46341,5,baixo,156.244.129.105,Sim,10,99,4973,Sim
+199,2026-03-23,erro sistema,crítica,86,rede,resolvido,Interno,10302,73446,Mercado Livre,crítico,63144,31,médio,Nenhum,Não,103,89,1486,Não
+200,2026-03-09,ataque,média,69,servidor,resolvido,Canadá,6466,70821,Vivo,médio,64355,35,médio,35.86.105.235,Sim,26,78,2421,Sim
+201,2026-03-16,falha servidor,baixa,79,servidor,resolvido,Interno,1038,32589,Santander,baixo,31551,24,baixo,Nenhum,Não,2,88,4044,Não
+202,2026-04-10,lentidão,média,96,aplicação,resolvido,Interno,4557,20850,Nubank,médio,16293,35,baixo,Nenhum,Não,10,89,3134,Não
+203,2026-04-25,ataque,média,11,rede,pendente,Rússia,3635,21542,Vivo,médio,17907,8,baixo,16.90.119.204,Sim,16,58,4878,Sim
+204,2026-04-12,lentidão,baixa,31,rede,resolvido,Interno,1621,22790,Santander,baixo,21169,32,baixo,Nenhum,Não,4,70,3852,Não
+205,2026-03-15,lentidão,média,94,banco de dados,pendente,Interno,6574,32342,iFood,médio,25768,18,médio,Nenhum,Não,40,21,1428,Não
+206,2026-04-19,falha servidor,baixa,51,banco de dados,resolvido,Interno,594,53949,Magazine Luiza,baixo,53355,33,baixo,Nenhum,Não,5,85,2853,Não
+207,2026-03-07,erro sistema,crítica,63,banco de dados,pendente,Interno,20392,43980,Santander,crítico,23588,11,alto,Nenhum,Não,113,23,3248,Não
+208,2026-03-02,falha servidor,média,51,servidor,pendente,Interno,5781,29819,Vivo,médio,24038,8,médio,Nenhum,Não,22,36,1477,Não
+209,2026-04-20,lentidão,baixa,53,servidor,pendente,Interno,691,94513,XP Investimentos,baixo,93822,14,baixo,Nenhum,Não,2,40,3354,Não
+210,2026-04-10,falha servidor,crítica,11,banco de dados,pendente,Interno,26698,81021,Vivo,crítico,54323,19,alto,Nenhum,Não,55,39,2770,Não
+211,2026-04-20,lentidão,média,45,aplicação,pendente,Interno,4874,27227,iFood,médio,22353,21,baixo,Nenhum,Não,40,60,3506,Não
+212,2026-03-11,ataque,crítica,65,servidor,resolvido,Alemanha,10430,66639,Mercado Livre,crítico,56209,22,médio,174.86.155.97,Sim,69,71,4420,Sim
+213,2026-03-07,lentidão,baixa,49,aplicação,resolvido,Interno,1248,43582,iFood,baixo,42334,31,baixo,Nenhum,Não,4,80,3633,Não
+214,2026-04-14,falha servidor,baixa,97,rede,resolvido,Interno,1159,65434,Vivo,baixo,64275,34,baixo,Nenhum,Não,6,93,3784,Não
+215,2026-03-17,erro sistema,média,68,aplicação,resolvido,Interno,4427,82187,Vivo,médio,77760,8,baixo,Nenhum,Não,26,89,1470,Não
+216,2026-03-08,falha servidor,média,90,servidor,resolvido,Interno,6590,23975,Santander,médio,17385,34,médio,Nenhum,Não,37,100,4905,Não
+217,2026-03-07,falha servidor,baixa,36,banco de dados,pendente,Interno,1063,92360,Mercado Livre,baixo,91297,14,baixo,Nenhum,Não,1,30,3184,Não
+218,2026-04-23,lentidão,média,55,rede,resolvido,Interno,5933,92278,iFood,médio,86345,12,médio,Nenhum,Não,10,95,4188,Não
+219,2026-03-02,erro sistema,média,14,aplicação,pendente,Interno,4742,59408,Magazine Luiza,médio,54666,32,baixo,Nenhum,Não,29,31,1774,Não
+220,2026-04-22,falha servidor,média,14,rede,pendente,Interno,5033,81983,iFood,médio,76950,8,médio,Nenhum,Não,15,51,1076,Não
+221,2026-03-19,erro sistema,média,86,aplicação,pendente,Interno,5322,71199,Vivo,médio,65877,12,médio,Nenhum,Não,23,24,4147,Não
+222,2026-04-20,lentidão,média,45,aplicação,pendente,Interno,4647,45080,Santander,médio,40433,8,baixo,Nenhum,Não,30,44,3108,Não
+223,2026-04-24,erro sistema,crítica,34,banco de dados,resolvido,Interno,15160,48698,Mercado Livre,crítico,33538,35,alto,Nenhum,Não,104,98,4453,Não
+224,2026-04-27,falha servidor,média,32,aplicação,resolvido,Interno,3736,62539,Santander,médio,58803,11,baixo,Nenhum,Não,31,97,2587,Não
+225,2026-03-09,lentidão,média,27,banco de dados,pendente,Interno,4854,22396,Nubank,médio,17542,8,baixo,Nenhum,Não,39,45,2683,Não
+226,2026-03-28,lentidão,baixa,70,aplicação,pendente,Interno,676,36109,Magazine Luiza,baixo,35433,27,baixo,Nenhum,Não,2,22,2810,Não
+227,2026-03-13,erro sistema,crítica,51,rede,pendente,Interno,15234,72552,Vivo,crítico,57318,5,alto,Nenhum,Não,93,24,1986,Não
+228,2026-03-13,falha servidor,baixa,72,banco de dados,resolvido,Interno,1451,70242,Magazine Luiza,baixo,68791,19,baixo,Nenhum,Não,1,90,4224,Não
+229,2026-03-21,erro sistema,média,28,banco de dados,resolvido,Interno,4666,91970,iFood,médio,87304,18,baixo,Nenhum,Não,11,94,3208,Não
+230,2026-03-25,erro sistema,baixa,85,aplicação,pendente,Interno,898,21292,iFood,baixo,20394,5,baixo,Nenhum,Não,1,44,4152,Não
+231,2026-03-21,erro sistema,média,28,banco de dados,resolvido,Interno,3031,26610,Vivo,médio,23579,20,baixo,Nenhum,Não,14,80,1617,Não
+232,2026-03-07,lentidão,baixa,16,rede,resolvido,Interno,1753,23042,Nubank,baixo,21289,13,baixo,Nenhum,Não,6,85,2381,Não
+233,2026-03-12,ataque,média,51,aplicação,resolvido,Coreia do Norte,4617,71325,XP Investimentos,médio,66708,6,baixo,56.218.208.228,Sim,38,76,3985,Sim
+234,2026-03-02,falha servidor,média,51,servidor,pendente,Interno,6185,78424,Magazine Luiza,médio,72239,21,médio,Nenhum,Não,12,40,4342,Não
+235,2026-03-03,erro sistema,média,94,banco de dados,pendente,Interno,5828,60887,Magazine Luiza,médio,55059,35,médio,Nenhum,Não,35,20,2339,Não
+236,2026-04-05,lentidão,crítica,62,servidor,resolvido,Interno,25803,39911,Santander,crítico,14108,14,alto,Nenhum,Não,99,94,2915,Não
+237,2026-03-16,erro sistema,média,95,banco de dados,resolvido,Interno,4724,67521,Magazine Luiza,médio,62797,34,baixo,Nenhum,Não,32,100,2039,Não
+238,2026-04-15,lentidão,média,34,rede,pendente,Interno,4697,63170,Mercado Livre,médio,58473,23,baixo,Nenhum,Não,20,24,1410,Não
+239,2026-04-10,falha servidor,crítica,11,banco de dados,pendente,Interno,25030,34939,Magazine Luiza,crítico,9909,32,alto,Nenhum,Não,65,32,4076,Não
+240,2026-04-28,ataque,crítica,81,banco de dados,resolvido,Canadá,29560,84725,Nubank,crítico,55165,25,alto,230.221.115.74,Sim,45,77,4152,Sim
+241,2026-03-13,falha servidor,baixa,72,banco de dados,resolvido,Interno,1432,96473,XP Investimentos,baixo,95041,29,baixo,Nenhum,Não,3,79,1668,Não
+242,2026-03-07,erro sistema,crítica,98,aplicação,resolvido,Interno,23996,74000,Mercado Livre,crítico,50004,29,alto,Nenhum,Não,50,99,4210,Não
+243,2026-04-24,lentidão,média,58,aplicação,pendente,Interno,6566,91984,Nubank,médio,85418,15,médio,Nenhum,Não,38,47,4634,Não
+244,2026-03-12,lentidão,crítica,46,servidor,pendente,Interno,24887,77011,Vivo,crítico,52124,27,alto,Nenhum,Não,68,35,3621,Não
+245,2026-03-27,erro sistema,média,29,servidor,pendente,Interno,6096,71864,Magazine Luiza,médio,65768,16,médio,Nenhum,Não,21,29,1274,Não
+246,2026-03-18,erro sistema,baixa,88,aplicação,resolvido,Interno,892,75754,Vivo,baixo,74862,20,baixo,Nenhum,Não,7,81,2223,Não
+247,2026-03-26,ataque,crítica,86,aplicação,pendente,Brasil,17094,38530,Mercado Livre,crítico,21436,24,alto,68.91.140.235,Sim,51,44,4762,Sim
+248,2026-03-17,erro sistema,média,68,aplicação,resolvido,Interno,5356,54157,Santander,médio,48801,15,médio,Nenhum,Não,29,71,2338,Não
+249,2026-04-04,falha servidor,baixa,90,rede,resolvido,Interno,1212,94582,Mercado Livre,baixo,93370,5,baixo,Nenhum,Não,4,76,3472,Não
+250,2026-03-18,lentidão,média,68,servidor,resolvido,Interno,6945,90879,Nubank,médio,83934,16,médio,Nenhum,Não,35,77,2510,Não
+251,2026-03-19,ataque,média,48,servidor,pendente,Rússia,5898,65631,Magazine Luiza,médio,59733,9,médio,16.139.253.14,Sim,25,43,3056,Sim
+252,2026-03-19,ataque,média,48,servidor,pendente,Alemanha,5114,34688,Vivo,médio,29574,18,médio,95.159.225.197,Sim,19,55,4982,Sim
+253,2026-03-07,lentidão,baixa,16,rede,resolvido,Interno,753,71174,Mercado Livre,baixo,70421,35,baixo,Nenhum,Não,5,86,1050,Não
+254,2026-03-25,erro sistema,baixa,68,rede,pendente,Interno,1722,70274,Vivo,baixo,68552,29,baixo,Nenhum,Não,7,49,1291,Não
+255,2026-04-01,lentidão,média,36,rede,pendente,Interno,3656,73783,Nubank,médio,70127,12,baixo,Nenhum,Não,23,50,3643,Não
+256,2026-04-12,ataque,média,88,rede,resolvido,Estados Unidos,5738,83069,XP Investimentos,médio,77331,10,médio,224.186.129.211,Sim,37,94,4926,Sim
+257,2026-03-21,ataque,crítica,32,aplicação,resolvido,Brasil,15156,38712,Santander,crítico,23556,14,alto,205.186.148.244,Sim,78,93,3127,Sim
+258,2026-03-13,erro sistema,crítica,51,rede,pendente,Interno,24810,58357,Magazine Luiza,crítico,33547,34,alto,Nenhum,Não,58,47,3530,Não
+259,2026-04-20,ataque,baixa,26,rede,resolvido,Coreia do Norte,598,58044,Vivo,baixo,57446,29,baixo,201.22.48.217,Sim,4,92,1282,Sim
+260,2026-04-24,lentidão,média,58,aplicação,pendente,Interno,3534,93085,Nubank,médio,89551,17,baixo,Nenhum,Não,22,34,1530,Não
+261,2026-03-19,ataque,crítica,12,banco de dados,resolvido,China,10189,29116,Vivo,crítico,18927,13,médio,203.115.105.76,Sim,68,98,2534,Sim
+262,2026-03-24,ataque,crítica,91,servidor,resolvido,Alemanha,26713,50762,Santander,crítico,24049,16,alto,201.228.165.40,Sim,94,93,3353,Sim
+263,2026-04-21,ataque,baixa,90,aplicação,pendente,China,829,26775,iFood,baixo,25946,31,baixo,195.188.168.200,Sim,4,58,2424,Sim
+264,2026-03-02,lentidão,baixa,25,banco de dados,pendente,Interno,1413,31779,iFood,baixo,30366,25,baixo,Nenhum,Não,9,21,3661,Não
+265,2026-03-16,erro sistema,média,95,banco de dados,resolvido,Interno,4224,62564,Vivo,médio,58340,5,baixo,Nenhum,Não,33,97,2739,Não
+266,2026-03-24,ataque,crítica,83,rede,resolvido,Brasil,12970,49695,Vivo,crítico,36725,12,médio,54.79.113.146,Sim,63,79,2389,Sim
+267,2026-03-13,erro sistema,crítica,51,rede,pendente,Interno,27231,68358,XP Investimentos,crítico,41127,32,alto,Nenhum,Não,88,54,4469,Não
+268,2026-04-27,falha servidor,média,32,aplicação,resolvido,Interno,6194,59985,Nubank,médio,53791,6,médio,Nenhum,Não,11,73,4719,Não
+269,2026-04-19,lentidão,baixa,33,banco de dados,pendente,Interno,680,45739,iFood,baixo,45059,24,baixo,Nenhum,Não,7,29,1808,Não
+270,2026-03-22,ataque,baixa,82,banco de dados,resolvido,Alemanha,579,76986,Santander,baixo,76407,22,baixo,176.216.31.60,Sim,3,77,4277,Sim
+271,2026-04-02,erro sistema,média,41,servidor,pendente,Interno,5978,99286,Vivo,médio,93308,12,médio,Nenhum,Não,20,43,4656,Não
+272,2026-04-01,ataque,crítica,60,rede,resolvido,Estados Unidos,29717,56586,Mercado Livre,crítico,26869,31,alto,189.162.190.94,Sim,56,87,4496,Sim
+273,2026-04-18,lentidão,média,30,rede,resolvido,Interno,5184,80235,Vivo,médio,75051,32,médio,Nenhum,Não,16,89,4424,Não
+274,2026-03-14,erro sistema,crítica,68,banco de dados,pendente,Interno,12706,44324,Santander,crítico,31618,25,médio,Nenhum,Não,111,55,3880,Não
+275,2026-04-26,erro sistema,crítica,60,aplicação,resolvido,Interno,16773,83449,Magazine Luiza,crítico,66676,15,alto,Nenhum,Não,71,98,3637,Não
+276,2026-03-04,ataque,baixa,77,servidor,pendente,Coreia do Norte,914,91848,Magazine Luiza,baixo,90934,23,baixo,128.231.25.189,Sim,9,32,4709,Sim
+277,2026-03-02,erro sistema,baixa,100,aplicação,resolvido,Interno,640,87872,Nubank,baixo,87232,21,baixo,Nenhum,Não,10,98,1788,Não
+278,2026-04-22,lentidão,baixa,59,banco de dados,resolvido,Interno,727,51402,iFood,baixo,50675,31,baixo,Nenhum,Não,7,74,2182,Não
+279,2026-03-04,ataque,baixa,77,servidor,pendente,China,1661,42023,Magazine Luiza,baixo,40362,8,baixo,71.136.84.59,Sim,3,44,3308,Sim
+280,2026-04-10,falha servidor,média,98,banco de dados,pendente,Interno,4987,62527,iFood,médio,57540,20,baixo,Nenhum,Não,37,59,3916,Não
+281,2026-04-10,lentidão,média,96,aplicação,resolvido,Interno,6817,79260,Vivo,médio,72443,26,médio,Nenhum,Não,29,74,4775,Não
+282,2026-04-17,erro sistema,baixa,44,aplicação,resolvido,Interno,1918,31971,XP Investimentos,baixo,30053,18,baixo,Nenhum,Não,8,81,1273,Não
+283,2026-03-07,ataque,média,30,aplicação,pendente,Coreia do Norte,4591,52172,Santander,médio,47581,28,baixo,227.40.233.254,Sim,10,49,3150,Sim
+284,2026-04-21,erro sistema,média,67,servidor,pendente,Interno,5968,48024,XP Investimentos,médio,42056,25,médio,Nenhum,Não,11,36,2959,Não
+285,2026-03-27,lentidão,crítica,47,banco de dados,resolvido,Interno,20260,45907,Magazine Luiza,crítico,25647,32,alto,Nenhum,Não,89,97,4973,Não
+286,2026-03-07,lentidão,baixa,16,rede,resolvido,Interno,986,97840,Mercado Livre,baixo,96854,24,baixo,Nenhum,Não,8,92,1313,Não
+287,2026-04-24,lentidão,média,58,aplicação,pendente,Interno,5609,65005,Mercado Livre,médio,59396,11,médio,Nenhum,Não,15,29,3361,Não
+288,2026-04-21,falha servidor,baixa,84,banco de dados,resolvido,Interno,1937,87363,Magazine Luiza,baixo,85426,10,baixo,Nenhum,Não,7,96,1820,Não
+289,2026-03-07,erro sistema,crítica,63,banco de dados,pendente,Interno,29761,39074,Mercado Livre,crítico,9313,32,alto,Nenhum,Não,59,30,4583,Não
+290,2026-03-18,erro sistema,baixa,88,aplicação,resolvido,Interno,810,66626,Nubank,baixo,65816,35,baixo,Nenhum,Não,8,81,4650,Não
+291,2026-03-12,ataque,média,51,aplicação,resolvido,Canadá,3687,36992,iFood,médio,33305,22,baixo,179.227.210.177,Sim,16,82,3199,Sim
+292,2026-03-06,falha servidor,média,52,aplicação,pendente,Interno,5034,23041,XP Investimentos,médio,18007,33,médio,Nenhum,Não,31,20,3858,Não
+293,2026-03-07,ataque,média,30,aplicação,pendente,Rússia,5817,29454,Santander,médio,23637,34,médio,121.101.127.230,Sim,32,41,3289,Sim
+294,2026-03-03,falha servidor,média,23,banco de dados,resolvido,Interno,6299,54866,Mercado Livre,médio,48567,25,médio,Nenhum,Não,18,88,2258,Não
+295,2026-03-08,lentidão,média,36,aplicação,resolvido,Interno,4983,60151,XP Investimentos,médio,55168,13,baixo,Nenhum,Não,31,86,4475,Não
+296,2026-04-04,ataque,crítica,56,banco de dados,pendente,China,25280,62998,XP Investimentos,crítico,37718,7,alto,170.166.117.24,Sim,69,44,1370,Sim
+297,2026-03-14,erro sistema,baixa,88,banco de dados,resolvido,Interno,691,86380,Santander,baixo,85689,7,baixo,Nenhum,Não,5,72,4651,Não
+298,2026-03-18,lentidão,baixa,43,servidor,resolvido,Interno,555,50497,iFood,baixo,49942,6,baixo,Nenhum,Não,6,71,2568,Não
+299,2026-03-19,ataque,crítica,12,banco de dados,resolvido,Brasil,18161,21947,Nubank,crítico,3786,19,alto,111.244.183.65,Sim,99,87,1203,Sim
+300,2026-03-24,lentidão,média,37,banco de dados,resolvido,Interno,3798,20542,Santander,médio,16744,31,baixo,Nenhum,Não,14,70,1737,Não
+301,2026-03-25,ataque,média,84,banco de dados,pendente,China,5214,49726,Nubank,médio,44512,17,médio,223.163.254.29,Sim,11,30,1556,Sim
+302,2026-04-12,ataque,média,70,banco de dados,pendente,Rússia,5520,88247,iFood,médio,82727,26,médio,162.180.206.244,Sim,28,28,3207,Sim
+303,2026-04-23,lentidão,média,55,rede,resolvido,Interno,3449,82247,XP Investimentos,médio,78798,18,baixo,Nenhum,Não,38,88,2625,Não
+304,2026-03-25,erro sistema,baixa,68,rede,pendente,Interno,1101,92936,Santander,baixo,91835,12,baixo,Nenhum,Não,5,57,3330,Não
+305,2026-03-10,lentidão,baixa,44,servidor,resolvido,Interno,1716,27854,XP Investimentos,baixo,26138,31,baixo,Nenhum,Não,7,99,3451,Não
+306,2026-04-01,falha servidor,crítica,27,rede,resolvido,Interno,29439,41985,Santander,crítico,12546,33,alto,Nenhum,Não,89,100,1046,Não
+307,2026-03-25,lentidão,média,71,aplicação,pendente,Interno,6944,23698,iFood,médio,16754,18,médio,Nenhum,Não,28,59,2719,Não
+308,2026-03-25,erro sistema,baixa,85,aplicação,pendente,Interno,1140,69428,Mercado Livre,baixo,68288,27,baixo,Nenhum,Não,7,30,1899,Não
+309,2026-03-09,lentidão,média,27,banco de dados,pendente,Interno,5293,78399,Magazine Luiza,médio,73106,21,médio,Nenhum,Não,23,43,4825,Não
+310,2026-03-22,ataque,baixa,82,banco de dados,resolvido,Estados Unidos,992,49100,Vivo,baixo,48108,15,baixo,38.174.243.11,Sim,4,98,1446,Sim
+311,2026-04-03,lentidão,média,58,banco de dados,pendente,Interno,3250,98361,iFood,médio,95111,23,baixo,Nenhum,Não,31,35,2510,Não
+312,2026-04-05,ataque,crítica,78,servidor,resolvido,Rússia,15348,64576,Santander,crítico,49228,5,alto,71.106.112.123,Sim,95,76,3294,Sim
+313,2026-04-04,ataque,crítica,56,banco de dados,pendente,Canadá,18955,56639,Nubank,crítico,37684,19,alto,63.36.55.172,Sim,71,54,4802,Sim
+314,2026-03-19,erro sistema,média,86,aplicação,pendente,Interno,5515,21893,XP Investimentos,médio,16378,16,médio,Nenhum,Não,13,55,4769,Não
+315,2026-03-17,lentidão,crítica,38,servidor,pendente,Interno,13293,72643,Nubank,crítico,59350,14,médio,Nenhum,Não,78,41,4802,Não
+316,2026-04-27,falha servidor,crítica,83,rede,resolvido,Interno,27428,46465,Mercado Livre,crítico,19037,33,alto,Nenhum,Não,117,81,4267,Não
+317,2026-03-02,erro sistema,média,14,aplicação,pendente,Interno,5552,38601,Mercado Livre,médio,33049,18,médio,Nenhum,Não,16,50,3585,Não
+318,2026-03-03,erro sistema,média,94,banco de dados,pendente,Interno,6366,78349,Mercado Livre,médio,71983,22,médio,Nenhum,Não,31,57,2242,Não
+319,2026-03-21,ataque,crítica,32,aplicação,resolvido,Estados Unidos,14065,43744,XP Investimentos,crítico,29679,22,médio,225.191.21.133,Sim,72,81,2849,Sim
+320,2026-04-14,falha servidor,baixa,97,rede,resolvido,Interno,1456,70093,Santander,baixo,68637,29,baixo,Nenhum,Não,6,98,1773,Não
+321,2026-04-26,ataque,baixa,16,rede,pendente,China,1705,87909,Nubank,baixo,86204,28,baixo,32.43.222.28,Sim,3,29,3920,Sim
+322,2026-04-26,erro sistema,crítica,60,aplicação,resolvido,Interno,27499,57223,Magazine Luiza,crítico,29724,31,alto,Nenhum,Não,99,94,3875,Não
+323,2026-04-18,lentidão,média,30,rede,resolvido,Interno,5474,42614,iFood,médio,37140,11,médio,Nenhum,Não,35,76,3809,Não
+324,2026-04-24,lentidão,média,58,aplicação,pendente,Interno,6538,61121,Vivo,médio,54583,6,médio,Nenhum,Não,37,58,4740,Não
+325,2026-04-20,ataque,baixa,26,rede,resolvido,Canadá,1985,55976,Vivo,baixo,53991,23,baixo,141.163.201.46,Sim,5,84,4374,Sim
+326,2026-03-15,lentidão,média,94,banco de dados,pendente,Interno,5965,67290,Vivo,médio,61325,20,médio,Nenhum,Não,10,31,1550,Não
+327,2026-03-03,falha servidor,média,23,banco de dados,resolvido,Interno,5853,86044,Vivo,médio,80191,8,médio,Nenhum,Não,15,94,3525,Não
+328,2026-04-22,lentidão,baixa,59,banco de dados,resolvido,Interno,1574,25162,Mercado Livre,baixo,23588,29,baixo,Nenhum,Não,7,75,1000,Não
+329,2026-03-27,erro sistema,média,29,servidor,pendente,Interno,4485,43801,Santander,médio,39316,19,baixo,Nenhum,Não,33,47,2716,Não
+330,2026-04-20,ataque,baixa,45,servidor,pendente,China,1966,59351,Mercado Livre,baixo,57385,28,baixo,12.110.140.140,Sim,9,31,3656,Sim
+331,2026-04-12,lentidão,baixa,31,rede,resolvido,Interno,526,42816,iFood,baixo,42290,14,baixo,Nenhum,Não,8,86,1387,Não
+332,2026-04-27,falha servidor,média,32,aplicação,resolvido,Interno,4905,80537,Vivo,médio,75632,15,baixo,Nenhum,Não,33,92,3891,Não
+333,2026-04-14,erro sistema,crítica,44,servidor,resolvido,Interno,17768,77106,XP Investimentos,crítico,59338,12,alto,Nenhum,Não,109,98,1789,Não
+334,2026-03-18,lentidão,baixa,43,servidor,resolvido,Interno,1937,30238,Vivo,baixo,28301,28,baixo,Nenhum,Não,1,83,3721,Não
+335,2026-04-18,erro sistema,baixa,72,aplicação,resolvido,Interno,1722,89951,Vivo,baixo,88229,9,baixo,Nenhum,Não,1,77,4902,Não
+336,2026-04-04,falha servidor,média,63,servidor,resolvido,Interno,3031,69383,Mercado Livre,médio,66352,27,baixo,Nenhum,Não,10,97,3248,Não
+337,2026-04-14,erro sistema,crítica,44,servidor,resolvido,Interno,18839,60176,iFood,crítico,41337,25,alto,Nenhum,Não,120,80,3975,Não
+338,2026-03-14,erro sistema,baixa,88,banco de dados,resolvido,Interno,1782,24284,Vivo,baixo,22502,30,baixo,Nenhum,Não,9,72,3421,Não
+339,2026-03-17,ataque,média,69,rede,pendente,Alemanha,4738,63251,iFood,médio,58513,30,baixo,155.25.131.91,Sim,25,34,4592,Sim
+340,2026-03-17,erro sistema,média,68,aplicação,resolvido,Interno,3026,37098,Santander,médio,34072,18,baixo,Nenhum,Não,22,74,2976,Não
+341,2026-03-09,lentidão,baixa,46,rede,pendente,Interno,1659,67255,Vivo,baixo,65596,27,baixo,Nenhum,Não,2,53,1424,Não
+342,2026-03-10,falha servidor,baixa,73,aplicação,resolvido,Interno,1119,92182,Mercado Livre,baixo,91063,35,baixo,Nenhum,Não,6,90,4405,Não
+343,2026-04-22,lentidão,média,64,servidor,resolvido,Interno,5861,63167,Mercado Livre,médio,57306,8,médio,Nenhum,Não,22,91,3631,Não
+344,2026-04-18,erro sistema,baixa,72,aplicação,resolvido,Interno,819,32907,Mercado Livre,baixo,32088,16,baixo,Nenhum,Não,8,83,4603,Não
+345,2026-04-04,falha servidor,média,63,servidor,resolvido,Interno,4150,45207,Nubank,médio,41057,29,baixo,Nenhum,Não,28,78,4386,Não
+346,2026-03-07,lentidão,baixa,40,banco de dados,resolvido,Interno,793,66461,Mercado Livre,baixo,65668,23,baixo,Nenhum,Não,10,84,4818,Não
+347,2026-04-21,falha servidor,baixa,84,banco de dados,resolvido,Interno,1519,53123,Mercado Livre,baixo,51604,6,baixo,Nenhum,Não,2,79,2565,Não
+348,2026-03-26,lentidão,baixa,84,servidor,resolvido,Interno,1204,77862,XP Investimentos,baixo,76658,7,baixo,Nenhum,Não,1,99,4994,Não
+349,2026-04-12,ataque,média,70,banco de dados,pendente,Coreia do Norte,6323,31609,XP Investimentos,médio,25286,28,médio,28.107.156.40,Sim,27,59,4368,Sim
+350,2026-04-21,ataque,baixa,90,aplicação,pendente,Estados Unidos,766,75252,Magazine Luiza,baixo,74486,22,baixo,204.174.133.164,Sim,7,46,2288,Sim
+351,2026-04-01,lentidão,baixa,99,servidor,resolvido,Interno,798,80797,Vivo,baixo,79999,33,baixo,Nenhum,Não,1,74,1354,Não
+352,2026-03-17,ataque,média,90,rede,resolvido,Rússia,5237,69091,XP Investimentos,médio,63854,21,médio,57.18.52.11,Sim,16,76,3747,Sim
+353,2026-03-25,lentidão,média,71,aplicação,pendente,Interno,3105,38603,Magazine Luiza,médio,35498,18,baixo,Nenhum,Não,23,52,4754,Não
+354,2026-03-14,erro sistema,baixa,88,banco de dados,resolvido,Interno,712,68326,Mercado Livre,baixo,67614,14,baixo,Nenhum,Não,7,79,4332,Não
+355,2026-03-07,erro sistema,crítica,63,banco de dados,pendente,Interno,15385,48899,XP Investimentos,crítico,33514,7,alto,Nenhum,Não,64,41,1810,Não
+356,2026-03-28,ataque,crítica,78,aplicação,resolvido,Alemanha,13429,82613,Nubank,crítico,69184,34,médio,152.108.132.124,Sim,46,93,2155,Sim
+357,2026-03-28,ataque,crítica,78,aplicação,resolvido,Brasil,19496,22700,Mercado Livre,crítico,3204,27,alto,22.88.161.45,Sim,110,72,3616,Sim
+358,2026-03-09,ataque,baixa,64,aplicação,resolvido,Coreia do Norte,882,86757,Santander,baixo,85875,20,baixo,192.197.204.132,Sim,5,96,3110,Sim
+359,2026-04-04,falha servidor,média,63,servidor,resolvido,Interno,4672,33373,Magazine Luiza,médio,28701,18,baixo,Nenhum,Não,40,85,4317,Não
+360,2026-03-07,erro sistema,crítica,98,aplicação,resolvido,Interno,13919,74004,Santander,crítico,60085,6,médio,Nenhum,Não,117,83,3189,Não
+361,2026-03-17,ataque,média,69,rede,pendente,China,5570,68577,XP Investimentos,médio,63007,6,médio,106.17.197.25,Sim,23,21,4731,Sim
+362,2026-04-15,falha servidor,média,56,servidor,pendente,Interno,3758,23098,Nubank,médio,19340,13,baixo,Nenhum,Não,18,42,3207,Não
+363,2026-04-25,falha servidor,baixa,33,rede,resolvido,Interno,1452,40553,Mercado Livre,baixo,39101,30,baixo,Nenhum,Não,1,82,4339,Não
+364,2026-03-25,erro sistema,baixa,85,aplicação,pendente,Interno,813,53720,Santander,baixo,52907,6,baixo,Nenhum,Não,5,46,1327,Não
+365,2026-03-08,lentidão,média,36,aplicação,resolvido,Interno,5939,96294,Nubank,médio,90355,26,médio,Nenhum,Não,13,92,4221,Não
+366,2026-03-16,erro sistema,crítica,10,banco de dados,resolvido,Interno,16071,29644,Nubank,crítico,13573,32,alto,Nenhum,Não,58,97,3357,Não
+367,2026-03-27,erro sistema,média,29,servidor,pendente,Interno,6453,28353,Mercado Livre,médio,21900,26,médio,Nenhum,Não,40,55,2565,Não
+368,2026-04-23,lentidão,média,39,aplicação,resolvido,Interno,5999,65090,Mercado Livre,médio,59091,34,médio,Nenhum,Não,14,100,4208,Não
+369,2026-03-21,erro sistema,média,28,banco de dados,resolvido,Interno,6352,28429,iFood,médio,22077,15,médio,Nenhum,Não,21,71,2310,Não
+370,2026-03-26,erro sistema,crítica,60,aplicação,pendente,Interno,11324,49104,Mercado Livre,crítico,37780,25,médio,Nenhum,Não,58,22,3864,Não
+371,2026-04-22,lentidão,média,64,servidor,resolvido,Interno,3368,42363,XP Investimentos,médio,38995,34,baixo,Nenhum,Não,26,75,3879,Não
+372,2026-04-14,lentidão,baixa,76,servidor,pendente,Interno,1038,31504,Vivo,baixo,30466,14,baixo,Nenhum,Não,3,51,3939,Não
+373,2026-03-12,ataque,média,51,aplicação,resolvido,Coreia do Norte,6039,74663,Santander,médio,68624,16,médio,39.25.18.177,Sim,22,78,1130,Sim
+374,2026-03-09,erro sistema,crítica,59,aplicação,resolvido,Interno,21098,68675,XP Investimentos,crítico,47577,20,alto,Nenhum,Não,42,98,3048,Não
+375,2026-04-24,erro sistema,baixa,36,servidor,pendente,Interno,967,43539,Nubank,baixo,42572,18,baixo,Nenhum,Não,2,45,3761,Não
+376,2026-03-12,lentidão,crítica,46,servidor,pendente,Interno,27075,28260,iFood,crítico,1185,23,alto,Nenhum,Não,44,45,1142,Não
+377,2026-03-27,falha servidor,média,74,rede,resolvido,Interno,4092,44583,Nubank,médio,40491,16,baixo,Nenhum,Não,11,86,1695,Não
+378,2026-04-12,ataque,média,70,banco de dados,pendente,Alemanha,5247,86427,iFood,médio,81180,33,médio,137.135.89.50,Sim,13,33,3731,Sim
+379,2026-03-16,erro sistema,média,95,banco de dados,resolvido,Interno,6656,56517,Mercado Livre,médio,49861,29,médio,Nenhum,Não,11,97,1631,Não
+380,2026-03-27,lentidão,crítica,47,banco de dados,resolvido,Interno,29889,86772,Magazine Luiza,crítico,56883,6,alto,Nenhum,Não,105,70,1611,Não
+381,2026-03-24,ataque,crítica,91,servidor,resolvido,Estados Unidos,21567,33053,Vivo,crítico,11486,12,alto,126.188.156.250,Sim,75,86,3059,Sim
+382,2026-04-12,ataque,média,88,rede,resolvido,Rússia,3129,65078,Mercado Livre,médio,61949,8,baixo,136.227.134.95,Sim,24,80,2327,Sim
+383,2026-04-10,erro sistema,média,87,banco de dados,resolvido,Interno,5877,20897,iFood,médio,15020,22,médio,Nenhum,Não,37,87,3055,Não
+384,2026-04-10,falha servidor,média,98,banco de dados,pendente,Interno,3044,85750,Santander,médio,82706,15,baixo,Nenhum,Não,37,28,1036,Não
+385,2026-04-21,ataque,baixa,90,aplicação,pendente,Coreia do Norte,1556,38150,Vivo,baixo,36594,12,baixo,122.125.178.179,Sim,5,22,1529,Sim
+386,2026-03-02,falha servidor,média,29,servidor,pendente,Interno,6357,68415,iFood,médio,62058,35,médio,Nenhum,Não,17,44,1067,Não
+387,2026-04-22,lentidão,média,43,banco de dados,resolvido,Interno,6593,26109,Santander,médio,19516,23,médio,Nenhum,Não,36,95,2940,Não
+388,2026-03-20,ataque,crítica,81,rede,resolvido,Alemanha,26311,76884,Nubank,crítico,50573,11,alto,115.194.234.155,Sim,103,85,2088,Sim
+389,2026-03-04,ataque,baixa,77,servidor,pendente,Coreia do Norte,1808,86352,Nubank,baixo,84544,27,baixo,94.109.94.146,Sim,4,21,1941,Sim
+390,2026-04-13,lentidão,crítica,61,servidor,resolvido,Interno,10150,93001,Santander,crítico,82851,5,médio,Nenhum,Não,59,92,4434,Não
+391,2026-03-13,erro sistema,crítica,51,rede,pendente,Interno,20687,97922,Vivo,crítico,77235,16,alto,Nenhum,Não,95,20,2708,Não
+392,2026-04-05,ataque,crítica,78,servidor,resolvido,Rússia,29039,81136,Santander,crítico,52097,13,alto,182.234.102.228,Sim,104,83,4455,Sim
+393,2026-04-25,erro sistema,baixa,60,banco de dados,pendente,Interno,522,83889,Magazine Luiza,baixo,83367,29,baixo,Nenhum,Não,4,41,1380,Não
+394,2026-04-12,lentidão,baixa,11,rede,resolvido,Interno,1648,97566,iFood,baixo,95918,10,baixo,Nenhum,Não,10,95,2105,Não
+395,2026-03-12,falha servidor,média,36,servidor,pendente,Interno,3773,54904,Vivo,médio,51131,26,baixo,Nenhum,Não,17,49,1294,Não
+396,2026-04-12,lentidão,baixa,11,rede,resolvido,Interno,627,75456,Santander,baixo,74829,30,baixo,Nenhum,Não,1,85,3153,Não
+397,2026-03-02,erro sistema,baixa,100,aplicação,resolvido,Interno,1154,26706,Nubank,baixo,25552,30,baixo,Nenhum,Não,3,73,4285,Não
+398,2026-04-05,lentidão,crítica,62,servidor,resolvido,Interno,25479,92568,Nubank,crítico,67089,25,alto,Nenhum,Não,43,72,3409,Não
+399,2026-04-13,lentidão,crítica,61,servidor,resolvido,Interno,24452,62064,Santander,crítico,37612,21,alto,Nenhum,Não,114,88,2106,Não
+400,2026-03-27,lentidão,crítica,47,banco de dados,resolvido,Interno,16352,93431,Mercado Livre,crítico,77079,24,alto,Nenhum,Não,56,90,2693,Não
+401,2026-03-15,lentidão,média,94,banco de dados,pendente,Interno,3580,42667,Magazine Luiza,médio,39087,26,baixo,Nenhum,Não,20,32,1855,Não
+402,2026-04-22,falha servidor,média,14,rede,pendente,Interno,3624,40997,Nubank,médio,37373,11,baixo,Nenhum,Não,30,37,4646,Não
+403,2026-04-10,lentidão,média,96,aplicação,resolvido,Interno,5739,83926,Magazine Luiza,médio,78187,7,médio,Nenhum,Não,26,91,2717,Não
+404,2026-04-14,lentidão,baixa,76,servidor,pendente,Interno,635,57741,Vivo,baixo,57106,22,baixo,Nenhum,Não,10,40,2521,Não
+405,2026-04-25,ataque,crítica,56,rede,resolvido,Estados Unidos,21085,53868,Santander,crítico,32783,11,alto,19.68.233.243,Sim,112,82,4661,Sim
+406,2026-03-18,lentidão,média,68,servidor,resolvido,Interno,5875,97893,Nubank,médio,92018,33,médio,Nenhum,Não,35,89,2016,Não
+407,2026-04-25,ataque,crítica,56,rede,resolvido,China,11690,39569,iFood,crítico,27879,23,médio,58.186.69.171,Sim,45,73,4123,Sim
+408,2026-03-25,erro sistema,baixa,85,aplicação,pendente,Interno,1834,42371,Nubank,baixo,40537,16,baixo,Nenhum,Não,4,26,3222,Não
+409,2026-04-05,falha servidor,crítica,61,banco de dados,resolvido,Interno,19417,42998,Vivo,crítico,23581,15,alto,Nenhum,Não,84,94,4182,Não
+410,2026-04-18,erro sistema,baixa,72,aplicação,resolvido,Interno,1206,28727,XP Investimentos,baixo,27521,11,baixo,Nenhum,Não,9,70,3598,Não
+411,2026-03-23,erro sistema,crítica,86,rede,resolvido,Interno,26393,42998,XP Investimentos,crítico,16605,10,alto,Nenhum,Não,66,95,1165,Não
+412,2026-03-07,lentidão,baixa,40,banco de dados,resolvido,Interno,1320,27867,Santander,baixo,26547,11,baixo,Nenhum,Não,4,89,2685,Não
+413,2026-03-14,erro sistema,crítica,68,banco de dados,pendente,Interno,20974,21510,Mercado Livre,crítico,536,27,alto,Nenhum,Não,56,25,1553,Não
+414,2026-03-02,falha servidor,média,51,servidor,pendente,Interno,5701,66151,Mercado Livre,médio,60450,22,médio,Nenhum,Não,30,42,3033,Não
+415,2026-04-09,erro sistema,média,47,banco de dados,resolvido,Interno,4037,67373,Santander,médio,63336,20,baixo,Nenhum,Não,31,79,1902,Não
+416,2026-03-17,ataque,média,90,rede,resolvido,Coreia do Norte,5988,72927,iFood,médio,66939,10,médio,84.86.84.17,Sim,13,96,3700,Sim
+417,2026-03-19,ataque,média,48,servidor,pendente,Brasil,3116,58596,Magazine Luiza,médio,55480,10,baixo,175.180.121.104,Sim,18,38,4638,Sim
+418,2026-04-07,lentidão,baixa,39,servidor,resolvido,Interno,1833,67508,Santander,baixo,65675,9,baixo,Nenhum,Não,4,98,4997,Não
+419,2026-04-10,erro sistema,média,87,banco de dados,resolvido,Interno,3750,91803,Nubank,médio,88053,7,baixo,Nenhum,Não,38,97,1556,Não
+420,2026-03-07,lentidão,baixa,49,aplicação,resolvido,Interno,1829,31829,Mercado Livre,baixo,30000,5,baixo,Nenhum,Não,9,96,4793,Não
+421,2026-04-18,erro sistema,baixa,72,aplicação,resolvido,Interno,1164,39112,Vivo,baixo,37948,10,baixo,Nenhum,Não,4,77,4468,Não
+422,2026-04-02,erro sistema,média,41,servidor,pendente,Interno,6326,51454,Magazine Luiza,médio,45128,10,médio,Nenhum,Não,16,37,1945,Não
+423,2026-03-21,ataque,baixa,98,aplicação,resolvido,Canadá,1611,53803,Vivo,baixo,52192,20,baixo,67.112.36.237,Sim,8,83,4103,Sim
+424,2026-03-24,ataque,crítica,91,servidor,resolvido,Rússia,11997,71324,Santander,crítico,59327,7,médio,114.91.88.92,Sim,47,74,1944,Sim
+425,2026-03-04,falha servidor,crítica,33,rede,resolvido,Interno,20511,83829,Nubank,crítico,63318,33,alto,Nenhum,Não,98,94,1380,Não
+426,2026-03-12,falha servidor,média,36,servidor,pendente,Interno,4353,64051,Santander,médio,59698,20,baixo,Nenhum,Não,33,46,4146,Não
+427,2026-03-08,falha servidor,média,90,servidor,resolvido,Interno,4654,58639,Mercado Livre,médio,53985,30,baixo,Nenhum,Não,36,73,3033,Não
+428,2026-04-12,ataque,média,88,rede,resolvido,Brasil,3458,59043,iFood,médio,55585,23,baixo,187.183.212.51,Sim,37,81,3294,Sim
+429,2026-03-02,falha servidor,média,51,servidor,pendente,Interno,3019,43562,XP Investimentos,médio,40543,13,baixo,Nenhum,Não,32,44,2521,Não
+430,2026-03-16,erro sistema,crítica,10,banco de dados,resolvido,Interno,28352,58269,iFood,crítico,29917,24,alto,Nenhum,Não,106,85,4134,Não
+431,2026-04-05,lentidão,crítica,62,servidor,resolvido,Interno,25574,32782,Magazine Luiza,crítico,7208,33,alto,Nenhum,Não,43,92,3370,Não
+432,2026-04-14,lentidão,baixa,76,servidor,pendente,Interno,502,95975,Mercado Livre,baixo,95473,19,baixo,Nenhum,Não,2,57,2438,Não
+433,2026-03-13,lentidão,média,67,rede,pendente,Interno,4791,52238,XP Investimentos,médio,47447,28,baixo,Nenhum,Não,35,60,4695,Não
+434,2026-03-17,ataque,média,69,rede,pendente,Coreia do Norte,6717,85447,XP Investimentos,médio,78730,20,médio,54.241.212.237,Sim,13,40,1366,Sim
+435,2026-04-05,lentidão,crítica,62,servidor,resolvido,Interno,28508,77972,XP Investimentos,crítico,49464,29,alto,Nenhum,Não,68,83,1651,Não
+436,2026-04-25,ataque,crítica,56,rede,resolvido,Brasil,15157,57943,Mercado Livre,crítico,42786,10,alto,235.61.242.233,Sim,96,99,2856,Sim
+437,2026-04-06,erro sistema,baixa,84,servidor,pendente,Interno,1856,84795,Mercado Livre,baixo,82939,33,baixo,Nenhum,Não,10,42,1424,Não
+438,2026-04-14,falha servidor,baixa,97,rede,resolvido,Interno,721,22581,Magazine Luiza,baixo,21860,35,baixo,Nenhum,Não,1,70,1526,Não
+439,2026-04-25,ataque,média,11,rede,pendente,Coreia do Norte,6903,74690,Magazine Luiza,médio,67787,24,médio,20.47.31.245,Sim,32,21,1246,Sim
+440,2026-03-16,erro sistema,crítica,81,servidor,resolvido,Interno,11297,97498,Vivo,crítico,86201,5,médio,Nenhum,Não,92,83,1376,Não
+441,2026-04-08,erro sistema,crítica,23,servidor,pendente,Interno,14215,96285,iFood,crítico,82070,32,médio,Nenhum,Não,111,60,3580,Não
+442,2026-04-20,ataque,baixa,26,rede,resolvido,China,589,59605,Nubank,baixo,59016,14,baixo,103.190.75.123,Sim,8,81,1767,Sim
+443,2026-03-08,falha servidor,crítica,79,aplicação,pendente,Interno,11123,44047,Magazine Luiza,crítico,32924,15,médio,Nenhum,Não,67,30,1537,Não
+444,2026-04-17,ataque,baixa,11,servidor,pendente,Rússia,1305,56140,XP Investimentos,baixo,54835,33,baixo,125.224.211.75,Sim,8,58,3910,Sim
+445,2026-04-25,erro sistema,crítica,49,servidor,pendente,Interno,15738,61999,Vivo,crítico,46261,20,alto,Nenhum,Não,49,40,1392,Não
+446,2026-03-02,lentidão,baixa,25,banco de dados,pendente,Interno,1932,86236,Magazine Luiza,baixo,84304,31,baixo,Nenhum,Não,9,27,3434,Não
+447,2026-04-21,ataque,baixa,90,aplicação,pendente,Coreia do Norte,1940,65435,XP Investimentos,baixo,63495,13,baixo,181.249.97.58,Sim,7,35,1025,Sim
+448,2026-03-08,lentidão,média,36,aplicação,resolvido,Interno,6696,39672,XP Investimentos,médio,32976,30,médio,Nenhum,Não,34,100,1806,Não
+449,2026-03-02,erro sistema,baixa,100,aplicação,resolvido,Interno,681,49145,XP Investimentos,baixo,48464,19,baixo,Nenhum,Não,5,90,2411,Não
+450,2026-03-23,erro sistema,crítica,86,rede,resolvido,Interno,26312,44876,Mercado Livre,crítico,18564,19,alto,Nenhum,Não,87,75,4023,Não
+451,2026-04-24,erro sistema,baixa,36,servidor,pendente,Interno,555,66846,Mercado Livre,baixo,66291,12,baixo,Nenhum,Não,7,31,1817,Não
+452,2026-04-10,falha servidor,crítica,50,banco de dados,pendente,Interno,13743,74996,Nubank,crítico,61253,9,médio,Nenhum,Não,55,60,2364,Não
+453,2026-03-02,ataque,baixa,33,servidor,resolvido,China,1851,41032,XP Investimentos,baixo,39181,22,baixo,158.136.181.169,Sim,3,98,4041,Sim
+454,2026-04-17,ataque,baixa,11,servidor,pendente,Rússia,1085,86917,Santander,baixo,85832,14,baixo,203.138.152.47,Sim,3,38,1888,Sim
+455,2026-03-02,falha servidor,média,29,servidor,pendente,Interno,4573,71433,Mercado Livre,médio,66860,11,baixo,Nenhum,Não,31,49,3401,Não
+456,2026-04-23,erro sistema,crítica,91,servidor,resolvido,Interno,14675,93412,Mercado Livre,crítico,78737,31,médio,Nenhum,Não,48,77,3004,Não
+457,2026-04-20,lentidão,média,45,aplicação,pendente,Interno,4917,35705,Nubank,médio,30788,35,baixo,Nenhum,Não,31,26,2965,Não
+458,2026-04-12,lentidão,baixa,11,rede,resolvido,Interno,564,39378,Santander,baixo,38814,11,baixo,Nenhum,Não,7,72,3023,Não
+459,2026-03-08,falha servidor,média,90,servidor,resolvido,Interno,6663,76123,Santander,médio,69460,8,médio,Nenhum,Não,22,91,3462,Não
+460,2026-04-19,falha servidor,baixa,51,banco de dados,resolvido,Interno,659,34335,Nubank,baixo,33676,15,baixo,Nenhum,Não,10,87,2757,Não
+461,2026-03-16,erro sistema,crítica,10,banco de dados,resolvido,Interno,24631,89571,iFood,crítico,64940,10,alto,Nenhum,Não,46,79,1717,Não
+462,2026-04-21,falha servidor,baixa,84,banco de dados,resolvido,Interno,1369,56505,Mercado Livre,baixo,55136,17,baixo,Nenhum,Não,2,71,4271,Não
+463,2026-03-15,lentidão,média,94,banco de dados,pendente,Interno,6429,28203,Mercado Livre,médio,21774,23,médio,Nenhum,Não,35,20,3547,Não
+464,2026-03-07,falha servidor,baixa,36,banco de dados,pendente,Interno,1770,98712,XP Investimentos,baixo,96942,34,baixo,Nenhum,Não,10,51,1753,Não
+465,2026-03-09,lentidão,crítica,100,banco de dados,resolvido,Interno,26112,50830,XP Investimentos,crítico,24718,30,alto,Nenhum,Não,77,96,4397,Não
+466,2026-04-10,falha servidor,crítica,11,banco de dados,pendente,Interno,25886,66628,XP Investimentos,crítico,40742,9,alto,Nenhum,Não,112,29,2606,Não
+467,2026-03-23,erro sistema,crítica,86,rede,resolvido,Interno,28873,58966,XP Investimentos,crítico,30093,13,alto,Nenhum,Não,49,80,2708,Não
+468,2026-03-02,ataque,baixa,33,servidor,resolvido,China,1270,75213,Nubank,baixo,73943,9,baixo,41.192.134.214,Sim,1,92,2018,Sim
+469,2026-03-18,lentidão,baixa,43,servidor,resolvido,Interno,1804,80459,Mercado Livre,baixo,78655,24,baixo,Nenhum,Não,4,73,1236,Não
+470,2026-03-13,falha servidor,baixa,72,banco de dados,resolvido,Interno,823,54470,XP Investimentos,baixo,53647,17,baixo,Nenhum,Não,1,83,3619,Não
+471,2026-03-12,falha servidor,média,36,servidor,pendente,Interno,4384,46096,Magazine Luiza,médio,41712,17,baixo,Nenhum,Não,27,57,3217,Não
+472,2026-03-26,lentidão,baixa,84,servidor,resolvido,Interno,1008,63378,Magazine Luiza,baixo,62370,28,baixo,Nenhum,Não,6,86,1150,Não
+473,2026-04-07,lentidão,baixa,39,servidor,resolvido,Interno,674,22040,iFood,baixo,21366,8,baixo,Nenhum,Não,5,91,4122,Não
+474,2026-03-26,erro sistema,crítica,60,aplicação,pendente,Interno,20326,87381,Vivo,crítico,67055,12,alto,Nenhum,Não,86,25,4843,Não
+475,2026-03-27,falha servidor,média,74,rede,resolvido,Interno,5413,73303,Vivo,médio,67890,34,médio,Nenhum,Não,33,89,1607,Não
+476,2026-03-18,erro sistema,baixa,88,aplicação,resolvido,Interno,1700,26649,Vivo,baixo,24949,27,baixo,Nenhum,Não,5,84,3970,Não
+477,2026-03-09,erro sistema,crítica,59,aplicação,resolvido,Interno,10691,57330,Nubank,crítico,46639,35,médio,Nenhum,Não,66,94,3325,Não
+478,2026-03-16,falha servidor,baixa,79,servidor,resolvido,Interno,654,46744,XP Investimentos,baixo,46090,27,baixo,Nenhum,Não,2,100,3576,Não
+479,2026-04-23,erro sistema,crítica,91,servidor,resolvido,Interno,21731,69003,iFood,crítico,47272,20,alto,Nenhum,Não,51,81,1833,Não
+480,2026-04-20,ataque,baixa,45,servidor,pendente,Brasil,554,64998,Santander,baixo,64444,15,baixo,237.16.13.155,Sim,1,23,1201,Sim
+481,2026-04-10,falha servidor,média,98,banco de dados,pendente,Interno,5582,87523,Nubank,médio,81941,22,médio,Nenhum,Não,28,47,4780,Não
+482,2026-03-04,erro sistema,crítica,73,servidor,resolvido,Interno,28868,50591,iFood,crítico,21723,14,alto,Nenhum,Não,86,86,3446,Não
+483,2026-04-20,lentidão,baixa,53,servidor,pendente,Interno,1807,61128,iFood,baixo,59321,21,baixo,Nenhum,Não,1,41,3553,Não
+484,2026-03-09,erro sistema,crítica,59,aplicação,resolvido,Interno,19764,88313,XP Investimentos,crítico,68549,23,alto,Nenhum,Não,119,95,1711,Não
+485,2026-03-07,lentidão,baixa,16,rede,resolvido,Interno,1591,81513,XP Investimentos,baixo,79922,21,baixo,Nenhum,Não,6,97,2696,Não
+486,2026-03-09,lentidão,baixa,46,rede,pendente,Interno,1723,69117,Magazine Luiza,baixo,67394,13,baixo,Nenhum,Não,8,21,4621,Não
+487,2026-03-10,lentidão,baixa,44,servidor,resolvido,Interno,1240,51844,XP Investimentos,baixo,50604,6,baixo,Nenhum,Não,8,79,1521,Não
+488,2026-03-17,lentidão,crítica,38,servidor,pendente,Interno,17751,38866,Vivo,crítico,21115,10,alto,Nenhum,Não,45,37,4234,Não
+489,2026-04-27,falha servidor,média,32,aplicação,resolvido,Interno,5301,51783,XP Investimentos,médio,46482,18,médio,Nenhum,Não,16,83,1305,Não
+490,2026-04-27,falha servidor,crítica,83,rede,resolvido,Interno,27496,68521,iFood,crítico,41025,17,alto,Nenhum,Não,53,93,2788,Não
+491,2026-04-25,erro sistema,baixa,60,banco de dados,pendente,Interno,758,90945,Magazine Luiza,baixo,90187,12,baixo,Nenhum,Não,2,35,4964,Não
+492,2026-04-10,falha servidor,crítica,50,banco de dados,pendente,Interno,21264,81632,iFood,crítico,60368,8,alto,Nenhum,Não,107,34,2623,Não
+493,2026-04-09,erro sistema,média,47,banco de dados,resolvido,Interno,3360,77635,Magazine Luiza,médio,74275,6,baixo,Nenhum,Não,32,91,4786,Não
+494,2026-03-04,erro sistema,crítica,73,servidor,resolvido,Interno,14699,38837,Santander,crítico,24138,19,médio,Nenhum,Não,115,70,4028,Não
+495,2026-03-25,ataque,média,84,banco de dados,pendente,Canadá,3964,64962,XP Investimentos,médio,60998,24,baixo,167.65.192.66,Sim,21,34,4877,Sim
+496,2026-03-13,lentidão,média,67,rede,pendente,Interno,5162,79256,Santander,médio,74094,34,médio,Nenhum,Não,10,25,4494,Não
+497,2026-03-02,lentidão,baixa,25,banco de dados,pendente,Interno,722,76189,Santander,baixo,75467,30,baixo,Nenhum,Não,9,25,4209,Não
+498,2026-04-05,falha servidor,crítica,61,banco de dados,resolvido,Interno,28750,71554,Nubank,crítico,42804,10,alto,Nenhum,Não,82,82,1609,Não
+499,2026-04-19,falha servidor,baixa,51,banco de dados,resolvido,Interno,1832,63977,Mercado Livre,baixo,62145,30,baixo,Nenhum,Não,4,86,4135,Não
+500,2026-03-10,falha servidor,baixa,73,aplicação,resolvido,Interno,650,39672,Vivo,baixo,39022,35,baixo,Nenhum,Não,4,84,4049,Não
+501,2026-03-08,falha servidor,crítica,79,aplicação,pendente,Interno,18782,85321,Mercado Livre,crítico,66539,30,alto,Nenhum,Não,57,24,3252,Não
+502,2026-03-27,falha servidor,média,74,rede,resolvido,Interno,6789,24469,XP Investimentos,médio,17680,17,médio,Nenhum,Não,26,75,1338,Não
+503,2026-04-04,falha servidor,média,63,servidor,resolvido,Interno,6305,20918,Mercado Livre,médio,14613,9,médio,Nenhum,Não,18,82,1297,Não
+504,2026-03-26,ataque,crítica,86,aplicação,pendente,Alemanha,13789,26536,Santander,crítico,12747,10,médio,10.230.216.24,Sim,44,48,2072,Sim
+505,2026-04-22,lentidão,média,64,servidor,resolvido,Interno,4524,41714,Vivo,médio,37190,32,baixo,Nenhum,Não,29,91,1111,Não
+506,2026-03-14,erro sistema,crítica,68,banco de dados,pendente,Interno,20419,91552,Mercado Livre,crítico,71133,30,alto,Nenhum,Não,49,26,3945,Não
+507,2026-03-07,lentidão,baixa,40,banco de dados,resolvido,Interno,1291,85780,XP Investimentos,baixo,84489,24,baixo,Nenhum,Não,9,82,4446,Não
+508,2026-04-25,falha servidor,baixa,33,rede,resolvido,Interno,1644,57367,iFood,baixo,55723,35,baixo,Nenhum,Não,3,99,4675,Não
+509,2026-04-01,ataque,crítica,60,rede,resolvido,Rússia,11883,56962,iFood,crítico,45079,29,médio,55.114.157.163,Sim,58,100,2013,Sim
+510,2026-03-21,erro sistema,média,28,banco de dados,resolvido,Interno,6515,98527,Vivo,médio,92012,31,médio,Nenhum,Não,37,99,3316,Não
+511,2026-04-23,lentidão,média,39,aplicação,resolvido,Interno,3856,71265,Santander,médio,67409,34,baixo,Nenhum,Não,19,76,1914,Não
+512,2026-03-11,ataque,crítica,65,servidor,resolvido,Canadá,18105,89324,Santander,crítico,71219,19,alto,20.193.42.187,Sim,75,74,4735,Sim
+513,2026-04-25,ataque,média,11,rede,pendente,Alemanha,5297,27706,Magazine Luiza,médio,22409,13,médio,238.105.58.90,Sim,23,26,1607,Sim
+514,2026-03-26,ataque,crítica,86,aplicação,pendente,Canadá,28176,68134,Nubank,crítico,39958,6,alto,196.248.202.100,Sim,100,30,4729,Sim
+515,2026-04-24,erro sistema,crítica,34,banco de dados,resolvido,Interno,18624,66750,Mercado Livre,crítico,48126,15,alto,Nenhum,Não,110,81,4239,Não
+516,2026-04-24,erro sistema,baixa,75,aplicação,pendente,Interno,1645,97909,Nubank,baixo,96264,18,baixo,Nenhum,Não,10,37,2546,Não
+517,2026-04-16,falha servidor,baixa,29,servidor,pendente,Interno,1640,21574,Magazine Luiza,baixo,19934,29,baixo,Nenhum,Não,4,38,3654,Não
+518,2026-03-21,ataque,baixa,98,aplicação,resolvido,Canadá,941,24161,Vivo,baixo,23220,8,baixo,93.10.132.186,Sim,4,92,4720,Sim
+519,2026-03-07,falha servidor,baixa,36,banco de dados,pendente,Interno,1093,28798,Santander,baixo,27705,27,baixo,Nenhum,Não,9,40,1346,Não
+520,2026-04-01,lentidão,média,36,rede,pendente,Interno,3009,64095,Magazine Luiza,médio,61086,17,baixo,Nenhum,Não,34,58,2128,Não
+521,2026-03-24,ataque,crítica,83,rede,resolvido,Alemanha,27556,83382,iFood,crítico,55826,5,alto,12.125.218.239,Sim,47,81,3449,Sim
+522,2026-03-17,lentidão,crítica,38,servidor,pendente,Interno,18486,30960,Vivo,crítico,12474,7,alto,Nenhum,Não,61,43,1480,Não
+523,2026-04-10,lentidão,média,96,aplicação,resolvido,Interno,3462,65149,XP Investimentos,médio,61687,12,baixo,Nenhum,Não,15,96,4197,Não
+524,2026-03-26,lentidão,baixa,84,servidor,resolvido,Interno,936,33557,Santander,baixo,32621,17,baixo,Nenhum,Não,7,78,1123,Não
+525,2026-04-17,ataque,baixa,11,servidor,pendente,Canadá,820,57682,XP Investimentos,baixo,56862,14,baixo,25.114.227.116,Sim,5,35,4959,Sim
+526,2026-04-15,lentidão,média,34,rede,pendente,Interno,6613,26158,Mercado Livre,médio,19545,15,médio,Nenhum,Não,35,57,1160,Não
+527,2026-04-19,lentidão,baixa,33,banco de dados,pendente,Interno,711,96140,Mercado Livre,baixo,95429,14,baixo,Nenhum,Não,4,28,3829,Não
+528,2026-03-27,lentidão,crítica,24,aplicação,pendente,Interno,23845,79991,XP Investimentos,crítico,56146,7,alto,Nenhum,Não,100,48,4820,Não
+529,2026-04-23,lentidão,média,55,rede,resolvido,Interno,3945,27396,iFood,médio,23451,18,baixo,Nenhum,Não,29,72,3590,Não
+530,2026-04-03,lentidão,média,58,banco de dados,pendente,Interno,5165,99531,iFood,médio,94366,6,médio,Nenhum,Não,35,53,2460,Não
+531,2026-03-02,falha servidor,média,29,servidor,pendente,Interno,6824,22261,iFood,médio,15437,12,médio,Nenhum,Não,31,22,2155,Não
+532,2026-03-19,erro sistema,crítica,83,rede,pendente,Interno,20079,72779,Santander,crítico,52700,14,alto,Nenhum,Não,69,52,1354,Não
+533,2026-03-18,lentidão,baixa,43,servidor,resolvido,Interno,638,68081,Nubank,baixo,67443,32,baixo,Nenhum,Não,10,78,3935,Não
+534,2026-03-19,erro sistema,crítica,83,rede,pendente,Interno,23104,63036,Magazine Luiza,crítico,39932,33,alto,Nenhum,Não,103,39,4949,Não
+535,2026-03-28,ataque,crítica,78,aplicação,resolvido,Alemanha,29769,46530,iFood,crítico,16761,24,alto,221.35.242.218,Sim,81,82,4064,Sim
+536,2026-04-28,ataque,crítica,81,banco de dados,resolvido,Estados Unidos,24057,43092,Santander,crítico,19035,12,alto,221.91.185.71,Sim,95,79,2230,Sim
+537,2026-03-09,erro sistema,crítica,59,aplicação,resolvido,Interno,14355,34425,XP Investimentos,crítico,20070,14,médio,Nenhum,Não,95,84,4717,Não
+538,2026-04-06,erro sistema,baixa,84,servidor,pendente,Interno,1708,97237,Nubank,baixo,95529,24,baixo,Nenhum,Não,10,51,1063,Não
+539,2026-04-15,falha servidor,média,56,servidor,pendente,Interno,4744,35115,Mercado Livre,médio,30371,7,baixo,Nenhum,Não,11,54,3508,Não
+540,2026-03-16,falha servidor,baixa,79,servidor,resolvido,Interno,917,77628,Santander,baixo,76711,16,baixo,Nenhum,Não,10,98,1753,Não
+541,2026-04-14,lentidão,baixa,76,servidor,pendente,Interno,1472,37977,Nubank,baixo,36505,10,baixo,Nenhum,Não,3,39,3992,Não
+542,2026-03-02,erro sistema,média,14,aplicação,pendente,Interno,6276,23174,Mercado Livre,médio,16898,18,médio,Nenhum,Não,14,34,2019,Não
+543,2026-03-19,ataque,crítica,46,banco de dados,pendente,Brasil,25532,59667,Nubank,crítico,34135,24,alto,40.121.109.250,Sim,72,35,2681,Sim
+544,2026-03-17,ataque,média,69,rede,pendente,Brasil,5839,48210,Mercado Livre,médio,42371,7,médio,177.115.200.103,Sim,19,50,4686,Sim
+545,2026-04-23,lentidão,média,39,aplicação,resolvido,Interno,4280,23162,iFood,médio,18882,11,baixo,Nenhum,Não,14,75,3944,Não
+546,2026-03-10,falha servidor,baixa,73,aplicação,resolvido,Interno,566,59602,iFood,baixo,59036,29,baixo,Nenhum,Não,9,88,4489,Não
+547,2026-03-08,falha servidor,crítica,79,aplicação,pendente,Interno,14768,46062,XP Investimentos,crítico,31294,17,médio,Nenhum,Não,77,37,4384,Não
+548,2026-04-20,ataque,baixa,45,servidor,pendente,Brasil,1330,47463,Nubank,baixo,46133,25,baixo,84.55.132.78,Sim,9,34,1445,Sim
+549,2026-04-19,falha servidor,baixa,51,banco de dados,resolvido,Interno,1200,79681,Santander,baixo,78481,34,baixo,Nenhum,Não,5,90,2661,Não
+550,2026-04-25,erro sistema,crítica,49,servidor,pendente,Interno,22796,63766,XP Investimentos,crítico,40970,9,alto,Nenhum,Não,57,41,1919,Não
+551,2026-04-04,ataque,crítica,56,banco de dados,pendente,China,11505,28016,Nubank,crítico,16511,35,médio,253.172.230.140,Sim,98,38,2114,Sim
+552,2026-03-24,lentidão,média,37,banco de dados,resolvido,Interno,3434,63146,Magazine Luiza,médio,59712,8,baixo,Nenhum,Não,21,93,4132,Não
+553,2026-04-10,falha servidor,crítica,11,banco de dados,pendente,Interno,26854,21815,Vivo,crítico,-5039,35,alto,Nenhum,Não,115,33,2996,Não
+554,2026-03-24,lentidão,média,35,servidor,pendente,Interno,4413,27109,Nubank,médio,22696,25,baixo,Nenhum,Não,10,32,3992,Não
+555,2026-04-25,ataque,média,11,rede,pendente,Alemanha,6876,96271,iFood,médio,89395,19,médio,100.48.216.237,Sim,38,39,1757,Sim
+556,2026-03-06,falha servidor,média,52,aplicação,pendente,Interno,6401,36527,Mercado Livre,médio,30126,25,médio,Nenhum,Não,23,60,3642,Não
+557,2026-03-24,lentidão,média,37,banco de dados,resolvido,Interno,4225,95837,Magazine Luiza,médio,91612,32,baixo,Nenhum,Não,32,90,2313,Não
+558,2026-03-08,lentidão,média,36,aplicação,resolvido,Interno,3821,61503,Santander,médio,57682,13,baixo,Nenhum,Não,37,75,1949,Não
+559,2026-03-12,lentidão,crítica,46,servidor,pendente,Interno,26305,86383,iFood,crítico,60078,13,alto,Nenhum,Não,98,49,1440,Não
+560,2026-04-18,lentidão,média,30,rede,resolvido,Interno,4791,62150,Magazine Luiza,médio,57359,33,baixo,Nenhum,Não,14,81,2300,Não
+561,2026-04-25,erro sistema,crítica,49,servidor,pendente,Interno,26943,71062,Vivo,crítico,44119,12,alto,Nenhum,Não,119,24,3408,Não
+562,2026-03-22,ataque,baixa,82,banco de dados,resolvido,Rússia,1689,66202,Vivo,baixo,64513,27,baixo,81.208.241.255,Sim,2,85,1532,Sim
+563,2026-04-04,falha servidor,baixa,90,rede,resolvido,Interno,959,63915,Magazine Luiza,baixo,62956,22,baixo,Nenhum,Não,8,85,2875,Não
+564,2026-03-19,ataque,crítica,12,banco de dados,resolvido,China,15496,95294,XP Investimentos,crítico,79798,6,alto,243.166.37.99,Sim,90,91,4067,Sim
+565,2026-04-24,erro sistema,baixa,36,servidor,pendente,Interno,1212,22229,Santander,baixo,21017,19,baixo,Nenhum,Não,3,29,2174,Não
+566,2026-04-20,ataque,baixa,45,servidor,pendente,Brasil,1697,98971,iFood,baixo,97274,11,baixo,90.43.117.29,Sim,7,56,2546,Sim
+567,2026-03-04,ataque,baixa,77,servidor,pendente,Rússia,879,46359,Nubank,baixo,45480,18,baixo,92.143.215.109,Sim,1,49,3710,Sim
+568,2026-03-19,erro sistema,média,86,aplicação,pendente,Interno,3461,52163,Nubank,médio,48702,32,baixo,Nenhum,Não,31,22,1230,Não
+569,2026-03-11,ataque,crítica,65,servidor,resolvido,Estados Unidos,20333,42831,XP Investimentos,crítico,22498,10,alto,23.55.60.172,Sim,81,86,1020,Sim
+570,2026-03-28,lentidão,baixa,70,aplicação,pendente,Interno,1687,52871,Santander,baixo,51184,5,baixo,Nenhum,Não,8,39,2497,Não
+571,2026-04-10,falha servidor,crítica,50,banco de dados,pendente,Interno,10861,86070,XP Investimentos,crítico,75209,6,médio,Nenhum,Não,54,42,2648,Não
+572,2026-03-09,lentidão,crítica,100,banco de dados,resolvido,Interno,13813,45824,Mercado Livre,crítico,32011,11,médio,Nenhum,Não,112,76,4267,Não
+573,2026-04-14,falha servidor,baixa,97,rede,resolvido,Interno,1294,30438,Vivo,baixo,29144,16,baixo,Nenhum,Não,1,84,3184,Não
+574,2026-04-24,erro sistema,crítica,34,banco de dados,resolvido,Interno,25211,97266,XP Investimentos,crítico,72055,29,alto,Nenhum,Não,56,98,2125,Não
+575,2026-03-07,erro sistema,crítica,63,banco de dados,pendente,Interno,23109,97322,Vivo,crítico,74213,5,alto,Nenhum,Não,45,26,1531,Não
+576,2026-04-12,lentidão,baixa,31,rede,resolvido,Interno,1033,87245,Mercado Livre,baixo,86212,25,baixo,Nenhum,Não,9,83,3059,Não
+577,2026-03-09,lentidão,baixa,46,rede,pendente,Interno,1036,36637,Nubank,baixo,35601,13,baixo,Nenhum,Não,7,57,1805,Não
+578,2026-04-10,falha servidor,crítica,50,banco de dados,pendente,Interno,13018,74390,XP Investimentos,crítico,61372,7,médio,Nenhum,Não,96,51,1902,Não
+579,2026-04-10,falha servidor,média,98,banco de dados,pendente,Interno,5010,94144,iFood,médio,89134,30,médio,Nenhum,Não,14,50,4235,Não
+580,2026-04-27,falha servidor,crítica,83,rede,resolvido,Interno,29055,98368,Mercado Livre,crítico,69313,26,alto,Nenhum,Não,105,81,1048,Não
+581,2026-03-11,lentidão,crítica,42,rede,resolvido,Interno,24093,47667,iFood,crítico,23574,12,alto,Nenhum,Não,119,81,2914,Não
+582,2026-04-08,erro sistema,crítica,23,servidor,pendente,Interno,10167,54280,Santander,crítico,44113,23,médio,Nenhum,Não,108,38,2800,Não
+583,2026-03-11,ataque,crítica,24,aplicação,pendente,Estados Unidos,13463,46381,Vivo,crítico,32918,29,médio,172.108.166.137,Sim,45,52,1405,Sim
+584,2026-03-04,falha servidor,crítica,33,rede,resolvido,Interno,14658,94100,Vivo,crítico,79442,17,médio,Nenhum,Não,62,91,2643,Não
+585,2026-04-01,falha servidor,crítica,27,rede,resolvido,Interno,22473,66614,Mercado Livre,crítico,44141,33,alto,Nenhum,Não,100,94,1437,Não
+586,2026-03-26,erro sistema,crítica,60,aplicação,pendente,Interno,25878,67701,Nubank,crítico,41823,23,alto,Nenhum,Não,41,35,1738,Não
+587,2026-03-02,falha servidor,média,29,servidor,pendente,Interno,5365,20199,iFood,médio,14834,22,médio,Nenhum,Não,23,32,4204,Não
+588,2026-04-03,lentidão,média,58,banco de dados,pendente,Interno,3864,38170,Vivo,médio,34306,31,baixo,Nenhum,Não,11,35,1001,Não
+589,2026-04-01,lentidão,média,36,rede,pendente,Interno,3560,72060,Magazine Luiza,médio,68500,26,baixo,Nenhum,Não,32,58,2376,Não
+590,2026-04-05,ataque,baixa,47,servidor,resolvido,Alemanha,1418,54074,iFood,baixo,52656,28,baixo,229.211.83.110,Sim,7,71,3003,Sim
+591,2026-04-12,lentidão,baixa,31,rede,resolvido,Interno,1039,62129,iFood,baixo,61090,19,baixo,Nenhum,Não,6,100,1477,Não
+592,2026-04-03,lentidão,média,58,banco de dados,pendente,Interno,4486,92356,XP Investimentos,médio,87870,15,baixo,Nenhum,Não,12,47,1187,Não
+593,2026-03-07,lentidão,baixa,49,aplicação,resolvido,Interno,1173,66453,Nubank,baixo,65280,17,baixo,Nenhum,Não,3,76,4719,Não
+594,2026-04-24,erro sistema,baixa,75,aplicação,pendente,Interno,1972,24607,Vivo,baixo,22635,28,baixo,Nenhum,Não,2,25,3762,Não
+595,2026-03-24,lentidão,média,37,banco de dados,resolvido,Interno,6142,36432,iFood,médio,30290,29,médio,Nenhum,Não,35,91,3742,Não
+596,2026-04-02,erro sistema,média,41,servidor,pendente,Interno,4737,50381,Nubank,médio,45644,17,baixo,Nenhum,Não,21,33,3594,Não
+597,2026-04-01,lentidão,baixa,99,servidor,resolvido,Interno,1381,97934,iFood,baixo,96553,24,baixo,Nenhum,Não,8,72,1760,Não
+598,2026-04-16,lentidão,média,54,banco de dados,resolvido,Interno,6999,93381,iFood,médio,86382,31,médio,Nenhum,Não,12,76,1175,Não
+599,2026-03-17,erro sistema,média,68,aplicação,resolvido,Interno,5586,28983,Santander,médio,23397,21,médio,Nenhum,Não,38,71,1447,Não
+600,2026-04-24,erro sistema,crítica,34,banco de dados,resolvido,Interno,17142,31951,Nubank,crítico,14809,32,alto,Nenhum,Não,78,81,3026,Não
