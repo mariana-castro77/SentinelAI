@@ -85,100 +85,46 @@ if not st.session_state["termo_aceito"]:
     st.stop()
 
 # ==============================================================================
-# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (PROFISSIONAL)
+# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (SIMPLIFICADA E VISÍVEL)
 # ==============================================================================
 
 if not st.session_state["autenticado"]:
-    st.markdown("<style>[data-testid='stSidebar']{display:none;} header{visibility:hidden;}</style>", unsafe_allow_html=True)
+    # Força a exibição do conteúdo removendo estilos que possam estar conflitando
+    st.markdown("<h2 style='text-align: center; color: white;'>AUTENTICAÇÃO DE OPERADOR</h2>", unsafe_allow_html=True)
     
-    _, col_login, _ = st.columns([1, 1.6, 1])
-    with col_login:
-        st.markdown('''
-            <div class="hud-card" style="text-align: center; margin-bottom: 30px;">
-                <p style="color: #ff3333; font-weight:700; font-size:0.75rem; letter-spacing:3px; margin-bottom:10px;">SENTINELAI // IDENTITY CORE</p>
-                <h2 class="titulo-h">AUTENTICAÇÃO DE OPERADOR</h2>
-            </div>
-        ''', unsafe_allow_html=True)
-        
-        with st.form("form_login"):
-            usuario = st.text_input("Usuário")
-            senha = st.text_input("Senha", type="password")
-            
-            if st.form_submit_button("ACESSAR SISTEMA", use_container_width=True):
-                # Estrutura de Autenticação (Adicionei todos os clientes solicitados)
-                auth_data = {
-                    "admin": {"pwd": "root99", "perfil": "Administrador", "cliente": "Todos"},
-                    "analista": {"pwd": "soc123", "perfil": "Analista", "cliente": "Todos"},
-                    "nubank": {"pwd": "nu2026", "perfil": "Cliente", "cliente": "Nubank"},
-                    "ifood": {"pwd": "ifood77", "perfil": "Cliente", "cliente": "iFood"},
-                    "mercadolivre": {"pwd": "ml2026", "perfil": "Cliente", "cliente": "Mercado Livre"},
-                    "santander": {"pwd": "san99", "perfil": "Cliente", "cliente": "Santander"},
-                    "vivo": {"pwd": "vivo2026", "perfil": "Cliente", "cliente": "Vivo"},
-                    "xp": {"pwd": "xp2026", "perfil": "Cliente", "cliente": "XP Investimentos"},
-                    "magazine": {"pwd": "magalu2026", "perfil": "Cliente", "cliente": "Magazine Luiza"}
-                }
-                
-                if usuario in auth_data and auth_data[usuario]["pwd"] == senha:
-                    st.session_state.update({
-                        "autenticado": True,
-                        "perfil_usuario": auth_data[usuario]["perfil"],
-                        "cliente_usuario": auth_data[usuario]["cliente"]
-                    })
-                    st.rerun()
-                else:
-                    st.error("Credenciais inválidas.")
-    st.stop()
-
-# ==============================================================================
-# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (COM PAINEL DE ACESSO VISÍVEL)
-# ==============================================================================
-
-if not st.session_state["autenticado"]:
-    st.markdown("<style>[data-testid='stSidebar']{display:none;} header{visibility:hidden;}</style>", unsafe_allow_html=True)
+    # Exibe as credenciais de forma direta e impossível de ignorar
+    st.warning("Para acessar, utilize um dos usuários abaixo:")
     
-    _, col_login, _ = st.columns([1, 1.6, 1])
-    with col_login:
-        st.markdown('''
-            <div class="hud-card" style="text-align: center; margin-bottom: 20px;">
-                <p style="color: #ff3333; font-weight:700; font-size:0.75rem; letter-spacing:3px; margin-bottom:10px;">SENTINELAI // IDENTITY CORE</p>
-                <h2 class="titulo-h">AUTENTICAÇÃO DE OPERADOR</h2>
-            </div>
-        ''', unsafe_allow_html=True)
-        
-        # EXIBIÇÃO GARANTIDA DAS CREDENCIAIS
-        st.info("### 📋 Credenciais de Acesso")
-        dados_acesso = {
-            "Perfil": ["Admin", "Analista", "Nubank", "iFood", "M. Livre", "Santander", "Vivo", "XP", "Magalu"],
-            "Usuário": ["admin", "analista", "nubank", "ifood", "mercadolivre", "santander", "vivo", "xp", "magazine"],
-            "Senha": ["root99", "soc123", "nu2026", "ifood77", "ml2026", "san99", "vivo2026", "xp2026", "magalu2026"]
-        }
-        st.table(pd.DataFrame(dados_acesso))
+    st.table(pd.DataFrame({
+        "Perfil": ["Admin", "Analista", "Nubank", "iFood", "M. Livre", "Santander"],
+        "Usuário": ["admin", "analista", "nubank", "ifood", "mercadolivre", "santander"],
+        "Senha": ["root99", "soc123", "nu2026", "ifood77", "ml2026", "san99"]
+    }))
 
-        with st.form("form_login"):
-            usuario = st.text_input("Usuário")
-            senha = st.text_input("Senha", type="password")
+    # Formulário de Login
+    with st.form("login_form"):
+        usuario = st.text_input("Usuário")
+        senha = st.text_input("Senha", type="password")
+        submit = st.form_submit_button("ACESSAR SISTEMA")
+        
+        if submit:
+            auth_data = {
+                "admin": {"pwd": "root99", "perfil": "Administrador", "cliente": "Todos"},
+                "analista": {"pwd": "soc123", "perfil": "Analista", "cliente": "Todos"},
+                "nubank": {"pwd": "nu2026", "perfil": "Cliente", "cliente": "Nubank"},
+                "ifood": {"pwd": "ifood77", "perfil": "Cliente", "cliente": "iFood"},
+                "mercadolivre": {"pwd": "ml2026", "perfil": "Cliente", "cliente": "Mercado Livre"},
+                "santander": {"pwd": "san99", "perfil": "Cliente", "cliente": "Santander"}
+            }
             
-            if st.form_submit_button("ACESSAR SISTEMA", use_container_width=True):
-                # Dicionário de verificação
-                auth_data = {
-                    "admin": {"pwd": "root99", "perfil": "Administrador", "cliente": "Todos"},
-                    "analista": {"pwd": "soc123", "perfil": "Analista", "cliente": "Todos"},
-                    "nubank": {"pwd": "nu2026", "perfil": "Cliente", "cliente": "Nubank"},
-                    "ifood": {"pwd": "ifood77", "perfil": "Cliente", "cliente": "iFood"},
-                    "mercadolivre": {"pwd": "ml2026", "perfil": "Cliente", "cliente": "Mercado Livre"},
-                    "santander": {"pwd": "san99", "perfil": "Cliente", "cliente": "Santander"},
-                    "vivo": {"pwd": "vivo2026", "perfil": "Cliente", "cliente": "Vivo"},
-                    "xp": {"pwd": "xp2026", "perfil": "Cliente", "cliente": "XP Investimentos"},
-                    "magazine": {"pwd": "magalu2026", "perfil": "Cliente", "cliente": "Magazine Luiza"}
-                }
-                
-                if usuario in auth_data and auth_data[usuario]["pwd"] == senha:
-                    st.session_state.update({
-                        "autenticado": True,
-                        "perfil_usuario": auth_data[usuario]["perfil"],
-                        "cliente_usuario": auth_data[usuario]["cliente"]
-                    })
-                    st.rerun()
-                else:
-                    st.error("Credenciais inválidas.")
+            if usuario in auth_data and auth_data[usuario]["pwd"] == senha:
+                st.session_state.update({
+                    "autenticado": True,
+                    "perfil_usuario": auth_data[usuario]["perfil"],
+                    "cliente_usuario": auth_data[usuario]["cliente"]
+                })
+                st.rerun()
+            else:
+                st.error("Credenciais inválidas.")
+    
     st.stop()
