@@ -131,3 +131,69 @@ if not st.session_state["autenticado"]:
                 st.error("Credenciais inválidas.")
     
     st.stop()
+
+# ==============================================================================
+# 6. DASHBOARD CENTRAL (O CÉREBRO DA OPERAÇÃO)
+# ==============================================================================
+
+if st.session_state["autenticado"]:
+    # Estilização de Parallax e Scroll Suave
+    st.markdown("""
+        <style>
+            .stApp { background: radial-gradient(circle at 50% 50%, #0f0505 0%, #000 100%); background-attachment: fixed; }
+            .hud-header { border-bottom: 2px solid #ff3333; padding-bottom: 10px; margin-bottom: 20px; }
+            .robo-lateral { position: fixed; bottom: 20px; right: 20px; width: 150px; animation: pulse 3s infinite; filter: drop-shadow(0 0 10px #ff3333); }
+            @keyframes pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Sidebar com informações do operador
+    with st.sidebar:
+        st.markdown(f"### 🛡️ OPERADOR: {st.session_state['perfil_usuario'].upper()}")
+        st.markdown(f"**CLIENTE ATIVO:** {st.session_state['cliente_usuario']}")
+        if st.button("LOGOUT SEGURO"):
+            st.session_state.clear()
+            st.rerun()
+
+    # --- LÓGICA DE FILTRAGEM (ISOLAMENTO DE DADOS) ---
+    if st.session_state["cliente_usuario"] == "Todos":
+        df_view = df_soc
+    else:
+        df_view = df_soc[df_soc["CLIENTE"] == st.session_state["cliente_usuario"]]
+
+    st.title("COMMAND CENTER // SENTINELAI")
+    
+    # Abas com animação de transição nativa
+    tabs = st.tabs(["🔍 TRIAGEM FORENSE", "🌍 MAPA GLOBAL", "📊 TELEMETRIA", "🤖 SENTINEL CORE"])
+
+    with tabs[0]:
+        st.subheader("Registros de Incidentes")
+        # Mascaramento de dados se for Analista
+        if st.session_state["perfil_usuario"] == "Analista":
+            df_masked = df_view.copy()
+            if "IP" in df_masked.columns: df_masked["IP"] = "HIDDEN_IP"
+            st.dataframe(df_masked, use_container_width=True)
+        else:
+            st.dataframe(df_view, use_container_width=True)
+
+    with tabs[1]:
+        st.subheader("Mapa de Ameaças em Tempo Real")
+        components.html('<iframe src="https://cybermap.kaspersky.com/en/widget/threed" width="100%" height="500px"></iframe>', height=500)
+
+    with tabs[2]:
+        st.subheader("Telemetria e Impacto Financeiro")
+        fig = px.bar(df_view, x="CLIENTE", y="PREJUIZO_ESTIMADO", color="SEVERIDADE", template="plotly_dark")
+        st.plotly_chart(fig, use_container_width=True)
+
+    with tabs[3]:
+        st.subheader("Sentinel Core LLM")
+        pergunta = st.text_input("Consulta de Auditoria:")
+        if st.button("PROCESSAR INTELIGÊNCIA"):
+            with st.spinner("Analisando vetores de risco..."):
+                time.sleep(1.5)
+                st.info("O Sentinel Core sugere: Implementação de WAF imediata para o cliente " + st.session_state["cliente_usuario"])
+
+    # Robô com animação de pulso no canto da tela
+    img_b64 = get_image_base64("robo.png")
+    if img_b64:
+        st.markdown(f'<img src="data:image/png;base64,{img_b64}" class="robo-lateral">', unsafe_allow_html=True)
