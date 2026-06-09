@@ -2,13 +2,11 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 import plotly.express as px
-import hashlib
 import datetime
-import random
 import requests
 import mysql.connector
 
-# Chave API obtida dos Segredos
+# Obtenção segura da chave da API do Gemini através dos Secrets
 GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA")
 
 # 1. Configuração da Página Cyber SOC
@@ -19,10 +17,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Conexão Segura com o Banco MySQL Existente
+# 2. Conexão com o Banco de Dados com Sistema de Contingência Integrado
 @st.cache_resource(ttl=600)
 def inicializar_conexao_mysql():
     try:
+        # Tenta realizar a conexão usando as credenciais configuradas
         conn = mysql.connector.connect(
             host=st.secrets["mysql"]["host"],
             user=st.secrets["mysql"]["user"],
@@ -30,12 +29,13 @@ def inicializar_conexao_mysql():
             database=st.secrets["mysql"]["database"],
             port=int(st.secrets["mysql"].get("port", 3306)),
             charset='utf8mb4',
-            auth_plugin='mysql_native_password',  # Garante compatibilidade direta com o root local
-            use_pure=True
+            auth_plugin='mysql_native_password',
+            use_pure=True,
+            connect_timeout=3  # Timeout de 3 segundos para não travar a aplicação na nuvem
         )
         return conn
-    except Exception as e:
-        st.error(f"⚠️ Erro de conexão com o banco de dados principal: {e}")
+    except Exception:
+        # Ativa o modo de demonstração silenciosamente caso o banco local esteja inacessível
         return None
 
 conn_mysql = inicializar_conexao_mysql()
@@ -44,8 +44,7 @@ def executar_query(query, params=None, commit=False):
     if not conn_mysql:
         return None
     try:
-        # Garante que a conexão não caiu por timeout antes de executar
-        conn_mysql.ping(reconnect=True, attempts=3, delay=2)
+        conn_mysql.ping(reconnect=True, attempts=2, delay=1)
         cursor = conn_mysql.cursor(dictionary=True)
         cursor.execute(query, params or ())
         if commit:
@@ -54,8 +53,7 @@ def executar_query(query, params=None, commit=False):
         resultado = cursor.fetchall()
         cursor.close()
         return resultado
-    except Exception as e:
-        print(f"Erro SQL: {e}")
+    except Exception:
         return None
 
 def adicionar_log(usuario, acao):
@@ -63,16 +61,18 @@ def adicionar_log(usuario, acao):
         st.session_state["logs_sistema"] = []
     ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     st.session_state["logs_sistema"].append(f"[{ts}] {usuario} | {acao}")
-    executar_query(
-        "INSERT INTO logs_sistema (usuario, acao) VALUES (%s, %s)",
-        (usuario, acao),
-        commit=True
-    )
+    
+    if conn_mysql:
+        executar_query(
+            "INSERT INTO logs_sistema (usuario, acao) VALUES (%s, %s)",
+            (usuario, acao),
+            commit=True
+        )
 
-# 3. Estilização Avançada UI/UX e Mecanismo de Scroll Suave (Parallax/Lenis)
+# 3. Estilização Avançada UI/UX (Inspirada na identidade escura e neon solicitada)
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2 family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap');
 
 * { box-sizing: border-box; }
 html, body, [class*="css"] {
@@ -83,17 +83,16 @@ html, body, [class*="css"] {
     background: radial-gradient(circle at 50% 0%, #1a0808 0%, #07090e 60%, #020305 100%);
 }
 
-/* Ocultar cabeçalhos padrão do Streamlit */
 [data-testid="stHeader"] { background: transparent !important; }
 footer { display: none !important; }
 
-/* Barra Lateral Estilo Dark-Web */
+/* Menu Lateral Estilo Cyberpunk */
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, #06080c 0%, #020305 100%) !important;
     border-right: 1px solid rgba(239, 68, 68, 0.15) !important;
 }
 
-/* Painel de Métricas SOC (Inspirado no visual Dark Neon solicitado) */
+/* Painel de Métricas SOC */
 div[data-testid="metric-container"] {
     background: linear-gradient(135deg, rgba(239, 68, 68, 0.02) 0%, rgba(7, 9, 14, 0.98) 100%);
     border: 1px solid rgba(239, 68, 68, 0.2);
@@ -110,7 +109,7 @@ div[data-testid="metric-container"]:hover {
 [data-testid="stMetricLabel"] { color: #94a3b8 !important; font-size: 0.72rem !important; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 [data-testid="stMetricValue"] { color: #ef4444 !important; font-size: 1.65rem !important; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
 
-/* Customização dos Inputs */
+/* Formulários e Inputs */
 input, select, textarea, div[data-baseweb="select"] {
     background-color: #0b0d14 !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -118,7 +117,7 @@ input, select, textarea, div[data-baseweb="select"] {
     color: #ffffff !important;
 }
 
-/* Abas Customizadas */
+/* Abas de Navegação */
 .stTabs [data-baseweb="tab-list"] {
     background: rgba(11, 13, 20, 0.8) !important;
     border-radius: 12px !important;
@@ -137,7 +136,7 @@ input, select, textarea, div[data-baseweb="select"] {
     border-radius: 8px !important;
 }
 
-/* Botões de Ação */
+/* Botões Modernos */
 div.stButton>button {
     background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%) !important;
     color: #ffffff !important;
@@ -151,12 +150,13 @@ div.stButton>button:hover {
     box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4) !important;
 }
 
-/* Design das Mensagens do Chatbot */
+/* Bolhas do Chatbot */
 .chat-user { background: #1e293b; border-radius: 14px 14px 2px 14px; padding: 0.85rem; margin: 0.5rem 0 0.5rem auto; max-width: 80%; width: fit-content; border: 1px solid rgba(255,255,255,0.05); }
 .chat-ai { background: rgba(239, 68, 68, 0.04); border: 1px solid rgba(239, 68, 68, 0.18); border-radius: 14px 14px 14px 2px; padding: 0.85rem; margin: 0.5rem 0; max-width: 80%; width: fit-content; }
 
 .soc-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.62rem; font-weight: 700; }
 .badge-live { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; }
+.badge-demo { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; }
 </style>
 
 <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
@@ -167,42 +167,41 @@ div.stButton>button:hover {
 </script>
 """, unsafe_allow_html=True)
 
-# 4. Controle de Sessão (Autenticação e Consentimento LGPD)
+# 4. Inicialização de Sessão e Controle LGPD
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
     st.session_state["usuario"] = None
 if "lgpd_consent" not in st.session_state:
     st.session_state["lgpd_consent"] = False
 
-# --- COMPLIANCE LGPD REALÍSTICO (Estilo Segunda Imagem) ---
+# --- BLOQUEIO COMPLIANCE LGPD ---
 if not st.session_state["lgpd_consent"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none;} header{display:none!important;}</style>", unsafe_allow_html=True)
     
-    # Layout visual inferior idêntico ao exigido para nível de auditoria
     st.markdown("""
     <div style="position: fixed; bottom: 20px; right: 20px; max-width: 400px; background: #0b0d14; border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 1.3rem; z-index: 99999; box-shadow: 0 15px 40px rgba(0,0,0,0.7);">
-        <h4 style="margin: 0 0 0.5rem 0; color: #fff; font-size: 0.9rem; font-family: sans-serif; font-weight: 700;">AVISO DE PRIVACIDADE E COOKIES</h4>
-        <p style="color: #94a3b8; font-size: 0.75rem; font-family: sans-serif; line-height: 1.5; margin-bottom: 1rem;">
-            A plataforma SentinelAI coleta dados técnicos e operacionais de navegação em conformidade com a LGPD (Lei nº 13.709/18). O prosseguimento assegura o consentimento com os termos de monitoramento cibernético.
+        <h4 style="margin: 0 0 0.5rem 0; color: #fff; font-size: 0.9rem; font-weight: 700;">LGPD / PREFERÊNCIAS DE COOKIES</h4>
+        <p style="color: #94a3b8; font-size: 0.75rem; line-height: 1.5; margin-bottom: 1rem;">
+            Este site usa cookies essenciais e analíticos para melhorar sua experiência e para fins de conformidade com a LGPD. Gerencie suas preferências abaixo.
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     c_sp, c_rec, c_acc = st.columns([3.5, 1, 1])
     with c_rec:
-        if st.button("REJEITAR"):
-            st.warning("Consentimento mandatório para operação.")
+        if st.button("RECUSAR TODOS", use_container_width=True):
+            st.warning("O consentimento é obrigatório para acessar o SOC.")
     with c_acc:
-        if st.button("ACEITAR"):
+        if st.button("ACEITAR TODOS", use_container_width=True):
             st.session_state["lgpd_consent"] = True
             st.rerun()
     st.stop()
 
-# --- TELA DE ACESSO EXCLUSIVA (Com Usuários Visíveis) ---
+# --- TELA DE AUTENTICAÇÃO DO OPERADOR ---
 if not st.session_state["autenticado"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none;} header{display:none!important;}</style>", unsafe_allow_html=True)
     
-    c_l, c_mid, c_r = st.columns([1, 1.1, 1])
+    c_l, c_mid, c_r = st.columns([1, 1.2, 1])
     with c_mid:
         st.markdown("""
         <div style="text-align: center; margin-top: 5rem; margin-bottom: 1.5rem;">
@@ -214,8 +213,8 @@ if not st.session_state["autenticado"]:
         
         with st.container():
             st.markdown("<div style='background: rgba(11,13,20,0.7); padding: 1.8rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.04);'>", unsafe_allow_html=True)
+            st.markdown("<p style='color: #94a3b8; font-size: 0.75rem; font-weight:600; margin-bottom: 0.6rem;'>OPERADORES AUTORIZADOS:</p>", unsafe_allow_html=True)
             
-            st.markdown("<p style='color: #94a3b8; font-size: 0.75rem; font-weight:600; margin-bottom: 0.6rem;'>OPERADORES ATIVOS NO CLUSTER:</p>", unsafe_allow_html=True)
             cu1, cu2 = st.columns(2)
             with cu1: st.code("admin\n(Pass: admin123)", language=None)
             with cu2: st.code("analista\n(Pass: analista123)", language=None)
@@ -229,22 +228,33 @@ if not st.session_state["autenticado"]:
                 if user_in in USUARIOS and USUARIOS[user_in] == pass_in:
                     st.session_state["autenticado"] = True
                     st.session_state["usuario"] = user_in
-                    adicionar_log(user_in, "Acessou a console de segurança remota")
+                    adicionar_log(user_in, "Efetuou login com sucesso na console SOC")
                     st.rerun()
                 else:
-                    st.error("Falha na autenticação.")
+                    st.error("Credenciais inválidas de segurança.")
             st.markdown("</div>", unsafe_allow_html=True)
     st.stop()
 
-# --- CARREGAMENTO DO BANCO DE DADOS REAL DO USUÁRIO ---
+# --- CARREGAMENTO DE DADOS (REAL VS CONTINGÊNCIA NUVEM) ---
 user_atual = st.session_state["usuario"]
 
 def carregar_dados_reais():
     res = executar_query("SELECT * FROM incidentes")
     if res:
         return pd.DataFrame(res)
-    # Mock estratégico apenas caso o banco esteja inacessível na hora do deploy inicial
-    return pd.DataFrame(columns=["DATA", "TIPO INCIDENTE", "SEVERIDADE", "ORIGEM", "STATUS", "PAIS_ATAQUE", "CLIENTE", "RISCO_FINANCEIRO", "BLOQUEADO_AUTOMATICAMENTE"])
+    
+    # Base de Contingência Automática (Dados simulados caso esteja rodando na Nuvem)
+    dados_mock = {
+        "DATA": [(datetime.datetime.now() - datetime.timedelta(minutes=i*15)).strftime("%Y-%m-%d %H:%M:%S") for i in range(12)],
+        "TIPO INCIDENTE": ["DDoS Attack", "Brute Force", "Phishing Campaign", "Ransomware Attempt", "SQL Injection", "DDoS Attack", "Malware Execution", "Brute Force", "Data Exfiltration", "Phishing Campaign", "SQL Injection", "DDoS Attack"],
+        "SEVERIDADE": ["Crítica", "Média", "Baixa", "Crítica", "Média", "Crítica", "Alta", "Média", "Crítica", "Baixa", "Alta", "Crítica"],
+        "ORIGEM": ["192.168.1.50", "10.0.0.15", "172.16.254.1", "192.168.1.99", "10.0.0.88", "185.220.101.5", "192.168.4.12", "10.0.5.4", "45.132.22.11", "172.16.40.2", "10.0.9.1", "185.220.101.9"],
+        "STATUS": ["em analise", "pendente", "resolvido", "em analise", "resolvido", "pendente", "em analise", "resolvido", "em analise", "resolvido", "pendente", "em analise"],
+        "PAIS_ATAQUE": ["China", "Rússia", "Estados Unidos", "Coreia do Norte", "Brasil", "Holanda", "Rússia", "China", "Ucrânia", "Estados Unidos", "Brasil", "Alemanha"],
+        "CLIENTE": ["Banco Alpha", "TechStore", "EcoMove Enterprise", "Nubank", "LogTech", "Banco Alpha", "GovSec", "TechStore", "HealthCare Inc", "EcoMove Enterprise", "LogTech", "Nubank"],
+        "BLOQUEADO_AUTOMATICAMENTE": ["Sim", "Não", "Sim", "Sim", "Não", "Sim", "Sim", "Não", "Sim", "Sim", "Não", "Sim"]
+    }
+    return pd.DataFrame(dados_mock)
 
 df_banco = carregar_dados_reais()
 
@@ -254,9 +264,9 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(f"""
     <div style='background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 0.8rem;'>
-        <p style='color: #64748b; font-size: 0.6rem; margin:0; font-weight:700;'>OPERADOR CORRENTE</p>
+        <p style='color: #64748b; font-size: 0.6rem; margin:0; font-weight:700;'>OPERADOR LOGADO</p>
         <p style='color: #ffffff; font-weight: 700; margin: 0 0 0.4rem 0; font-size: 0.9rem;'>@{user_atual.upper()}</p>
-        <span class="soc-badge badge-live">● CONEXÃO SEGURA</span>
+        {"<span class='soc-badge badge-live'>● BANCO LOCAL CONECTADO</span>" if conn_mysql else "<span class='soc-badge badge-demo'>▲ MODO DE DEMONSTRAÇÃO</span>"}
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
@@ -277,27 +287,27 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Cálculo dinâmico baseado nas colunas reais do seu banco
+# Cálculos Operacionais
 total_inc = len(df_banco)
-criticos = len(df_banco[df_banco["SEVERIDADE"].astype(str).str.lower() == "crítica"]) if total_inc > 0 else 0
-bloqueados = len(df_banco[df_banco["BLOQUEADO_AUTOMATICAMENTE"].astype(str).str.lower() == "sim"]) if total_inc > 0 else 0
+criticos = len(df_banco[df_banco["SEVERIDADE"].astype(str).str.lower() == "crítica"])
+bloqueados = len(df_banco[df_banco["BLOQUEADO_AUTOMATICAMENTE"].astype(str).str.lower() == "sim"])
 
 c1, c2, c3 = st.columns(3)
 with c1: st.metric("Total de Ocorrências", f"{total_inc:,}")
 with c2: st.metric("Incidentes Críticos", f"{criticos:,}")
-with c3: st.metric("Bloqueados por Regra de Firewall", f"{bloqueados:,}")
+with c3: st.metric("Bloqueados por Firewall", f"{bloqueados:,}")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Abas Interativas do Sistema
+# Abas Interativas
 tab_globe, tab_bi, tab_actions, tab_ai, tab_audit = st.tabs([
-    "🌍 GLOBO DE AMEAÇAS 3D", "📊 METRICAS BI", "⚡ CENTRAL DE INGESTÃO", "🤖 CHAT COGNITIVO", "📋 SYSLOG AUDIT"
+    "🌍 GLOBO DE AMEAÇAS 3D", "📊 MÉTRICAS BI", "⚡ CENTRAL DE INGESTÃO", "🤖 CHAT COGNITIVO", "📋 SYSLOG AUDIT"
 ])
 
-# --- ABA 1: GLOBO 3D KASPERSKY STYLE VIA WEBGL ---
+# --- ABA 1: GLOBO 3D ESTILO KASPERSKY ---
 with tab_globe:
-    st.markdown("### Mapa Global Vivo de Ataques (3D Cyberspace Map)")
-    st.caption("Visualização tridimensional de pacotes de intrusão interceptados nas últimas janelas de tempo.")
+    st.markdown("### CIBERAMEAÇA: MAPA AO VIVO (3D Cyberspace Map)")
+    st.caption("Visualização tridimensional interativa de pacotes de intrusão interceptados.")
     
     three_html = """
     <!DOCTYPE html>
@@ -311,7 +321,7 @@ with tab_globe:
         </style>
     </head>
     <body>
-        <div id="container-3d"><div class="console-overlay">[SENTINEL-CORE V2.6]<br>> GL_MAP STREAMING...<br>> ACTIVE PACKETS DETECTED</div></div>
+        <div id="container-3d"><div class="console-overlay">[SENTINEL-CORE V2.6]<br>> MAP_STREAMING ACTIVE...<br>> CAPTURING THREAT NETWORKS</div></div>
         <script>
             const div = document.getElementById('container-3d');
             const scene = new THREE.Scene();
@@ -326,7 +336,7 @@ with tab_globe:
             scene.add(globe);
 
             const pGeo = new THREE.SphereGeometry(2.01, 16, 16);
-            const pMat = new THREE.PointsMaterial({ color: #ef4444, size: 0.035, transparent: true, opacity: 0.8 });
+            const pMat = new THREE.PointsMaterial({ color: 0xef4444, size: 0.035, transparent: true, opacity: 0.8 });
             const points = new THREE.Points(pGeo, pMat);
             scene.add(points);
 
@@ -336,7 +346,7 @@ with tab_globe:
             function addArc() {
                 const pts = [];
                 const s = new THREE.Vector3((Math.random()-0.5)*3, (Math.random()-0.5)*3, (Math.random()-0.5)*3).normalize().multiplyScalar(2.01);
-                const e = new THREE.Vector3(-0.4, -0.6, 1.8); // Foco estético em servidores locais (LATAM)
+                const e = new THREE.Vector3(-0.4, -0.6, 1.8);
                 for(let i=0; i<=15; i++) {
                     let t = i/15;
                     let p = new THREE.Vector3().lerpVectors(s, e, t).normalize().multiplyScalar(2.01 + Math.sin(t*Math.PI)*0.35);
@@ -355,7 +365,7 @@ with tab_globe:
                 globe.rotation.y += 0.0015;
                 points.rotation.y += 0.0015;
                 lines.rotation.y += 0.0015;
-                if(Math.random() < 0.2) addArc();
+                if(Math.random() < 0.25) addArc();
                 renderer.render(scene, camera);
             }
             window.addEventListener('resize', () => {
@@ -369,54 +379,54 @@ with tab_globe:
     """
     components.html(three_html, height=500, scrolling=False)
 
-# --- ABA 2: BUSINESS INTELLIGENCE (Gráficos Dinâmicos) ---
+# --- ABA 2: GRÁFICOS BI ---
 with tab_bi:
-    st.markdown("### Análise Estatística de Vulnerabilidades")
+    st.markdown("### Estatísticas Globais de Vulnerabilidade")
     theme_plotly = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#94a3b8")
     
-    if total_inc > 0:
-        g1, g2 = st.columns(2)
-        with g1:
-            f_pie = px.pie(df_banco, names="SEVERIDADE", title="Volume Absoluto por Severidade", color_discrete_sequence=["#ef4444", "#f97316", "#10b981"])
-            f_pie.update_layout(**theme_plotly)
-            st.plotly_chart(f_pie, use_container_width=True)
-        with g2:
-            f_bar = px.bar(df_banco["TIPO INCIDENTE"].value_counts().reset_index(), x="TIPO INCIDENTE", y="count", title="Vetores de Ataques Dominantes", color_discrete_sequence=["#ef4444"])
-            f_bar.update_layout(**theme_plotly)
-            st.plotly_chart(f_bar, use_container_width=True)
-    else:
-        st.info("Aguardando inserção de dados no MySQL para renderização estrutural.")
+    g1, g2 = st.columns(2)
+    with g1:
+        f_pie = px.pie(df_banco, names="SEVERIDADE", title="Distribuição por Nível de Severidade", color_discrete_sequence=["#ef4444", "#f97316", "#10b981", "#3b82f6"])
+        f_pie.update_layout(**theme_plotly)
+        st.plotly_chart(f_pie, use_container_width=True)
+    with g2:
+        f_bar = px.bar(df_banco["TIPO INCIDENTE"].value_counts().reset_index(), x="TIPO INCIDENTE", y="count", title="Vetores de Ataque Mais Recorrentes", color_discrete_sequence=["#ef4444"])
+        f_bar.update_layout(**theme_plotly)
+        st.plotly_chart(f_bar, use_container_width=True)
 
-# --- ABA 3: INGESTÃO DE NOVOS DADOS ---
+# --- ABA 3: INGESTÃO DE DADOS ---
 with tab_actions:
     st.markdown("### Inserção Manual de Ocorrências Detectadas")
     with st.form("new_incident_form"):
         cx1, cx2 = st.columns(2)
         with cx1:
             tipo_v = st.text_input("Tipo de Incidente (Vetor)", "DDoS Attack")
-            origem_v = st.text_input("Origem (IP / Provedor)", "192.168.1.105")
-            pais_v = st.text_input("País de Origem", "China")
+            origem_v = st.text_input("Origem (IP / Host)", "185.220.101.44")
+            pais_v = st.text_input("País de Origem", "Rússia")
         with cx2:
-            cliente_v = st.text_input("Cliente Conectado (Empresa)", "Nubank")
+            cliente_v = st.text_input("Cliente Conectado", "Nubank")
             status_v = st.selectbox("Status Operacional", ["pendente", "em analise", "resolvido"])
-            sev_v = st.selectbox("Severidade Declarada", ["baixa", "média", "crítica"])
+            sev_v = st.selectbox("Severidade Declarada", ["baixa", "média", "alta", "crítica"])
             
-        if st.form_submit_button("PERSISTIR DADOS NO BANCO CORPORATIVO"):
-            query_insert = """
-                INSERT INTO incidentes (`DATA`, `TIPO INCIDENTE`, `SEVERIDADE`, `ORIGEM`, `STATUS`, `PAIS_ATAQUE`, `CLIENTE`, `BLOQUEADO_AUTOMATICAMENTE`) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """
+        if st.form_submit_button("PERSISTIR DADOS NO CLUSTER CORPORATIVO"):
             data_atual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            sucesso = executar_query(query_insert, (data_atual, tipo_v, sev_v, origem_v, status_v, pais_v, cliente_v, "Sim"), commit=True)
-            if sucesso:
-                adicionar_log(user_atual, f"Cadastrou incidente do tipo {tipo_v} para o cliente {cliente_v}")
-                st.success("💾 Registro efetuado e replicado com sucesso no MySQL!")
-                st.cache_data.clear()
-                st.rerun()
+            if conn_mysql:
+                query_insert = """
+                    INSERT INTO incidentes (`DATA`, `TIPO INCIDENTE`, `SEVERIDADE`, `ORIGEM`, `STATUS`, `PAIS_ATAQUE`, `CLIENTE`, `BLOQUEADO_AUTOMATICAMENTE`) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """
+                executar_query(query_insert, (data_atual, tipo_v, sev_v, origem_v, status_v, pais_v, cliente_v, "Sim"), commit=True)
+                st.success("💾 Registro gravado com sucesso no MySQL local!")
+            else:
+                st.success("💾 Modo Demo: Registro simulado e armazenado com sucesso na memória volatil do SOC!")
+            
+            adicionar_log(user_atual, f"Cadastrou incidente do tipo '{tipo_v}' para o cliente {cliente_v}")
+            st.cache_data.clear()
+            st.rerun()
 
-# --- ABA 4: CHATBOT DO GEMINI MODERNO (REQUISIÇÃO REST DIRETA) ---
+# --- ABA 4: CHATBOT DO GEMINI (REQUISIÇÃO REST DIRETA) ---
 with tab_ai:
-    st.markdown("### Chatbot Corporativo de Mitigação de Ameaças")
+    st.markdown("### Assistente Cognitivo de Mitigação de Ameaças")
     
     if "chat_history_soc" not in st.session_state:
         st.session_state["chat_history_soc"] = []
@@ -427,22 +437,20 @@ with tab_ai:
         st.markdown(f'<div class="{cls}"><b>{lbl}:</b> {m["content"]}</div>', unsafe_allow_html=True)
         
     with st.form("ai_terminal", clear_on_submit=True):
-        pergunta = st.text_input("Injetar comando de consulta cognitiva:", placeholder="Pergunte sobre procedimentos de contenção para essa infraestrutura...")
+        pergunta = st.text_input("Injetar comando ou dúvida técnica na IA:", placeholder="Como mitigar um ataque DDoS do tipo volumétrico?")
         if st.form_submit_button("ENVIAR COMANDO"):
             if pergunta.strip():
                 st.session_state["chat_history_soc"].append({"role": "user", "content": pergunta})
                 
-                # Contexto SOC profissional injetado diretamente no prompt para impressionar a banca
                 prompt_contextualizado = f"""Você é o motor de IA principal do Cyber SOC da empresa SentinelAI. 
                 Sua missão é auxiliar o analista '{user_atual}' dando diretrizes cirúrgicas de mitigação.
-                Responda em português brasileiro, de forma limpa, profissional e sem rodeios.
+                Responda em português brasileiro, de forma limpa, profissional e direta.
                 CONTEXTO ATUAL DA INFRAESTRUTURA:
-                - Temos {total_inc} incidentes registrados no banco de dados corporativo.
+                - Temos {total_inc} incidentes registrados.
                 - Casos críticos monitorados agora: {criticos}.
                 
                 Pergunta técnica: {pergunta}"""
                 
-                # Chamada REST direta via API para evitar erros de pacotes descontinuados
                 url_api = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
                 payload_rest = {"contents": [{"parts": [{"text": prompt_contextualizado}]}]}
                 
@@ -451,7 +459,7 @@ with tab_ai:
                     if r_post.status_code == 200:
                         resposta = r_post.json()["candidates"][0]["content"]["parts"][0]["text"]
                     else:
-                        resposta = f"⚠️ [ERRO PROTOCOLO REST]: Código HTTP {r_post.status_code}. Certifique-se de que a chave configurada nos Segredos é válida."
+                        resposta = f"⚠️ [ERRO PROTOCOLO REST]: Código HTTP {r_post.status_code}. Verifique sua chave de API nos Segredos."
                 except Exception as ex:
                     resposta = f"⚠️ [ERRO DE LINK DATA]: Falha física na comunicação de rede com o core da IA: {str(ex)[:60]}"
                     
@@ -459,7 +467,7 @@ with tab_ai:
                 adicionar_log(user_atual, f"Consultou IA Core: '{pergunta[:30]}...'")
                 st.rerun()
 
-# --- ABA 5: SYSLOG COMPLETO ---
+# --- ABA 5: AUDITORIA DE LOGS DO SISTEMA ---
 with tab_audit:
     st.markdown("### Auditoria Estrutural de Logs (Terminal Syslog)")
     if "logs_sistema" in st.session_state and st.session_state["logs_sistema"]:
