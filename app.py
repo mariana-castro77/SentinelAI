@@ -85,27 +85,27 @@ if not st.session_state["termo_aceito"]:
     st.stop()
 
 # ==============================================================================
-# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (SIMPLIFICADA E VISÍVEL)
+# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (COMPLETA)
 # ==============================================================================
 
 if not st.session_state["autenticado"]:
-    # Força a exibição do conteúdo removendo estilos que possam estar conflitando
     st.markdown("<h2 style='text-align: center; color: white;'>AUTENTICAÇÃO DE OPERADOR</h2>", unsafe_allow_html=True)
     
-    # Exibe as credenciais de forma direta e impossível de ignorar
-    st.warning("Para acessar, utilize um dos usuários abaixo:")
+    st.warning("Para acessar o sistema, utilize um dos usuários e senhas abaixo:")
     
-    st.table(pd.DataFrame({
-        "Perfil": ["Admin", "Analista", "Nubank", "iFood", "M. Livre", "Santander"],
-        "Usuário": ["admin", "analista", "nubank", "ifood", "mercadolivre", "santander"],
-        "Senha": ["root99", "soc123", "nu2026", "ifood77", "ml2026", "san99"]
-    }))
+    # Tabela com todos os clientes solicitados
+    dados_acesso = {
+        "Perfil": ["Admin", "Analista", "Nubank", "iFood", "Mercado Livre", "Magazine Luiza", "Santander", "Vivo", "XP Investimentos"],
+        "Usuário": ["admin", "analista", "nubank", "ifood", "mercadolivre", "magazine", "santander", "vivo", "xp"],
+        "Senha": ["root99", "soc123", "nu2026", "ifood77", "ml2026", "magalu2026", "san99", "vivo2026", "xp2026"]
+    }
+    st.table(pd.DataFrame(dados_acesso))
 
     # Formulário de Login
     with st.form("login_form"):
         usuario = st.text_input("Usuário")
         senha = st.text_input("Senha", type="password")
-        submit = st.form_submit_button("ACESSAR SISTEMA")
+        submit = st.form_submit_button("ACESSAR SISTEMA", use_container_width=True)
         
         if submit:
             auth_data = {
@@ -114,7 +114,10 @@ if not st.session_state["autenticado"]:
                 "nubank": {"pwd": "nu2026", "perfil": "Cliente", "cliente": "Nubank"},
                 "ifood": {"pwd": "ifood77", "perfil": "Cliente", "cliente": "iFood"},
                 "mercadolivre": {"pwd": "ml2026", "perfil": "Cliente", "cliente": "Mercado Livre"},
-                "santander": {"pwd": "san99", "perfil": "Cliente", "cliente": "Santander"}
+                "magazine": {"pwd": "magalu2026", "perfil": "Cliente", "cliente": "Magazine Luiza"},
+                "santander": {"pwd": "san99", "perfil": "Cliente", "cliente": "Santander"},
+                "vivo": {"pwd": "vivo2026", "perfil": "Cliente", "cliente": "Vivo"},
+                "xp": {"pwd": "xp2026", "perfil": "Cliente", "cliente": "XP Investimentos"}
             }
             
             if usuario in auth_data and auth_data[usuario]["pwd"] == senha:
