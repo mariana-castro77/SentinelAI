@@ -28,7 +28,7 @@ def inicializar_conexao_mysql():
             user=st.secrets["mysql"]["user"],
             password=st.secrets["mysql"]["password"],
             database=st.secrets["mysql"]["database"],
-            port=st.secrets["mysql"].get("port", 3306),
+            port=int(st.secrets["mysql"].get("port", 3306)), # Força a ser um número inteiro puro
             charset='utf8mb4',
             use_pure=True
         )
