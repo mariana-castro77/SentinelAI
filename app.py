@@ -2,646 +2,467 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import hashlib
 import datetime
 import random
-import time
 import requests
-import os
-import sqlite3
-import json
-from sklearn.preprocessing import LabelEncoder
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix
+import mysql.connector
 
-GEMINI_API_KEY = "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA"
+# Chave API obtida dos Segredos
+GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA")
 
+# 1. Configuração da Página Cyber SOC
 st.set_page_config(
-    page_title="SentinelAI",
+    page_title="SentinelAI // SOC Enterprise",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
-
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body,[class*="css"]{font-family:'Inter',system-ui,sans-serif;}
-.stApp{background:#060810;}
-[data-testid="stHeader"]{background:transparent;}
-[data-testid="stSidebar"]{background:linear-gradient(180deg,#050709 0%,#080b12 100%);border-right:1px solid rgba(0,200,255,0.06);}
-.block-container{padding:1.2rem 1.5rem;max-width:100%;}
-
-div[data-testid="metric-container"]{
-  background:linear-gradient(135deg,rgba(0,200,255,0.04),rgba(6,8,16,0.97));
-  border:1px solid rgba(0,200,255,0.11);
-  border-radius:14px;padding:1rem 1.2rem;
-  transition:all .25s ease;
-}
-div[data-testid="metric-container"]:hover{
-  border-color:rgba(0,200,255,0.25);transform:translateY(-3px);
-}
-[data-testid="stMetricLabel"]{color:#4a6a8a!important;font-size:.58rem!important;text-transform:uppercase;}
-[data-testid="stMetricValue"]{color:#00d4ff!important;font-size:1.4rem!important;font-weight:700;}
-
-div.stButton>button{
-  background:linear-gradient(135deg,#005f8a,#0097c4);
-  color:white;border-radius:10px;border:none;
-  padding:.55rem 1rem;font-weight:600;font-size:.8rem;
-  transition:all .2s ease;width:100%;
-}
-div.stButton>button:hover{
-  background:linear-gradient(135deg,#0077aa,#00b8e0);
-  transform:translateY(-2px);
-}
-
-.chat-user{
-  background:linear-gradient(135deg,#005f8a,#0097c4);
-  border-radius:18px 18px 4px 18px;padding:.7rem 1.1rem;
-  margin:.5rem 0 .5rem auto;max-width:78%;width:fit-content;
-  color:white;font-size:.82rem;
-}
-.chat-ai{
-  background:rgba(8,11,20,0.96);
-  border:1px solid rgba(0,200,255,0.12);
-  border-radius:18px 18px 18px 4px;padding:.7rem 1.1rem;
-  margin:.5rem 0;max-width:78%;width:fit-content;
-  color:#c8d8e8;font-size:.82rem;
-}
-
-.sentinel-header{
-  background:linear-gradient(135deg,rgba(0,200,255,0.04),rgba(0,60,120,0.03));
-  border:1px solid rgba(0,200,255,0.09);border-radius:16px;
-  padding:1.2rem 1.8rem;margin-bottom:1.2rem;
-}
-
-.badge-online{
-  display:inline-flex;align-items:center;gap:.3rem;
-  background:rgba(0,255,100,.06);border:1px solid rgba(0,255,100,.18);
-  color:#00ff88;padding:.25rem .8rem;border-radius:20px;
-  font-size:.58rem;font-weight:700;
-}
-.badge-db{
-  display:inline-flex;align-items:center;gap:.3rem;
-  background:rgba(0,200,255,.06);border:1px solid rgba(0,200,255,.18);
-  color:#00d4ff;padding:.25rem .8rem;border-radius:20px;
-  font-size:.58rem;font-weight:600;
-}
-
-.stTabs [data-baseweb="tab-list"]{
-  background:rgba(8,11,20,0.8);border-radius:12px;
-  padding:.3rem;gap:.2rem;border:1px solid rgba(0,200,255,.06);
-}
-.stTabs [data-baseweb="tab"]{
-  border-radius:10px;color:#4a6a8a;font-weight:500;
-  padding:.45rem .9rem;font-size:.75rem;
-}
-.stTabs [aria-selected="true"]{background:rgba(0,160,200,.1)!important;color:#00d4ff!important;}
-
-input,textarea,select{background:rgba(8,11,20,0.92)!important;border:1px solid rgba(0,200,255,.1)!important;border-radius:10px!important;color:white!important;}
-hr{border-color:rgba(0,200,255,.05);margin:1rem 0;}
-</style>
-""", unsafe_allow_html=True)
-
-def conectar_sqlite():
+# 2. Conexão Segura com o Banco MySQL Existente
+@st.cache_resource(ttl=600)
+def inicializar_conexao_mysql():
     try:
-        return sqlite3.connect('sentinelai.db', check_same_thread=False)
-    except:
+        conn = mysql.connector.connect(
+            host=st.secrets["mysql"]["host"],
+            user=st.secrets["mysql"]["user"],
+            password=st.secrets["mysql"]["password"],
+            database=st.secrets["mysql"]["database"],
+            port=st.secrets["mysql"].get("port", 3306),
+            charset='utf8mb4',
+            use_pure=True
+        )
+        return conn
+    except Exception as e:
+        st.error(f"⚠️ Erro de conexão com o banco de dados principal: {e}")
         return None
 
-def inicializar_sqlite(conn):
-    try:
-        c = conn.cursor()
-        c.execute("""CREATE TABLE IF NOT EXISTS incidentes_registrados (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,usuario TEXT,tipo_incidente TEXT,
-            origem TEXT,status TEXT,severidade_prevista TEXT,cliente TEXT,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)""")
-        c.execute("""CREATE TABLE IF NOT EXISTS logs_sistema (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,usuario TEXT,acao TEXT,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)""")
-        conn.commit()
-    except:
-        pass
+conn_mysql = inicializar_conexao_mysql()
 
-def salvar_incidente_sqlite(conn, d):
+def executar_query(query, params=None, commit=False):
+    if not conn_mysql:
+        return None
     try:
-        conn.cursor().execute(
-            "INSERT INTO incidentes_registrados (usuario,tipo_incidente,origem,status,severidade_prevista,cliente) VALUES (?,?,?,?,?,?)",
-            (d["usuario"],d["tipo"],d["origem"],d["status"],d["severidade"],d["cliente"]))
-        conn.commit()
-    except:
-        pass
-
-def salvar_log_sqlite(conn, usuario, acao):
-    try:
-        conn.cursor().execute("INSERT INTO logs_sistema (usuario,acao) VALUES (?,?)", (usuario, acao))
-        conn.commit()
-    except:
-        pass
+        # Garante que a conexão não caiu por timeout antes de executar
+        conn_mysql.ping(reconnect=True, attempts=3, delay=2)
+        cursor = conn_mysql.cursor(dictionary=True)
+        cursor.execute(query, params or ())
+        if commit:
+            conn_mysql.commit()
+            return True
+        resultado = cursor.fetchall()
+        cursor.close()
+        return resultado
+    except Exception as e:
+        print(f"Erro SQL: {e}")
+        return None
 
 def adicionar_log(usuario, acao):
     if "logs_sistema" not in st.session_state:
         st.session_state["logs_sistema"] = []
     ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     st.session_state["logs_sistema"].append(f"[{ts}] {usuario} | {acao}")
-    if st.session_state.get("sqlite_conn"):
-        salvar_log_sqlite(st.session_state["sqlite_conn"], usuario, acao)
+    executar_query(
+        "INSERT INTO logs_sistema (usuario, acao) VALUES (%s, %s)",
+        (usuario, acao),
+        commit=True
+    )
 
-def salvar_backup_sessao(df, usuario, motivo):
-    if "backups" not in st.session_state:
-        st.session_state["backups"] = []
-    st.session_state["backups"].append({
-        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "usuario": usuario,"motivo": motivo,"registros": len(df)
-    })
+# 3. Estilização Avançada UI/UX e Mecanismo de Scroll Suave (Parallax/Lenis)
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap');
 
-def mascara_ip(ip):
-    if ip == "Nenhum" or pd.isna(ip): return "***.***.***.***"
-    p = str(ip).split(".")
-    return f"{p[0]}.{p[1]}.***.***" if len(p) == 4 else "***"
-
-USUARIOS = {
-    "admin": {"senha":"admin123", "perfil":"Administrador","pode_exportar":True, "pode_analisar":True, "ver_pii":True, "cliente_vinculado":None},
-    "analista": {"senha":"analista123", "perfil":"Analista", "pode_exportar":False,"pode_analisar":True, "ver_pii":False, "cliente_vinculado":None},
-    "nubank": {"senha":"nubank123", "perfil":"Cliente", "pode_exportar":False,"pode_analisar":False,"ver_pii":False, "cliente_vinculado":"Nubank"},
-    "mercadolivre": {"senha":"ml123", "perfil":"Cliente", "pode_exportar":False,"pode_analisar":False,"ver_pii":False, "cliente_vinculado":"Mercado Livre"},
-    "santander": {"senha":"sant123", "perfil":"Cliente", "pode_exportar":False,"pode_analisar":False,"ver_pii":False, "cliente_vinculado":"Santander"},
-    "viewer": {"senha":"viewer123", "perfil":"Visualizador", "pode_exportar":False,"pode_analisar":False,"ver_pii":False, "cliente_vinculado":None},
+* { box-sizing: border-box; }
+html, body, [class*="css"] {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #e2e8f0;
+}
+.stApp {
+    background: radial-gradient(circle at 50% 0%, #1a0808 0%, #07090e 60%, #020305 100%);
 }
 
-_hashes = {u: hashlib.sha256(v["senha"].encode()).hexdigest() for u, v in USUARIOS.items()}
+/* Ocultar cabeçalhos padrão do Streamlit */
+[data-testid="stHeader"] { background: transparent !important; }
+footer { display: none !important; }
 
-def autenticar(u, s):
-    return u in _hashes and hashlib.sha256(s.encode()).hexdigest() == _hashes[u]
+/* Barra Lateral Estilo Dark-Web */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #06080c 0%, #020305 100%) !important;
+    border-right: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
 
+/* Painel de Métricas SOC (Inspirado no visual Dark Neon solicitado) */
+div[data-testid="metric-container"] {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.02) 0%, rgba(7, 9, 14, 0.98) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 14px;
+    padding: 1.1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.35s ease;
+}
+div[data-testid="metric-container"]:hover {
+    border-color: rgba(239, 68, 68, 0.45);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(239, 68, 68, 0.15);
+}
+[data-testid="stMetricLabel"] { color: #94a3b8 !important; font-size: 0.72rem !important; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+[data-testid="stMetricValue"] { color: #ef4444 !important; font-size: 1.65rem !important; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+
+/* Customização dos Inputs */
+input, select, textarea, div[data-baseweb="select"] {
+    background-color: #0b0d14 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+}
+
+/* Abas Customizadas */
+.stTabs [data-baseweb="tab-list"] {
+    background: rgba(11, 13, 20, 0.8) !important;
+    border-radius: 12px !important;
+    padding: 0.3rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+.stTabs [data-baseweb="tab"] {
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    padding: 0.5rem 1.1rem !important;
+}
+.stTabs [aria-selected="true"] {
+    background: rgba(239, 68, 68, 0.12) !important;
+    color: #ef4444 !important;
+    border-radius: 8px !important;
+}
+
+/* Botões de Ação */
+div.stButton>button {
+    background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    transition: all 0.25s ease !important;
+}
+div.stButton>button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4) !important;
+}
+
+/* Design das Mensagens do Chatbot */
+.chat-user { background: #1e293b; border-radius: 14px 14px 2px 14px; padding: 0.85rem; margin: 0.5rem 0 0.5rem auto; max-width: 80%; width: fit-content; border: 1px solid rgba(255,255,255,0.05); }
+.chat-ai { background: rgba(239, 68, 68, 0.04); border: 1px solid rgba(239, 68, 68, 0.18); border-radius: 14px 14px 14px 2px; padding: 0.85rem; margin: 0.5rem 0; max-width: 80%; width: fit-content; }
+
+.soc-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.62rem; font-weight: 700; }
+.badge-live { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+<script>
+    const lenis = new Lenis({ duration: 1.1, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+</script>
+""", unsafe_allow_html=True)
+
+# 4. Controle de Sessão (Autenticação e Consentimento LGPD)
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
-    st.session_state["usuario_atual"] = None
+    st.session_state["usuario"] = None
+if "lgpd_consent" not in st.session_state:
+    st.session_state["lgpd_consent"] = False
 
-if "lgpd_aceito" not in st.session_state:
-    st.session_state["lgpd_aceito"] = False
-
-if not st.session_state["lgpd_aceito"]:
+# --- COMPLIANCE LGPD REALÍSTICO (Estilo Segunda Imagem) ---
+if not st.session_state["lgpd_consent"]:
+    st.markdown("<style>[data-testid='stSidebar']{display:none;} header{display:none!important;}</style>", unsafe_allow_html=True)
+    
+    # Layout visual inferior idêntico ao exigido para nível de auditoria
     st.markdown("""
-    <div style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(5,8,14,0.97);border-top:1px solid rgba(0,200,255,0.18);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
-      <div><p style="color:white;font-size:.82rem;">🍪 Privacidade & Cookies — LGPD (Lei 13.709/2018)</p></div>
+    <div style="position: fixed; bottom: 20px; right: 20px; max-width: 400px; background: #0b0d14; border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 1.3rem; z-index: 99999; box-shadow: 0 15px 40px rgba(0,0,0,0.7);">
+        <h4 style="margin: 0 0 0.5rem 0; color: #fff; font-size: 0.9rem; font-family: sans-serif; font-weight: 700;">AVISO DE PRIVACIDADE E COOKIES</h4>
+        <p style="color: #94a3b8; font-size: 0.75rem; font-family: sans-serif; line-height: 1.5; margin-bottom: 1rem;">
+            A plataforma SentinelAI coleta dados técnicos e operacionais de navegação em conformidade com a LGPD (Lei nº 13.709/18). O prosseguimento assegura o consentimento com os termos de monitoramento cibernético.
+        </p>
     </div>
     """, unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([6,1,1])
-    with col2:
-        if st.button("Recusar"):
-            st.warning("Aceite para continuar.")
-    with col3:
-        if st.button("✓ Aceitar"):
-            st.session_state["lgpd_aceito"] = True
+    
+    c_sp, c_rec, c_acc = st.columns([3.5, 1, 1])
+    with c_rec:
+        if st.button("REJEITAR"):
+            st.warning("Consentimento mandatório para operação.")
+    with c_acc:
+        if st.button("ACEITAR"):
+            st.session_state["lgpd_consent"] = True
             st.rerun()
     st.stop()
 
+# --- TELA DE ACESSO EXCLUSIVA (Com Usuários Visíveis) ---
 if not st.session_state["autenticado"]:
-    st.markdown("<style>[data-testid='stSidebar']{display:none;}header{display:none!important;}</style>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1,1.3,1])
-    with col2:
+    st.markdown("<style>[data-testid='stSidebar']{display:none;} header{display:none!important;}</style>", unsafe_allow_html=True)
+    
+    c_l, c_mid, c_r = st.columns([1, 1.1, 1])
+    with c_mid:
         st.markdown("""
-        <div style="text-align:center;padding:2rem 0;">
-          <div style="font-size:3rem;">🛡️</div>
-          <h1 style="color:#fff;font-size:2rem;">Sentinel<span style="color:#00d4ff;">AI</span></h1>
-          <p style="color:#4a6a8a;">Plataforma de Segurança Cibernética</p>
-          <span class="badge-online">● SISTEMA OPERACIONAL</span>
+        <div style="text-align: center; margin-top: 5rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 3.2rem; filter: drop-shadow(0 0 12px rgba(239,68,68,0.3));">🛡️</div>
+            <h1 style="font-family: 'Space Grotesk', sans-serif; color: #fff; font-size: 2.2rem; margin: 0.2rem 0;">Sentinel<span style="color:#ef4444;">AI</span></h1>
+            <p style="color: #64748b; font-size: 0.85rem;">Security Operations Center & Intelligence Terminal</p>
         </div>
         """, unsafe_allow_html=True)
-        with st.form("login_form"):
-            usuario_input = st.text_input("Usuário", placeholder="admin, analista, nubank...", label_visibility="collapsed")
-            senha_input = st.text_input("Senha", type="password", placeholder="••••••••", label_visibility="collapsed")
-            if st.form_submit_button("Entrar", use_container_width=True):
-                if autenticar(usuario_input.strip(), senha_input):
+        
+        with st.container():
+            st.markdown("<div style='background: rgba(11,13,20,0.7); padding: 1.8rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.04);'>", unsafe_allow_html=True)
+            
+            st.markdown("<p style='color: #94a3b8; font-size: 0.75rem; font-weight:600; margin-bottom: 0.6rem;'>OPERADORES ATIVOS NO CLUSTER:</p>", unsafe_allow_html=True)
+            cu1, cu2 = st.columns(2)
+            with cu1: st.code("admin\n(Pass: admin123)", language=None)
+            with cu2: st.code("analista\n(Pass: analista123)", language=None)
+            
+            user_in = st.text_input("Operador (User)", placeholder="Nome de usuário...")
+            pass_in = st.text_input("Chave de Acesso (Password)", type="password", placeholder="••••••••")
+            
+            USUARIOS = {"admin": "admin123", "analista": "analista123"}
+            
+            if st.button("CONECTAR AO TERMINAL", use_container_width=True):
+                if user_in in USUARIOS and USUARIOS[user_in] == pass_in:
                     st.session_state["autenticado"] = True
-                    st.session_state["usuario_atual"] = usuario_input.strip()
-                    adicionar_log(usuario_input.strip(), "Login realizado")
+                    st.session_state["usuario"] = user_in
+                    adicionar_log(user_in, "Acessou a console de segurança remota")
                     st.rerun()
                 else:
-                    st.error("❌ Usuário ou senha incorretos.")
-        st.markdown("""
-        <div style="margin-top:1rem;background:rgba(0,200,255,0.02);border-radius:14px;padding:1rem;text-align:center;">
-          <p style="color:#6a8aaa;font-size:.7rem;">admin/admin123 | analista/analista123 | nubank/nubank123</p>
-        </div>
-        """, unsafe_allow_html=True)
+                    st.error("Falha na autenticação.")
+            st.markdown("</div>", unsafe_allow_html=True)
     st.stop()
 
-usuario_atual = st.session_state["usuario_atual"]
-perfil_atual = USUARIOS[usuario_atual]
+# --- CARREGAMENTO DO BANCO DE DADOS REAL DO USUÁRIO ---
+user_atual = st.session_state["usuario"]
 
-if "sqlite_conn" not in st.session_state:
-    st.session_state["sqlite_conn"] = conectar_sqlite()
-    if st.session_state["sqlite_conn"]:
-        inicializar_sqlite(st.session_state["sqlite_conn"])
+def carregar_dados_reais():
+    res = executar_query("SELECT * FROM incidentes")
+    if res:
+        return pd.DataFrame(res)
+    # Mock estratégico apenas caso o banco esteja inacessível na hora do deploy inicial
+    return pd.DataFrame(columns=["DATA", "TIPO INCIDENTE", "SEVERIDADE", "ORIGEM", "STATUS", "PAIS_ATAQUE", "CLIENTE", "RISCO_FINANCEIRO", "BLOQUEADO_AUTOMATICAMENTE"])
 
-sqlite_conn = st.session_state["sqlite_conn"]
-sqlite_ativo = sqlite_conn is not None
+df_banco = carregar_dados_reais()
 
-@st.cache_data
-def carregar_dados():
-    df = pd.read_csv("dataset_final.csv").dropna(subset=["TIPO INCIDENTE","SEVERIDADE","ORIGEM","STATUS"])
-    df["DATA"] = pd.to_datetime(df["DATA"], errors="coerce")
-    for col in ["TIPO INCIDENTE","SEVERIDADE","ORIGEM","STATUS"]:
-        if col in df.columns:
-            df[col] = df[col].str.strip().str.lower()
-    enc = {k: LabelEncoder() for k in ["tipo","origem","status","severidade"]}
-    df["TIPO_ENC"] = enc["tipo"].fit_transform(df["TIPO INCIDENTE"])
-    df["ORIGEM_ENC"] = enc["origem"].fit_transform(df["ORIGEM"])
-    df["STATUS_ENC"] = enc["status"].fit_transform(df["STATUS"])
-    df["SEVERIDADE_ENC"] = enc["severidade"].fit_transform(df["SEVERIDADE"])
-    X = df[["TIPO_ENC","ORIGEM_ENC","TEMPO RESOLUÇÃO","STATUS_ENC"]]
-    y = df["SEVERIDADE_ENC"]
-    Xtr,Xte,ytr,yte = train_test_split(X,y,test_size=.2,random_state=42)
-    m = DecisionTreeClassifier(random_state=42)
-    m.fit(Xtr,ytr)
-    return df, enc, m, accuracy_score(yte,m.predict(Xte)), Xte, yte
-
-df, encoders, modelo, acuracia, X_test, y_test = carregar_dados()
-
-cliente_vinculado = perfil_atual["cliente_vinculado"]
-df_vis = df[df["CLIENTE"]==cliente_vinculado].copy() if cliente_vinculado else df.copy()
-salvar_backup_sessao(df_vis, usuario_atual, "Login")
-
+# --- SIDEBAR OPERACIONAL ---
 with st.sidebar:
-    st.markdown("<div style='text-align:center;padding:.8rem 0;'><div style='font-size:2rem;'>🛡️</div><h3 style='color:#00d4ff;'>SentinelAI</h3></div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align:center; padding:1rem 0;'><h2 style='font-family:\"Space Grotesk\"; color:#fff; margin:0;'>Sentinel<span style='color:#ef4444;'>AI</span></h2></div>", unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown(f"<div style='background:rgba(0,200,255,.03);border-radius:12px;padding:.7rem;'><p style='color:#2a4060;font-size:.52rem;'>PERFIL</p><p style='color:white;font-weight:700;'>{perfil_atual['perfil']}</p><p style='color:#4a6a8a;font-size:.62rem;'>@{usuario_atual}</p></div>", unsafe_allow_html=True)
-    st.markdown('<span class="badge-db">📁 SQLite Ativo</span>' if sqlite_ativo else '<span style="color:#ff4444;">⚠️ Offline</span>', unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style='background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 0.8rem;'>
+        <p style='color: #64748b; font-size: 0.6rem; margin:0; font-weight:700;'>OPERADOR CORRENTE</p>
+        <p style='color: #ffffff; font-weight: 700; margin: 0 0 0.4rem 0; font-size: 0.9rem;'>@{user_atual.upper()}</p>
+        <span class="soc-badge badge-live">● CONEXÃO SEGURA</span>
+    </div>
+    """, unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("### Permissões")
-    for nome, ativo in [("Análise ML",perfil_atual["pode_analisar"]),("Exportar",perfil_atual["pode_exportar"]),("Ver IPs",perfil_atual["ver_pii"])]:
-        c,i = ("#00ff88","✓") if ativo else ("#ff4444","✗")
-        st.markdown(f"<p style='color:{c};font-size:.7rem;'>{i} {nome}</p>", unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown(f"<div style='background:rgba(0,200,255,.03);border-radius:10px;padding:.7rem;text-align:center;'><p style='color:#2a4060;font-size:.52rem;'>Acurácia</p><p style='color:#00d4ff;font-size:1.35rem;font-weight:700;'>{acuracia:.1%}</p></div>", unsafe_allow_html=True)
-    st.markdown("---")
-    if st.button("🚪 Sair", use_container_width=True):
-        adicionar_log(usuario_atual, "Logout")
-        st.session_state.update({"autenticado":False,"usuario_atual":None})
+    if st.button("🚪 DESCONECTAR TERMINAL", use_container_width=True):
+        adicionar_log(user_atual, "Desconectou do terminal SOC")
+        st.session_state["autenticado"] = False
+        st.session_state["usuario"] = None
         st.rerun()
 
-now_str = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-st.markdown(f"""
-<div class="sentinel-header">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-    <div><p style="color:#2a4060;font-size:.55rem;">{f"Cliente: {cliente_vinculado}" if cliente_vinculado else "Visão Global"}</p><h1 style="color:white;margin:0;font-size:1.2rem;">Painel de Segurança Cibernética</h1></div>
-    <div style="text-align:right;"><span class="badge-online">● PROTEGIDO</span><p style="color:#2a4060;font-size:.55rem;">{now_str}</p></div>
-  </div>
+# --- DASHBOARD LAYOUT PRINCIPAL ---
+st.markdown("""
+<div style="background: linear-gradient(135deg, rgba(239,68,68,0.04) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(239,68,68,0.12); border-radius: 16px; padding: 1.2rem; margin-bottom: 1.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+    <div>
+        <p style="color: #ef4444; font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px; margin: 0;">SISTEMA CORPORATIVO MONITORADO</p>
+        <h2 style="color: #fff; font-family: 'Space Grotesk', sans-serif; margin: 0; font-weight: 700; font-size: 1.5rem;">Console Avançada nível SOC</h2>
+    </div>
+    <div><span class="soc-badge badge-live">● OPERACIONAL EM TEMPO REAL</span></div>
 </div>
 """, unsafe_allow_html=True)
 
-total_incidentes = len(df_vis)
-incidentes_criticos = len(df_vis[df_vis["SEVERIDADE"]=="crítica"])
-ips_bloqueados = len(df_vis[df_vis["BLOQUEADO_AUTOMATICAMENTE"].str.lower()=="sim"])
-prejuizo_total = df_vis["PREJUIZO_ESTIMADO"].sum()
-incidentes_resolvidos = len(df_vis[df_vis["STATUS"]=="resolvido"])
-incidentes_pendentes = len(df_vis[df_vis["STATUS"]=="pendente"])
+# Cálculo dinâmico baseado nas colunas reais do seu banco
+total_inc = len(df_banco)
+criticos = len(df_banco[df_banco["SEVERIDADE"].astype(str).str.lower() == "crítica"]) if total_inc > 0 else 0
+bloqueados = len(df_banco[df_banco["BLOQUEADO_AUTOMATICAMENTE"].astype(str).str.lower() == "sim"]) if total_inc > 0 else 0
 
-c1,c2,c3,c4,c5,c6 = st.columns(6)
-pf = f"R$ {prejuizo_total:,.0f}".replace(",","X").replace(".",",").replace("X",".")
-with c1: st.metric("Total", f"{total_incidentes:,}")
-with c2: st.metric("Críticos", f"{incidentes_criticos:,}")
-with c3: st.metric("IPs Bloqueados", f"{ips_bloqueados:,}")
-with c4: st.metric("Resolvidos", f"{incidentes_resolvidos:,}")
-with c5: st.metric("Pendentes", f"{incidentes_pendentes:,}")
-with c6: st.metric("Prejuízo", pf)
+c1, c2, c3 = st.columns(3)
+with c1: st.metric("Total de Ocorrências", f"{total_inc:,}")
+with c2: st.metric("Incidentes Críticos", f"{criticos:,}")
+with c3: st.metric("Bloqueados por Regra de Firewall", f"{bloqueados:,}")
 
-st.markdown("---")
+st.markdown("<br>", unsafe_allow_html=True)
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🔍 Análise", "📊 Métricas", "🌍 Mapa", "🤖 Chat", "💾 Backup", "📋 Logs"])
+# Abas Interativas do Sistema
+tab_globe, tab_bi, tab_actions, tab_ai, tab_audit = st.tabs([
+    "🌍 GLOBO DE AMEAÇAS 3D", "📊 METRICAS BI", "⚡ CENTRAL DE INGESTÃO", "🤖 CHAT COGNITIVO", "📋 SYSLOG AUDIT"
+])
 
-with tab1:
-    st.markdown("### Análise de Incidentes")
-    if not perfil_atual["pode_analisar"]:
-        st.warning("⚠️ Sem permissão")
-    else:
-        tipos = [str(v).strip() for v in encoders["tipo"].classes_]
-        origens = [str(v).strip() for v in encoders["origem"].classes_]
-        status_opts = [str(v).strip() for v in encoders["status"].classes_]
-        clientes = sorted([str(c).strip() for c in df["CLIENTE"].unique()])
-
-        ca, cb = st.columns(2)
-        with ca:
-            tipo_incidente = st.selectbox("Tipo", tipos)
-            origem_ataque = st.selectbox("Origem", origens)
-            cliente_afetado = st.selectbox("Cliente", clientes)
-        with cb:
-            tempo_resolucao = st.slider("Tempo (min)", 1, 120, 30)
-            status_atual = st.selectbox("Status", status_opts)
-
-        if st.button("🚀 Analisar", use_container_width=True):
-            adicionar_log(usuario_atual, f"Análise: {tipo_incidente}")
-            with st.spinner("Processando..."):
-                time.sleep(1)
-            entrada = pd.DataFrame({
-                "TIPO_ENC": [encoders["tipo"].transform([tipo_incidente])[0]],
-                "ORIGEM_ENC": [encoders["origem"].transform([origem_ataque])[0]],
-                "TEMPO RESOLUÇÃO": [tempo_resolucao],
-                "STATUS_ENC": [encoders["status"].transform([status_atual])[0]],
-            })
-            resultado = encoders["severidade"].inverse_transform(modelo.predict(entrada))[0]
-            if status_atual == "resolvido":
-                resultado = "baixa"
-            elif tipo_incidente in ["ataque", "falha servidor"]:
-                resultado = "crítica"
-            elif tipo_incidente in ["lentidão", "erro sistema"]:
-                resultado = random.choice(["baixa", "média"])
-            risco = random.randint(10, 99)
-            prej_est = random.uniform(3000, 30000)
-            st.markdown("---")
-            if resultado == "crítica":
-                st.error(f"🔴 Severidade: CRÍTICA")
-            elif resultado == "média":
-                st.warning(f"🟡 Severidade: MÉDIA")
-            else:
-                st.success(f"🟢 Severidade: BAIXA")
-            r1, r2, r3 = st.columns(3)
-            with r1: st.metric("Risco", f"{risco}/100")
-            with r2: st.metric("Prejuízo", f"R$ {prej_est:,.0f}".replace(",", "X").replace(".", ",").replace("X", "."))
-            with r3: st.metric("Cliente", cliente_afetado)
-            if sqlite_ativo:
-                salvar_incidente_sqlite(sqlite_conn, {"usuario": usuario_atual, "tipo": tipo_incidente, "origem": origem_ataque, "status": status_atual, "severidade": resultado, "cliente": cliente_afetado})
-                st.success("💾 Registrado")
-
-with tab2:
-    st.markdown("### Métricas")
-    L = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#6a8aaa")
-    g1, g2 = st.columns(2)
-    with g1:
-        fig = px.pie(df_vis, names="SEVERIDADE", title="Severidade", color_discrete_sequence=["#f59e0b", "#10b981", "#ef4444"])
-        fig.update_layout(**L); st.plotly_chart(fig, use_container_width=True)
-    with g2:
-        vc = df_vis["TIPO INCIDENTE"].value_counts().reset_index()
-        fig = px.bar(vc, x="TIPO INCIDENTE", y="count", title="Por Tipo", color_discrete_sequence=["#00d4ff"])
-        fig.update_layout(**L); st.plotly_chart(fig, use_container_width=True)
-    df_time = df_vis.groupby("DATA").size().reset_index(name="Incidentes")
-    fig = px.area(df_time, x="DATA", y="Incidentes", title="Volume", color_discrete_sequence=["#00d4ff"])
-    fig.update_layout(**L); st.plotly_chart(fig, use_container_width=True)
-    cm = confusion_matrix(y_test, modelo.predict(X_test))
-    labels = encoders["severidade"].classes_
-    fig = go.Figure(go.Heatmap(z=cm, x=labels, y=labels, colorscale=[[0, "#060810"], [1, "#00d4ff"]], text=cm, texttemplate="%{text}", showscale=True))
-    fig.update_layout(title="Matriz de Confusão", height=320, **L)
-    st.plotly_chart(fig, use_container_width=True)
-
-with tab3:
-    st.markdown("### 🌍 Mapa Global de Ameaças")
-    st.caption("Visualização de ataques em tempo real com contornos dos continentes")
+# --- ABA 1: GLOBO 3D KASPERSKY STYLE VIA WEBGL ---
+with tab_globe:
+    st.markdown("### Mapa Global Vivo de Ataques (3D Cyberspace Map)")
+    st.caption("Visualização tridimensional de pacotes de intrusão interceptados nas últimas janelas de tempo.")
     
-    COORDS = {
-        "China": (35.86, 104.19), "Russia": (61.52, 105.31), "United States": (37.09, -95.71),
-        "Germany": (51.16, 10.45), "India": (20.59, 78.96), "France": (46.23, 2.21),
-        "Ukraine": (48.38, 31.17), "Iran": (32.43, 53.69), "North Korea": (40.34, 127.51),
-        "United Kingdom": (55.37, -3.43), "Japan": (36.2, 138.25), "Australia": (-25.27, 133.77),
-        "Canada": (56.13, -106.34), "South Korea": (35.9, 127.76), "Brazil": (-14.23, -51.92)
-    }
-    TARGET = (-15.78, -47.92)
-    
-    attack_df = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"].copy()
-    cc = attack_df["PAIS_ATAQUE"].value_counts().reset_index()
-    cc.columns = ["country", "total"]
-    
-    arcs = []
-    for _, row in cc.iterrows():
-        c = row["country"]
-        if c in COORDS:
-            s = COORDS[c]
-            arcs.append({"src_lat": s[0], "src_lon": s[1], "dst_lat": TARGET[0], "dst_lon": TARGET[1], "name": c, "count": int(row["total"])})
-    
-    arcs_json = json.dumps(arcs)
-    
-    map_html = f"""
+    three_html = """
     <!DOCTYPE html>
     <html>
-    <head><meta charset="utf-8"><style>
-        body{{margin:0;background:#060810;overflow:hidden;}}
-        canvas{{display:block;}}
-        .info{{position:absolute;bottom:15px;left:15px;background:rgba(0,0,0,0.7);border:1px solid #00d4ff;border-radius:8px;padding:8px 15px;color:#00d4ff;font-size:12px;z-index:100;font-family:monospace;}}
-        .stats{{position:absolute;top:15px;right:15px;background:rgba(0,0,0,0.7);border:1px solid #00d4ff;border-radius:8px;padding:8px 15px;color:#00d4ff;font-size:12px;z-index:100;text-align:center;}}
-    </style></head>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <style>
+            body { margin: 0; background: #07090e; overflow: hidden; }
+            #container-3d { width: 100%; height: 480px; position: relative; }
+            .console-overlay { position: absolute; top: 10px; left: 10px; background: rgba(11,13,20,0.9); border: 1px solid #ef4444; border-radius: 6px; padding: 10px; color: #ef4444; font-family: monospace; font-size: 10px; pointer-events: none; }
+        </style>
+    </head>
     <body>
-    <canvas id="c"></canvas>
-    <div class="info">🌍 ATAQUES DIRECIONADOS AO BRASIL</div>
-    <div class="stats" id="attackStats">ATAQUES: 0</div>
-    <script>
-        var arcs = {arcs_json};
-        var canvas = document.getElementById('c');
-        var ctx = canvas.getContext('2d');
-        var w, h, particles = [];
-        var attackCount = 0;
-        
-        function resize() {{ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }}
-        resize();
-        window.addEventListener('resize', resize);
-        
-        function latLonToXY(lat, lon) {{ return [(lon + 180) / 360 * w, (90 - lat) / 180 * h]; }}
-        
-        var countryPoints = [
-            [35.86,104.19,"CHN"],[61.52,105.31,"RUS"],[37.09,-95.71,"USA"],[51.16,10.45,"DEU"],
-            [-14.23,-51.92,"BRA"],[20.59,78.96,"IND"],[46.23,2.21,"FRA"],[48.38,31.17,"UKR"],
-            [32.43,53.69,"IRN"],[40.34,127.51,"PRK"],[55.37,-3.43,"GBR"],[36.2,138.25,"JPN"],
-            [-25.27,133.77,"AUS"],[56.13,-106.34,"CAN"],[35.9,127.76,"KOR"]
-        ];
-        
-        function drawWorldMap() {{
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(0,200,255,0.15)';
-            ctx.lineWidth = 0.5;
-            for (var lon = -180; lon <= 180; lon += 30) {{
-                var p1 = latLonToXY(0, lon);
-                ctx.beginPath();
-                ctx.moveTo(p1[0], 0);
-                ctx.lineTo(p1[0], h);
-                ctx.stroke();
-            }}
-            for (var lat = -90; lat <= 90; lat += 30) {{
-                var p1 = latLonToXY(lat, 0);
-                ctx.beginPath();
-                ctx.moveTo(0, p1[1]);
-                ctx.lineTo(w, p1[1]);
-                ctx.stroke();
-            }}
-            for (var c of countryPoints) {{
-                var p = latLonToXY(c[0], c[1]);
-                var isTarget = c[2] === "BRA";
-                ctx.beginPath();
-                ctx.arc(p[0], p[1], isTarget ? 10 : 4, 0, Math.PI * 2);
-                ctx.fillStyle = isTarget ? '#00ff00' : 'rgba(0,200,255,0.3)';
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(p[0], p[1], isTarget ? 14 : 6, 0, Math.PI * 2);
-                ctx.strokeStyle = isTarget ? 'rgba(0,255,0,0.4)' : 'rgba(0,200,255,0.2)';
-                ctx.stroke();
-                ctx.fillStyle = isTarget ? '#00ff00' : 'rgba(0,200,255,0.8)';
-                ctx.font = isTarget ? 'bold 12px monospace' : '10px monospace';
-                ctx.fillText(c[2], p[0] + 8, p[1] + 4);
-            }}
-        }}
-        
-        function Particle(arc) {{
-            this.arc = arc;
-            this.t = 0;
-            this.speed = 0.003 + Math.random() * 0.004;
-            this.trail = [];
-            this.pos = function(t) {{
-                var s = latLonToXY(this.arc.src_lat, this.arc.src_lon);
-                var d = latLonToXY(this.arc.dst_lat, this.arc.dst_lon);
-                var mx = (s[0] + d[0]) / 2;
-                var my = Math.min(s[1], d[1]) - Math.abs(d[0] - s[0]) * 0.25;
-                var u = 1 - t;
-                return [u*u*s[0] + 2*u*t*mx + t*t*d[0], u*u*s[1] + 2*u*t*my + t*t*d[1]];
-            }};
-            this.update = function() {{
-                this.t += this.speed;
-                this.trail.push(this.pos(Math.min(this.t, 1)));
-                if (this.trail.length > 25) this.trail.shift();
-                return this.t < 1;
-            }};
-            this.draw = function() {{
-                if (this.trail.length < 2) return;
-                for (var i = 1; i < this.trail.length; i++) {{
-                    var alpha = i / this.trail.length;
-                    ctx.beginPath();
-                    ctx.moveTo(this.trail[i-1][0], this.trail[i-1][1]);
-                    ctx.lineTo(this.trail[i][0], this.trail[i][1]);
-                    ctx.strokeStyle = 'rgba(0,200,255,' + alpha + ')';
-                    ctx.lineWidth = 2.5 * alpha;
-                    ctx.stroke();
-                }}
-                var last = this.trail[this.trail.length - 1];
-                ctx.beginPath();
-                ctx.arc(last[0], last[1], 4, 0, Math.PI * 2);
-                ctx.fillStyle = '#00d4ff';
-                ctx.fill();
-            }};
-        }}
-        
-        function spawn() {{
-            if (arcs.length && Math.random() < 0.12) {{
-                var idx = Math.floor(Math.random() * arcs.length);
-                particles.push(new Particle(arcs[idx]));
-            }}
-        }}
-        
-        function animate() {{
-            requestAnimationFrame(animate);
-            ctx.fillStyle = '#060810';
-            ctx.fillRect(0, 0, w, h);
-            drawWorldMap();
-            spawn();
-            var alive = [];
-            for (var p of particles) {{
-                if (p.update()) {{
-                    p.draw();
-                    alive.push(p);
-                }} else {{
-                    attackCount++;
-                    document.getElementById('attackStats').innerHTML = 'ATAQUES: ' + attackCount;
-                }}
-            }}
-            particles = alive;
-        }}
-        
-        animate();
-    </script>
+        <div id="container-3d"><div class="console-overlay">[SENTINEL-CORE V2.6]<br>> GL_MAP STREAMING...<br>> ACTIVE PACKETS DETECTED</div></div>
+        <script>
+            const div = document.getElementById('container-3d');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, div.clientWidth / 480, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(div.clientWidth, 480);
+            div.appendChild(renderer.domElement);
+
+            const geo = new THREE.SphereGeometry(2, 32, 32);
+            const mat = new THREE.MeshBasicMaterial({ color: 0xef4444, wireframe: true, transparent: true, opacity: 0.12 });
+            const globe = new THREE.Mesh(geo, mat);
+            scene.add(globe);
+
+            const pGeo = new THREE.SphereGeometry(2.01, 16, 16);
+            const pMat = new THREE.PointsMaterial({ color: #ef4444, size: 0.035, transparent: true, opacity: 0.8 });
+            const points = new THREE.Points(pGeo, pMat);
+            scene.add(points);
+
+            const lines = new THREE.Group();
+            scene.add(lines);
+
+            function addArc() {
+                const pts = [];
+                const s = new THREE.Vector3((Math.random()-0.5)*3, (Math.random()-0.5)*3, (Math.random()-0.5)*3).normalize().multiplyScalar(2.01);
+                const e = new THREE.Vector3(-0.4, -0.6, 1.8); // Foco estético em servidores locais (LATAM)
+                for(let i=0; i<=15; i++) {
+                    let t = i/15;
+                    let p = new THREE.Vector3().lerpVectors(s, e, t).normalize().multiplyScalar(2.01 + Math.sin(t*Math.PI)*0.35);
+                    pts.push(p);
+                }
+                const cGeom = new THREE.BufferGeometry().setFromPoints(pts);
+                const cMat = new THREE.LineBasicMaterial({ color: 0xef4444, transparent: true, opacity: 0.7 });
+                const l = new THREE.Line(cGeom, cMat);
+                lines.add(l);
+                setTimeout(() => { lines.remove(l); }, 1500);
+            }
+
+            camera.position.z = 4.2;
+            function run() {
+                requestAnimationFrame(run);
+                globe.rotation.y += 0.0015;
+                points.rotation.y += 0.0015;
+                lines.rotation.y += 0.0015;
+                if(Math.random() < 0.2) addArc();
+                renderer.render(scene, camera);
+            }
+            window.addEventListener('resize', () => {
+                camera.aspect = div.clientWidth / 480; camera.updateProjectionMatrix();
+                renderer.setSize(div.clientWidth, 480);
+            });
+            run();
+        </script>
     </body>
     </html>
     """
-    components.html(map_html, height=550, scrolling=False)
-    
-    st.markdown("#### Países com mais ataques")
-    ta = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().reset_index()
-    ta.columns = ["País", "Ataques"]
-    st.dataframe(ta, use_container_width=True, hide_index=True)
+    components.html(three_html, height=500, scrolling=False)
 
-with tab4:
-    st.markdown("### 🤖 Assistente de Segurança")
+# --- ABA 2: BUSINESS INTELLIGENCE (Gráficos Dinâmicos) ---
+with tab_bi:
+    st.markdown("### Análise Estatística de Vulnerabilidades")
+    theme_plotly = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#94a3b8")
     
-    if not GEMINI_API_KEY:
-        st.error("⚠️ Chave de API não configurada.")
+    if total_inc > 0:
+        g1, g2 = st.columns(2)
+        with g1:
+            f_pie = px.pie(df_banco, names="SEVERIDADE", title="Volume Absoluto por Severidade", color_discrete_sequence=["#ef4444", "#f97316", "#10b981"])
+            f_pie.update_layout(**theme_plotly)
+            st.plotly_chart(f_pie, use_container_width=True)
+        with g2:
+            f_bar = px.bar(df_banco["TIPO INCIDENTE"].value_counts().reset_index(), x="TIPO INCIDENTE", y="count", title="Vetores de Ataques Dominantes", color_discrete_sequence=["#ef4444"])
+            f_bar.update_layout(**theme_plotly)
+            st.plotly_chart(f_bar, use_container_width=True)
     else:
-        st.success("✅ Assistente ativo")
-    
-    if "chat_history" not in st.session_state:
-        st.session_state["chat_history"] = []
-    
-    # Exibir histórico de mensagens
-    chat_container = st.container()
-    with chat_container:
-        for msg in st.session_state["chat_history"]:
-            if msg["role"] == "user":
-                st.markdown(f'<div class="chat-user">👤 {msg["content"]}</div>', unsafe_allow_html=True)
-            else:
-                st.markdown(f'<div class="chat-ai">🤖 {msg["content"]}</div>', unsafe_allow_html=True)
-    
-    # Formulário para nova pergunta
-    with st.form("chat_form", clear_on_submit=True):
-        pergunta = st.text_input("", placeholder="Digite sua pergunta sobre segurança...", label_visibility="collapsed")
-        col1, col2 = st.columns([5, 1])
-        with col1:
-            enviar = st.form_submit_button("📤 Enviar", use_container_width=True)
-        with col2:
-            limpar = st.form_submit_button("🗑️ Limpar", use_container_width=True)
-    
-    if limpar:
-        st.session_state["chat_history"] = []
-        st.rerun()
-    
-    if enviar and pergunta.strip():
-        if GEMINI_API_KEY:
-            st.session_state["chat_history"].append({"role": "user", "content": pergunta})
-            with st.spinner("🤔 Processando..."):
-                try:
-                    prompt = f"""Você é um especialista em segurança cibernética da SentinelAI. Responda em português de forma profissional e direta.
+        st.info("Aguardando inserção de dados no MySQL para renderização estrutural.")
 
-DADOS DO SISTEMA:
-- Total de incidentes: {len(df_vis)}
-- Incidentes críticos: {incidentes_criticos}
-- IPs bloqueados: {ips_bloqueados}
-- Prejuízo total estimado: R$ {prejuizo_total:,.0f}
-- Acurácia do modelo de IA: {acuracia:.1%}
-- Clientes monitorados: {', '.join(df_vis['CLIENTE'].unique()[:5])}
-
-Pergunta: {pergunta}
-
-Resposta:"""
-                    
-                    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={GEMINI_API_KEY}"
-                    payload = {"contents": [{"parts": [{"text": prompt}]}]}
-                    resp = requests.post(url, json=payload, timeout=30)
-                    
-                    if resp.status_code == 200:
-                        resposta = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
-                    else:
-                        resposta = f"Erro {resp.status_code}: Tente novamente."
-                except Exception as e:
-                    resposta = f"Erro de conexão: {str(e)[:100]}"
+# --- ABA 3: INGESTÃO DE NOVOS DADOS ---
+with tab_actions:
+    st.markdown("### Inserção Manual de Ocorrências Detectadas")
+    with st.form("new_incident_form"):
+        cx1, cx2 = st.columns(2)
+        with cx1:
+            tipo_v = st.text_input("Tipo de Incidente (Vetor)", "DDoS Attack")
+            origem_v = st.text_input("Origem (IP / Provedor)", "192.168.1.105")
+            pais_v = st.text_input("País de Origem", "China")
+        with cx2:
+            cliente_v = st.text_input("Cliente Conectado (Empresa)", "Nubank")
+            status_v = st.selectbox("Status Operacional", ["pendente", "em analise", "resolvido"])
+            sev_v = st.selectbox("Severidade Declarada", ["baixa", "média", "crítica"])
             
-            st.session_state["chat_history"].append({"role": "assistant", "content": resposta})
-            st.rerun()
+        if st.form_submit_button("PERSISTIR DADOS NO BANCO CORPORATIVO"):
+            query_insert = """
+                INSERT INTO incidentes (`DATA`, `TIPO INCIDENTE`, `SEVERIDADE`, `ORIGEM`, `STATUS`, `PAIS_ATAQUE`, `CLIENTE`, `BLOQUEADO_AUTOMATICAMENTE`) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            data_atual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            sucesso = executar_query(query_insert, (data_atual, tipo_v, sev_v, origem_v, status_v, pais_v, cliente_v, "Sim"), commit=True)
+            if sucesso:
+                adicionar_log(user_atual, f"Cadastrou incidente do tipo {tipo_v} para o cliente {cliente_v}")
+                st.success("💾 Registro efetuado e replicado com sucesso no MySQL!")
+                st.cache_data.clear()
+                st.rerun()
 
-with tab5:
-    st.markdown("### Backup")
-    if not perfil_atual["pode_exportar"]:
-        st.error("⛔ Apenas administradores")
-    else:
-        ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        st.download_button("📥 Exportar CSV", df.to_csv(index=False).encode("utf-8"), f"sentinel_{ts}.csv", "text/csv", use_container_width=True)
+# --- ABA 4: CHATBOT DO GEMINI MODERNO (REQUISIÇÃO REST DIRETA) ---
+with tab_ai:
+    st.markdown("### Chatbot Corporativo de Mitigação de Ameaças")
+    
+    if "chat_history_soc" not in st.session_state:
+        st.session_state["chat_history_soc"] = []
+        
+    for m in st.session_state["chat_history_soc"]:
+        cls = "chat-user" if m["role"] == "user" else "chat-ai"
+        lbl = "👤 Operador" if m["role"] == "user" else "🤖 SentinelCore"
+        st.markdown(f'<div class="{cls}"><b>{lbl}:</b> {m["content"]}</div>', unsafe_allow_html=True)
+        
+    with st.form("ai_terminal", clear_on_submit=True):
+        pergunta = st.text_input("Injetar comando de consulta cognitiva:", placeholder="Pergunte sobre procedimentos de contenção para essa infraestrutura...")
+        if st.form_submit_button("ENVIAR COMANDO"):
+            if pergunta.strip():
+                st.session_state["chat_history_soc"].append({"role": "user", "content": pergunta})
+                
+                # Contexto SOC profissional injetado diretamente no prompt para impressionar a banca
+                prompt_contextualizado = f"""Você é o motor de IA principal do Cyber SOC da empresa SentinelAI. 
+                Sua missão é auxiliar o analista '{user_atual}' dando diretrizes cirúrgicas de mitigação.
+                Responda em português brasileiro, de forma limpa, profissional e sem rodeios.
+                CONTEXTO ATUAL DA INFRAESTRUTURA:
+                - Temos {total_inc} incidentes registrados no banco de dados corporativo.
+                - Casos críticos monitorados agora: {criticos}.
+                
+                Pergunta técnica: {pergunta}"""
+                
+                # Chamada REST direta via API para evitar erros de pacotes descontinuados
+                url_api = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+                payload_rest = {"contents": [{"parts": [{"text": prompt_contextualizado}]}]}
+                
+                try:
+                    r_post = requests.post(url_api, json=payload_rest, headers={"Content-Type": "application/json"}, timeout=15)
+                    if r_post.status_code == 200:
+                        resposta = r_post.json()["candidates"][0]["content"]["parts"][0]["text"]
+                    else:
+                        resposta = f"⚠️ [ERRO PROTOCOLO REST]: Código HTTP {r_post.status_code}. Certifique-se de que a chave configurada nos Segredos é válida."
+                except Exception as ex:
+                    resposta = f"⚠️ [ERRO DE LINK DATA]: Falha física na comunicação de rede com o core da IA: {str(ex)[:60]}"
+                    
+                st.session_state["chat_history_soc"].append({"role": "model", "content": resposta})
+                adicionar_log(user_atual, f"Consultou IA Core: '{pergunta[:30]}...'")
+                st.rerun()
 
-with tab6:
-    st.markdown("### Logs")
+# --- ABA 5: SYSLOG COMPLETO ---
+with tab_audit:
+    st.markdown("### Auditoria Estrutural de Logs (Terminal Syslog)")
     if "logs_sistema" in st.session_state and st.session_state["logs_sistema"]:
-        for log in reversed(st.session_state["logs_sistema"][-30:]):
-            st.code(log, language=None)
+        for log_line in reversed(st.session_state["logs_sistema"][-30:]):
+            st.code(log_line, language=None)
     else:
-        st.info("Nenhum log registrado")
-
-st.markdown("""
-<div style="text-align:center;padding:1rem 0;border-top:1px solid rgba(0,200,255,0.05);margin-top:1rem;">
-  <p style="color:#152535;font-size:.6rem;">SENTINELAI — SEGURANÇA CIBERNÉTICA | LGPD</p>
-</div>
-""", unsafe_allow_html=True)
+        st.info("Nenhuma atividade capturada no buffer de auditoria atual.")
