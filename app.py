@@ -28,8 +28,9 @@ def inicializar_conexao_mysql():
             user=st.secrets["mysql"]["user"],
             password=st.secrets["mysql"]["password"],
             database=st.secrets["mysql"]["database"],
-            port=int(st.secrets["mysql"].get("port", 3306)), # Força a ser um número inteiro puro
+            port=int(st.secrets["mysql"].get("port", 3306)),
             charset='utf8mb4',
+            auth_plugin='mysql_native_password',  # Garante compatibilidade direta com o root local
             use_pure=True
         )
         return conn
