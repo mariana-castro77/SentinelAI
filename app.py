@@ -145,27 +145,25 @@ if not st.session_state["autenticado"]:
             </div>
         ''', unsafe_allow_html=True)
         
-        # Painel Informativo Profissional
-        with st.expander("ℹ️ Ver Credenciais de Acesso"):
-            st.markdown("""
-            | Perfil | Usuário | Senha |
-            | :--- | :--- | :--- |
-            | **Admin** | `admin` | `root99` |
-            | **Analista** | `analista` | `soc123` |
-            | **Nubank** | `nubank` | `nu2026` |
-            | **iFood** | `ifood` | `ifood77` |
-            | **M. Livre** | `mercadolivre` | `ml2026` |
-            | **Santander** | `santander` | `san99` |
-            | **Vivo** | `vivo` | `vivo2026` |
-            | **XP Invest.** | `xp` | `xp2026` |
-            | **Magalu** | `magazine` | `magalu2026` |
-            """)
+        # Painel de Acesso Rápido Visível (Estilo Industrial)
+        st.markdown('''
+            <div style="background-color: #1a1a1a; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-bottom: 20px;">
+                <p style="color: #fff; font-size: 0.9rem; margin-bottom: 10px;"><strong>ACESSO AO SISTEMA (DEMONSTRAÇÃO):</strong></p>
+                <div style="font-size: 0.85rem; color: #ccc; line-height: 1.6;">
+                    <strong>Admin:</strong> admin/root99 | <strong>Analista:</strong> analista/soc123<br>
+                    <strong>Nubank:</strong> nubank/nu2026 | <strong>iFood:</strong> ifood/ifood77<br>
+                    <strong>M. Livre:</strong> mercadolivre/ml2026 | <strong>Santander:</strong> santander/san99<br>
+                    <strong>Vivo:</strong> vivo/vivo2026 | <strong>XP:</strong> xp/xp2026 | <strong>Magalu:</strong> magazine/magalu2026
+                </div>
+            </div>
+        ''', unsafe_allow_html=True)
 
         with st.form("form_login"):
             usuario = st.text_input("Usuário")
             senha = st.text_input("Senha", type="password")
             
             if st.form_submit_button("ACESSAR SISTEMA", use_container_width=True):
+                # Dicionário de autenticação consolidado
                 auth_data = {
                     "admin": {"pwd": "root99", "perfil": "Administrador", "cliente": "Todos"},
                     "analista": {"pwd": "soc123", "perfil": "Analista", "cliente": "Todos"},
@@ -186,5 +184,5 @@ if not st.session_state["autenticado"]:
                     })
                     st.rerun()
                 else:
-                    st.error("Credenciais inválidas.")
+                    st.error("Credenciais inválidas. Verifique o usuário ou senha.")
     st.stop()
