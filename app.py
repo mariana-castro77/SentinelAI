@@ -13,613 +13,497 @@ import random
 # 1. CONFIGURAÇÃO AVANÇADA DA PLATAFORMA DE SEGURANÇA
 # ==============================================================================
 st.set_page_config(
-    page_title="SentinelAI // Enterprise Cyber Command Center",
+    page_title="SentinelAI // Cyber Security Enterprise Command Center",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Chave de contingência para o modelo cognitivo via Secrets do Streamlit
-GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA")
+# Chave de contingência para o modelo de IA
+GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 
 # ==============================================================================
-# 2. CARREGAMENTO E ENRIQUECIMENTO ESTRUTURAL DO DATASET REAL (CSV)
+# 2. CARREGAMENTO E SINCRO_TRATAMENTO DO DATASET REAL (CSV)
 # ==============================================================================
 @st.cache_data
 def carregar_dados_sistema():
-    # Tenta ler o arquivo real fornecido pelo usuário
     caminho_arquivo = "dataset_final.csv" if os.path.exists("dataset_final.csv") else "dataset_mysql.csv"
     
     if os.path.exists(caminho_arquivo):
         df = pd.read_csv(caminho_arquivo)
     else:
-        # Fallback de segurança com dados estruturados caso o arquivo suma no servidor
+        # Fallback estruturado idêntico ao layout do seu CSV original
         dados_reserva = {
             "ID": range(1, 6),
             "DATA": ["2026-03-11", "2026-03-27", "2026-04-05", "2026-04-03", "2026-03-07"],
-            "TIPO INCIDENTE": ["Ataque", "Lentidão", "Ataque", "Lentidão", "Lentidão"],
-            "SEVERIDADE": ["Crítica", "Crítica", "Crítica", "Média", "Baixa"],
+            "TIPO INCIDENTE": ["ataque", "lentidão", "ataque", "lentidão", "lentidão"],
+            "SEVERIDADE": ["crítica", "crítica", "crítica", "média", "baixa"],
             "TEMPO RESOLUÇÃO": [24, 24, 78, 58, 49],
-            "ORIGEM": ["aplicação", "aplicação", "servidor", "banco de dados", "aplicação"],
-            "STATUS": ["Pendente", "Pendente", "Resolvido", "Pendente", "Resolvido"],
+            "ORIGEM": ["aplicação", "rede", "servidor", "banco de dados", "aplicação"],
+            "STATUS": ["pendente", "pendente", "resolvido", "pendente", "resolvido"],
             "PAIS_ATAQUE": ["China", "Interno", "Alemanha", "Rússia", "Estados Unidos"],
             "PREJUIZO_ESTIMADO": [13016, 18187, 15719, 4486, 1173],
-            "RECEITA_CLIENTE": [88516, 55707, 78030, 92356, 66453],
             "CLIENTE": ["Nubank", "Santander", "Mercado Livre", "XP Investimentos", "iFood"],
-            "NIVEL_AMEACA": ["crítico", "crítico", "crítico", "médio", "baixo"],
             "IP_SUSPEITO": ["129.211.51.50", "Nenhum", "202.202.156.53", "185.220.101.5", "Nenhum"],
             "BLOQUEADO_AUTOMATICAMENTE": ["Sim", "Não", "Sim", "Não", "Não"],
-            "RISCO_FINANCEIRO": ["Alto", "Crítico", "Alto", "Médio", "Baixo"]
+            "RISCO_FINANCEIRO": ["médio", "alto", "alto", "médio", "baixo"]
         }
         df = pd.DataFrame(dados_reserva)
         
-    # Padronização e limpeza estrita para evitar quebras visuais na apresentação
-    df["TIPO INCIDENTE"] = df["TIPO INCIDENTE"].astype(str).str.title()
-    df["SEVERIDADE"] = df["SEVERIDADE"].astype(str).str.title()
-    df["STATUS"] = df["STATUS"].astype(str).str.title()
+    # Padronização e limpeza estrita para garantir filtros precisos
+    df["TIPO INCIDENTE"] = df["TIPO INCIDENTE"].astype(str).str.lower()
+    df["ORIGEM"] = df["ORIGEM"].astype(str).str.lower()
+    df["STATUS"] = df["STATUS"].astype(str).str.lower()
     df["CLIENTE"] = df["CLIENTE"].astype(str)
-    df["PAIS_ATAQUE"] = df["PAIS_ATAQUE"].astype(str)
-    
-    # Adicionando campos estratégicos ausentes para enriquecimento de IA e Auditoria
-    if "RISCO_FINANCEIRO" not in df.columns:
-        df["RISCO_FINANCEIRO"] = df["SEVERIDADE"].map({"Crítica": "CRÍTICO", "Média": "MÉDIO", "Baixa": "BAIXO"})
-    
     return df
 
 df_soc = carregar_dados_sistema()
 
-# Dicionários Dinâmicos de Playbooks de Resposta C-Level (Para enriquecer os detalhes técnicos)
-MAPPING_SOLUCOES = {
-    "Ataque": {
-        "solucao": "Implementação imediata de borda via Web Application Firewall (WAF) corporativo e mitigação Anycast de pacotes volumétricos volumosos.",
-        "feito": "O tráfego anômalo foi desviado para sandboxes de mitigação ativas, aplicando regras de drop imediato para assinaturas de pacotes TCP/UDP suspeitas.",
-        "automatico": "A engine de automação SOC isolou o IP no Security Group da infraestrutura de nuvem afetada e escalou o chamado de severidade 1."
-    },
-    "Lentidão": {
-        "solucao": "Escalonamento horizontal automatizado dos clusters de containers, otimização de queries de banco de dados e ativação de cache em memória.",
-        "feito": "Foi realizada a purga de conexões zumbis nos pools de banco de dados e redistribuição de carga através de load balancers globais.",
-        "automatico": "O microsserviço afetado recebeu alocação emergencial de memória física e recursos de CPU pelo orquestrador de orquestração automatizada."
-    }
-}
+# ==============================================================================
+# 3. CONTROLE DE SESSÃO, SISTEMA DE LOGIN E CONTROLE DE PERFIS
+# ==============================================================================
+if "autenticado" not in st.session_state:
+    st.session_state["autenticado"] = False
+    st.session_state["perfil_usuario"] = None
+    st.session_state["cliente_usuario"] = None
 
-# ==============================================================================
-# 3. INTERFACE VISUAL AVANÇADA, PARALLAX EXTREMO E ESTILIZAÇÃO NEON
-# ==============================================================================
+# Interface Visual Customizada para o Login com Parallax de Fundo
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap');
-
-/* --- INTENSIFICAÇÃO RADICAL DO EFEITO PARALLAX NO SCROLL --- */
-html, body, [class*="css"] {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    color: #e2e8f0;
-}
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap');
 
 .stApp {
-    background-image: 
-        linear-gradient(180deg, rgba(21, 5, 5, 0.85) 0%, rgba(5, 7, 10, 0.95) 50%, rgba(0, 0, 0, 1) 100%),
-        url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop');
+    background-image: linear-gradient(180deg, rgba(15, 3, 3, 0.9) 0%, rgba(2, 4, 8, 0.97) 100%), 
+                      url('https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=1920');
     background-attachment: fixed;
     background-size: cover;
-    background-position: center top;
-    transition: background-position 0.1s ease-out;
+    background-position: center;
 }
-
-/* Customização Avançada das Scrollbars */
-::-webkit-scrollbar { width: 10px; background: #020406; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ff3333 0%, #7f0000 100%); border-radius: 5px; }
-
-/* Envoltórios de Painéis Corporativos (Enterprise HUD Cards) */
-.hud-container-soc {
-    background: rgba(6, 10, 18, 0.9);
-    border: 1px solid rgba(239, 68, 68, 0.25);
+.hud-card {
+    background: rgba(5, 9, 16, 0.93);
+    border: 1px solid rgba(239, 68, 68, 0.3);
     border-radius: 12px;
-    padding: 1.8rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(239, 68, 68, 0.05);
-    margin-bottom: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(239, 68, 68, 0.05);
 }
-
-.metric-box-soc {
-    background: rgba(3, 5, 8, 0.85);
-    border-left: 4px solid #ff3333;
-    border-radius: 0 8px 8px 0;
-    padding: 1.2rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-}
-
-.titulo-holografico {
+.titulo-cyber {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    background: linear-gradient(90deg, #ffffff 0%, #ff6666 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ffffff;
     letter-spacing: -0.5px;
-}
-
-/* Tabs Estilizadas para Apresentação C-Level */
-.stTabs [data-baseweb="tab-list"] {
-    background: #04070c !important;
-    border: 1px solid rgba(239,68,68,0.2) !important;
-    padding: 8px !important;
-    border-radius: 10px !important;
-}
-.stTabs [aria-selected="true"] {
-    background: linear-gradient(90deg, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.05) 100%) !important;
-    color: #ff3333 !important;
-    border-radius: 6px !important;
-    font-weight: 700 !important;
-    border-bottom: 2px solid #ff3333 !important;
-}
-
-/* Caixas do Chatbot de Cibersegurança */
-.chat-bubble-operator {
-    background: rgba(255, 119, 51, 0.05);
-    border: 1px solid rgba(255, 119, 51, 0.2);
-    border-left: 4px solid #ff7733;
-    padding: 1rem; border-radius: 8px; margin-bottom: 0.8rem;
-}
-.chat-bubble-core {
-    background: rgba(239, 68, 68, 0.05);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    border-left: 4px solid #ff3333;
-    padding: 1rem; border-radius: 8px; margin-bottom: 0.8rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ==============================================================================
-# 4. CONTROLE DE ACESSO E CONFORMIDADE DE DADOS (LGPD/AUDITORIA)
-# ==============================================================================
-if "termo_aceito" not in st.session_state:
-    st.session_state["termo_aceito"] = False
-
-if not st.session_state["termo_aceito"]:
+if not st.session_state["autenticado"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none;} header{display:none!important;}</style>", unsafe_allow_html=True)
-    c_c1, c_center, c_c2 = st.columns([1, 1.8, 1])
-    with c_center:
-        st.markdown("<br><br><br>", unsafe_allow_html=True)
+    
+    c_l1, c_login, c_l2 = st.columns([1, 1.5, 1])
+    with c_login:
+        st.markdown("<br><br>", unsafe_allow_html=True)
         st.markdown("""
-        <div class="hud-container-soc" style="text-align: center; border: 2px solid #ff3333;">
-            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🛡️</div>
-            <h2 class="titulo-holografico" style="font-size: 1.6rem;">TERMO DE CONFORMIDADE E SEGURANÇA DA INFORMAÇÃO</h2>
-            <p style="color: #8a99ad; font-size: 0.88rem; line-height: 1.6; text-align: justify; margin: 1.5rem 0;">
-                O painel a seguir manipula telemetrias críticas corporativas, logs perimetrais de borda e análises de impacto financeiro em tempo real. Em conformidade estrita com as regulamentações da LGPD e políticas corporativas, garanta a confidencialidade durante a exibição desta seção de inteligência.
-            </p>
+        <div class="hud-card" style="text-align: center; margin-bottom: 1.5rem;">
+            <span style="color: #ff3333; font-weight:700; font-size:0.75rem; letter-spacing:3px;">SENTINELAI SECURITY ENTERPRISE</span>
+            <h2 class="titulo-cyber" style="margin-top:5px; font-size:1.8rem;">Autenticação de Perímetro</h2>
         </div>
         """, unsafe_allow_html=True)
         
-        col_btn1, col_btn2 = st.columns(2)
-        with col_btn1:
-            if st.button("✕ RECUSAR ACESSO", use_container_width=True):
-                st.error("Terminal Bloqueado.")
-        with col_btn2:
-            if st.button("✓ AUTORIZAR E INGRESSAR", use_container_width=True):
-                st.session_state["termo_aceito"] = True
-                st.rerun()
+        # Tabela Auxiliar de Credenciais visível para a banca examinadora
+        st.markdown("""
+        <table style="width:100%; font-size:11px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); color:#8a99ad; margin-bottom:15px; border-collapse:collapse; text-align:left;">
+            <thead>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#fff;">
+                    <th style="padding:5px;">Usuário</th>
+                    <th style="padding:5px;">Senha</th>
+                    <th style="padding:5px;">Perfil</th>
+                    <th style="padding:5px;">Escopo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td style="padding:4px;">admin</td><td style="padding:4px;">root99</td><td style="padding:4px;">Administrador</td><td style="padding:4px;">Global</td></tr>
+                <tr><td style="padding:4px;">analista</td><td style="padding:4px;">soc123</td><td style="padding:4px;">Analista SOC</td><td style="padding:4px;">Global</td></tr>
+                <tr><td style="padding:4px;">nubank_view</td><td style="padding:4px;">nu2026</td><td style="padding:4px;">Viewer Cliente</td><td style="padding:4px;">Nubank</td></tr>
+                <tr><td style="padding:4px;">ifood_view</td><td style="padding:4px;">ifood77</td><td style="padding:4px;">Viewer Cliente</td><td style="padding:4px;">iFood</td></tr>
+            </tbody>
+        </table>
+        """, unsafe_allow_html=True)
+
+        with st.form("form_login"):
+            usuario = st.text_input("Credencial de Usuário (User)", placeholder="Ex: admin")
+            senha = st.text_input("Assinatura de Segurança (Password)", type="password", placeholder="••••••••")
+            botao_entrar = st.form_submit_button("EFETUAR LOGIN NO ECOSSISTEMA")
+            
+            if botao_entrar:
+                if usuario == "admin" and senha == "root99":
+                    st.session_state["autenticado"] = True
+                    st.session_state["perfil_usuario"] = "Administrador"
+                    st.rerun()
+                elif usuario == "analista" and senha == "soc123":
+                    st.session_state["autenticado"] = True
+                    st.session_state["perfil_usuario"] = "Analista"
+                    st.rerun()
+                elif usuario == "nubank_view" and senha == "nu2026":
+                    st.session_state["autenticado"] = True
+                    st.session_state["perfil_usuario"] = "Viewer"
+                    st.session_state["cliente_usuario"] = "Nubank"
+                    st.rerun()
+                elif usuario == "ifood_view" and senha == "ifood77":
+                    st.session_state["autenticado"] = True
+                    st.session_state["perfil_usuario"] = "Viewer"
+                    st.session_state["cliente_usuario"] = "iFood"
+                    st.rerun()
+                else:
+                    st.error("Assinatura digital inválida. Perímetro de segurança alertado.")
     st.stop()
 
-# SIDEBAR CORPORATIVA DE CONTROLE
+# ==============================================================================
+# 4. DASHBOARD PRIVADO - CONFIGURAÇÃO DO MENU LATERAL
+# ==============================================================================
 with st.sidebar:
-    st.markdown("<div style='text-align:center; padding:1.2rem 0;'><h2 class='titulo-holografico' style='font-size:1.8rem; margin:0;'>Sentinel<span style='color:#ff3333;'>AI</span></h2><small style='color:#4f5e71; letter-spacing:1px;'>COMMAND SHELL v4.9</small></div>", unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("""
-    <div style='background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.9rem;'>
-        <p style='color: #ff3333; font-size: 0.65rem; margin:0; font-weight:700; letter-spacing:1px;'>OPERADOR DE RESPOSTA ATIVO</p>
-        <p style='color: #ffffff; font-weight: 700; margin: 0 0 0.4rem 0; font-size: 0.95rem;'>@PRO_ANALIST_SOC</p>
-        <span style="color:#10b981; font-size:0.7rem; font-weight:600;">● CONEXÃO CRIPTOGRAFADA TLS 1.3</span>
+    st.markdown(f"""
+    <div style="text-align:center; padding:1rem 0;">
+        <h2 class="titulo-cyber" style="font-size:1.8rem; margin:0;">Sentinel<span style="color:#ff3333;">AI</span></h2>
+        <small style="color:#ff3333; font-weight:700; letter-spacing:1px;">{st.session_state['perfil_usuario'].upper()} MODE</small>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("<small style='color:#4f5e71;'>CONTROLES GLOBAIS DE SESSÃO</small>", unsafe_allow_html=True)
-    if st.button("🚪 ENCERRAR TERMINAL", use_container_width=True):
-        st.session_state["termo_aceito"] = False
+    
+    # Exibe restrição de escopo caso seja perfil de cliente corporativo específico
+    if st.session_state["perfil_usuario"] == "Viewer":
+        st.warning(f"Visibilidade restrita: {st.session_state['cliente_usuario']}")
+        df_soc = df_soc[df_soc["CLIENTE"].str.lower() == st.session_state["cliente_usuario"].lower()]
+        
+    if st.button("🚪 DESCONECTAR TERMINAL", use_container_width=True):
+        st.session_state["autenticado"] = False
         st.rerun()
 
-# ==============================================================================
-# 5. CABEÇALHO DO DASHBOARD PRINCIPAL
-# ==============================================================================
+# Cabeçalho unificado do Command Center
 st.markdown("""
-<div class="hud-container-soc" style="background: linear-gradient(90deg, rgba(239,68,68,0.08) 0%, rgba(0,0,0,0) 100%); margin-bottom: 1.8rem; padding: 1.5rem;">
-    <p style="color: #ff3333; font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; margin:0;">CENTRAL INTEGRADA DE RESPOSTA INCIDENTES</p>
-    <h1 class="titulo-holografico" style="margin: 0; font-size: 2.3rem;">Painel de Inteligência de Ameaças Globais</h1>
+<div class="hud-card" style="padding: 1.2rem; margin-bottom: 1.5rem; background: linear-gradient(90deg, rgba(239,68,68,0.1) 0%, rgba(0,0,0,0) 100%);">
+    <h1 class="titulo-cyber" style="margin: 0; font-size: 2.1rem;">Cyber Command Center Live Dashboard</h1>
 </div>
 """, unsafe_allow_html=True)
 
-# Métricas C-Level de Auto-Impacto
-t_logs = len(df_soc)
-t_financeiro = df_soc["PREJUIZO_ESTIMADO"].sum()
-t_bloqueios = len(df_soc[df_soc["BLOQUEADO_AUTOMATICAMENTE"] == "Sim"])
-
-m_c1, m_c2, m_c3 = st.columns(3)
-with m_c1:
-    st.markdown(f"<div class='metric-box-soc'><small style='color:#8a99ad; font-size:0.75rem; letter-spacing:1px;'>TOTAL LOGS PARALELOS</small><br><b style='color:#fff; font-size:1.8rem; font-family:\"Space Grotesk\";'>{t_logs:,} Eventos</b></div>", unsafe_allow_html=True)
-with m_c2:
-    st.markdown(f"<div class='metric-box-soc' style='border-left-color:#10b981;'><small style='color:#8a99ad; font-size:0.75rem; letter-spacing:1px;'>PREJUÍZO CORPORATIVO MITIGADO</small><br><b style='color:#10b981; font-size:1.8rem; font-family:\"Space Grotesk\";'>R$ {t_financeiro:,.2f}</b></div>", unsafe_allow_html=True)
-with m_c3:
-    st.markdown(f"<div class='metric-box-soc' style='border-left-color:#ffaa00;'><small style='color:#8a99ad; font-size:0.75rem; letter-spacing:1px;'>GATILHOS IPS AUTOMATIZADOS</small><br><b style='color:#ffaa00; font-size:1.8rem; font-family:\"Space Grotesk\";'>{t_bloqueios} Regras Ativas</b></div>", unsafe_allow_html=True)
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-# Navegação Estrutural das Abas
 tab_analise, tab_mapa, tab_bi, tab_ia = st.tabs([
-    "🔍 TRIAGEM E ANÁLISE FORENSE", 
-    "🌍 MAPA AO VIVO DO KASPERSKY CYBERTHREAT", 
-    "📊 TELEMETRIA CORPORATIVA", 
-    "🤖 AUDITORIA COGNITIVA CORE (IA)"
+    "🔍 TRIAGEM FORENSE DE INCIDENTES", 
+    "🌍 GLOBO LIVE KASPERSKY INTERATIVO", 
+    "📊 TELEMETRIA EM TEMPO REAL", 
+    "🤖 ASSISTENTE COGNITIVO SEGURADO"
 ])
 
 # ==============================================================================
-# ABA 1: PAINEL DE ANÁLISE DETALHADO (OS 11 REQUISITOS EXPLICITADOS)
+# ABA 1: TRIAGEM FORENSE (FILTROS DE ORIGEM E MINUTOS DO CSV)
 # ==============================================================================
 with tab_analise:
-    st.markdown("### Motores de Triagem Avançada")
-    st.caption("Filtre as telemetrias operacionais para isolar as assinaturas de riscos no cluster corporativo.")
+    st.markdown("### Análise Avançada de Incidentes")
     
-    # Grid de Filtros Ricos em Detalhes
-    f_col1, f_col2, f_col3 = st.columns(3)
-    with f_col1:
-        tipo_sel = st.selectbox("Tipo de Incidente (Vetor)", sorted(df_soc["TIPO INCIDENTE"].unique()))
-    with f_col2:
-        cliente_sel = st.selectbox("Cliente Corporativo Afetado", sorted(df_soc["CLIENTE"].unique()))
-    with f_col3:
-        status_sel = st.selectbox("Status Operacional Atual", sorted(df_soc["STATUS"].unique()))
-        
+    c_f1, c_f2, c_f3 = st.columns(3)
+    with c_f1:
+        # Puxa dinamicamente os tipos de incidentes do CSV (Ataque, Lentidão, etc.)
+        tipo_sel = st.selectbox("Tipo de Incidente", sorted(df_soc["TIPO INCIDENTE"].unique()))
+    with c_f2:
+        # Filtro de Origem real solicitado (aplicação, banco de dados, rede, servidor) vindo direto do CSV
+        origem_sel = st.selectbox("Origem do Incidente", sorted(df_soc["ORIGEM"].unique()))
+    with c_f3:
+        if st.session_state["perfil_usuario"] == "Viewer":
+            lista_clientes = [st.session_state["cliente_usuario"]]
+        else:
+            lista_clientes = sorted(df_soc["CLIENTE"].unique())
+        cliente_sel = st.selectbox("Cliente Corporativo Afetado", lista_clientes)
+
+    c_f4, c_f5 = st.columns(2)
+    with c_f4:
+        status_sel = st.selectbox("Status Atual do Evento", sorted(df_soc["STATUS"].unique()))
+    with c_f5:
+        # Filtro real de tempo de resolução mapeado em minutos baseado nas métricas do dataset
+        min_minutos = int(df_soc["TEMPO RESOLUÇÃO"].min())
+        max_minutos = int(df_soc["TEMPO RESOLUÇÃO"].max())
+        tempo_sel = st.slider("Tempo Limite de Resolução (Em Minutos)", min_minutos, max_minutos, max_minutos)
+
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Mecanismo Condicional Estrito por Estado de Sessão
-    key_scan = f"scan_exec_{tipo_sel}_{cliente_sel}"
-    if key_scan not in st.session_state:
-        st.session_state[key_scan] = False
+    key_execucao = f"analise_{tipo_sel}_{origem_sel}_{cliente_sel}"
+    if key_execucao not in st.session_state:
+        st.session_state[key_execucao] = False
+
+    if st.button("🚀 DISPARAR INVESTIGAÇÃO PERIMETRAL", use_container_width=True):
+        st.session_state[key_execucao] = True
+        st.toast("Análise estrutural processada!", icon="🛡️")
+
+    if st.session_state[key_execucao]:
+        # Filtragem precisa cruzando todos os dados reais selecionados
+        res = df_soc[
+            (df_soc["TIPO INCIDENTE"] == tipo_sel) & 
+            (df_soc["ORIGEM"] == origem_sel) & 
+            (df_soc["CLIENTE"] == cliente_sel) & 
+            (df_soc["STATUS"] == status_sel) & 
+            (df_soc["TEMPO RESOLUÇÃO"] <= tempo_sel)
+        ]
         
-    if st.button("⚡ INICIAR TRATAMENTO DE ASSINATURA FORENSE", use_container_width=True):
-        barra_scan = st.progress(0)
-        for p in range(100):
-            time.sleep(0.006)
-            barra_scan.progress(p + 1)
-        st.session_state[key_scan] = True
-        st.toast("Rastreamento e decodificação estrutural finalizada!", icon="🛡️")
-
-    # Renderização Rica de Dados Condicional (Só renderiza tudo após o Start)
-    if st.session_state[key_scan]:
-        # Localização do dado real ou geração inteligente estruturada
-        dados_filtrados = df_soc[(df_soc["TIPO INCIDENTE"] == tipo_sel) & (df_soc["CLIENTE"] == cliente_sel)]
-        if not dados_filtrados.empty:
-            match_row = dados_filtrados.iloc[0]
-        else:
-            match_row = df_soc[df_soc["TIPO INCIDENTE"] == tipo_sel].iloc[0] if not df_soc[df_soc["TIPO INCIDENTE"] == tipo_sel].empty else df_soc.iloc[0]
-
-        # Puxa resoluções dinâmicas estruturadas com base no tipo real para enriquecer os detalhes
-        tipo_chave = "Ataque" if "ataque" in match_row["TIPO INCIDENTE"].lower() else "Lentidão"
-        info_playbook = MAPPING_SOLUCOES[tipo_chave]
+        if res.empty:
+            # Fallback inteligente se a combinação exata de filtros for muito restritiva
+            res = df_soc[(df_soc["TIPO INCIDENTE"] == tipo_sel) | (df_soc["CLIENTE"] == cliente_sel)]
+            
+        match = res.iloc[0] if not res.empty else df_soc.iloc[0]
 
         st.markdown("---")
-        st.markdown("<h3 style='color:#ff3333; font-family:\"Space Grotesk\";'>📋 Dossiê Forense de Evento de Segurança</h3>", unsafe_allow_html=True)
-        
-        # Bloco Inicial: Os 5 Parâmetros de Entrada / Identificação Básica
-        c_p1, c_p2, c_p3, c_p4, c_p5 = st.columns(5)
-        with c_p1:
-            st.markdown(f"<div style='background:#050911; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.05);'><small style='color:#8a99ad;'>TIPO INCIDENTE</small><br><b>{match_row['TIPO INCIDENTE']}</b></div>", unsafe_allow_html=True)
-        with c_p2:
-            st.markdown(f"<div style='background:#050911; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.05);'><small style='color:#8a99ad;'>ORIGEM LOCAL</small><br><b>{match_row['ORIGEM'].upper()}</b></div>", unsafe_allow_html=True)
-        with c_p3:
-            st.markdown(f"<div style='background:#050911; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.05);'><small style='color:#8a99ad;'>CLIENTE AFETADO</small><br><b style='color:#ff7733;'>{cliente_sel}</b></div>", unsafe_allow_html=True)
-        with c_p4:
-            st.markdown(f"<div style='background:#050911; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.05);'><small style='color:#8a99ad;'>STATUS TRIAGEM</small><br><b style='color:#ff3333;'>{match_row['STATUS']}</b></div>", unsafe_allow_html=True)
-        with c_p5:
-            st.markdown(f"<div style='background:#050911; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.05);'><small style='color:#8a99ad;'>TEMPO DE RESOLUÇÃO</small><br><b>{match_row['TEMPO RESOLUÇÃO']} min</b></div>", unsafe_allow_html=True)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        # Bloco de Risco e Rastreamento Pós-Análise (Próximos Itens do Requisito)
-        c_r1, c_r2, c_r3 = st.columns(3)
-        with c_r1:
-            st.markdown(f"""
-            <div class="hud-container-soc" style="border-left: 4px solid #ff3333; margin-bottom:0;">
-                <small style="color:#8a99ad; font-size:0.75rem;">IP SUSPEITO RASTREADO</small>
-                <h3 style="margin:5px 0; font-family:monospace; color:#ff3333; font-size:1.4rem;">{match_row['IP_SUSPEITO']}</h3>
-                <small style="color:#4f5e71;">Geolocalização Identificada: {match_row['PAIS_ATAQUE']}</small>
-            </div>
-            """, unsafe_allow_html=True)
-        with c_r2:
-            st.markdown(f"""
-            <div class="hud-container-soc" style="border-left: 4px solid #ffaa00; margin-bottom:0;">
-                <small style="color:#8a99ad; font-size:0.75rem;">RISCO FINANCEIRO ESTIMADO</small>
-                <h3 style="margin:5px 0; font-family:'Space Grotesk'; color:#ffaa00; font-size:1.4rem;">{match_row['RISCO_FINANCEIRO'].upper()}</h3>
-                <small style="color:#4f5e71;">Impacto nas Camadas de Faturamento</small>
-            </div>
-            """, unsafe_allow_html=True)
-        with c_r3:
-            st.markdown(f"""
-            <div class="hud-container-soc" style="border-left: 4px solid #10b981; margin-bottom:0;">
-                <small style="color:#8a99ad; font-size:0.75rem;">PREJUÍZO PATRIMONIAL CONSTATADO</small>
-                <h3 style="margin:5px 0; font-family:'Space Grotesk'; color:#10b981; font-size:1.4rem;">R$ {match_row['PREJUIZO_ESTIMADO']:,.2f}</h3>
-                <small style="color:#4f5e71;">Valores Contidos via Resposta Rápida</small>
-            </div>
-            """, unsafe_allow_html=True)
-
-        # Planos Detalhados de Remediação Estratégica (Itens finais exigidos)
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("#### 🛠️ Plano Preventivo e Ações Corretivas SOC Engine")
-        
-        st.markdown(f"**O que foi feito ou será feito para solucionar esse problema estrutural:**")
-        st.info(match_row.get("O_QUE_FOI_FEITO", info_playbook["feito"]))
-        
-        st.markdown(f"**Solução de melhora de engenharia para mitigar novas ocorrências perimetrais:**")
-        st.success(match_row.get("SOLUCAO_MELHORA", info_playbook["solucao"]))
-        
         st.markdown(f"""
-        <div style="background: rgba(16, 185, 129, 0.07); border: 1px solid #10b981; padding: 15px; border-radius: 8px;">
-            <span style="color:#10b981; font-weight:bold; font-size:0.85rem; letter-spacing:1px;">🛡️ RESPOSTA AUTOMÁTICA AUTOMATIZADA:</span><br>
-            <p style="margin:5px 0 0 0; font-size:0.9rem; color:#e2e8f0;">{match_row.get('BLOQUEADO_AUTOMATICAMENTE', info_playbook['automatico'])} - Vetores de tráfego nocivos bloqueados nas camadas perimetrais do Firewall de Borda de maneira autônoma.</p>
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ff3333; padding: 12px; border-radius: 6px; margin-bottom: 1.5rem;">
+            <span style="color: #ff3333; font-weight: bold;">🔴 Alerta de Triagem Secundária: Severidade Registrada como {match['SEVERIDADE'].upper()}</span>
         </div>
         """, unsafe_allow_html=True)
 
+        k_col1, k_col2, k_col3 = st.columns(3)
+        with k_col1:
+            st.metric("Risco Financeiro Atribuído", str(match['RISCO_FINANCEIRO']).upper())
+        with k_col2:
+            st.metric("Prejuízo Patrimonial Alocado", f"R$ {match['PREJUIZO_ESTIMADO']:,.2f}")
+        with k_col3:
+            st.metric("Tempo Efetivo de Resolução", f"{match['TEMPO RESOLUÇÃO']} Minutos")
+
+        st.markdown(f"""
+        <div class="hud-card" style="border-left: 4px solid #ff3333; margin-top:1rem; padding:1.2rem;">
+            <p style="margin:0 0 6px 0;">🌐 <b>Endereço IP Rastreado:</b> <span style="color:#ff3333; font-family:monospace;">{match['IP_SUSPEITO']}</span></p>
+            <p style="margin:0 0 6px 0;">🌍 <b>Vetor Macroscópico de Origem:</b> {match['PAIS_ATAQUE']}</p>
+            <p style="margin:0;">⚙️ <b>Mitigação Automática via Borda de Rede:</b> {match['BLOQUEADO_AUTOMATICAMENTE']}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("<br>#### 🛠️ Resolução Estratégica e Engenharia de Melhoria", unsafe_allow_html=True)
+        st.write("**Ações Corretivas Aplicadas (O que foi ou será feito para mitigar o problema):**")
+        st.info("Varredura de logs forenses efetuada, isolamento lógico de subredes comprometidas e purga de chaves de acesso vulneráveis expostas.")
+        
+        st.write("**Solução de Melhoria de Infraestrutura Avançada:**")
+        st.success("Implementação de arquitetura Zero-Trust, rotatividade obrigatória de tokens via Hardware Security Modules (HSM) e bloqueio geográfico de tráfego de borda.")
     else:
-        st.markdown("<p style='color:#4f5e71; text-align:center; padding:5rem;'>Aguardando o comando de disparo do analista para processar e estruturar a telemetria forense do incidente.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#4f5e71; text-align:center; padding:3rem;'>Insira as credenciais de filtros e dispare o motor de triagem para carregar os detalhes operacionais.</p>", unsafe_allow_html=True)
 
 # ==============================================================================
-# ABA 2: GLOBO 3D MODELO KASPERSKY COM FLUXO E VETORES DIRECIONADOS
+# ABA 2: GLOBO 3D INTERATIVO KASPERSKY COM CONTROLE DE MOUSE (ORBIT CONTROLS)
 # ==============================================================================
 with tab_mapa:
-    st.markdown("### Mapa ao vivo do Kaspersky Cyberthreat")
-    st.caption("Projeção tridimensional interativa mostrando a origem dos pacotes maliciosos contra o datacenter de operação central.")
+    st.markdown("### Monitor Global de Ameaças em Tempo Real")
+    st.caption("Clique com o botão esquerdo para rotacionar o planeta. Use o scroll do mouse para aproximar/afastar (Zoom).")
 
-    # Mapeando os dados reais do CSV para alimentar as coordenadas fictícias do Three.js
-    lista_incidentes_reais = []
-    for _, linha in df_soc.iterrows():
-        if str(linha["PAIS_ATAQUE"]) != "Interno":
-            lista_incidentes_reais.append(f"{{pais: '{linha['PAIS_ATAQUE']}', ip: '{linha['IP_SUSPEITO']}', tipo: '{linha['TIPO INCIDENTE']}'}}")
-    
-    js_array_incidentes = ", ".join(lista_incidentes_reais)
+    # Mapeando os ataques do arquivo real para alimentar o script JS do Globo 3D
+    ataques_reais_js = []
+    for _, row in df_soc.iterrows():
+        if str(row["PAIS_ATAQUE"]) != "Interno":
+            ataques_reais_js.append(f"{{origem: '{row['PAIS_ATAQUE']}', ip: '{row['IP_SUSPEITO']}', tipo: '{row['TIPO INCIDENTE']}', cliente: '{row['CLIENTE']}'}}")
+    string_array_ataques = ", ".join(ataques_reais_js[:12])
 
-    # HTML/JS Avançado - Renderizador do Globo Escuro com Arcos Balísticos Neon de Entrada
-    codigo_globo_kaspersky = """
+    # Código HTML mestre injetando Three.js completo com OrbitControls habilitado para movimentação livre com o mouse
+    kaspersky_globe_html = """
     <!DOCTYPE html>
     <html>
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
         <style>
-            body { margin: 0; background: #010408; overflow: hidden; font-family: 'Courier New', monospace; }
-            #container-globo { width: 100%; height: 550px; position: relative; }
-            .kaspersky-hud-lateral { 
-                position: absolute; top: 20px; right: 20px; 
-                background: rgba(3,7,15,0.96); width: 310px;
-                padding: 18px; border: 1px solid #ff3333; 
-                font-size: 11px; color: #fff; border-radius: 8px;
-                box-shadow: 0 0 25px rgba(255,51,51,0.25);
+            body { margin: 0; background: #03060d; overflow: hidden; font-family: 'Courier New', monospace; }
+            #canvas-holder { width: 100%; height: 550px; position: relative; cursor: grab; }
+            #canvas-holder:active { cursor: grabbing; }
+            .kaspersky-hud { 
+                position: absolute; top: 15px; left: 15px; 
+                background: rgba(4,10,22,0.95); width: 320px;
+                padding: 15px; border: 1px solid #ff3333; 
+                font-size: 11px; color: #fff; border-radius: 6px;
+                box-shadow: 0 0 25px rgba(255,51,51,0.2);
+                pointer-events: none;
             }
-            .hud-header { color: #ff3333; font-weight: bold; font-size:12px; border-bottom: 1px solid rgba(255,51,51,0.3); padding-bottom: 6px; margin-bottom: 10px; letter-spacing:1px; }
-            .log-item-linha { margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 6px; }
-            .tag-origem { background: #ff3333; color: #fff; padding: 2px 5px; border-radius: 3px; font-size: 9px; font-weight:bold; }
+            .hud-header { color: #ff3333; font-weight: bold; border-bottom: 1px solid rgba(255,51,51,0.3); padding-bottom: 5px; margin-bottom: 8px; }
+            .feed-row { margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px; }
+            .badge-neon { background: #ff3333; color: white; padding: 1px 4px; border-radius: 3px; font-size: 9px; font-weight: bold; }
         </style>
     </head>
     <body>
-        <div id="container-globo">
-            <div class="kaspersky-hud-lateral">
-                <div class="hud-header">📡 LIVE ATTACK VECTOR ROUTING</div>
-                <div id="log-dinamico-kaspersky"></div>
+        <div id="canvas-holder">
+            <div class="kaspersky-hud">
+                <div class="hud-header">📡 KASPERSKY SIMULATOR // LIVE ATTACK TRAFFIC</div>
+                <div id="live-feed-box"></div>
             </div>
         </div>
         <script>
-            const logsAtaques = [__DATASET_JASCRIPT__];
-            const logBox = document.getElementById('log-dinamico-kaspersky');
+            const dbAtaques = [__DATA_STREAM_ATAQUES__];
+            const feedContainer = document.getElementById('live-feed-box');
 
-            function atualizarLogsFlutuantes() {
-                logBox.innerHTML = "";
-                // Seleciona itens aleatórios reais do seu CSV para simular o streaming dinâmico da Kaspersky
-                for(let i=0; i<4; i++) {
-                    let log = logsAtaques[Math.floor(Math.random() * logsAtaques.length)];
-                    logBox.innerHTML += `
-                        <div class="log-item-linha">
-                            <span class="tag-origem">ORIGEM: ${log.pais.toUpperCase()}</span><br>
-                            ⚔️ Vetor: ${log.tipo}<br>
-                            📍 Destino: Infraestrutura Corporativa BR<br>
-                            🌐 IP Origem: ${log.ip}
+            function streamingInterface() {
+                feedContainer.innerHTML = "";
+                for(let i=0; i<3; i++) {
+                    let item = dbAtaques[Math.floor(Math.random() * dbAtaques.length)];
+                    feedContainer.innerHTML += `
+                        <div class="feed-row">
+                            <span class="badge-neon">ATAQUE DETECTADO</span><br>
+                            ⚔️ <b>ORIGEM:</b> ${item.origem.toUpperCase()}<br>
+                            🎯 <b>ALVO:</b> Infraestrutura Privada (${item.cliente})<br>
+                            🌐 <b>IP ORIGEM:</b> ${item.ip}
                         </div>
                     `;
                 }
             }
-            atualizarLogsFlutuantes();
-            setInterval(atualizarLogsFlutuantes, 2400);
+            streamingInterface();
+            setInterval(streamingInterface, 3000);
 
-            // Setup de Renderização do Tridimensional Three.js
-            const wrapper = document.getElementById('container-globo');
-            const cena = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(55, wrapper.clientWidth / 550, 0.1, 1000);
-            const renderizador = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderizador.setSize(wrapper.clientWidth, 550);
-            wrapper.appendChild(renderizador.domElement);
+            // Inicialização da Scene 3D
+            const container = document.getElementById('canvas-holder');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, container.clientWidth / 550, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, 550);
+            container.appendChild(renderer.domElement);
 
-            // Esfera Sólida Terrestre Escura
-            const geometriaGlobo = new THREE.SphereGeometry(2.1, 40, 40);
-            const materialGlobo = new THREE.MeshBasicMaterial({ color: 0x060b12, wireframe: false });
-            const malhaGlobo = new THREE.Mesh(geometriaGlobo, materialGlobo);
-            cena.add(malhaGlobo);
+            // HABILITAÇÃO COMPLETA DOS CONTROLES DO MOUSE (Mover, Girar, Zoom)
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.rotateSpeed = 0.8;
 
-            // Malha de Redes do Planeta (Grid Neon Estilo Kaspersky)
-            const materialGrid = new THREE.MeshBasicMaterial({ color: 0xff3333, wireframe: true, transparent: true, opacity: 0.14 });
-            const malhaGrid = new THREE.Mesh(geometriaGlobo, materialGrid);
-            cena.add(malhaGrid);
+            // Esfera Terrestre Escura Revestida com Grid Metálico
+            const geoPlaneta = new THREE.SphereGeometry(2.2, 40, 40);
+            const matPlaneta = new THREE.MeshBasicMaterial({ color: 0x050a12 });
+            const meshPlaneta = new THREE.Mesh(geoPlaneta, matPlaneta);
+            scene.add(meshPlaneta);
 
-            // Grupo de Linhas de Ataques Balísticos
-            const grupoArcos = new THREE.Group();
-            cena.add(grupoArcos);
+            const matWireframe = new THREE.MeshBasicMaterial({ color: #ff3333, wireframe: true, transparent: true, opacity: 0.15 });
+            const meshWireframe = new THREE.Mesh(geoPlaneta, matWireframe);
+            scene.add(meshWireframe);
 
-            function criarArcoProcedural() {
-                if(grupoArcos.children.length > 12) grupoArcos.remove(grupoArcos.children[0]);
+            // Grupo de arcos balísticos de ataques
+            const arcGroup = new THREE.Group();
+            scene.add(arcGroup);
+
+            function drawAttackArc() {
+                if(arcGroup.children.length > 15) arcGroup.remove(arcGroup.children[0]);
                 
-                const pontosArco = [];
-                // Gera origem randômica representando os vetores externos globais detectados
-                const xOrigem = (Math.random() - 0.5) * 3.6;
-                const yOrigem = (Math.random() * 1.8) + 0.4; 
-                const zOrigem = Math.sqrt(Math.abs(5.0 - xOrigem*xOrigem - yOrigem*yOrigem));
+                const points = [];
+                // Definição de vetores geográficos tridimensionais (De Onde -> Para Onde)
+                const startX = (Math.random() - 0.5) * 3.6;
+                const startY = (Math.random() * 1.8) + 0.5;
+                const startZ = Math.sqrt(Math.abs(4.84 - startX*startX - startY*startY));
 
-                // Destino Central Fixo (Representando o Centro de Dados Protegido)
-                const xDestino = 0; const yDestino = -1.4; const zDestino = 1.5; 
+                const endX = 0; const endY = -1.5; const startTargetZ = 1.6;
 
-                for (let i = 0; i <= 30; i++) {
-                    let t = i / 30;
-                    let p = new THREE.Vector3().lerpVectors(new THREE.Vector3(xOrigem, yOrigem, zOrigem), new THREE.Vector3(xDestino, yDestino, zDestino), t);
-                    p.normalize().multiplyScalar(2.1 + Math.sin(t * Math.PI) * 0.55); // Elevação do arco balístico
-                    pontosArco.push(p);
+                for (let i = 0; i <= 40; i++) {
+                    let t = i / 40;
+                    let p = new THREE.Vector3().lerpVectors(new THREE.Vector3(startX, startY, startZ), new THREE.Vector3(endX, endY, startTargetZ), t);
+                    p.normalize().multiplyScalar(2.2 + Math.sin(t * Math.PI) * 0.5); // Altura balística da curva
+                    points.push(p);
                 }
-                const curvaConstruida = new THREE.CatmullRomCurve3(pontosArco);
-                const geometriaLinha = new THREE.BufferGeometry().setFromPoints(curvaConstruida.getPoints(50));
-                const materialLinha = new THREE.LineBasicMaterial({ color: 0xff3333, transparent: true, opacity: 0.85 });
-                const linhaFinal = new THREE.Line(geometriaLinha, materialLinha);
-                grupoArcos.add(linhaFinal);
+                
+                const curve = new THREE.CatmullRomCurve3(points);
+                const geoLine = new THREE.BufferGeometry().setFromPoints(curve.getPoints(50));
+                const matLine = new THREE.LineBasicMaterial({ color: 0xff3333, transparent: true, opacity: 0.8 });
+                const line = new THREE.Line(geoLine, matLine);
+                arcGroup.add(line);
             }
-            setInterval(criarArcoProcedural, 800);
+            setInterval(drawAttackArc, 700);
 
-            camera.position.z = 4.4;
-            function loopAnimacao() {
-                requestAnimationFrame(loopAnimacao);
-                malhaGlobo.rotation.y += 0.002;
-                malhaGrid.rotation.y += 0.002;
-                grupoArcos.rotation.y += 0.002;
-                renderizador.render(cena, camera);
+            camera.position.z = 4.6;
+
+            function animationLoop() {
+                requestAnimationFrame(animationLoop);
+                meshPlaneta.rotation.y += 0.001;
+                meshWireframe.rotation.y += 0.001;
+                arcGroup.rotation.y += 0.001;
+                
+                controls.update(); // Atualiza os movimentos aplicados pelo mouse do usuário
+                renderer.render(scene, camera);
             }
             window.addEventListener('resize', () => {
-                camera.aspect = wrapper.clientWidth / 550; camera.updateProjectionMatrix();
-                renderizador.setSize(wrapper.clientWidth, 550);
+                camera.aspect = container.clientWidth / 550; camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, 550);
             });
-            loopAnimacao();
+            animationLoop();
         </script>
     </body>
     </html>
-    """.replace("__DATASET_JASCRIPT__", js_array_incidentes)
+    """.replace("__DATA_STREAM_ATAQUES__", string_array_ataques)
     
-    components.html(codigo_globo_kaspersky, height=560, scrolling=False)
+    components.html(kaspersky_globe_html, height=560, scrolling=False)
 
 # ==============================================================================
-# ABA 3: GRAPHICS PERFORMANCE (BI E TELEMETRIA GERENCIAL)
+# ABA 3: TELEMETRIA CORPORATIVA (GRÁFICOS GERENCIAIS VIVOS)
 # ==============================================================================
 with tab_bi:
-    st.markdown("### Telemetria e Indicadores Volumétricos")
-    config_layout_estilo = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#e2e8f0")
+    st.markdown("### Telemetria e Consolidação Gerencial")
     
-    bg_col1, bg_col2 = st.columns(2)
-    with bg_col1:
-        fig_rosca = px.pie(
-            df_soc, 
-            names="RISCO_FINANCEIRO", 
-            title="Exposição de Risco Crítico Financeiro (%)", 
-            hole=0.4,
-            color_discrete_sequence=["#ff3333", "#ff7733", "#22aa66"]
-        )
-        fig_rosca.update_layout(**config_layout_estilo)
-        st.plotly_chart(fig_rosca, use_container_width=True)
-        
-    with bg_col2:
-        fig_barras = px.bar(
-            df_soc, 
-            x="CLIENTE", 
-            y="PREJUIZO_ESTIMADO", 
-            color="TIPO INCIDENTE", 
-            title="Prejuízo Histórico Mitigado por Cliente Ativo (R$)",
-            color_discrete_sequence=px.colors.sequential.Reds_r
-        )
-        fig_barras.update_layout(**config_layout_estilo)
-        st.plotly_chart(fig_barras, use_container_width=True)
+    c_g1, c_g2 = st.columns(2)
+    with c_g1:
+        fig_pie = px.pie(df_soc, names="RISCO_FINANCEIRO", title="Distribuição Percentual de Risco Financeiro", color_discrete_sequence=["#ff3333", "#ff7733", "#22aa66"])
+        fig_pie.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#fff")
+        st.plotly_chart(fig_pie, use_container_width=True)
+    with c_g2:
+        fig_bar = px.bar(df_soc, x="CLIENTE", y="PREJUIZO_ESTIMADO", color="TIPO INCIDENTE", title="Impacto Financeiro Mitigado por Carteira (R$)", color_discrete_sequence=px.colors.sequential.Reds_r)
+        fig_bar.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#fff")
+        st.plotly_chart(fig_bar, use_container_width=True)
 
 # ==============================================================================
-# ABA 4: CHATBOT SEGURO, COMPLETO E COM MACROS DE ALTO NÍVEL
+# ABA 4: CHATBOT DE SEGURANÇA SEGURO E ISOLADO CONTRA ERROS
 # ==============================================================================
 with tab_ia:
-    st.markdown("### Assistente de Mitigação Cognitiva Core")
-    st.caption("Engine de inteligência estruturada para auditorias imediatas de vulnerabilidade e playbooks de remediação.")
+    st.markdown("### Assistente Cognitivo SentinelCore")
+    st.caption("Validador de perímetros criptográficos e playbooks de mitigação C-Level.")
 
-    # Inicialização blindada do histórico do chat para evitar limpezas acidentais
-    if "historico_chat_cyber" not in st.session_state:
-        st.session_state["historico_chat_cyber"] = [
-            {"role": "model", "content": "Terminal de IA Ativado. Pronto para auditar riscos de perímetro e apoiar respostas a incidentes baseadas em frameworks corporativos."}
+    if "cyber_chat_v2" not in st.session_state:
+        st.session_state["cyber_chat_v2"] = [
+            {"role": "model", "content": "Sistema central inicializado. Pronto para auditar vulnerabilidades estruturais."}
         ]
 
-    # Renderização visual rica do chat corporativo
-    for mensagem in st.session_state["historico_chat_cyber"]:
-        if mensagem["role"] == "user":
-            st.markdown(f"""<div class='chat-bubble-operator'><b>👤 Operador Técnico:</b><br>{mensagem['content']}</div>""", unsafe_allow_html=True)
+    # Exibição do fluxo de diálogos
+    for msg in st.session_state["cyber_chat_v2"]:
+        if msg["role"] == "user":
+            st.markdown(f"""<div style='background:rgba(255,119,51,0.05); border-left:3px solid #ff7733; padding:10px; margin-bottom:8px; border-radius:4px;'><b>👤 Operador Técnico:</b><br>{msg['content']}</div>""", unsafe_allow_html=True)
         else:
-            st.markdown(f"""<div class='chat-bubble-core'><b>🤖 SentinelCore (LLM):</b><br>{mensagem['content']}</div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div style='background:rgba(239,68,68,0.03); border-left:3px solid #ff3333; padding:10px; margin-bottom:8px; border-radius:4px;'><b>🤖 SentinelCore:</b><br>{msg['content']}</div>""", unsafe_allow_html=True)
 
-    # Macros avançadas de alto nível de cibersegurança exigidas para a apresentação
-    st.markdown("<p style='color:#ff3333; font-size:0.75rem; font-weight:700; margin-top:1.5rem;'>DISPARAR MACROS AUTOMATIZADAS DE SEGURANÇA:</p>", unsafe_allow_html=True)
-    b_col1, b_col2, b_col3 = st.columns(3)
-    macro_prompt_selecionado = ""
-    with b_col1:
-        if st.button("🔴 Auditoria de Ataques DDoS por IPs Externos", use_container_width=True):
-            macro_prompt_selecionado = "Gere um relatório forense detalhado e estruturado em tópicos explicando como mitigar ataques de IPs maliciosos externos usando regras automatizadas de Firewall de Borda e rate limiting."
-    with b_col2:
-        if st.button("🔒 Plano de Contenção de Vazamento de Credenciais", use_container_width=True):
-            macro_prompt_selecionado = "Quais são as medidas corporativas imediatas de isolamento para conter riscos financeiros de nível Crítico causados por vazamento de tokens e credenciais em APIs de produção?"
-    with b_col3:
-        if st.button("🛡️ Playbook Contra Incidentes de Ransomware Ativo", use_container_width=True):
-            macro_prompt_selecionado = "Estruture uma estratégia avançada de resiliência e resposta a incidentes baseada estritamente no framework NIST para isolar storages e blindar backups contra infecções por Ransomware."
+    # Prompts corporativos pré-estruturados prontos para clique
+    st.markdown("<p style='color:#ff3333; font-size:0.75rem; font-weight:700; margin-top:1rem;'>DISPARAR SELEÇÃO DE MACROS:</p>", unsafe_allow_html=True)
+    b1, b2 = st.columns(2)
+    prompt_macro_acionado = ""
+    with b1:
+        if st.button("🔴 Auditoria Técnica: Bloqueio Geográfico de IPs Suspeitos", use_container_width=True):
+            prompt_macro_acionado = "Explique estruturadamente como configurar firewalls de borda para realizar drop imediato de ataques volumétricos simulando logs da Kaspersky."
+    with b2:
+        if st.button("🔒 Isolar Infraestrutura: Vazamento em Banco de Dados", use_container_width=True):
+            prompt_macro_acionado = "Quais as ações imediatas sob o framework NIST para mitigar o comprometimento de credenciais em APIs críticas corporativas?"
 
-    # Input manual do usuário
-    with st.form("formulario_chat_ia", clear_on_submit=True):
-        texto_digitado = st.text_input("Inserir prompt customizado de auditoria ou dúvida técnica:", placeholder="Ex: Como proteger microsserviços expostos contra OWASP Top 10?")
-        gatilho_envio = st.form_submit_button("DISPARAR COMANDO COGNITIVO")
+    # Caixa de texto blindada contra exceções
+    with st.form("chat_form_secure", clear_on_submit=True):
+        input_usuario = st.text_input("Inserir comando customizado de auditoria:", placeholder="Ex: Como proteger meu cluster de um ataque ransomware?")
+        botao_disparo_chat = st.form_submit_button("EXECUTAR COMANDO COGNITIVO")
 
-    prompt_final_ia = texto_digitado if gatilho_envio else macro_prompt_selecionado
+    prompt_final_chat = input_usuario if botao_disparo_chat else prompt_macro_acionado
 
-    if prompt_final_ia.strip():
-        # Registra o comando no histórico da sessão
-        st.session_state["historico_chat_cyber"].append({"role": "user", "content": prompt_final_ia})
+    if prompt_final_chat.strip():
+        st.session_state["cyber_chat_v2"].append({"role": "user", "content": prompt_final_chat})
         
-        # Conexão direta via requisição HTTPS robusta com a API do Gemini
-        link_gemini_api = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
-        contexto_inteligencia = (
-            "Você é o modelo de IA core do SOC SentinelAI. Sua função é responder a diretores, investidores e "
-            "C-Levels com vocabulário técnico avançado (NIST, OWASP, ISO 27001, SIEM). Seja extremamente formal, "
-            "responda em português e organize suas análises sempre em tópicos limpos."
-        )
+        # Estrutura isolada para evitar crash de tela em caso de falha de chave ou timeout
+        if not GEMINI_API_KEY:
+            resposta_segura = "⚠️ **Modo de Contingência Ativo:** A chave de API do modelo de IA corporativo não foi identificada nos Secrets do Streamlit. Sistema rodando via Playbook estático offline local."
+        else:
+            url_api = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+            payload = {"contents": [{"parts": [{"text": f"Você é uma IA de SOC de cibersegurança avançada. Responda tecnicamente em tópicos:\n{prompt_final_chat}"}]}]}
+            try:
+                r_post = requests.post(url_api, json=payload, timeout=10)
+                if r_post.status_code == 200:
+                    resposta_segura = r_post.json()["candidates"][0]["content"]["parts"][0]["text"]
+                else:
+                    resposta_segura = f"⚠️ **Falha no Gateway de Autenticação:** O servidor retornou o status HTTP {r_post.status_code}. Executando isolamento de pacotes."
+            except Exception as e:
+                resposta_segura = f"⚠️ **Timeout de Rede:** Conexão interrompida com o provedor cognitivo externo. Código de isolamento: {str(e)}"
         
-        corpo_payload = {"contents": [{"parts": [{"text": f"{contexto_inteligencia}\n\nComando Técnico: {prompt_final_ia}"}]}]}
-        
-        try:
-            resposta_servidor = requests.post(link_gemini_api, json=corpo_payload, timeout=15)
-            if resposta_servidor.status_code == 200:
-                json_tratado = resposta_servidor.json()
-                texto_resposta_ia = json_tratado["candidates"][0]["content"]["parts"][0]["text"]
-            else:
-                texto_resposta_ia = "⚠️ **Erro de Resolução de Link:** Falha ao validar autenticação do cluster de IA. Certifique-se de preencher a variável `GEMINI_API_KEY` nos Secrets do Streamlit."
-        except Exception as erro_excecao:
-            texto_resposta_ia = f"⚠️ **Timeout de Rede Perimetral:** Conexão interrompida com o gateway cognitivo externo. Detalhes: {str(erro_excecao)}"
-            
-        st.session_state["historico_chat_cyber"].append({"role": "model", "content": texto_resposta_ia})
+        st.session_state["cyber_chat_v2"].append({"role": "model", "content": resposta_segura})
         st.rerun()
 
-# ==============================================================================
-# 6. MONITORAMENTO EM TEMPO REAL (STREAMING VIVO COM GRÁFICO POR SEGUNDO)
-# ==============================================================================
+# Gráfico de streaming contínuo no rodapé
 st.markdown("---")
-st.markdown("#### 📡 Monitoramento de Fluxo em Tempo Real (Live Stream)")
+st.markdown("#### 📡 Inspeção Profunda de Pacotes em Tempo Real (Live Stream)")
+momento_atual = datetime.datetime.now()
+timestamps = [(momento_atual - datetime.timedelta(seconds=idx * 5)).strftime("%H:%M:%S") for idx in range(12)]
+timestamps.reverse()
+fluxo_requisicoes = [random.randint(1500, 4000) for _ in range(12)]
 
-# Geração de Gráfico contínuo simulando inspeção profunda de pacotes (DPI) ativos
-momento_agora = datetime.datetime.now()
-eixo_x_timestamps = [(momento_agora - datetime.timedelta(seconds=id_sec * 5)).strftime("%H:%M:%S") for id_sec in range(15)]
-eixo_x_timestamps.reverse()
-eixo_y_requisicoes = [random.randint(1400, 3900) for _ in range(15)]
-
-fig_streaming_vivo = go.Figure()
-fig_streaming_vivo.add_trace(go.Scatter(
-    x=eixo_x_timestamps, 
-    y=eixo_y_requisicoes, 
-    mode='lines+markers', 
-    line=dict(color='#ff3333', width=3),
-    marker=dict(size=6, color='#ffffff'),
-    fill='tozeroy',
-    fillcolor='rgba(239, 68, 68, 0.04)'
-))
-fig_streaming_vivo.update_layout(
-    title="Volume de Pacotes Inundantes Bloqueados por Segundo pelo Firewall Corporativo",
-    paper_bgcolor="rgba(0,0,0,0)", 
-    plot_bgcolor="rgba(5, 9, 16, 0.7)",
-    font_color="#8a99ad",
-    margin=dict(l=40, r=40, t=40, b=40),
-    height=250,
-    xaxis=dict(gridcolor="rgba(255,255,255,0.02)"),
-    yaxis=dict(gridcolor="rgba(255,255,255,0.02)")
-)
-st.plotly_chart(fig_streaming_vivo, use_container_width=True)
+fig_stream = go.Figure()
+fig_stream.add_trace(go.Scatter(x=timestamps, y=fluxo_requisicoes, mode='lines+markers', line=dict(color='#ff3333', width=3), fill='tozeroy', fillcolor='rgba(239,68,68,0.04)'))
+fig_stream.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(4,8,16,0.6)", font_color="#8a99ad", margin=dict(l=30, r=30, t=30, b=30), height=200)
+st.plotly_chart(fig_stream, use_container_width=True)
