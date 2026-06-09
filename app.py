@@ -128,3 +128,63 @@ if not st.session_state["autenticado"]:
                 else:
                     st.error("Credenciais inválidas.")
     st.stop()
+
+# ==============================================================================
+# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (PROFISSIONAL COM PAINEL DE ACESSO)
+# ==============================================================================
+
+if not st.session_state["autenticado"]:
+    st.markdown("<style>[data-testid='stSidebar']{display:none;} header{visibility:hidden;}</style>", unsafe_allow_html=True)
+    
+    _, col_login, _ = st.columns([1, 1.6, 1])
+    with col_login:
+        st.markdown('''
+            <div class="hud-card" style="text-align: center; margin-bottom: 20px;">
+                <p style="color: #ff3333; font-weight:700; font-size:0.75rem; letter-spacing:3px; margin-bottom:10px;">SENTINELAI // IDENTITY CORE</p>
+                <h2 class="titulo-h">AUTENTICAÇÃO DE OPERADOR</h2>
+            </div>
+        ''', unsafe_allow_html=True)
+        
+        # Painel Informativo Profissional
+        with st.expander("ℹ️ Ver Credenciais de Acesso"):
+            st.markdown("""
+            | Perfil | Usuário | Senha |
+            | :--- | :--- | :--- |
+            | **Admin** | `admin` | `root99` |
+            | **Analista** | `analista` | `soc123` |
+            | **Nubank** | `nubank` | `nu2026` |
+            | **iFood** | `ifood` | `ifood77` |
+            | **M. Livre** | `mercadolivre` | `ml2026` |
+            | **Santander** | `santander` | `san99` |
+            | **Vivo** | `vivo` | `vivo2026` |
+            | **XP Invest.** | `xp` | `xp2026` |
+            | **Magalu** | `magazine` | `magalu2026` |
+            """)
+
+        with st.form("form_login"):
+            usuario = st.text_input("Usuário")
+            senha = st.text_input("Senha", type="password")
+            
+            if st.form_submit_button("ACESSAR SISTEMA", use_container_width=True):
+                auth_data = {
+                    "admin": {"pwd": "root99", "perfil": "Administrador", "cliente": "Todos"},
+                    "analista": {"pwd": "soc123", "perfil": "Analista", "cliente": "Todos"},
+                    "nubank": {"pwd": "nu2026", "perfil": "Cliente", "cliente": "Nubank"},
+                    "ifood": {"pwd": "ifood77", "perfil": "Cliente", "cliente": "iFood"},
+                    "mercadolivre": {"pwd": "ml2026", "perfil": "Cliente", "cliente": "Mercado Livre"},
+                    "santander": {"pwd": "san99", "perfil": "Cliente", "cliente": "Santander"},
+                    "vivo": {"pwd": "vivo2026", "perfil": "Cliente", "cliente": "Vivo"},
+                    "xp": {"pwd": "xp2026", "perfil": "Cliente", "cliente": "XP Investimentos"},
+                    "magazine": {"pwd": "magalu2026", "perfil": "Cliente", "cliente": "Magazine Luiza"}
+                }
+                
+                if usuario in auth_data and auth_data[usuario]["pwd"] == senha:
+                    st.session_state.update({
+                        "autenticado": True,
+                        "perfil_usuario": auth_data[usuario]["perfil"],
+                        "cliente_usuario": auth_data[usuario]["cliente"]
+                    })
+                    st.rerun()
+                else:
+                    st.error("Credenciais inválidas.")
+    st.stop()
