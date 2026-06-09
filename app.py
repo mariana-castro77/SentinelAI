@@ -16,11 +16,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 
-# ── CHAVE API (via st.secrets ou fallback) ────────────────────────────────────
-try:
-    ANTHROPIC_API_KEY = st.secrets["ANTHROPIC_API_KEY"]
-except Exception:
-    ANTHROPIC_API_KEY = ""
+GEMINI_API_KEY = "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA"
 
 st.set_page_config(
     page_title="SentinelAI",
@@ -29,7 +25,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ── ESTILOS GLOBAIS ────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
@@ -53,7 +48,6 @@ html,body,[class*="css"]{font-family:'Inter',system-ui,sans-serif;scroll-behavio
 
 .block-container{padding:1.2rem 1.5rem;max-width:100%;}
 
-/* Métricas */
 div[data-testid="metric-container"]{
   background:linear-gradient(135deg,rgba(0,200,255,0.04),rgba(6,8,16,0.97));
   border:1px solid rgba(0,200,255,0.11);
@@ -71,7 +65,6 @@ div[data-testid="metric-container"]:hover{
 [data-testid="stMetricLabel"]{color:#4a6a8a!important;font-size:.58rem!important;text-transform:uppercase;letter-spacing:.1em;}
 [data-testid="stMetricValue"]{color:#00d4ff!important;font-size:1.4rem!important;font-weight:700;font-family:'JetBrains Mono',monospace;}
 
-/* Botões */
 div.stButton>button{
   background:linear-gradient(135deg,#005f8a,#0097c4);
   color:white;border-radius:10px;border:none;
@@ -83,7 +76,6 @@ div.stButton>button:hover{
   transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,180,220,0.18);
 }
 
-/* Chat */
 .chat-user{
   background:linear-gradient(135deg,#005f8a,#0097c4);
   border-radius:18px 18px 4px 18px;padding:.7rem 1.1rem;
@@ -100,7 +92,6 @@ div.stButton>button:hover{
   box-shadow:0 4px 16px rgba(0,0,0,0.28);
 }
 
-/* Header */
 .sentinel-header{
   background:linear-gradient(135deg,rgba(0,200,255,0.04),rgba(0,60,120,0.03));
   border:1px solid rgba(0,200,255,0.09);border-radius:16px;
@@ -111,7 +102,6 @@ div.stButton>button:hover{
   background:linear-gradient(90deg,transparent,rgba(0,200,255,0.25),transparent);
 }
 
-/* Badges */
 .badge-online{
   display:inline-flex;align-items:center;gap:.3rem;
   background:rgba(0,255,100,.06);border:1px solid rgba(0,255,100,.18);
@@ -125,7 +115,6 @@ div.stButton>button:hover{
   font-size:.58rem;font-weight:600;
 }
 
-/* Tabs */
 .stTabs [data-baseweb="tab-list"]{
   background:rgba(8,11,20,0.8);border-radius:12px;
   padding:.3rem;gap:.2rem;border:1px solid rgba(0,200,255,.06);
@@ -136,14 +125,13 @@ div.stButton>button:hover{
 }
 .stTabs [aria-selected="true"]{background:rgba(0,160,200,.1)!important;color:#00d4ff!important;}
 
-/* Inputs — remove underline/traço */
 input,textarea,[data-baseweb="input"] input{
   background:rgba(8,11,20,0.92)!important;
   border:1px solid rgba(0,200,255,.1)!important;
   border-radius:10px!important;color:white!important;
   box-shadow:none!important;outline:none!important;
 }
-/* Remove o traço feio nos selectbox */
+
 [data-baseweb="select"] *{border:none!important;box-shadow:none!important;}
 [data-baseweb="select"] [data-testid="stMarkdownContainer"]{border:none!important;}
 div[data-baseweb="select"]>div{
@@ -152,11 +140,9 @@ div[data-baseweb="select"]>div{
   border-radius:10px!important;color:white!important;
   box-shadow:none!important;
 }
-/* Remove a borda/linha de foco dos selects */
 [data-baseweb="select"]:focus-within>div{
   border-color:rgba(0,200,255,.28)!important;box-shadow:none!important;
 }
-/* Dropdown list */
 [data-baseweb="menu"]{
   background:#080b14!important;
   border:1px solid rgba(0,200,255,.12)!important;
@@ -165,12 +151,10 @@ div[data-baseweb="select"]>div{
 [data-baseweb="menu"] li{color:#c8d8e8!important;font-size:.8rem!important;}
 [data-baseweb="menu"] li:hover{background:rgba(0,200,255,.08)!important;}
 
-/* Slider */
 [data-testid="stSlider"] .st-emotion-cache-1gv3huu{background:#00d4ff!important;}
 
 hr{border-color:rgba(0,200,255,.05);margin:1rem 0;}
 
-/* Scrollbar */
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:#060810;}
 ::-webkit-scrollbar-thumb{background:rgba(0,200,255,0.18);border-radius:2px;}
@@ -180,7 +164,6 @@ hr{border-color:rgba(0,200,255,.05);margin:1rem 0;}
   border-radius:12px;padding:.7rem .9rem;margin:.4rem 0;
 }
 
-/* LGPD Banner */
 .lgpd-banner{
   position:fixed;bottom:0;left:0;right:0;z-index:9999;
   background:rgba(5,8,14,0.97);
@@ -192,7 +175,6 @@ hr{border-color:rgba(0,200,255,.05);margin:1rem 0;}
 </style>
 """, unsafe_allow_html=True)
 
-# ── SQLITE ────────────────────────────────────────────────────────────────────
 def conectar_sqlite():
     try:
         return sqlite3.connect('sentinelai.db', check_same_thread=False)
@@ -250,7 +232,6 @@ def mascara_ip(ip):
     p = str(ip).split(".")
     return f"{p[0]}.{p[1]}.***.***" if len(p) == 4 else "***"
 
-# ── USUÁRIOS ──────────────────────────────────────────────────────────────────
 USUARIOS = {
     "admin":        {"senha":"admin123",    "perfil":"Administrador","pode_exportar":True, "pode_analisar":True, "ver_pii":True,  "cliente_vinculado":None},
     "analista":     {"senha":"analista123", "perfil":"Analista",     "pode_exportar":False,"pode_analisar":True, "ver_pii":False, "cliente_vinculado":None},
@@ -269,12 +250,10 @@ _hashes = {u: hashlib.sha256(v["senha"].encode()).hexdigest() for u, v in USUARI
 def autenticar(u, s):
     return u in _hashes and hashlib.sha256(s.encode()).hexdigest() == _hashes[u]
 
-# ── AUTH STATE ────────────────────────────────────────────────────────────────
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
     st.session_state["usuario_atual"] = None
 
-# ── LGPD COOKIE BANNER ────────────────────────────────────────────────────────
 if "lgpd_aceito" not in st.session_state:
     st.session_state["lgpd_aceito"] = False
 
@@ -304,7 +283,6 @@ if not st.session_state["lgpd_aceito"]:
             st.rerun()
     st.stop()
 
-# ── TELA DE LOGIN ─────────────────────────────────────────────────────────────
 if not st.session_state["autenticado"]:
     st.markdown("""
     <style>
@@ -313,7 +291,6 @@ if not st.session_state["autenticado"]:
     </style>
     """, unsafe_allow_html=True)
 
-    # Canvas parallax de fundo
     components.html("""
     <style>
       body{margin:0;overflow:hidden;background:#060810;}
@@ -336,7 +313,6 @@ if not st.session_state["autenticado"]:
         this.a=Math.random()*.4+.1;this.base={x:this.x,y:this.y};
       }
       update(){
-        // parallax suave com o mouse
         let dx=(mouseX-W/2)*0.003,dy=(mouseY-H/2)*0.003;
         this.x+=this.vx+dx*this.r;this.y+=this.vy+dy*this.r;
         if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset();
@@ -348,14 +324,12 @@ if not st.session_state["autenticado"]:
     }
     for(let i=0;i<140;i++)pts.push(new P());
 
-    // Grade
     function drawGrid(){
       ctx.strokeStyle='rgba(0,150,220,0.025)';ctx.lineWidth=1;
       for(let x=0;x<W;x+=70){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
       for(let y=0;y<H;y+=70){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
     }
 
-    // Conexões entre partículas próximas
     function drawLines(){
       for(let i=0;i<pts.length;i++){
         for(let j=i+1;j<pts.length;j++){
@@ -422,7 +396,6 @@ if not st.session_state["autenticado"]:
 
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # Tabela de credenciais
         st.markdown("""
         <div style="margin-top:1.2rem;background:rgba(0,200,255,0.02);
           border:1px solid rgba(0,200,255,0.07);border-radius:14px;padding:1rem 1.2rem;">
@@ -431,18 +404,17 @@ if not st.session_state["autenticado"]:
           </p>
           <table style="width:100%;border-collapse:collapse;">
             <thead>
-              <tr>
-                <th style="color:#2a4060;font-size:.58rem;text-align:left;padding:.18rem .4rem;text-transform:uppercase;letter-spacing:.06em;">Usuário</th>
-                <th style="color:#2a4060;font-size:.58rem;text-align:left;padding:.18rem .4rem;text-transform:uppercase;letter-spacing:.06em;">Senha</th>
-                <th style="color:#2a4060;font-size:.58rem;text-align:left;padding:.18rem .4rem;text-transform:uppercase;letter-spacing:.06em;">Perfil</th>
+              <tr><th style="color:#2a4060;font-size:.58rem;text-align:left;padding:.18rem .4rem;">Usuário</th>
+                <th style="color:#2a4060;font-size:.58rem;text-align:left;padding:.18rem .4rem;">Senha</th>
+                <th style="color:#2a4060;font-size:.58rem;text-align:left;padding:.18rem .4rem;">Perfil</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">admin</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">admin123</td><td style="color:#00ff88;font-size:.62rem;padding:.18rem .4rem;">Administrador</td></tr>
-              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">analista</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">analista123</td><td style="color:#f59e0b;font-size:.62rem;padding:.18rem .4rem;">Analista</td></tr>
-              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">nubank</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">nubank123</td><td style="color:#6a8aaa;font-size:.62rem;padding:.18rem .4rem;">Cliente</td></tr>
-              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">mercadolivre</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">ml123</td><td style="color:#6a8aaa;font-size:.62rem;padding:.18rem .4rem;">Cliente</td></tr>
-              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">viewer</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;padding:.18rem .4rem;">viewer123</td><td style="color:#6a8aaa;font-size:.62rem;padding:.18rem .4rem;">Visualizador</td></tr>
+              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;">admin</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;">admin123</td><td style="color:#00ff88;font-size:.62rem;">Administrador</td></tr>
+              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;">analista</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;">analista123</td><td style="color:#f59e0b;font-size:.62rem;">Analista</td></tr>
+              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;">nubank</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;">nubank123</td><td style="color:#6a8aaa;font-size:.62rem;">Cliente</td></tr>
+              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;">mercadolivre</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;">ml123</td><td style="color:#6a8aaa;font-size:.62rem;">Cliente</td></tr>
+              <tr><td style="color:#00d4ff;font-family:monospace;font-size:.68rem;">viewer</td><td style="color:#6a8aaa;font-family:monospace;font-size:.68rem;">viewer123</td><td style="color:#6a8aaa;font-size:.62rem;">Visualizador</td></tr>
             </tbody>
           </table>
         </div>
@@ -450,7 +422,6 @@ if not st.session_state["autenticado"]:
 
     st.stop()
 
-# ── PÓS-LOGIN ─────────────────────────────────────────────────────────────────
 usuario_atual = st.session_state["usuario_atual"]
 perfil_atual  = USUARIOS[usuario_atual]
 
@@ -486,12 +457,10 @@ cliente_vinculado = perfil_atual["cliente_vinculado"]
 df_vis = df[df["CLIENTE"]==cliente_vinculado].copy() if cliente_vinculado else df.copy()
 salvar_backup_sessao(df_vis, usuario_atual, "Login")
 
-# Limpar valores de string nas colunas
 for col in ["TIPO INCIDENTE","SEVERIDADE","ORIGEM","STATUS"]:
     if col in df_vis.columns:
         df_vis[col] = df_vis[col].astype(str).str.strip()
 
-# ── SIDEBAR ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
     <div style="text-align:center;padding:.8rem 0 .4rem 0;">
@@ -545,7 +514,6 @@ with st.sidebar:
         st.session_state.update({"autenticado":False,"usuario_atual":None})
         st.rerun()
 
-# ── HEADER ────────────────────────────────────────────────────────────────────
 now_str = datetime.datetime.now().strftime("%d/%m/%Y  %H:%M")
 st.markdown(f"""
 <div class="sentinel-header">
@@ -566,7 +534,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ── MÉTRICAS ──────────────────────────────────────────────────────────────────
 total_incidentes      = len(df_vis)
 incidentes_criticos   = len(df_vis[df_vis["SEVERIDADE"]=="crítica"])
 ips_bloqueados        = len(df_vis[df_vis["BLOQUEADO_AUTOMATICAMENTE"].str.lower()=="sim"])
@@ -585,20 +552,15 @@ with c6: st.metric("Prejuízo Estimado", pf)
 
 st.markdown("---")
 
-# ── TABS ──────────────────────────────────────────────────────────────────────
 tab1,tab2,tab3,tab4,tab5,tab6 = st.tabs([
     "🔍 Análise ML","📊 Métricas","🌍 Mapa Global","🤖 Assistente IA","💾 Exportar","📋 Logs"
 ])
 
-# ─────────────────────────────────────────────────────────────────────────────
-# TAB 1 — ANÁLISE ML
-# ─────────────────────────────────────────────────────────────────────────────
 with tab1:
     st.markdown("### Análise Preditiva de Incidentes")
     if not perfil_atual["pode_analisar"]:
         st.warning("⚠️ Seu perfil não tem permissão para realizar análises preditivas.")
     else:
-        # Listas limpas (sem underline/traço)
         tipos_limpos   = [str(v).strip() for v in encoders["tipo"].classes_]
         origens_limpas = [str(v).strip() for v in encoders["origem"].classes_]
         status_limpos  = [str(v).strip() for v in encoders["status"].classes_]
@@ -673,9 +635,6 @@ with tab1:
                 })
                 st.success("💾 Incidente registrado no banco de dados")
 
-# ─────────────────────────────────────────────────────────────────────────────
-# TAB 2 — MÉTRICAS
-# ─────────────────────────────────────────────────────────────────────────────
 with tab2:
     st.markdown("### Métricas & Visualizações")
     L = dict(
@@ -727,9 +686,6 @@ with tab2:
     fig.update_layout(title="Matriz de Confusão",height=320,**L)
     st.plotly_chart(fig,use_container_width=True)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# TAB 3 — MAPA GLOBAL (estilo Kaspersky)
-# ─────────────────────────────────────────────────────────────────────────────
 with tab3:
     st.markdown("### 🌍 Mapa Global de Ameaças Cibernéticas")
     st.caption("Monitoramento em tempo real de ataques direcionados aos clientes SentinelAI")
@@ -756,7 +712,6 @@ with tab3:
             s = COORDS[c]
             arcs.append({"src_lat":s[0],"src_lon":s[1],"dst_lat":TARGET[0],"dst_lon":TARGET[1],"name":c,"count":int(row["total"])})
 
-    # Garante pelo menos 8 arcos para visual rico
     fallback_countries = ["China","Russia","United States","Germany","Iran","North Korea","Ukraine","Nigeria","United Kingdom","Japan"]
     existing = {a["name"] for a in arcs}
     for fc in fallback_countries:
@@ -854,15 +809,12 @@ let W,H,attacks=[],pulses=[],stars=[],totalCount=0;
 function resize(){{W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}}
 resize();window.addEventListener('resize',resize);
 
-// Hora
 setInterval(()=>{{
   document.getElementById('time-pill').textContent=new Date().toLocaleTimeString('pt-BR');
 }},1000);
 
-// Mercator
 function ll(lat,lon){{return[(lon+180)/360*W,(90-lat)/180*H];}}
 
-// Estrelas
 for(let i=0;i<280;i++)stars.push([Math.random(),Math.random(),Math.random()*.9+.1]);
 function drawStars(){{
   for(let[rx,ry,a]of stars){{
@@ -871,9 +823,7 @@ function drawStars(){{
   }}
 }}
 
-// Grade Mercator
 function drawGrid(){{
-  // paralelos (lat)
   for(let lat=-60;lat<=80;lat+=30){{
     let[,y]=ll(lat,0);
     ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);
@@ -882,19 +832,16 @@ function drawGrid(){{
     ctx.lineWidth=eq?1.2:.8;ctx.stroke();
     if(eq){{ctx.fillStyle='rgba(0,200,255,0.15)';ctx.font='7px monospace';ctx.fillText('Equador',4,y-3);}}
   }}
-  // meridianos (lon)
   for(let lon=-150;lon<=180;lon+=30){{
     let[x]=ll(0,lon);
     ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);
     ctx.strokeStyle='rgba(0,120,180,0.025)';ctx.lineWidth=.8;ctx.stroke();
   }}
-  // Trópico de Capricórnio (Brasil)
   let[,ytc]=ll(-23.5,0);
   ctx.beginPath();ctx.moveTo(0,ytc);ctx.lineTo(W,ytc);
-  ctx.strokeStyle='rgba(0,255,136,0.04)';ctx.lineWidth=.8;ctx.stroke();
+  ctx.strokeStyle='rgba(0,255,136,0.04)';ctx.lineWidth:.8;ctx.stroke();
 }}
 
-// Pontos de cidade
 const CITIES=[
   [-14.23,-51.92,'BRA',true,14],
   [35.86,104.19,'CHN',false,7],[61.52,95,'RUS',false,7],
@@ -910,27 +857,22 @@ const CITIES=[
 function drawCities(){{
   for(let[lat,lon,code,isBR,r]of CITIES){{
     let[x,y]=ll(lat,lon);
-    // glow
     let g=ctx.createRadialGradient(x,y,0,x,y,r*4);
     g.addColorStop(0,isBR?'rgba(0,255,136,0.35)':'rgba(0,200,255,0.12)');
     g.addColorStop(1,'transparent');
     ctx.beginPath();ctx.arc(x,y,r*4,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
-    // anel externo
     if(isBR){{
       ctx.beginPath();ctx.arc(x,y,r+4,0,Math.PI*2);
       ctx.strokeStyle='rgba(0,255,136,0.2)';ctx.lineWidth=1;ctx.stroke();
     }}
-    // dot
     ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
     ctx.fillStyle=isBR?'#00ff88':'rgba(0,200,255,0.65)';ctx.fill();
-    // label
     ctx.font=isBR?'bold 9px monospace':'7px monospace';
     ctx.fillStyle=isBR?'#00ff88':'rgba(0,200,255,0.5)';
     ctx.fillText(isBR?'🎯 BRASIL':code,x+(isBR?10:5),y+(isBR?4:3));
   }}
 }}
 
-// Pulso de impacto
 class Pulse{{
   constructor(x,y,col){{this.x=x;this.y=y;this.r=0;this.max=35;this.col=col;}}
   update(){{this.r+=1.2;return this.r<this.max;}}
@@ -941,7 +883,6 @@ class Pulse{{
   }}
 }}
 
-// Partícula de ataque
 const COLS=['rgba(239,68,68,1)','rgba(245,158,11,1)','rgba(0,212,255,1)','rgba(220,38,38,1)'];
 class Attack{{
   constructor(arc){{
@@ -988,7 +929,6 @@ class Attack{{
       ctx.lineWidth=this.size*a;ctx.stroke();
     }}
     let h=this.trail[this.trail.length-1];
-    // cabeça com glow
     let g=ctx.createRadialGradient(h[0],h[1],0,h[0],h[1],8);
     g.addColorStop(0,this.col);g.addColorStop(1,'transparent');
     ctx.beginPath();ctx.arc(h[0],h[1],8,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
@@ -997,26 +937,21 @@ class Attack{{
   }}
 }}
 
-// Spawn controlado
 let frame=0;
 function spawn(){{
   frame++;
-  // Spawn mais frequente para visual rico
   if(frame%28===0&&ARCS.length>0){{
     let arc=ARCS[Math.floor(Math.random()*ARCS.length)];
     attacks.push(new Attack(arc));
   }}
-  // spawn duplo ocasional
   if(frame%80===0&&ARCS.length>0){{
     let arc=ARCS[Math.floor(Math.random()*ARCS.length)];
     attacks.push(new Attack(arc));
   }}
 }}
 
-// LOOP PRINCIPAL
 function anim(){{
   requestAnimationFrame(anim);
-  // Fundo com trail suave
   ctx.fillStyle='rgba(3,5,10,0.80)';ctx.fillRect(0,0,W,H);
   drawStars();drawGrid();drawCities();spawn();
   let alive=[];
@@ -1038,30 +973,21 @@ anim();
     ta.columns = ["País","Ataques"]
     st.dataframe(ta, use_container_width=True, hide_index=True)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# TAB 4 — CHATBOT (Claude / Anthropic API)
-# ─────────────────────────────────────────────────────────────────────────────
 with tab4:
-    st.markdown("### 🤖 Assistente de Segurança — Claude AI")
+    st.markdown("### 🤖 Assistente de Segurança — Gemini AI")
 
-    # Aviso de configuração da chave
-    if not ANTHROPIC_API_KEY:
-        st.error("""
-**⚠️ Chave de API não configurada.**
-
-Acesse: **Streamlit Cloud → seu app → ⚙️ Settings → Secrets** e adicione:
-```
-ANTHROPIC_API_KEY = "sua-chave-aqui"
-```
-        """)
+    if not GEMINI_API_KEY:
+        st.error("⚠️ Chave de API do Google Gemini não configurada.")
+        st.info("Adicione a chave no código ou configure a variável de ambiente.")
+    else:
+        st.success("✅ Assistente ativo - Pronto para responder")
 
     if "chat_history" not in st.session_state:
         st.session_state["chat_history"] = []
 
-    # Área de mensagens
     if not st.session_state["chat_history"]:
         st.markdown("""
-        <div style="text-align:center;padding:2.5rem 1rem;
+        <div style="text-align:center;padding:2rem 1rem;
           background:rgba(8,11,20,0.6);border:1px solid rgba(0,200,255,0.08);
           border-radius:16px;margin:1rem 0;">
           <div style="font-size:2.2rem;margin-bottom:.6rem;">🤖</div>
@@ -1070,36 +996,21 @@ ANTHROPIC_API_KEY = "sua-chave-aqui"
             Analiso ameaças, tendências e forneço recomendações de segurança<br>
             baseadas nos dados reais dos seus clientes.
           </p>
-          <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;">
-            <span style="background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.12);
-              color:#4a7aaa;padding:.25rem .7rem;border-radius:20px;font-size:.7rem;">
-              Quais são os ataques mais frequentes?
-            </span>
-            <span style="background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.12);
-              color:#4a7aaa;padding:.25rem .7rem;border-radius:20px;font-size:.7rem;">
-              Como reduzir o tempo de resposta?
-            </span>
-            <span style="background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.12);
-              color:#4a7aaa;padding:.25rem .7rem;border-radius:20px;font-size:.7rem;">
-              Análise de risco do Nubank
-            </span>
-          </div>
         </div>
         """, unsafe_allow_html=True)
     else:
         for msg in st.session_state["chat_history"]:
-            css  = "chat-user" if msg["role"]=="user" else "chat-ai"
-            icon = "👤" if msg["role"]=="user" else "🤖"
+            css = "chat-user" if msg["role"] == "user" else "chat-ai"
+            icon = "👤" if msg["role"] == "user" else "🤖"
             st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>', unsafe_allow_html=True)
 
-    # Formulário de input
     with st.form("chat_form", clear_on_submit=True):
         pergunta = st.text_input(
             "",
             placeholder="Pergunte sobre ameaças, clientes, análises de segurança…",
             label_visibility="collapsed"
         )
-        col_s, col_c = st.columns([5,1])
+        col_s, col_c = st.columns([5, 1])
         with col_s:
             enviar = st.form_submit_button("Enviar →", use_container_width=True)
         with col_c:
@@ -1110,92 +1021,77 @@ ANTHROPIC_API_KEY = "sua-chave-aqui"
         st.rerun()
 
     if enviar and pergunta.strip():
-        if not ANTHROPIC_API_KEY:
-            st.error("Configure a chave de API nas configurações do Streamlit.")
+        if not GEMINI_API_KEY:
+            st.error("Configure a chave GEMINI_API_KEY para usar o assistente.")
         else:
             adicionar_log(usuario_atual, f"Chat: {pergunta[:60]}")
-            st.session_state["chat_history"].append({"role":"user","content":pergunta})
+            st.session_state["chat_history"].append({"role": "user", "content": pergunta})
 
             with st.spinner("🤔 Analisando dados e gerando resposta…"):
                 try:
-                    # Constrói contexto rico com dados dos clientes
+                    clientes_ativos = sorted(df["CLIENTE"].unique().tolist()) if not cliente_vinculado else [cliente_vinculado]
+
                     top_paises = ""
                     try:
-                        tp = df_vis[df_vis["TIPO INCIDENTE"]=="ataque"]["PAIS_ATAQUE"].value_counts().head(3)
-                        top_paises = ", ".join([f"{p} ({n})" for p,n in tp.items()])
+                        tp = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().head(3)
+                        top_paises = ", ".join([f"{p} ({n})" for p, n in tp.items()])
                     except:
                         top_paises = "dados insuficientes"
 
-                    clientes_ativos = sorted(df["CLIENTE"].unique().tolist()) if not cliente_vinculado else [cliente_vinculado]
+                    prompt = f"""Você é um especialista em segurança cibernética da plataforma SentinelAI.
+Responda em português brasileiro, de forma profissional, direta e com insights acionáveis.
 
-                    system_prompt = f"""Você é um especialista em segurança cibernética da plataforma SentinelAI, \
-prestando serviços para grandes empresas brasileiras. Responda sempre em português brasileiro, \
-de forma profissional, direta e com insights acionáveis. Use bullet points quando listar itens. \
-Máximo de 250 palavras por resposta.
-
-=== CONTEXTO DO SISTEMA EM TEMPO REAL ===
+CONTEXTO DO SISTEMA:
 - Clientes monitorados: {', '.join(clientes_ativos)}
 - Total de incidentes: {len(df_vis):,}
-- Incidentes CRÍTICOS ativos: {incidentes_criticos:,}
+- Incidentes CRÍTICOS: {incidentes_criticos:,}
 - Incidentes resolvidos: {incidentes_resolvidos:,}
 - Incidentes pendentes: {incidentes_pendentes:,}
-- IPs bloqueados automaticamente: {ips_bloqueados:,}
+- IPs bloqueados: {ips_bloqueados:,}
 - Prejuízo financeiro estimado: R$ {prejuizo_total:,.0f}
 - Principais países atacantes: {top_paises}
 - Acurácia do modelo ML: {acuracia:.1%}
 - Perfil do usuário: {perfil_atual['perfil']}
-{f"- Contexto restrito ao cliente: {cliente_vinculado}" if cliente_vinculado else "- Acesso: visão global de todos os clientes"}
-=========================================
+{f"- Filtro ativo: apenas {cliente_vinculado}" if cliente_vinculado else "- Visão: todos os clientes"}
 
-Seja objetivo, consultivo e oriente com base nos dados acima."""
+Pergunta do usuário: {pergunta}
 
-                    # Monta histórico completo para contexto multi-turno
-                    messages_payload = []
-                    for m in st.session_state["chat_history"]:
-                        messages_payload.append({"role": m["role"], "content": m["content"]})
+Resposta:"""
 
-                    headers = {
-                        "Content-Type": "application/json",
-                        "x-api-key": ANTHROPIC_API_KEY,
-                        "anthropic-version": "2023-06-01"
-                    }
+                    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={GEMINI_API_KEY}"
+                    
                     payload = {
-                        "model": "claude-sonnet-4-20250514",
-                        "max_tokens": 1024,
-                        "system": system_prompt,
-                        "messages": messages_payload
+                        "contents": [{
+                            "parts": [{"text": prompt}]
+                        }],
+                        "generationConfig": {
+                            "temperature": 0.7,
+                            "maxOutputTokens": 800
+                        }
                     }
-
-                    resp = requests.post(
-                        "https://api.anthropic.com/v1/messages",
-                        headers=headers,
-                        json=payload,
-                        timeout=40
-                    )
+                    
+                    resp = requests.post(url, json=payload, timeout=40)
 
                     if resp.status_code == 200:
-                        resposta = resp.json()["content"][0]["text"]
+                        data = resp.json()
+                        resposta = data["candidates"][0]["content"]["parts"][0]["text"]
                     elif resp.status_code == 401:
-                        resposta = "⚠️ Chave de API inválida. Verifique em: Streamlit → Settings → Secrets → ANTHROPIC_API_KEY"
+                        resposta = "⚠️ Chave de API inválida. Verifique sua GEMINI_API_KEY."
                     elif resp.status_code == 429:
-                        resposta = "⚠️ Limite de requisições atingido. Aguarde alguns segundos e tente novamente."
+                        resposta = "⚠️ Limite de requisições atingido. Aguarde alguns segundos."
                     else:
-                        err_msg = resp.json().get("error",{}).get("message","Erro desconhecido")
-                        resposta = f"⚠️ Erro {resp.status_code}: {err_msg}"
+                        resposta = f"⚠️ Erro {resp.status_code}: {resp.text[:200]}"
 
                 except requests.exceptions.Timeout:
-                    resposta = "⚠️ Timeout: a conexão demorou muito. Verifique sua internet e tente novamente."
+                    resposta = "⚠️ Timeout: a conexão demorou muito. Tente novamente."
                 except requests.exceptions.ConnectionError:
-                    resposta = "⚠️ Sem conexão com a API. Verifique sua conexão com a internet."
+                    resposta = "⚠️ Sem conexão com a API. Verifique sua internet."
                 except Exception as e:
                     resposta = f"⚠️ Erro inesperado: {str(e)}"
 
-            st.session_state["chat_history"].append({"role":"assistant","content":resposta})
+            st.session_state["chat_history"].append({"role": "assistant", "content": resposta})
             st.rerun()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# TAB 5 — EXPORTAR
-# ─────────────────────────────────────────────────────────────────────────────
 with tab5:
     st.markdown("### Exportação & Backup de Dados")
     if not perfil_atual["pode_exportar"]:
@@ -1235,9 +1131,6 @@ with tab5:
     st.markdown("#### Prévia dos dados")
     st.dataframe(df_vis.head(20),use_container_width=True)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# TAB 6 — LOGS
-# ─────────────────────────────────────────────────────────────────────────────
 with tab6:
     st.markdown("### Logs de Auditoria")
     if "logs_sistema" in st.session_state and st.session_state["logs_sistema"]:
@@ -1246,7 +1139,6 @@ with tab6:
     else:
         st.info("Nenhuma ação registrada nesta sessão.")
 
-# ── FOOTER ────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div style="text-align:center;padding:1rem 0 .5rem 0;
   border-top:1px solid rgba(0,200,255,0.04);margin-top:1rem;">
