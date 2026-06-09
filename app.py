@@ -40,48 +40,46 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ==============================================================================
-# 4. LÓGICA DE NAVEGAÇÃO: TELA DE TERMO (LEI E COOKIES)
-# ==============================================================================
-
+# --- 4. TELA DE TERMO E PRIVACIDADE ---
 if not st.session_state["termo_aceito"]:
-    # Esconde sidebar e header para foco total na tela de boas-vindas
-    st.markdown("<style>[data-testid='stSidebar']{display:none;} header{display:none!important;}</style>", unsafe_allow_html=True)
+    # Oculta elementos padrões para dar foco na tela de boas-vindas
+    st.markdown("<style>[data-testid='stSidebar']{display:none;} header{visibility:hidden;}</style>", unsafe_allow_html=True)
     
-    _, col_center, _ = st.columns([0.2, 3.6, 0.2])
+    _, col_main, _ = st.columns([0.2, 0.6, 0.2])
     
-    with col_center:
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        
-        # Carregando o robô com a classe CSS que definimos na Parte 1
-        img_data = get_image_base64("robo.png")
-        if img_data:
+    with col_main:
+        # Carregando o robô com efeito de brilho e animação
+        img_b64 = get_image_base64("robo.png")
+        if img_b64:
             st.markdown(f'''
-                <div style="display: flex; justify-content: center; margin-bottom: 30px;">
-                    <img src="data:image/png;base64,{img_data}" class="robo-animado">
+                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                    <img src="data:image/png;base64,{img_b64}" class="robo-animado" style="max-width: 250px;">
                 </div>
             ''', unsafe_allow_html=True)
         
-        # Container do Termo (Lei LGPD e Cookies)
+        # Container do Termo (LGPD)
         st.markdown('''
             <div class="hud-card">
                 <h2 class="titulo-h" style="text-align:center;">TERMO DE CONFORMIDADE E PRIVACIDADE</h2>
-                <p style="color:#eee; font-size:1.1rem; line-height:1.6; text-align:justify;">
-                    Em conformidade com a <b>Lei Geral de Proteção de Dados (LGPD) - Lei nº 13.709/2018</b>, informamos que este 
-                    ecossistema de monitoramento armazena cookies técnicos essenciais para a sessão e processa telemetrias de rede 
-                    em tempo real para garantir a estabilidade do Command Center. 
-                    <br><br>
-                    Ao clicar no botão abaixo, você autoriza explicitamente a coleta de logs de auditoria e assume a 
-                    responsabilidade pelo sigilo absoluto das informações corporativas exibidas.
+                <p style="color:#eee; line-height:1.6; text-align:justify;">
+                    Em conformidade estrita com a <b>Lei Geral de Proteção de Dados (LGPD) - Lei nº 13.709/2018</b>, 
+                    informamos que este ecossistema armazena cookies e processa telemetrias perimetrais críticas em tempo real. 
+                    Ao avançar, você autoriza a coleta de logs e assume a responsabilidade pelo sigilo absoluto dos dados exibidos.
                 </p>
             </div>
         ''', unsafe_allow_html=True)
         
-        st.markdown("<br>", unsafe_allow_html=True)
+        st.write("") # Espaçamento
         
-        # Botão de aceite
-        if st.button("✓ ACEITAR TERMOS E PROSSEGUIR PARA O LOGIN", use_container_width=True):
-            st.session_state["termo_aceito"] = True
-            st.rerun() # Recarrega o app para passar para a próxima etapa
-
-    st.stop() # Para a execução aqui se o termo não foi aceito
+        # Botões de Ação
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("✓ ACEITAR E PROSSEGUIR", use_container_width=True):
+                st.session_state["termo_aceito"] = True
+                st.rerun()
+        with c2:
+            if st.button("✕ RECUSAR ACESSO", use_container_width=True):
+                st.error("Acesso negado. Por favor, feche esta janela.")
+                st.stop()
+    
+    st.stop()
