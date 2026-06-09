@@ -2,198 +2,106 @@ import streamlit as st
 import pandas as pd
 import os
 import base64
-import requests                # Necessário para as chamadas de IA (Gemini)
-import plotly.express as px    # Necessário para os gráficos de telemetria
-import streamlit.components.v1 as components # Necessário para o mapa e Spline
-import time                    # Necessário para efeitos de carregamento
-import datetime                # Necessário para logs e carimbos de data
-import random                  # Útil para simulação de pacotes em tempo real
-# ==============================================================================
-# 1. INICIALIZAÇÃO SEGURA DO ESTADO (Obrigatório vir antes de tudo)
-# ==============================================================================
-if "termo_aceito" not in st.session_state: st.session_state["termo_aceito"] = False
-if "autenticado" not in st.session_state: st.session_state["autenticado"] = False
-if "perfil_usuario" not in st.session_state: st.session_state["perfil_usuario"] = None
+import plotly.express as px
+import streamlit.components.v1 as components
+import time
 
 # ==============================================================================
-# 2. CONFIGURAÇÃO DA PÁGINA
+# 1. CARREGAMENTO E CONFIGURAÇÃO (Obrigatório vir antes de tudo)
 # ==============================================================================
 st.set_page_config(page_title="SentinelAI // Command Center", page_icon="🛡️", layout="wide")
 
-# Função auxiliar para carregar o robô
+@st.cache_data
+def carregar_dados():
+    if os.path.exists("dataset_final.csv"):
+        return pd.read_csv("dataset_final.csv")
+    return pd.DataFrame(columns=["CLIENTE", "PREJUIZO_ESTIMADO", "SEVERIDADE", "IP"])
+
+df_soc = carregar_dados()
+
 def get_image_base64(path):
     try:
         with open(path, "rb") as image_file:
             return base64.b64encode(image_file.read()).decode()
     except: return None
 
+# Inicialização de Estado
+if "termo_aceito" not in st.session_state: st.session_state["termo_aceito"] = False
+if "autenticado" not in st.session_state: st.session_state["autenticado"] = False
+if "perfil_usuario" not in st.session_state: st.session_state["perfil_usuario"] = None
+
 # ==============================================================================
-# 3. CSS GLOBAL E ANIMAÇÕES (Parallax + Robô Flutuante)
+# 2. CSS GLOBAL E ANIMAÇÕES
 # ==============================================================================
 st.markdown("""
 <style>
     @keyframes floating { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(3deg); } 100% { transform: translateY(0px) rotate(0deg); } }
     .robo-animado { width: 250px; animation: floating 4s ease-in-out infinite; filter: drop-shadow(0 0 20px rgba(255, 30, 30, 0.6)); }
-    .stApp { background: radial-gradient(circle at center, #1a0505 0%, #000 100%); background-attachment: fixed; }
-    .hud-card { background: rgba(10, 10, 10, 0.9); border: 1.5px solid #ff3333; padding: 2.5rem; border-radius: 15px; color: white; margin-top: -30px; }
+    .stApp { background: radial-gradient(circle at 50% 50%, #0f0505 0%, #000 100%); background-attachment: fixed; }
+    .hud-card { background: rgba(10, 10, 10, 0.9); border: 1.5px solid #ff3333; padding: 2.5rem; border-radius: 15px; color: white; }
     .titulo-h { font-family: 'Space Grotesk', sans-serif; color: #fff; text-transform: uppercase; }
+    .robo-lateral { position: fixed; bottom: 20px; right: 20px; width: 120px; animation: pulse 3s infinite; filter: drop-shadow(0 0 10px #ff3333); }
+    @keyframes pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 </style>
 """, unsafe_allow_html=True)
 
-# --- 4. TELA DE TERMO E PRIVACIDADE ---
+# ==============================================================================
+# 3. TELA DE TERMO E PRIVACIDADE
+# ==============================================================================
 if not st.session_state["termo_aceito"]:
-    # Oculta elementos padrões para dar foco na tela de boas-vindas
     st.markdown("<style>[data-testid='stSidebar']{display:none;} header{visibility:hidden;}</style>", unsafe_allow_html=True)
-    
     _, col_main, _ = st.columns([0.2, 0.6, 0.2])
-    
     with col_main:
-        # Carregando o robô com efeito de brilho e animação
         img_b64 = get_image_base64("robo.png")
         if img_b64:
-            st.markdown(f'''
-                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-                    <img src="data:image/png;base64,{img_b64}" class="robo-animado" style="max-width: 250px;">
-                </div>
-            ''', unsafe_allow_html=True)
-        
-        # Container do Termo (LGPD)
-        st.markdown('''
-            <div class="hud-card">
-                <h2 class="titulo-h" style="text-align:center;">TERMO DE CONFORMIDADE E PRIVACIDADE</h2>
-                <p style="color:#eee; line-height:1.6; text-align:justify;">
-                    Em conformidade estrita com a <b>Lei Geral de Proteção de Dados (LGPD) - Lei nº 13.709/2018</b>, 
-                    informamos que este ecossistema armazena cookies e processa telemetrias perimetrais críticas em tempo real. 
-                    Ao avançar, você autoriza a coleta de logs e assume a responsabilidade pelo sigilo absoluto dos dados exibidos.
-                </p>
-            </div>
-        ''', unsafe_allow_html=True)
-        
-        st.write("") # Espaçamento
-        
-        # Botões de Ação
+            st.markdown(f'<div style="display: flex; justify-content: center; margin-bottom: 20px;"><img src="data:image/png;base64,{img_b64}" class="robo-animado"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="hud-card"><h2 class="titulo-h" style="text-align:center;">TERMO DE CONFORMIDADE</h2><p>Ao avançar, você autoriza a coleta de logs e assume a responsabilidade pelo sigilo absoluto.</p></div>', unsafe_allow_html=True)
         c1, c2 = st.columns(2)
-        with c1:
-            if st.button("✓ ACEITAR E PROSSEGUIR", use_container_width=True):
-                st.session_state["termo_aceito"] = True
-                st.rerun()
-        with c2:
-            if st.button("✕ RECUSAR ACESSO", use_container_width=True):
-                st.error("Acesso negado. Por favor, feche esta janela.")
-                st.stop()
-    
+        if c1.button("✓ ACEITAR"): st.session_state["termo_aceito"] = True; st.rerun()
+        if c2.button("✕ RECUSAR"): st.stop()
     st.stop()
 
 # ==============================================================================
-# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (COMPLETA)
+# 4. TELA DE LOGIN
 # ==============================================================================
-
 if not st.session_state["autenticado"]:
     st.markdown("<h2 style='text-align: center; color: white;'>AUTENTICAÇÃO DE OPERADOR</h2>", unsafe_allow_html=True)
-    
-    st.warning("Para acessar o sistema, utilize um dos usuários e senhas abaixo:")
-    
-    # Tabela com todos os clientes solicitados
-    dados_acesso = {
-        "Perfil": ["Admin", "Analista", "Nubank", "iFood", "Mercado Livre", "Magazine Luiza", "Santander", "Vivo", "XP Investimentos"],
+    st.warning("Credenciais de Acesso:")
+    st.table(pd.DataFrame({
+        "Perfil": ["Admin", "Analista", "Nubank", "iFood", "M. Livre", "Magazine", "Santander", "Vivo", "XP"],
         "Usuário": ["admin", "analista", "nubank", "ifood", "mercadolivre", "magazine", "santander", "vivo", "xp"],
         "Senha": ["root99", "soc123", "nu2026", "ifood77", "ml2026", "magalu2026", "san99", "vivo2026", "xp2026"]
-    }
-    st.table(pd.DataFrame(dados_acesso))
-
-    # Formulário de Login
+    }))
     with st.form("login_form"):
-        usuario = st.text_input("Usuário")
-        senha = st.text_input("Senha", type="password")
-        submit = st.form_submit_button("ACESSAR SISTEMA", use_container_width=True)
-        
-        if submit:
-            auth_data = {
-                "admin": {"pwd": "root99", "perfil": "Administrador", "cliente": "Todos"},
-                "analista": {"pwd": "soc123", "perfil": "Analista", "cliente": "Todos"},
-                "nubank": {"pwd": "nu2026", "perfil": "Cliente", "cliente": "Nubank"},
-                "ifood": {"pwd": "ifood77", "perfil": "Cliente", "cliente": "iFood"},
-                "mercadolivre": {"pwd": "ml2026", "perfil": "Cliente", "cliente": "Mercado Livre"},
-                "magazine": {"pwd": "magalu2026", "perfil": "Cliente", "cliente": "Magazine Luiza"},
-                "santander": {"pwd": "san99", "perfil": "Cliente", "cliente": "Santander"},
-                "vivo": {"pwd": "vivo2026", "perfil": "Cliente", "cliente": "Vivo"},
-                "xp": {"pwd": "xp2026", "perfil": "Cliente", "cliente": "XP Investimentos"}
-            }
-            
-            if usuario in auth_data and auth_data[usuario]["pwd"] == senha:
-                st.session_state.update({
-                    "autenticado": True,
-                    "perfil_usuario": auth_data[usuario]["perfil"],
-                    "cliente_usuario": auth_data[usuario]["cliente"]
-                })
+        u = st.text_input("Usuário"); p = st.text_input("Senha", type="password")
+        if st.form_submit_button("ACESSAR"):
+            auth = {"admin": ("root99", "Administrador", "Todos"), "analista": ("soc123", "Analista", "Todos"), "nubank": ("nu2026", "Cliente", "Nubank"), "ifood": ("ifood77", "Cliente", "iFood"), "mercadolivre": ("ml2026", "Cliente", "Mercado Livre"), "magazine": ("magalu2026", "Cliente", "Magazine Luiza"), "santander": ("san99", "Cliente", "Santander"), "vivo": ("vivo2026", "Cliente", "Vivo"), "xp": ("xp2026", "Cliente", "XP Investimentos")}
+            if u in auth and auth[u][0] == p:
+                st.session_state.update({"autenticado": True, "perfil_usuario": auth[u][1], "cliente_usuario": auth[u][2]})
                 st.rerun()
-            else:
-                st.error("Credenciais inválidas.")
-    
+            else: st.error("Credenciais inválidas.")
     st.stop()
 
 # ==============================================================================
-# 6. DASHBOARD CENTRAL (O CÉREBRO DA OPERAÇÃO)
+# 5. DASHBOARD CENTRAL (O CÉREBRO)
 # ==============================================================================
+with st.sidebar:
+    st.markdown(f"### 🛡️ OPERADOR: {st.session_state['perfil_usuario'].upper()}")
+    st.markdown(f"**CLIENTE ATIVO:** {st.session_state['cliente_usuario']}")
+    if st.button("LOGOUT SEGURO"): st.session_state.clear(); st.rerun()
 
-if st.session_state["autenticado"]:
-    # Estilização de Parallax e Scroll Suave
-    st.markdown("""
-        <style>
-            .stApp { background: radial-gradient(circle at 50% 50%, #0f0505 0%, #000 100%); background-attachment: fixed; }
-            .hud-header { border-bottom: 2px solid #ff3333; padding-bottom: 10px; margin-bottom: 20px; }
-            .robo-lateral { position: fixed; bottom: 20px; right: 20px; width: 150px; animation: pulse 3s infinite; filter: drop-shadow(0 0 10px #ff3333); }
-            @keyframes pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
-        </style>
-    """, unsafe_allow_html=True)
+df_view = df_soc if st.session_state["cliente_usuario"] == "Todos" else df_soc[df_soc["CLIENTE"] == st.session_state["cliente_usuario"]]
+st.title("COMMAND CENTER // SENTINELAI")
 
-    # Sidebar com informações do operador
-    with st.sidebar:
-        st.markdown(f"### 🛡️ OPERADOR: {st.session_state['perfil_usuario'].upper()}")
-        st.markdown(f"**CLIENTE ATIVO:** {st.session_state['cliente_usuario']}")
-        if st.button("LOGOUT SEGURO"):
-            st.session_state.clear()
-            st.rerun()
+tabs = st.tabs(["🔍 TRIAGEM", "🌍 MAPA", "📊 TELEMETRIA", "🤖 SENTINEL CORE"])
+with tabs[0]:
+    if st.session_state["perfil_usuario"] == "Analista" and "IP" in df_view.columns:
+        df_m = df_view.copy(); df_m["IP"] = "HIDDEN_IP"; st.dataframe(df_m, use_container_width=True)
+    else: st.dataframe(df_view, use_container_width=True)
+with tabs[1]: components.html('<iframe src="https://cybermap.kaspersky.com/en/widget/threed" width="100%" height="500px"></iframe>', height=500)
+with tabs[2]: st.plotly_chart(px.bar(df_view, x="CLIENTE", y="PREJUIZO_ESTIMADO", color="SEVERIDADE", template="plotly_dark"), use_container_width=True)
+with tabs[3]: 
+    if st.button("PROCESSAR INTELIGÊNCIA"): st.info("Auditoria concluída para: " + st.session_state["cliente_usuario"])
 
-    # --- LÓGICA DE FILTRAGEM (ISOLAMENTO DE DADOS) ---
-    if st.session_state["cliente_usuario"] == "Todos":
-        df_view = df_soc
-    else:
-        df_view = df_soc[df_soc["CLIENTE"] == st.session_state["cliente_usuario"]]
-
-    st.title("COMMAND CENTER // SENTINELAI")
-    
-    # Abas com animação de transição nativa
-    tabs = st.tabs(["🔍 TRIAGEM FORENSE", "🌍 MAPA GLOBAL", "📊 TELEMETRIA", "🤖 SENTINEL CORE"])
-
-    with tabs[0]:
-        st.subheader("Registros de Incidentes")
-        # Mascaramento de dados se for Analista
-        if st.session_state["perfil_usuario"] == "Analista":
-            df_masked = df_view.copy()
-            if "IP" in df_masked.columns: df_masked["IP"] = "HIDDEN_IP"
-            st.dataframe(df_masked, use_container_width=True)
-        else:
-            st.dataframe(df_view, use_container_width=True)
-
-    with tabs[1]:
-        st.subheader("Mapa de Ameaças em Tempo Real")
-        components.html('<iframe src="https://cybermap.kaspersky.com/en/widget/threed" width="100%" height="500px"></iframe>', height=500)
-
-    with tabs[2]:
-        st.subheader("Telemetria e Impacto Financeiro")
-        fig = px.bar(df_view, x="CLIENTE", y="PREJUIZO_ESTIMADO", color="SEVERIDADE", template="plotly_dark")
-        st.plotly_chart(fig, use_container_width=True)
-
-    with tabs[3]:
-        st.subheader("Sentinel Core LLM")
-        pergunta = st.text_input("Consulta de Auditoria:")
-        if st.button("PROCESSAR INTELIGÊNCIA"):
-            with st.spinner("Analisando vetores de risco..."):
-                time.sleep(1.5)
-                st.info("O Sentinel Core sugere: Implementação de WAF imediata para o cliente " + st.session_state["cliente_usuario"])
-
-    # Robô com animação de pulso no canto da tela
-    img_b64 = get_image_base64("robo.png")
-    if img_b64:
-        st.markdown(f'<img src="data:image/png;base64,{img_b64}" class="robo-lateral">', unsafe_allow_html=True)
+img_b64 = get_image_base64("robo.png")
+if img_b64: st.markdown(f'<img src="data:image/png;base64,{img_b64}" class="robo-lateral">', unsafe_allow_html=True)
