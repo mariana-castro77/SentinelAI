@@ -130,7 +130,7 @@ if not st.session_state["autenticado"]:
     st.stop()
 
 # ==============================================================================
-# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (PROFISSIONAL COM PAINEL DE ACESSO)
+# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (COM PAINEL DE ACESSO VISÍVEL)
 # ==============================================================================
 
 if not st.session_state["autenticado"]:
@@ -145,25 +145,21 @@ if not st.session_state["autenticado"]:
             </div>
         ''', unsafe_allow_html=True)
         
-        # Painel de Acesso Rápido Visível (Estilo Industrial)
-        st.markdown('''
-            <div style="background-color: #1a1a1a; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-bottom: 20px;">
-                <p style="color: #fff; font-size: 0.9rem; margin-bottom: 10px;"><strong>ACESSO AO SISTEMA (DEMONSTRAÇÃO):</strong></p>
-                <div style="font-size: 0.85rem; color: #ccc; line-height: 1.6;">
-                    <strong>Admin:</strong> admin/root99 | <strong>Analista:</strong> analista/soc123<br>
-                    <strong>Nubank:</strong> nubank/nu2026 | <strong>iFood:</strong> ifood/ifood77<br>
-                    <strong>M. Livre:</strong> mercadolivre/ml2026 | <strong>Santander:</strong> santander/san99<br>
-                    <strong>Vivo:</strong> vivo/vivo2026 | <strong>XP:</strong> xp/xp2026 | <strong>Magalu:</strong> magazine/magalu2026
-                </div>
-            </div>
-        ''', unsafe_allow_html=True)
+        # EXIBIÇÃO GARANTIDA DAS CREDENCIAIS
+        st.info("### 📋 Credenciais de Acesso")
+        dados_acesso = {
+            "Perfil": ["Admin", "Analista", "Nubank", "iFood", "M. Livre", "Santander", "Vivo", "XP", "Magalu"],
+            "Usuário": ["admin", "analista", "nubank", "ifood", "mercadolivre", "santander", "vivo", "xp", "magazine"],
+            "Senha": ["root99", "soc123", "nu2026", "ifood77", "ml2026", "san99", "vivo2026", "xp2026", "magalu2026"]
+        }
+        st.table(pd.DataFrame(dados_acesso))
 
         with st.form("form_login"):
             usuario = st.text_input("Usuário")
             senha = st.text_input("Senha", type="password")
             
             if st.form_submit_button("ACESSAR SISTEMA", use_container_width=True):
-                # Dicionário de autenticação consolidado
+                # Dicionário de verificação
                 auth_data = {
                     "admin": {"pwd": "root99", "perfil": "Administrador", "cliente": "Todos"},
                     "analista": {"pwd": "soc123", "perfil": "Analista", "cliente": "Todos"},
@@ -184,5 +180,5 @@ if not st.session_state["autenticado"]:
                     })
                     st.rerun()
                 else:
-                    st.error("Credenciais inválidas. Verifique o usuário ou senha.")
+                    st.error("Credenciais inválidas.")
     st.stop()
