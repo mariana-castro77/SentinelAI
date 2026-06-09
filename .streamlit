@@ -1,8 +1,0 @@
-GEMINI_API_KEY = "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA"
-
-[mysql]
-host = "127.0.0.1"
-port = 3306
-user = "root"
-password = "123456"
-database = "sentinelai"
