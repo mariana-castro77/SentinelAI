@@ -113,8 +113,8 @@ html, body, [class*="css"] {
 }
 
 .block-container {
-    padding-top: 1.5rem;
-    padding-bottom: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
@@ -127,22 +127,20 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 div[data-testid="metric-container"] {
     background: linear-gradient(135deg, rgba(13, 17, 23, 0.95), rgba(0, 255, 255, 0.05));
     border: 1px solid rgba(0, 255, 255, 0.3);
-    padding: 20px 24px;
-    border-radius: 12px;
+    padding: 16px 20px;
+    border-radius: 8px;
     backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    transition: all 0.3s ease;
 }
 
 div[data-testid="metric-container"]:hover {
     border-color: #00ffff;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
-    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
 }
 
 [data-testid="stMetricLabel"] {
     color: #8b949e;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -150,71 +148,59 @@ div[data-testid="metric-container"]:hover {
 
 [data-testid="stMetricValue"] {
     color: #00ffff;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 800;
     font-family: 'Orbitron', monospace;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 div.stButton > button {
     background: linear-gradient(135deg, #00b4d8, #0077b6);
     color: white;
-    border-radius: 8px;
+    border-radius: 6px;
     border: none;
-    height: 44px;
-    font-size: 14px;
+    height: 40px;
+    font-size: 12px;
     font-weight: 600;
     font-family: 'Orbitron', monospace;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+    transition: all 0.2s ease;
 }
 
 div.stButton > button:hover {
     background: linear-gradient(135deg, #00d4ff, #0096c7);
-    transform: scale(1.02);
-    box-shadow: 0 6px 25px rgba(0, 180, 216, 0.5);
-}
-
-div.stButton > button:active {
-    transform: scale(0.98);
+    transform: scale(1.01);
 }
 
 .chat-user {
     background: linear-gradient(135deg, #00b4d8, #0077b6);
-    border-radius: 18px 18px 4px 18px;
-    padding: 12px 18px;
-    margin: 10px 0;
+    border-radius: 12px 12px 4px 12px;
+    padding: 10px 14px;
+    margin: 8px 0;
     margin-left: 20%;
     color: white;
-    font-size: 14px;
-    line-height: 1.6;
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    box-shadow: 0 2px 10px rgba(0, 180, 216, 0.2);
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 .chat-ai {
     background: linear-gradient(135deg, rgba(13, 17, 23, 0.95), rgba(0, 180, 216, 0.1));
     border: 1px solid rgba(0, 255, 255, 0.3);
-    border-radius: 18px 18px 18px 4px;
-    padding: 12px 18px;
-    margin: 10px 0;
+    border-radius: 12px 12px 12px 4px;
+    padding: 10px 14px;
+    margin: 8px 0;
     margin-right: 20%;
     color: #e6edf3;
-    font-size: 14px;
-    line-height: 1.6;
-    backdrop-filter: blur(10px);
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 .sentinel-header {
     background: linear-gradient(135deg, rgba(13, 17, 23, 0.95), rgba(0, 180, 216, 0.05));
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    border-radius: 16px;
-    padding: 28px 32px;
-    margin-bottom: 28px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
 }
 
 .badge-sqlite {
@@ -222,12 +208,11 @@ div.stButton > button:active {
     background: rgba(0, 255, 255, 0.1);
     border: 1px solid rgba(0, 255, 255, 0.4);
     color: #00ffff;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-size: 10px;
     font-weight: 600;
     font-family: 'Orbitron', monospace;
-    letter-spacing: 0.5px;
 }
 
 .badge-online {
@@ -235,29 +220,29 @@ div.stButton > button:active {
     background: rgba(0, 255, 0, 0.1);
     border: 1px solid rgba(0, 255, 0, 0.4);
     color: #00ff00;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-size: 10px;
     font-weight: 600;
     font-family: 'Orbitron', monospace;
 }
 
 .stTabs [data-baseweb="tab-list"] {
     background: rgba(13, 17, 23, 0.9);
-    border-radius: 12px;
-    padding: 6px;
+    border-radius: 10px;
+    padding: 4px;
     border: 1px solid rgba(0, 255, 255, 0.15);
-    gap: 8px;
+    gap: 4px;
 }
 
 .stTabs [data-baseweb="tab"] {
-    border-radius: 8px;
+    border-radius: 6px;
     color: #8b949e;
     font-weight: 600;
     font-family: 'Orbitron', monospace;
-    font-size: 13px;
+    font-size: 11px;
     letter-spacing: 0.5px;
-    transition: all 0.2s;
+    padding: 8px 16px;
 }
 
 .stTabs [aria-selected="true"] {
@@ -269,18 +254,18 @@ div.stButton > button:active {
 input, textarea, select {
     background: #0d1117 !important;
     border: 1px solid rgba(0, 255, 255, 0.3) !important;
-    border-radius: 8px !important;
+    border-radius: 6px !important;
     color: #e6edf3 !important;
 }
 
 input:focus, textarea:focus, select:focus {
     border-color: #00ffff !important;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) !important;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.15) !important;
 }
 
 hr {
-    border-color: rgba(0, 255, 255, 0.2);
-    margin: 20px 0;
+    border-color: rgba(0, 255, 255, 0.15);
+    margin: 16px 0;
 }
 
 code {
@@ -290,17 +275,16 @@ code {
     padding: 2px 6px;
 }
 
-.cyber-glow {
-    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+.status-active {
+    color: #00ff00;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+.status-warning {
+    color: #f59e0b;
 }
 
-.pulse {
-    animation: pulse 2s infinite;
+.status-critical {
+    color: #ef4444;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -309,7 +293,7 @@ def adicionar_log(usuario, acao):
     if "logs_sistema" not in st.session_state:
         st.session_state["logs_sistema"] = []
     ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    st.session_state["logs_sistema"].append(f"[{ts}] USER={usuario} | {acao}")
+    st.session_state["logs_sistema"].append(f"[{ts}] {usuario} | {acao}")
     if st.session_state.get("sqlite_conn"):
         salvar_log_sqlite(st.session_state["sqlite_conn"], usuario, acao)
 
@@ -323,8 +307,9 @@ def salvar_backup_sessao(df, usuario, motivo):
     })
 
 def mascara_ip(ip):
-    if ip == "Nenhum": return "Nenhum"
-    p = ip.split(".")
+    if ip == "Nenhum" or pd.isna(ip):
+        return "***.***.***.***"
+    p = str(ip).split(".")
     return f"{p[0]}.{p[1]}.***.***" if len(p) == 4 else "***"
 
 if "cookies_aceitos" not in st.session_state:
@@ -332,35 +317,34 @@ if "cookies_aceitos" not in st.session_state:
 
 if not st.session_state["cookies_aceitos"]:
     st.markdown("""
-    <div style="background:linear-gradient(135deg,rgba(13,17,23,0.98),rgba(0,180,216,0.1));
-                border:1px solid rgba(0,255,255,0.4);border-radius:20px;padding:32px 40px;margin:20px 0;
-                backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(0,255,255,0.1);">
-        <h3 style="color:#00ffff;margin:0 0 12px;font-family:Orbitron;">🔐 ACORDO DE SEGURANÇA</h3>
-        <p style="color:#e6edf3;font-size:14px;line-height:1.7;margin:0;">
-        Este sistema utiliza criptografia de ponta a ponta e protocolos de segurança avançados.
-        Seus dados estão protegidos conforme a <strong style="color:#00ffff;">LGPD (Lei 13.709/2018)</strong>.
-        Nenhuma informação é compartilhada sem autorização expressa.
+    <div style="background:linear-gradient(135deg,rgba(13,17,23,0.98),rgba(0,180,216,0.08));
+                border:1px solid rgba(0,255,255,0.4);border-radius:16px;padding:28px 36px;margin:20px 0;">
+        <h3 style="color:#00ffff;margin:0 0 10px;font-family:Orbitron;">SECURITY PROTOCOL</h3>
+        <p style="color:#e6edf3;font-size:13px;line-height:1.6;margin:0;">
+        This system uses end-to-end encryption and advanced security protocols.
+        Data is protected under <strong style="color:#00ffff;">LGPD (Law 13.709/2018)</strong>.
+        No information is shared without explicit authorization.
         </p>
     </div>
     """, unsafe_allow_html=True)
     ca, cb, _ = st.columns([1, 1, 6])
     with ca:
-        if st.button("✅ AUTORIZAR ACESSO"):
+        if st.button("AUTHORIZE ACCESS"):
             st.session_state["cookies_aceitos"] = True
-            adicionar_log("Sistema", "Cookies aceitos")
+            adicionar_log("SYSTEM", "Access authorized")
             st.rerun()
     with cb:
-        if st.button("❌ NEGAR ACESSO"):
+        if st.button("DENY ACCESS"):
             st.stop()
     st.stop()
 
 USUARIOS = {
-    "admin": {"senha_hash": hashlib.sha256("admin123".encode()).hexdigest(), "perfil": "CEO", "pode_exportar": True, "pode_analisar": True, "ver_pii": True, "cliente_vinculado": None},
-    "analista": {"senha_hash": hashlib.sha256("analista123".encode()).hexdigest(), "perfil": "Security Analyst", "pode_exportar": False, "pode_analisar": True, "ver_pii": False, "cliente_vinculado": None},
-    "nubank": {"senha_hash": hashlib.sha256("nubank123".encode()).hexdigest(), "perfil": "Enterprise Client", "pode_exportar": False, "pode_analisar": False, "ver_pii": False, "cliente_vinculado": "Nubank"},
-    "mercadolivre": {"senha_hash": hashlib.sha256("ml123".encode()).hexdigest(), "perfil": "Enterprise Client", "pode_exportar": False, "pode_analisar": False, "ver_pii": False, "cliente_vinculado": "Mercado Livre"},
-    "santander": {"senha_hash": hashlib.sha256("sant123".encode()).hexdigest(), "perfil": "Enterprise Client", "pode_exportar": False, "pode_analisar": False, "ver_pii": False, "cliente_vinculado": "Santander"},
-    "viewer": {"senha_hash": hashlib.sha256("viewer123".encode()).hexdigest(), "perfil": "View Only", "pode_exportar": False, "pode_analisar": False, "ver_pii": False, "cliente_vinculado": None},
+    "admin": {"senha_hash": hashlib.sha256("admin123".encode()).hexdigest(), "perfil": "ADMIN", "pode_exportar": True, "pode_analisar": True, "ver_pii": True, "cliente_vinculado": None},
+    "analista": {"senha_hash": hashlib.sha256("analista123".encode()).hexdigest(), "perfil": "ANALYST", "pode_exportar": False, "pode_analisar": True, "ver_pii": False, "cliente_vinculado": None},
+    "nubank": {"senha_hash": hashlib.sha256("nubank123".encode()).hexdigest(), "perfil": "CLIENT", "pode_exportar": False, "pode_analisar": False, "ver_pii": False, "cliente_vinculado": "Nubank"},
+    "mercadolivre": {"senha_hash": hashlib.sha256("ml123".encode()).hexdigest(), "perfil": "CLIENT", "pode_exportar": False, "pode_analisar": False, "ver_pii": False, "cliente_vinculado": "Mercado Livre"},
+    "santander": {"senha_hash": hashlib.sha256("sant123".encode()).hexdigest(), "perfil": "CLIENT", "pode_exportar": False, "pode_analisar": False, "ver_pii": False, "cliente_vinculado": "Santander"},
+    "viewer": {"senha_hash": hashlib.sha256("viewer123".encode()).hexdigest(), "perfil": "VIEWER", "pode_exportar": False, "pode_analisar": False, "ver_pii": False, "cliente_vinculado": None},
 }
 
 def autenticar(u, s):
@@ -374,43 +358,43 @@ if not st.session_state["autenticado"]:
     _, cm, _ = st.columns([1, 2, 1])
     with cm:
         st.markdown("""
-        <div style="text-align:center;padding:60px 0 30px;">
-            <div style="font-size:72px;">🛡️</div>
-            <h1 style="font-size:52px;font-weight:900;color:#00ffff;font-family:Orbitron;letter-spacing:-2px;margin:20px 0 10px;">SENTINEL AI</h1>
-            <p style="color:#8b949e;font-size:16px;margin-bottom:30px;">Advanced Cyber Threat Intelligence Platform</p>
+        <div style="text-align:center;padding:50px 0 25px;">
+            <div style="font-size:60px;">🛡️</div>
+            <h1 style="font-size:44px;font-weight:900;color:#00ffff;font-family:Orbitron;margin:15px 0 8px;">SENTINEL AI</h1>
+            <p style="color:#8b949e;font-size:14px;margin-bottom:25px;">Advanced Cyber Threat Intelligence Platform</p>
             <div class="badge-online" style="display:inline-block;">● SYSTEM ONLINE</div>
         </div>
         """, unsafe_allow_html=True)
         st.markdown("""
-        <div style="background:rgba(13,17,23,0.95);border:1px solid rgba(0,255,255,0.2);border-radius:16px;padding:24px;margin-bottom:20px;">
-            <p style="color:#00ffff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;">🔐 AUTHORIZED ACCESS ONLY</p>
-            <p style="color:#8b949e;font-size:13px;line-height:1.8;margin:0;">
-                <span style="color:#00ffff;">admin</span> / admin123 — Full System Access<br>
-                <span style="color:#00ffff;">analista</span> / analista123 — Security Analytics<br>
-                <span style="color:#00ffff;">nubank</span> / nubank123 — Enterprise Client View<br>
-                <span style="color:#00ffff;">mercadolivre</span> / ml123 — Enterprise Client View<br>
-                <span style="color:#00ffff;">santander</span> / sant123 — Enterprise Client View
+        <div style="background:rgba(13,17,23,0.95);border:1px solid rgba(0,255,255,0.2);border-radius:12px;padding:20px;margin-bottom:16px;">
+            <p style="color:#00ffff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">AUTHORIZED ACCESS ONLY</p>
+            <p style="color:#8b949e;font-size:12px;line-height:1.8;margin:0;">
+                <span style="color:#00ffff;">admin</span> / admin123<br>
+                <span style="color:#00ffff;">analista</span> / analista123<br>
+                <span style="color:#00ffff;">nubank</span> / nubank123<br>
+                <span style="color:#00ffff;">mercadolivre</span> / ml123<br>
+                <span style="color:#00ffff;">santander</span> / sant123
             </p>
         </div>
         """, unsafe_allow_html=True)
         with st.form("login"):
-            u_in = st.text_input("USERNAME", placeholder="Enter your credentials")
+            u_in = st.text_input("USERNAME", placeholder="Enter credentials")
             s_in = st.text_input("PASSWORD", type="password", placeholder="••••••••")
-            ok = st.form_submit_button("🔓 AUTHENTICATE", use_container_width=True)
+            ok = st.form_submit_button("AUTHENTICATE", use_container_width=True)
         if ok:
             if autenticar(u_in, s_in):
                 st.session_state["autenticado"] = True
                 st.session_state["usuario_atual"] = u_in
-                adicionar_log(u_in, "Login realizado")
+                adicionar_log(u_in.upper(), "Login successful")
                 st.rerun()
             else:
-                adicionar_log(u_in or "?", "Login falhou")
-                st.error("❌ ACCESS DENIED - Invalid credentials")
+                adicionar_log(u_in or "UNKNOWN", "Login failed")
+                st.error("ACCESS DENIED - Invalid credentials")
     st.stop()
 
 usuario_atual = st.session_state["usuario_atual"]
 perfil_atual = USUARIOS[usuario_atual]
-adicionar_log(usuario_atual, "Sessão ativa")
+adicionar_log(usuario_atual.upper(), "Session active")
 
 if "sqlite_conn" not in st.session_state:
     st.session_state["sqlite_conn"] = conectar_sqlite()
@@ -447,44 +431,48 @@ df, encoders, modelo, acuracia, X_test, y_test = carregar_dados()
 cliente_vinculado = perfil_atual["cliente_vinculado"]
 df_vis = df[df["CLIENTE"] == cliente_vinculado].copy() if cliente_vinculado else df.copy()
 
-salvar_backup_sessao(df_vis, usuario_atual, "Login")
+salvar_backup_sessao(df_vis, usuario_atual.upper(), "Login")
 
 with st.sidebar:
-    st.markdown(f"""
-    <div style="text-align:center;padding:20px 0 10px;">
-        <div style="font-size:40px;">🛡️</div>
-        <p style="color:#00ffff;font-weight:800;font-size:18px;font-family:Orbitron;margin:8px 0 4px;">SENTINEL AI</p>
-        <p style="color:#00ffff;font-size:10px;letter-spacing:2px;">CYBER SECURITY PLATFORM</p>
+    st.markdown("""
+    <div style="text-align:center;padding:15px 0 8px;">
+        <div style="font-size:36px;">🛡️</div>
+        <p style="color:#00ffff;font-weight:800;font-size:16px;font-family:Orbitron;margin:5px 0 2px;">SENTINEL AI</p>
+        <p style="color:#00ffff;font-size:9px;letter-spacing:2px;">CYBER SECURITY</p>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
     st.markdown(f"""
-    <div style="background:rgba(0,255,255,0.05);border:1px solid rgba(0,255,255,0.2);border-radius:12px;padding:16px;margin:10px 0;">
-        <p style="color:#00ffff;font-size:11px;margin:0 0 4px;">ACCESS LEVEL</p>
-        <p style="color:#e6edf3;font-size:16px;font-weight:700;">{perfil_atual['perfil']}</p>
-        <p style="color:#8b949e;font-size:12px;">@{usuario_atual}</p>
+    <div style="background:rgba(0,255,255,0.05);border:1px solid rgba(0,255,255,0.15);border-radius:10px;padding:12px;margin:10px 0;">
+        <p style="color:#00ffff;font-size:10px;margin:0 0 4px;">ACCESS LEVEL</p>
+        <p style="color:#e6edf3;font-size:14px;font-weight:700;">{perfil_atual['perfil']}</p>
+        <p style="color:#8b949e;font-size:11px;">@{usuario_atual.upper()}</p>
     </div>
     """, unsafe_allow_html=True)
-    badge = '<span class="badge-sqlite">🗄️ SQLITE ACTIVE</span>' if sqlite_ativo else '<span class="badge-sqlite" style="color:#ff0000;border-color:#ff0000;">⚠️ DATABASE OFFLINE</span>'
+    badge = '<span class="badge-sqlite">SQLITE ACTIVE</span>' if sqlite_ativo else '<span class="badge-sqlite" style="color:#ff4444;border-color:#ff4444;">DATABASE OFFLINE</span>'
     st.markdown(badge, unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("### 🔒 PERMISSIONS")
-    for p in [
-        "ANALYTICS" if perfil_atual["pode_analisar"] else "ANALYTICS LOCKED",
-        "EXPORT" if perfil_atual["pode_exportar"] else "EXPORT LOCKED",
-        "PII ACCESS" if perfil_atual["ver_pii"] else "PII REDACTED",
-    ]:
-        st.markdown(f"<p style='font-size:12px;color:#00ffff;margin:5px 0;'>✓ {p}</p>" if "LOCKED" not in p else f"<p style='font-size:12px;color:#ff4444;margin:5px 0;'>✗ {p}</p>", unsafe_allow_html=True)
+    st.markdown("### PERMISSIONS")
+    perms = [
+        ("ANALYTICS", perfil_atual["pode_analisar"]),
+        ("EXPORT", perfil_atual["pode_exportar"]),
+        ("PII ACCESS", perfil_atual["ver_pii"]),
+    ]
+    for p_name, p_value in perms:
+        if p_value:
+            st.markdown(f"<p style='font-size:11px;color:#00ff00;margin:4px 0;'>✓ {p_name}</p>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<p style='font-size:11px;color:#ff4444;margin:4px 0;'>✗ {p_name}</p>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown(f"""
-    <div style="background:rgba(0,255,255,0.05);border-radius:10px;padding:12px;text-align:center;">
-        <p style="color:#8b949e;font-size:10px;margin:0;">AI MODEL ACCURACY</p>
-        <p style="color:#00ffff;font-size:28px;font-weight:800;font-family:Orbitron;margin:5px 0;">{acuracia:.1%}</p>
+    <div style="background:rgba(0,255,255,0.05);border-radius:8px;padding:10px;text-align:center;">
+        <p style="color:#8b949e;font-size:9px;margin:0;">AI ACCURACY</p>
+        <p style="color:#00ffff;font-size:24px;font-weight:800;font-family:Orbitron;margin:4px 0;">{acuracia:.1%}</p>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
-    if st.button("🚪 TERMINATE SESSION", use_container_width=True):
-        adicionar_log(usuario_atual, "Logout")
+    if st.button("TERMINATE SESSION", use_container_width=True):
+        adicionar_log(usuario_atual.upper(), "Logout")
         st.session_state.update({"autenticado": False, "usuario_atual": None})
         st.rerun()
 
@@ -492,15 +480,15 @@ st.markdown(f"""
 <div class="sentinel-header">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
         <div>
-            <p style="color:#00ffff;font-size:12px;letter-spacing:2px;margin:0;">WELCOME BACK, {usuario_atual.upper()}</p>
-            <h1 style="margin:8px 0 0;font-size:32px;">CYBER THREAT DASHBOARD</h1>
-            <p style="margin:8px 0 0;color:#8b949e;font-size:14px;">
-                {"GLOBAL THREAT INTELLIGENCE" if not cliente_vinculado else f"ENTERPRISE PORTAL — {cliente_vinculado.upper()}"}
+            <p style="color:#00ffff;font-size:10px;letter-spacing:2px;margin:0;">WELCOME, {usuario_atual.upper()}</p>
+            <h1 style="margin:6px 0 0;font-size:28px;">THREAT INTELLIGENCE DASHBOARD</h1>
+            <p style="margin:6px 0 0;color:#8b949e;font-size:12px;">
+                {"GLOBAL VIEW" if not cliente_vinculado else f"ENTERPRISE PORTAL — {cliente_vinculado.upper()}"}
             </p>
         </div>
         <div style="text-align:right;">
-            <div class="badge-online" style="margin-bottom:8px;">● PROTECTED BY SENTINEL AI</div>
-            <p style="color:#8b949e;font-size:11px;margin:0;">{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} UTC</p>
+            <div class="badge-online" style="margin-bottom:6px;">PROTECTED</div>
+            <p style="color:#8b949e;font-size:10px;margin:0;">{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} UTC</p>
         </div>
     </div>
 </div>
@@ -510,40 +498,44 @@ total = len(df_vis)
 criticos = len(df_vis[df_vis["SEVERIDADE"] == "crítica"])
 ips_bloq = len(df_vis[df_vis["BLOQUEADO_AUTOMATICAMENTE"].str.lower() == "sim"])
 prejuizo = df_vis["PREJUIZO_ESTIMADO"].sum()
+resolvidos = len(df_vis[df_vis["STATUS"] == "resolvido"])
+pendentes = len(df_vis[df_vis["STATUS"] == "pendente"])
 
-c1, c2, c3, c4, c5 = st.columns(5)
-with c1:
-    st.metric("TOTAL INCIDENTS", f"{total:,}")
-with c2:
-    st.metric("CRITICAL THREATS", f"{criticos:,}")
-with c3:
+col1, col2, col3, col4, col5, col6 = st.columns(6)
+with col1:
+    st.metric("INCIDENTS", f"{total:,}")
+with col2:
+    st.metric("CRITICAL", f"{criticos:,}")
+with col3:
     st.metric("BLOCKED IPs", f"{ips_bloq:,}")
-with c4:
-    st.metric("ESTIMATED DAMAGE", f"R$ {prejuizo:,.0f}".replace(",", "X").replace(".", ",").replace("X", "."))
-with c5:
-    st.metric("AI CONFIDENCE", f"{acuracia:.1%}")
+with col4:
+    st.metric("RESOLVED", f"{resolvidos:,}")
+with col5:
+    st.metric("PENDING", f"{pendentes:,}")
+with col6:
+    st.metric("DAMAGE (R$)", f"{prejuizo:,.0f}".replace(",", "X").replace(".", ",").replace("X", "."))
 
 st.markdown("---")
 
-abas = st.tabs(["THREAT ANALYSIS", "INTELLIGENCE DASH", "THREAT MAP", "SENTINEL BOT", "DATA BACKUP", "DATABASE OPS", "AUDIT LOGS"])
+aba1, aba2, aba3, aba4, aba5, aba6 = st.tabs(["THREAT ANALYSIS", "INTELLIGENCE", "ATTACK MAP", "AI ASSISTANT", "DATA BACKUP", "AUDIT LOGS"])
 
-with abas[0]:
-    st.markdown("### 🔍 THREAT INTELLIGENCE ANALYSIS")
+with aba1:
+    st.markdown("### THREAT ANALYSIS")
     if not perfil_atual["pode_analisar"]:
-        st.warning("⛔ INSUFFICIENT PRIVILEGES - Contact your administrator")
+        st.warning("INSUFFICIENT PRIVILEGES")
     else:
-        col1, col2 = st.columns(2)
-        with col1:
+        left, right = st.columns(2)
+        with left:
             tipo = st.selectbox("INCIDENT TYPE", encoders["tipo"].classes_)
             origem = st.selectbox("ATTACK VECTOR", encoders["origem"].classes_)
-            cliente = st.selectbox("AFFECTED CLIENT", sorted(df["CLIENTE"].unique()))
-        with col2:
+            cliente = st.selectbox("CLIENT", sorted(df["CLIENTE"].unique()))
+        with right:
             tempo = st.slider("RESPONSE TIME (min)", 1, 120, 30)
-            status = st.selectbox("CURRENT STATUS", encoders["status"].classes_)
+            status = st.selectbox("STATUS", encoders["status"].classes_)
 
-        if st.button("🔍 EXECUTE ANALYSIS", use_container_width=True):
-            adicionar_log(usuario_atual, f"Análise: tipo={tipo} origem={origem}")
-            with st.spinner("🔬 ANALYZING THREAT PATTERNS..."):
+        if st.button("EXECUTE ANALYSIS", use_container_width=True):
+            adicionar_log(usuario_atual.upper(), f"Analysis: {tipo} from {origem}")
+            with st.spinner("Analyzing threat patterns..."):
                 time.sleep(1)
             entrada = pd.DataFrame({
                 "TIPO_ENC": [encoders["tipo"].transform([tipo])[0]],
@@ -561,7 +553,7 @@ with abas[0]:
 
             risco = random.randint(10, 99)
             prej_est = random.uniform(3000, 30000)
-            risco_fin = "CRITICAL" if prej_est > 15000 else ("ELEVATED" if prej_est > 7000 else "LOW")
+            risco_fin = "HIGH" if prej_est > 15000 else ("MEDIUM" if prej_est > 7000 else "LOW")
 
             ataques = df[df["TIPO INCIDENTE"] == "ataque"]
             if not ataques.empty:
@@ -573,11 +565,11 @@ with abas[0]:
 
             st.markdown("---")
             if resultado == "crítica":
-                st.error(f"🔴 SEVERITY: **{resultado.upper()}** - IMMEDIATE ACTION REQUIRED")
+                st.error(f"SEVERITY: {resultado.upper()} - IMMEDIATE ACTION REQUIRED")
             elif resultado == "média":
-                st.warning(f"🟡 SEVERITY: **{resultado.upper()}** - MONITORING RECOMMENDED")
+                st.warning(f"SEVERITY: {resultado.upper()} - MONITORING RECOMMENDED")
             else:
-                st.success(f"🟢 SEVERITY: **{resultado.upper()}** - LOW RISK")
+                st.success(f"SEVERITY: {resultado.upper()} - LOW RISK")
 
             r1, r2, r3 = st.columns(3)
             with r1:
@@ -585,402 +577,471 @@ with abas[0]:
             with r2:
                 st.metric("ESTIMATED LOSS", f"R$ {prej_est:,.0f}".replace(",", "X").replace(".", ",").replace("X", "."))
             with r3:
-                st.metric("FINANCIAL RISK", risco_fin)
-            st.write(f"**TARGET CLIENT:** {cliente}")
+                st.metric("RISK LEVEL", risco_fin)
+            st.write(f"**TARGET:** {cliente}")
             if tipo == "ataque":
-                st.error(f"🌍 ATTACK ORIGIN: **{pais}** | SOURCE IP: `{ip_ex}`")
-                with st.expander("🛡️ AUTOMATED RESPONSE EXECUTED"):
-                    for a in ["✅ IP BLACKLISTED", "✅ FIREWALL RULES UPDATED", "✅ INCIDENT RESPONSE TEAM ALERTED", "✅ FORENSIC LOGS CAPTURED"]:
-                        st.write(a)
+                st.error(f"ORIGIN: {pais} | IP: {ip_ex}")
+                with st.expander("AUTOMATED RESPONSE"):
+                    for a in ["IP BLACKLISTED", "FIREWALL UPDATED", "TEAM ALERTED", "LOGS CAPTURED"]:
+                        st.write(f"✓ {a}")
 
             if sqlite_ativo:
                 salvar_incidente_sqlite(sqlite_conn, {
                     "usuario": usuario_atual, "tipo": tipo, "origem": origem,
                     "status": status, "severidade": resultado, "cliente": cliente
                 })
-                st.success("💾 INCIDENT LOGGED TO DATABASE")
+                st.success("Incident logged to database")
 
-            adicionar_log(usuario_atual, f"Análise concluída: severidade={resultado}")
+            adicionar_log(usuario_atual.upper(), f"Analysis complete: {resultado}")
 
-with abas[1]:
-    st.markdown("### 📊 INTELLIGENCE DASHBOARD")
+with aba2:
+    st.markdown("### INTELLIGENCE DASHBOARD")
     LAYOUT = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#00ffff")
 
-    d1, d2 = st.columns(2)
-    with d1:
+    col_a, col_b = st.columns(2)
+    with col_a:
         fig = px.pie(df_vis, names="SEVERIDADE", title="SEVERITY DISTRIBUTION",
                      color_discrete_sequence=["#f59e0b", "#10b981", "#ef4444"])
         fig.update_layout(**LAYOUT)
         st.plotly_chart(fig, use_container_width=True)
-    with d2:
+    with col_b:
         vc = df_vis["TIPO INCIDENTE"].value_counts().reset_index()
         fig2 = px.bar(vc, x="TIPO INCIDENTE", y="count", title="INCIDENTS BY TYPE",
                       color_discrete_sequence=["#00ffff"])
         fig2.update_layout(**LAYOUT)
         st.plotly_chart(fig2, use_container_width=True)
 
-    df_t = df_vis.groupby("DATA").size().reset_index(name="Incidentes")
-    fig3 = px.line(df_t, x="DATA", y="Incidentes", title="THREAT VOLUME OVER TIME",
+    df_time = df_vis.groupby("DATA").size().reset_index(name="Incidentes")
+    fig3 = px.line(df_time, x="DATA", y="Incidentes", title="THREAT VOLUME OVER TIME",
                    color_discrete_sequence=["#00ffff"])
     fig3.update_layout(**LAYOUT)
     st.plotly_chart(fig3, use_container_width=True)
 
-    d3, d4 = st.columns(2)
-    with d3:
-        fig4 = px.histogram(df_vis, x="PAIS_ATAQUE", title="ATTACKS BY GEOGRAPHY",
+    col_c, col_d = st.columns(2)
+    with col_c:
+        fig4 = px.histogram(df_vis, x="PAIS_ATAQUE", title="ATTACKS BY COUNTRY",
                             color_discrete_sequence=["#00ffff"])
         fig4.update_layout(**LAYOUT)
         st.plotly_chart(fig4, use_container_width=True)
-    with d4:
-        dp = df_vis.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index()
-        dp = dp.sort_values("PREJUIZO_ESTIMADO", ascending=False).head(7)
-        fig5 = px.bar(dp, x="CLIENTE", y="PREJUIZO_ESTIMADO", title="FINANCIAL IMPACT BY CLIENT",
+    with col_d:
+        damage = df_vis.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index()
+        damage = damage.sort_values("PREJUIZO_ESTIMADO", ascending=False).head(7)
+        fig5 = px.bar(damage, x="CLIENTE", y="PREJUIZO_ESTIMADO", title="FINANCIAL IMPACT BY CLIENT",
                       color_discrete_sequence=["#00ffff"])
         fig5.update_layout(**LAYOUT)
         st.plotly_chart(fig5, use_container_width=True)
 
-    st.markdown("### 🤖 AI MODEL PERFORMANCE")
+    st.markdown("### AI MODEL PERFORMANCE")
     m1, m2, m3 = st.columns(3)
     with m1:
         st.metric("ACCURACY", f"{acuracia:.1%}")
     with m2:
-        st.metric("TRAINING SET", f"{int(len(df)*0.8):,} records")
+        st.metric("TRAINING SET", f"{int(len(df)*0.8):,}")
     with m3:
-        st.metric("TEST SET", f"{int(len(df)*0.2):,} records")
+        st.metric("TEST SET", f"{int(len(df)*0.2):,}")
 
     y_pred = modelo.predict(X_test)
-    cm_mat = confusion_matrix(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred)
     labels = encoders["severidade"].classes_
     fig_cm = go.Figure(go.Heatmap(
-        z=cm_mat, x=labels, y=labels,
+        z=cm, x=labels, y=labels,
         colorscale=[[0, "#0d1117"], [1, "#00ffff"]],
-        text=cm_mat, texttemplate="%{text}", showscale=True
+        text=cm, texttemplate="%{text}", showscale=True
     ))
     fig_cm.update_layout(title="CONFUSION MATRIX", xaxis_title="PREDICTED", yaxis_title="ACTUAL",
                          height=320, **LAYOUT)
     st.plotly_chart(fig_cm, use_container_width=True)
 
-with abas[2]:
-    st.markdown("### 🌍 GLOBAL THREAT MAP")
-    st.caption("REAL-TIME ATTACK VISUALIZATION — LIVE INTRUSION DETECTION")
+with aba3:
+    st.markdown("### GLOBAL ATTACK MAP")
+    st.caption("REAL-TIME THREAT VISUALIZATION")
 
     COORDS = {
         "China": (35.86, 104.19), "Russia": (61.52, 105.31), "United States": (37.09, -95.71),
         "North Korea": (40.33, 127.51), "Germany": (51.16, 10.45), "Brazil": (-14.23, -51.92),
         "Canada": (56.13, -106.34),
     }
-    BRASIL_COORD = (-15.78, -47.92)
+    TARGET = (-15.78, -47.92)
 
-    ataques_df = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"].copy()
-    contagem_pais = ataques_df["PAIS_ATAQUE"].value_counts().reset_index()
-    contagem_pais.columns = ["pais", "total"]
+    attack_df = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"].copy()
+    country_count = attack_df["PAIS_ATAQUE"].value_counts().reset_index()
+    country_count.columns = ["country", "total"]
 
-    arcs_data = []
-    for _, row in contagem_pais.iterrows():
-        pais = row["pais"]
-        if pais in COORDS:
-            orig = COORDS[pais]
-            dest = BRASIL_COORD
-            arcs_data.append({
-                "origem_lat": orig[0], "origem_lon": orig[1],
-                "dest_lat": dest[0], "dest_lon": dest[1],
-                "pais": pais, "total": int(row["total"]),
-                "cor": "#ef4444" if row["total"] > 30 else "#f59e0b" if row["total"] > 15 else "#00ffff"
+    arcs = []
+    for _, row in country_count.iterrows():
+        c = row["country"]
+        if c in COORDS:
+            src = COORDS[c]
+            arcs.append({
+                "src_lat": src[0], "src_lon": src[1],
+                "dst_lat": TARGET[0], "dst_lon": TARGET[1],
+                "name": c, "count": int(row["total"]),
+                "color": "#ef4444" if row["total"] > 30 else "#f59e0b" if row["total"] > 15 else "#00ffff"
             })
 
     import json
-    arcs_json = json.dumps(arcs_data)
+    arcs_json = json.dumps(arcs)
 
-    mapa_html = f"""
+    map_html = """
     <!DOCTYPE html>
     <html>
     <head>
     <meta charset="utf-8">
     <style>
-        body {{ margin: 0; background: #0a0c10; overflow: hidden; }}
-        canvas {{ display: block; }}
-        #info {{
-            position: absolute; top: 16px; left: 16px;
-            color: #00ffff; font-family: 'Orbitron', monospace; font-size: 11px;
+        body { margin: 0; background: #0a0c10; overflow: hidden; }
+        canvas { display: block; }
+        #info {
+            position: absolute; top: 12px; left: 12px;
+            color: #00ffff; font-family: monospace; font-size: 10px;
             background: rgba(13,17,23,0.95); border: 1px solid rgba(0,255,255,0.3);
-            border-radius: 8px; padding: 12px 16px; min-width: 200px;
-            backdrop-filter: blur(10px);
-        }}
-        #info h3 {{ color: #00ffff; margin: 0 0 8px; font-size: 12px; letter-spacing: 1px; }}
-        .leg {{ display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 9px; }}
-        .dot {{ width: 8px; height: 8px; border-radius: 50%; }}
-        #stats {{
-            position: absolute; top: 16px; right: 16px;
-            color: #00ffff; font-family: 'Orbitron', monospace;
+            border-radius: 6px; padding: 8px 12px;
+            z-index: 100;
+        }
+        #stats {
+            position: absolute; top: 12px; right: 12px;
+            color: #00ffff; font-family: monospace;
             background: rgba(13,17,23,0.95); border: 1px solid rgba(0,255,255,0.3);
-            border-radius: 8px; padding: 12px 16px; text-align: right;
-        }}
-        #stats .num {{ color: #00ffff; font-size: 24px; font-weight: 800; }}
-        #tooltip {{
+            border-radius: 6px; padding: 8px 12px;
+            text-align: right; z-index: 100;
+        }
+        #stats .num { color: #00ffff; font-size: 20px; font-weight: 800; }
+        #tooltip {
             position: absolute; display: none;
             background: rgba(13,17,23,0.98); border: 1px solid #00ffff;
-            border-radius: 6px; padding: 6px 12px;
-            color: #00ffff; font-family: 'Orbitron', monospace; font-size: 10px;
-            pointer-events: none;
-        }}
+            border-radius: 4px; padding: 4px 8px;
+            color: #00ffff; font-family: monospace; font-size: 9px;
+            pointer-events: none; z-index: 200;
+        }
     </style>
     </head>
     <body>
-    <canvas id="c"></canvas>
-    <div id="info"><h3>🌍 ATTACK ORIGINS</h3><div class="leg"><div class="dot" style="background:#ef4444"></div><span>HIGH VOLUME (>30)</span></div><div class="leg"><div class="dot" style="background:#f59e0b"></div><span>MEDIUM (15-30)</span></div><div class="leg"><div class="dot" style="background:#00ffff"></div><span>LOW (<15)</span></div><div style="margin-top:8px;border-top:1px solid rgba(0,255,255,0.2);padding-top:6px;"><div class="leg">🎯 TARGET: BRAZIL</div></div></div>
-    <div id="stats"><div style="color:#8b949e;font-size:9px;">DETECTED ATTACKS</div><div class="num" id="attack-count">0</div><div style="color:#8b949e;font-size:9px;margin-top:6px;">IPS BLOCKED</div><div class="num" id="ip-count">0</div></div>
+    <canvas id="canvas"></canvas>
+    <div id="info">
+        <strong>ATTACK ORIGINS</strong><br>
+        <span style="color:#ef4444;">●</span> HIGH (>30)
+        <span style="color:#f59e0b;">●</span> MEDIUM (15-30)
+        <span style="color:#00ffff;">●</span> LOW (<15)
+        <br>🎯 TARGET: BRAZIL
+    </div>
+    <div id="stats">
+        DETECTED<br>
+        <span class="num" id="attackCount">0</span><br>
+        IPS BLOCKED<br>
+        <span class="num" id="ipCount">0</span>
+    </div>
     <div id="tooltip"></div>
     <script>
-    const arcs = {arcs_json};
-    const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
-    const tooltip = document.getElementById('tooltip');
-    let W, H, particles = [], attackCount = 0, ipCount = 0;
-    function resize() {{ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }}
-    resize(); window.addEventListener('resize', resize);
-    function latLonToXY(lat, lon) {{ return [(lon + 180) / 360 * W, (90 - lat) / 180 * H]; }}
-    function drawGrid() {{
-        ctx.strokeStyle = 'rgba(0,255,255,0.05)'; ctx.lineWidth = 0.5;
-        for (let lon = -180; lon <= 180; lon += 30) {{ ctx.beginPath(); const [x] = latLonToXY(0, lon); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }}
-        for (let lat = -90; lat <= 90; lat += 30) {{ ctx.beginPath(); const [, y] = latLonToXY(lat, 0); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }}
-    }}
-    function drawCountryDots() {{
-        const dots = [[35.86,104.19,"CHN"],[61.52,105.31,"RUS"],[37.09,-95.71,"USA"],[40.33,127.51,"PRK"],[51.16,10.45,"DEU"],[-14.23,-51.92,"BRA"],[56.13,-106.34,"CAN"]];
-        dots.forEach(([lat, lon, code]) => {{
-            const [x, y] = latLonToXY(lat, lon); const isBrazil = code === "BRA";
-            ctx.beginPath(); ctx.arc(x, y, isBrazil ? 8 : 4, 0, Math.PI*2);
-            ctx.fillStyle = isBrazil ? '#00ff00' : 'rgba(0,255,255,0.3)'; ctx.fill();
-            if (isBrazil) {{ ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI*2); ctx.strokeStyle = 'rgba(0,255,255,0.3)'; ctx.lineWidth = 1; ctx.stroke(); }}
-            ctx.fillStyle = isBrazil ? '#00ff00' : '#00ffff'; ctx.font = 'bold 8px Orbitron'; ctx.fillText(code, x + 10, y + 3);
-        }});
-    }}
-    class Particle {{
-        constructor(arc) {{ this.arc = arc; this.t = 0; this.speed = 0.003 + Math.random() * 0.004; this.trail = []; }}
-        update() {{ this.t += this.speed; const [x,y] = this.pos(this.t); this.trail.push([x,y]); if (this.trail.length > 18) this.trail.shift(); return this.t < 1; }}
-        pos(t) {{
-            const [ox,oy] = latLonToXY(this.arc.origem_lat, this.arc.origem_lon);
-            const [dx,dy] = latLonToXY(this.arc.dest_lat, this.arc.dest_lon);
-            const mx = (ox+dx)/2, my = Math.min(oy,dy) - Math.abs(dx-ox)*0.25;
-            const it = 1-t; return [it*it*ox + 2*it*t*mx + t*t*dx, it*it*oy + 2*it*t*my + t*t*dy];
-        }}
-        draw() {{
-            if (this.trail.length < 2) return;
-            for (let i=1; i<this.trail.length; i++) {{ const alpha = i/this.trail.length;
-                ctx.beginPath(); ctx.moveTo(this.trail[i-1][0], this.trail[i-1][1]); ctx.lineTo(this.trail[i][0], this.trail[i][1]);
-                ctx.strokeStyle = this.arc.cor.replace(')', `,${{alpha}}`).replace('rgb','rgba'); ctx.lineWidth = 1.5 * alpha; ctx.stroke();
-            }}
-            const [hx,hy] = this.trail[this.trail.length-1]; ctx.beginPath(); ctx.arc(hx, hy, 3, 0, Math.PI*2); ctx.fillStyle = this.arc.cor; ctx.fill();
-        }}
-    }}
-    function spawnParticles() {{ arcs.forEach(arc => {{ if (Math.random() < 0.15) particles.push(new Particle(arc)); }}); }}
-    let frameCount = 0;
-    function animate() {{
-        requestAnimationFrame(animate); ctx.clearRect(0,0,W,H); ctx.fillStyle = '#0a0c10'; ctx.fillRect(0,0,W,H);
-        drawGrid(); drawCountryDots(); frameCount++;
-        if (frameCount % 12 === 0) spawnParticles();
-        particles = particles.filter(p => {{ const alive = p.update(); p.draw(); if (!alive) {{ attackCount++; ipCount = Math.floor(attackCount * 0.72); document.getElementById('attack-count').textContent = attackCount.toLocaleString(); document.getElementById('ip-count').textContent = ipCount.toLocaleString(); }} return alive; }});
-    }}
-    canvas.addEventListener('mousemove', e => {{ const rect = canvas.getBoundingClientRect(); const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-        let found = false; arcs.forEach(arc => {{ const [ox,oy] = latLonToXY(arc.origem_lat, arc.origem_lon);
-            if (Math.hypot(mx-ox, my-oy) < 15) {{ tooltip.style.display = 'block'; tooltip.style.left = (e.clientX + 12) + 'px'; tooltip.style.top = (e.clientY - 30) + 'px'; tooltip.innerHTML = `<strong>${arc.pais}</strong><br>${arc.total} attacks detected`; found = true; }} }});
-        if (!found) tooltip.style.display = 'none';
-    }});
-    animate();
+        var arcs = """ + arcs_json + """;
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var tooltip = document.getElementById('tooltip');
+        var w, h, particles = [];
+        var attackTotal = 0, ipTotal = 0;
+        
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        
+        function toXY(lat, lon) {
+            return [(lon + 180) / 360 * w, (90 - lat) / 180 * h];
+        }
+        
+        function drawGrid() {
+            ctx.strokeStyle = 'rgba(0,255,255,0.05)';
+            ctx.lineWidth = 0.5;
+            for (var lon = -180; lon <= 180; lon += 30) {
+                ctx.beginPath();
+                var x = toXY(0, lon)[0];
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, h);
+                ctx.stroke();
+            }
+            for (var lat = -90; lat <= 90; lat += 30) {
+                ctx.beginPath();
+                var y = toXY(lat, 0)[1];
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+                ctx.stroke();
+            }
+        }
+        
+        function drawDots() {
+            var points = [
+                [35.86,104.19,"CHN"],[61.52,105.31,"RUS"],[37.09,-95.71,"USA"],
+                [40.33,127.51,"PRK"],[51.16,10.45,"DEU"],[-14.23,-51.92,"BRA"],
+                [56.13,-106.34,"CAN"]
+            ];
+            for (var i = 0; i < points.length; i++) {
+                var p = points[i];
+                var xy = toXY(p[0], p[1]);
+                var isTarget = p[2] === "BRA";
+                ctx.beginPath();
+                ctx.arc(xy[0], xy[1], isTarget ? 8 : 4, 0, Math.PI * 2);
+                ctx.fillStyle = isTarget ? '#00ff00' : 'rgba(0,255,255,0.3)';
+                ctx.fill();
+                if (isTarget) {
+                    ctx.beginPath();
+                    ctx.arc(xy[0], xy[1], 12, 0, Math.PI * 2);
+                    ctx.strokeStyle = 'rgba(0,255,255,0.3)';
+                    ctx.stroke();
+                }
+                ctx.fillStyle = isTarget ? '#00ff00' : '#00ffff';
+                ctx.font = 'bold 8px monospace';
+                ctx.fillText(p[2], xy[0] + 10, xy[1] + 3);
+            }
+        }
+        
+        function Particle(data) {
+            this.data = data;
+            this.t = 0;
+            this.speed = 0.003 + Math.random() * 0.004;
+            this.trail = [];
+            this.update = function() {
+                this.t += this.speed;
+                var pos = this.getPos(this.t);
+                this.trail.push([pos[0], pos[1]]);
+                if (this.trail.length > 18) this.trail.shift();
+                return this.t < 1;
+            };
+            this.getPos = function(t) {
+                var src = toXY(this.data.src_lat, this.data.src_lon);
+                var dst = toXY(this.data.dst_lat, this.data.dst_lon);
+                var ox = src[0], oy = src[1];
+                var dx = dst[0], dy = dst[1];
+                var mx = (ox + dx) / 2;
+                var my = Math.min(oy, dy) - Math.abs(dx - ox) * 0.25;
+                var it = 1 - t;
+                return [it*it*ox + 2*it*t*mx + t*t*dx, it*it*oy + 2*it*t*my + t*t*dy];
+            };
+            this.draw = function() {
+                if (this.trail.length < 2) return;
+                for (var i = 1; i < this.trail.length; i++) {
+                    var alpha = i / this.trail.length;
+                    ctx.beginPath();
+                    ctx.moveTo(this.trail[i-1][0], this.trail[i-1][1]);
+                    ctx.lineTo(this.trail[i][0], this.trail[i][1]);
+                    var col = this.data.color;
+                    if (col === '#ef4444') ctx.strokeStyle = 'rgba(239,68,68,' + alpha + ')';
+                    else if (col === '#f59e0b') ctx.strokeStyle = 'rgba(245,158,11,' + alpha + ')';
+                    else ctx.strokeStyle = 'rgba(0,255,255,' + alpha + ')';
+                    ctx.lineWidth = 1.5 * alpha;
+                    ctx.stroke();
+                }
+                var last = this.trail[this.trail.length - 1];
+                ctx.beginPath();
+                ctx.arc(last[0], last[1], 3, 0, Math.PI * 2);
+                ctx.fillStyle = this.data.color;
+                ctx.fill();
+            };
+        }
+        
+        function spawn() {
+            for (var i = 0; i < arcs.length; i++) {
+                if (Math.random() < 0.15) {
+                    particles.push(new Particle(arcs[i]));
+                }
+            }
+        }
+        
+        var frame = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#0a0c10';
+            ctx.fillRect(0, 0, w, h);
+            drawGrid();
+            drawDots();
+            frame++;
+            if (frame % 12 === 0) spawn();
+            var newParticles = [];
+            for (var i = 0; i < particles.length; i++) {
+                var alive = particles[i].update();
+                particles[i].draw();
+                if (!alive) {
+                    attackTotal++;
+                    ipTotal = Math.floor(attackTotal * 0.72);
+                    document.getElementById('attackCount').textContent = attackTotal.toLocaleString();
+                    document.getElementById('ipCount').textContent = ipTotal.toLocaleString();
+                } else {
+                    newParticles.push(particles[i]);
+                }
+            }
+            particles = newParticles;
+        }
+        
+        canvas.addEventListener('mousemove', function(e) {
+            var rect = canvas.getBoundingClientRect();
+            var mx = e.clientX - rect.left;
+            var my = e.clientY - rect.top;
+            var found = false;
+            for (var i = 0; i < arcs.length; i++) {
+                var a = arcs[i];
+                var pos = toXY(a.src_lat, a.src_lon);
+                var dx = mx - pos[0];
+                var dy = my - pos[1];
+                var dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 15) {
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = (e.clientX + 12) + 'px';
+                    tooltip.style.top = (e.clientY - 30) + 'px';
+                    tooltip.innerHTML = '<strong>' + a.name + '</strong><br>' + a.count + ' attacks';
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) tooltip.style.display = 'none';
+        });
+        
+        animate();
     </script>
     </body>
     </html>
     """
-    components.html(mapa_html, height=550, scrolling=False)
+    components.html(map_html, height=520, scrolling=False)
 
-    st.markdown("### 📊 TOP ATTACK SOURCES")
-    cp = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().reset_index()
-    cp.columns = ["COUNTRY", "ATTACKS"]
-    cp["PERCENTAGE"] = (cp["ATTACKS"] / cp["ATTACKS"].sum() * 100).round(1).astype(str) + "%"
-    st.dataframe(cp, use_container_width=True, hide_index=True)
+    st.markdown("### TOP ATTACK SOURCES")
+    top_countries = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().reset_index()
+    top_countries.columns = ["COUNTRY", "ATTACKS"]
+    top_countries["%"] = (top_countries["ATTACKS"] / top_countries["ATTACKS"].sum() * 100).round(1).astype(str) + "%"
+    st.dataframe(top_countries, use_container_width=True, hide_index=True)
 
-with abas[3]:
-    st.markdown("### 🤖 SENTINEL BOT — AI SECURITY ASSISTANT")
-    st.caption("CONTEXT-AWARE CYBER INTELLIGENCE | POWERED BY CLAUDE AI")
+with aba4:
+    st.markdown("### AI SECURITY ASSISTANT")
+    st.caption("CONTEXT-AWARE THREAT INTELLIGENCE")
 
     if "chat_history" not in st.session_state:
         st.session_state["chat_history"] = []
 
-    top5_clientes = df_vis.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
-    top5_paises = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
+    top5_clients = df_vis.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
+    top5_attackers = df_vis[df_vis["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
 
-    system_prompt = f"""You are SentinelBot, SentinelAI's elite cybersecurity AI assistant.
-Respond in Portuguese (Brazilian Portuguese), professionally, directly, and precisely.
-Use minimal emojis.
+    sys_prompt = f"""You are SentinelBot, a cybersecurity AI assistant.
+Respond in Portuguese (Brazil). Be professional and direct.
 
-SYSTEM INTELLIGENCE DATA:
-- Total monitored incidents: {len(df_vis)}
-- Critical threats: {len(df_vis[df_vis['SEVERIDADE'] == 'crítica'])} ({len(df_vis[df_vis['SEVERIDADE'] == 'crítica'])/len(df_vis)*100:.1f}%)
-- Auto-blocked IPs: {len(df_vis[df_vis['BLOQUEADO_AUTOMATICAMENTE'].str.lower() == 'sim'])}
-- Total estimated loss: R$ {df_vis['PREJUIZO_ESTIMADO'].sum():,.0f}
-- AI model accuracy: {acuracia:.1%}
+SYSTEM DATA:
+- Total incidents: {len(df_vis)}
+- Critical: {len(df_vis[df_vis['SEVERIDADE'] == 'crítica'])} ({len(df_vis[df_vis['SEVERIDADE'] == 'crítica'])/len(df_vis)*100:.1f}%)
+- Blocked IPs: {len(df_vis[df_vis['BLOQUEADO_AUTOMATICAMENTE'].str.lower() == 'sim'])}
+- Total loss: R$ {df_vis['PREJUIZO_ESTIMADO'].sum():,.0f}
+- AI accuracy: {acuracia:.1%}
 - Incident types: {', '.join(df_vis['TIPO INCIDENTE'].unique())}
-- Monitored clients: {', '.join(df_vis['CLIENTE'].unique())}
-- Top 5 attacking countries: {top5_paises}
-- Top 5 clients by loss: {top5_clientes}
-- Status distribution: {df_vis['STATUS'].value_counts().to_dict()}
-- Severity distribution: {df_vis['SEVERIDADE'].value_counts().to_dict()}
-- Period: {df_vis['DATA'].min().strftime('%d/%m/%Y') if pd.notna(df_vis['DATA'].min()) else 'N/A'} to {df_vis['DATA'].max().strftime('%d/%m/%Y') if pd.notna(df_vis['DATA'].max()) else 'N/A'}
-{"- Active filter: only " + cliente_vinculado + " data" if cliente_vinculado else "- View: all clients"}
-- Database: SQLite (sentinelai.db)"""
+- Clients: {', '.join(df_vis['CLIENTE'].unique())}
+- Top attackers: {top5_attackers}
+- Top clients by loss: {top5_clients}
+- Period: {df_vis['DATA'].min().strftime('%d/%m/%Y') if pd.notna(df_vis['DATA'].min()) else 'N/A'} to {df_vis['DATA'].max().strftime('%d/%m/%Y') if pd.notna(df_vis['DATA'].max()) else 'N/A'}"""
 
     if not ANTHROPIC_API_KEY:
-        st.error("🔴 SENTINEL BOT OFFLINE — API key not configured")
-        st.info("Configure ANTHROPIC_API_KEY in Streamlit Secrets to activate")
+        st.error("AI ASSISTANT OFFLINE - API key required")
+        st.info("Configure ANTHROPIC_API_KEY in Streamlit Secrets")
     else:
-        st.success("🟢 SENTINEL BOT ACTIVE — Ready for queries")
+        st.success("AI ASSISTANT ACTIVE")
 
     for msg in st.session_state["chat_history"]:
-        css = "chat-user" if msg["role"] == "user" else "chat-ai"
+        css_class = "chat-user" if msg["role"] == "user" else "chat-ai"
         icon = "👤" if msg["role"] == "user" else "🤖"
-        st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="{css_class}">{icon} {msg["content"]}</div>', unsafe_allow_html=True)
 
-    with st.form("chat_form", clear_on_submit=True):
-        ci, cb = st.columns([5, 1])
-        with ci:
-            pergunta = st.text_input("", placeholder="QUERY SENTINEL BOT...", label_visibility="collapsed", disabled=not ANTHROPIC_API_KEY)
-        with cb:
-            enviar = st.form_submit_button("SEND", use_container_width=True, disabled=not ANTHROPIC_API_KEY)
+    with st.form("chat", clear_on_submit=True):
+        inp, btn = st.columns([5, 1])
+        with inp:
+            query = st.text_input("", placeholder="Ask about threats, clients, or request analysis...", label_visibility="collapsed", disabled=not ANTHROPIC_API_KEY)
+        with btn:
+            submit = st.form_submit_button("SEND", use_container_width=True, disabled=not ANTHROPIC_API_KEY)
 
-    sugs = ["Which client suffered the most financial loss?", "What are the top attacking countries?", "How many critical incidents are unresolved?", "What is the current AI model accuracy?", "Provide security recommendations"]
-    cols_s = st.columns(len(sugs))
-    sug_escolhida = None
-    for i, sug in enumerate(sugs):
-        with cols_s[i]:
-            if st.button(sug[:30] + "...", key=f"s{i}", use_container_width=True, disabled=not ANTHROPIC_API_KEY):
-                sug_escolhida = sug
+    suggestions = ["Top financial loss by client?", "Most frequent attack types?", "Critical incident status?", "AI model accuracy?", "Security recommendations"]
+    sug_cols = st.columns(len(suggestions))
+    selected_sug = None
+    for i, sug in enumerate(suggestions):
+        with sug_cols[i]:
+            if st.button(sug[:25] + "..", key=f"sug{i}", use_container_width=True, disabled=not ANTHROPIC_API_KEY):
+                selected_sug = sug
 
-    if sug_escolhida:
-        pergunta = sug_escolhida
-        enviar = True
+    if selected_sug:
+        query = selected_sug
+        submit = True
 
-    if enviar and pergunta and ANTHROPIC_API_KEY:
-        adicionar_log(usuario_atual, f"Chat: {pergunta[:60]}")
-        st.session_state["chat_history"].append({"role": "user", "content": pergunta})
-        with st.spinner("🤔 PROCESSING QUERY..."):
+    if submit and query and ANTHROPIC_API_KEY:
+        adicionar_log(usuario_atual.upper(), f"Chat: {query[:50]}")
+        st.session_state["chat_history"].append({"role": "user", "content": query})
+        with st.spinner("Processing..."):
             try:
                 headers = {"x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json"}
-                payload = {"model": "claude-3-haiku-20240307", "max_tokens": 1024, "system": system_prompt, "messages": [{"role": m["role"], "content": m["content"]} for m in st.session_state["chat_history"]]}
+                payload = {"model": "claude-3-haiku-20240307", "max_tokens": 1024, "system": sys_prompt, "messages": [{"role": m["role"], "content": m["content"]} for m in st.session_state["chat_history"]]}
                 resp = requests.post("https://api.anthropic.com/v1/messages", headers=headers, json=payload, timeout=30)
                 if resp.status_code == 200:
-                    resposta = resp.json()["content"][0]["text"]
+                    answer = resp.json()["content"][0]["text"]
                 else:
-                    resposta = f"API Error {resp.status_code}"
+                    answer = f"API Error: {resp.status_code}"
             except Exception as e:
-                resposta = f"Connection error: {str(e)[:100]}"
-        st.session_state["chat_history"].append({"role": "assistant", "content": resposta})
-        adicionar_log(usuario_atual, "Resposta do SentinelBot gerada")
+                answer = f"Connection error: {str(e)[:80]}"
+        st.session_state["chat_history"].append({"role": "assistant", "content": answer})
+        adicionar_log(usuario_atual.upper(), "AI response generated")
         st.rerun()
 
-    if st.session_state["chat_history"] and st.button("🗑️ CLEAR CONVERSATION"):
+    if st.session_state["chat_history"] and st.button("CLEAR HISTORY"):
         st.session_state["chat_history"] = []
         st.rerun()
 
-with abas[4]:
-    st.markdown("### 🗄️ DATA BACKUP & EXPORT")
-    st.markdown("""
-    <div style="background:rgba(13,17,23,0.8);border:1px solid rgba(0,255,255,0.2);border-radius:12px;padding:20px;margin-bottom:20px;">
-        <h4 style="color:#00ffff;margin:0 0 12px;">📍 DATA STORAGE LOCATIONS</h4>
-        <p style="color:#8b949e;font-size:13px;line-height:1.8;margin:0;">
-            PRIMARY SOURCE: dataset_final.csv (GitHub repository)<br>
-            DATABASE: SQLite (sentinelai.db) — Incident logs & audit trails<br>
-            MANUAL BACKUP: Available via download buttons below
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+with aba5:
+    st.markdown("### DATA BACKUP")
 
     if not perfil_atual["pode_exportar"]:
-        st.error("⛔ EXPORT RESTRICTED — Administrator privileges required")
+        st.error("EXPORT RESTRICTED - Admin only")
     else:
         ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        b1, b2, b3 = st.columns(3)
-        with b1:
-            st.download_button("📥 EXPORT FULL DATASET", df.to_csv(index=False).encode("utf-8"), f"sentinelai_export_{ts}.csv", "text/csv", use_container_width=True)
-        with b2:
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.download_button("EXPORT CSV", df.to_csv(index=False).encode("utf-8"), f"sentinelai_{ts}.csv", "text/csv", use_container_width=True)
+        with c2:
             df_anon = df.drop(columns=["IP_SUSPEITO"], errors="ignore")
-            st.download_button("🔒 EXPORT ANONYMIZED (LGPD)", df_anon.to_csv(index=False).encode("utf-8"), f"sentinelai_anon_{ts}.csv", "text/csv", use_container_width=True)
-        with b3:
+            st.download_button("EXPORT ANONYM (LGPD)", df_anon.to_csv(index=False).encode("utf-8"), f"sentinelai_anon_{ts}.csv", "text/csv", use_container_width=True)
+        with c3:
             if "logs_sistema" in st.session_state:
-                st.download_button("📋 EXPORT AUDIT LOGS", "\n".join(st.session_state["logs_sistema"]).encode("utf-8"), f"sentinelai_logs_{ts}.txt", "text/plain", use_container_width=True)
-        adicionar_log(usuario_atual, "Backup solicitado")
+                st.download_button("EXPORT LOGS", "\n".join(st.session_state["logs_sistema"]).encode("utf-8"), f"sentinelai_logs_{ts}.txt", "text/plain", use_container_width=True)
 
         if sqlite_ativo and os.path.exists("sentinelai.db"):
             with open("sentinelai.db", "rb") as f:
-                st.download_button("🗄️ BACKUP SQLITE DATABASE", f.read(), f"sentinelai_db_{ts}.db", "application/x-sqlite3", use_container_width=True)
+                st.download_button("BACKUP DATABASE", f.read(), f"sentinelai_db_{ts}.db", "application/x-sqlite3", use_container_width=True)
 
     if "backups" in st.session_state and st.session_state["backups"]:
-        st.markdown("### 📋 BACKUP HISTORY")
+        st.markdown("### BACKUP HISTORY")
         st.dataframe(pd.DataFrame(st.session_state["backups"]), use_container_width=True)
 
-    st.markdown("### 📄 DATA PREVIEW")
-    st.dataframe(df_vis.head(15), use_container_width=True)
+    st.markdown("### DATA PREVIEW")
+    st.dataframe(df_vis.head(20), use_container_width=True)
 
-with abas[5]:
-    st.markdown("### 🗄️ SQLITE DATABASE MANAGEMENT")
+with aba6:
+    st.markdown("### AUDIT LOGS")
 
-    if not sqlite_ativo:
-        st.error("❌ DATABASE CONNECTION FAILED")
-    else:
-        st.success("✅ SQLITE DATABASE ACTIVE — sentinelai.db")
+    tab_curr, tab_db = st.tabs(["CURRENT SESSION", "DATABASE HISTORY"])
 
-        st.markdown("### 📋 REGISTERED INCIDENTS")
-        df_sqlite = buscar_incidentes_sqlite(sqlite_conn)
-        if not df_sqlite.empty:
-            st.dataframe(df_sqlite, use_container_width=True)
-        else:
-            st.info("No incidents registered yet. Use the Analysis tab to create records.")
-
-        st.markdown("### 📊 DATABASE STATISTICS")
-        try:
-            cursor = sqlite_conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM incidentes_registrados")
-            total_inc = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM logs_sistema")
-            total_logs = cursor.fetchone()[0]
-            col_s1, col_s2 = st.columns(2)
-            with col_s1:
-                st.metric("TOTAL INCIDENTS", total_inc)
-            with col_s2:
-                st.metric("SYSTEM LOGS", total_logs)
-        except:
-            pass
-
-with abas[6]:
-    st.markdown("### 📋 SYSTEM AUDIT LOGS")
-    st.caption("COMPLETE ACTION TRAIL — Real-time session logging")
-
-    tab_logs1, tab_logs2 = st.tabs(["📱 CURRENT SESSION", "💾 DATABASE HISTORY"])
-
-    with tab_logs1:
+    with tab_curr:
         if "logs_sistema" in st.session_state and st.session_state["logs_sistema"]:
             for log in reversed(st.session_state["logs_sistema"]):
                 st.code(log, language=None)
         else:
-            st.info("No logs recorded in current session.")
+            st.info("No logs in current session")
 
-    with tab_logs2:
+    with tab_db:
         if sqlite_ativo:
             try:
-                df_logs = pd.read_sql_query("SELECT * FROM logs_sistema ORDER BY timestamp DESC LIMIT 100", sqlite_conn)
-                if not df_logs.empty:
-                    st.dataframe(df_logs, use_container_width=True)
+                db_logs = pd.read_sql_query("SELECT * FROM logs_sistema ORDER BY timestamp DESC LIMIT 100", sqlite_conn)
+                if not db_logs.empty:
+                    st.dataframe(db_logs, use_container_width=True)
                 else:
-                    st.info("No historical logs found.")
+                    st.info("No database logs found")
             except:
-                st.info("Unable to load database logs.")
+                st.info("Unable to load database logs")
         else:
-            st.warning("Database connection unavailable.")
+            st.warning("Database offline")
 
 st.markdown("""
-<div style="text-align:center;padding:24px 0 12px;border-top:1px solid rgba(0,255,255,0.1);margin-top:24px;">
-    <p style="color:#374151;font-size:11px;margin:0;">
-        🛡️ <strong style="color:#00ffff;">SENTINEL AI</strong> &nbsp;·&nbsp;
-        LGPD COMPLIANT &nbsp;·&nbsp;
-        ENTERPRISE GRADE SECURITY &nbsp;·&nbsp;
-        <a href="https://github.com/mariana-castro77/SentinelAl" target="_blank" style="color:#00ffff;">GITHUB REPOSITORY</a>
+<div style="text-align:center;padding:20px 0 8px;border-top:1px solid rgba(0,255,255,0.1);margin-top:16px;">
+    <p style="color:#374151;font-size:10px;margin:0;">
+        SENTINEL AI — ENTERPRISE SECURITY PLATFORM
     </p>
 </div>
 """, unsafe_allow_html=True)
