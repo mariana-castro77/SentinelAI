@@ -20,19 +20,17 @@ st.set_page_config(
 # 2. Carregamento do Dataset Oficial (CSV) com Fallback Seguro
 @st.cache_data
 def carregar_dataset_oficial():
-    # Procura pelo arquivo enviado no diretório atual
     if os.path.exists("dataset_final.csv"):
         df = pd.read_csv("dataset_final.csv")
     elif os.path.exists("dataset_mysql.csv"):
         df = pd.read_csv("dataset_mysql.csv")
     else:
-        # Cria estrutura idêntica caso falte no deploy temporário
         st.error("⚠️ Arquivo 'dataset_final.csv' não encontrado! Criando dados temporários...")
         dados_mock = {
             "ID": range(1, 6),
             "DATA": ["2026-03-11", "2026-03-27", "2026-04-05", "2026-04-03", "2026-03-07"],
-            "TIPO INCIDENTE": ["ataque", "lentidão", "ataque", "lentidão", "lentidão"],
-            "SEVERIDADE": ["crítica", "crítica", "crítica", "média", "baixa"],
+            "TIPO INCIDENTE": ["Ataque", "Lentidão", "Ataque", "Lentidão", "Lentidão"],
+            "SEVERIDADE": ["Crítica", "Crítica", "Crítica", "Média", "Baixa"],
             "TEMPO RESOLUÇÃO": [24, 24, 78, 58, 49],
             "ORIGEM": ["aplicação", "aplicação", "servidor", "banco de dados", "aplicação"],
             "STATUS": ["pendente", "pendente", "resolvido", "pendente", "resolvido"],
@@ -46,7 +44,6 @@ def carregar_dataset_oficial():
         }
         df = pd.DataFrame(dados_mock)
     
-    # Padronização de strings para evitar erros de busca/filtros
     df["TIPO INCIDENTE"] = df["TIPO INCIDENTE"].astype(str).str.title()
     df["SEVERIDADE"] = df["SEVERIDADE"].astype(str).str.title()
     df["CLIENTE"] = df["CLIENTE"].astype(str)
@@ -162,7 +159,6 @@ if "lgpd_consent" not in st.session_state:
 if not st.session_state["lgpd_consent"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none;} header{display:none!important;}</style>", unsafe_allow_html=True)
     
-    # Renderização HTML/CSS nativa injetando o modal no centro exato da tela
     st.markdown("""
     <div class="cookie-blur-bg">
         <div class="cookie-modal-center">
@@ -176,7 +172,6 @@ if not st.session_state["lgpd_consent"]:
     </div>
     """, unsafe_allow_html=True)
     
-    # Botões do Streamlit acoplados abaixo do modal para manipulação de estado do Python
     cm_sp, cm_btn1, cm_btn2, cm_sp2 = st.columns([1, 1.5, 1.5, 1])
     with cm_btn1:
         if st.button("RECUSAR TUDO", use_container_width=True):
@@ -204,7 +199,6 @@ if not st.session_state["autenticado"]:
         with st.container():
             st.markdown("<div style='background: rgba(11,13,20,0.8); padding: 1.8rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.04);'>", unsafe_allow_html=True)
             
-            # Base de credenciais de operadores expandida
             OPERADORES_PERMITIDOS = {
                 "admin": "admin123",
                 "analista": "analista123",
@@ -273,23 +267,20 @@ tab_analise, tab_globe, tab_bi, tab_ai, tab_audit = st.tabs([
     "🔍 ANÁLISE DE INCIDENTES", "🌍 GLOBO DE AMEAÇAS 3D", "📊 DASHBOARD CORPORATIVO", "🤖 ASSISTENTE COGNITIVO", "📋 AUDITORIA SYSLOG"
 ])
 
-# --- ABA 1: ABA DE ANÁLISE SOLICITADA (TIPO, CLIENTE, IP, PAÍS E RESPOSTA AUTOMÁTICA) ---
+# --- ABA 1: ABA DE ANÁLISE (TIPO, CLIENTE, IP, PAÍS E RESPOSTA AUTOMÁTICA) ---
 with tab_analise:
     st.markdown("### Investigação de Vetores e Mitigação Automatizada")
     st.caption("Selecione os parâmetros do incidente em andamento para inspecionar os detalhes técnicos e acionar a resposta automática de proteção.")
     
     col_sel1, col_sel2 = st.columns(2)
     with col_sel1:
-        # Puxa dinamicamente os tipos de incidentes únicos gravados no seu CSV
         lista_tipos = sorted(df_soc["TIPO INCIDENTE"].unique())
         tipo_selecionado = st.selectbox("Selecione o Tipo de Incidente:", lista_tipos)
         
     with col_sel2:
-        # Filtra os clientes afetados por esse tipo de incidente no CSV
         clientes_filtrados = sorted(df_soc[df_soc["TIPO INCIDENTE"] == tipo_selecionado]["CLIENTE"].unique())
         cliente_selecionado = st.selectbox("Selecione o Cliente Afetado:", clientes_filtrados)
         
-    # Extração da linha correspondente aos filtros
     dados_filtrados = df_soc[
         (df_soc["TIPO INCIDENTE"] == tipo_selecionado) & 
         (df_soc["CLIENTE"] == cliente_selecionado)
@@ -298,7 +289,6 @@ with tab_analise:
     if not dados_filtrados.empty:
         linha_incidente = dados_filtrados.iloc[0]
         
-        # Painel Informativo dos Dados Solicitados (País, IP, Severidade, etc.)
         st.markdown("<br>", unsafe_allow_html=True)
         ca_1, ca_2, ca_3, ca_4 = st.columns(4)
         with ca_1:
@@ -311,14 +301,12 @@ with tab_analise:
             prej_val = linha_incidente.get('PREJUIZO_ESTIMADO', 0)
             st.markdown(f"**📉 Impacto Financeiro:**<br><span style='color:#ef4444; font-size:1.1rem;'>R$ {prej_val:,.2f}</span>", unsafe_allow_html=True)
             
-        # Geração da Resposta Automática Inteligente baseada no Tipo
         st.markdown("---")
         st.markdown("#### ⚡ Resposta Automática do Sistema (SOC Playbook Engine)")
         
         ip_alvo = linha_incidente.get('IP_SUSPEITO', 'Nenhum')
         pais_alvo = linha_incidente.get('PAIS_ATAQUE', 'Interno')
         
-        # Lógica de Playbooks Automáticos baseados na engenharia do seu Dataset
         if "ataque" in tipo_selecionado.lower() or "ddos" in tipo_selecionado.lower():
             comando_playbook = f"RESTRIC_IP_DROP_INBOUND [{ip_alvo}]"
             descricao_playbook = f"Ataque volumétrico externo detectado originando do país: **{pais_alvo}**. O firewall perimetral acionou regras de mitigação via Null-Routing na borda da aplicação do cliente {cliente_selecionado}."
@@ -343,24 +331,24 @@ with tab_analise:
     else:
         st.info("Nenhuma ocorrência encontrada combinando o tipo e cliente selecionados no CSV atual.")
 
-# --- ABA 2: GLOBO DE AMEAÇAS COM NOMES DOS PAÍSES EXPLICITADOS ---
+# --- ABA 2: GLOBO DE AMEAÇAS SEM REQUISITAR F-STRING (RESOLVE O NAMEERROR) ---
 with tab_globe:
     st.markdown("### Globo Geopolítico de Ameaças Interceptadas")
     st.caption("Visualização tridimensional orientada por coordenadas geográficas reais de pacotes maliciosos.")
     
-    # Injeção de tags dinâmicas no script Three.js para plotar nomes de países na interface do canvas
     mapa_dados_paises = df_soc["PAIS_ATAQUE"].value_counts().to_dict()
     string_paises_js = ", ".join([f"'{k}'" for k in mapa_dados_paises.keys() if k != 'Interno'])
     
-    three_html = f"""
+    # Template puro (String comum) para evitar conflitos de chaves { } com o interpretador do Python f-string
+    three_html_template = """
     <!DOCTYPE html>
     <html>
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
         <style>
-            body {{ margin: 0; background: #07090e; overflow: hidden; font-family: monospace; }}
-            #container-3d {{ width: 100%; height: 460px; position: relative; }}
-            .console-overlay {{ position: absolute; top: 15px; left: 15px; background: rgba(11,13,20,0.95); border: 1px solid #ef4444; border-radius: 6px; padding: 12px; color: #ef4444; font-size: 11px; max-width:280px; box-shadow:0 0 15px rgba(239,68,68,0.2); }}
+            body { margin: 0; background: #07090e; overflow: hidden; font-family: monospace; }
+            #container-3d { width: 100%; height: 460px; position: relative; }
+            .console-overlay { position: absolute; top: 15px; left: 15px; background: rgba(11,13,20,0.95); border: 1px solid #ef4444; border-radius: 6px; padding: 12px; color: #ef4444; font-size: 11px; max-width:280px; box-shadow:0 0 15px rgba(239,68,68,0.2); }
         </style>
     </head>
     <body>
@@ -368,7 +356,7 @@ with tab_globe:
             <div class="console-overlay">
                 <b>[GEOPOLITICAL SENTINEL CORE]</b><br>
                 > MONITORING VECTOR TARGETS:<br>
-                <span style="color:#fff;">[{string_paises_js}]</span>
+                <span style="color:#fff;">[__PAISES_ALVO__]</span>
             </div>
         </div>
         <script>
@@ -390,21 +378,23 @@ with tab_globe:
             scene.add(points);
 
             camera.position.z = 4.0;
-            function run() {{
+            function run() {
                 requestAnimationFrame(run);
                 globe.rotation.y += 0.002;
                 points.rotation.y += 0.002;
                 renderer.render(scene, camera);
-            }}
-            window.addEventListener('resize', () => {{
+            }
+            window.addEventListener('resize', () => {
                 camera.aspect = div.clientWidth / 460; camera.updateProjectionMatrix();
                 renderer.setSize(div.clientWidth, 460);
-            }});
+            });
             run();
         </script>
     </body>
     </html>
     """
+    # Substituição limpa de strings sem acionar o motor de f-string
+    three_html = three_html_template.replace("__PAISES_ALVO__", string_paises_js)
     components.html(three_html, height=480, scrolling=False)
 
 # --- ABA 3: DASHBOARD BI RECONSTRUÍDO ---
@@ -430,13 +420,11 @@ with tab_ai:
     if "chat_history_soc" not in st.session_state:
         st.session_state["chat_history_soc"] = []
         
-    # Renderização do histórico
     for m in st.session_state["chat_history_soc"]:
         cls = "chat-user" if m["role"] == "user" else "chat-ai"
         lbl = "👤 Operador" if m["role"] == "user" else "🤖 SentinelCore AI"
         st.markdown(f'<div class="{cls}"><b>{lbl}:</b> {m["content"]}</div>', unsafe_allow_html=True)
     
-    # SISTEMA DE COMANDOS AUTOMÁTICOS COM CLIQUES RÁPIDOS
     st.markdown("<p style='color:#64748b; font-size:0.75rem; font-weight:600; margin-bottom:0.4rem;'>COMANDOS RÁPIDOS DISPONÍVEIS:</p>", unsafe_allow_html=True)
     bc1, bc2, bc3 = st.columns(3)
     comando_acionado = ""
@@ -451,18 +439,15 @@ with tab_ai:
         if st.button("🔒 Rodar Guia de Compliance LGPD", use_container_width=True):
             comando_acionado = "Como nosso SOC garante conformidade e segurança na guarda de IPs suspeitos de ataques perante as regras da LGPD?"
             
-    # Formulário clássico de envio de perguntas por texto
     with st.form("ai_terminal", clear_on_submit=True):
         pergunta_texto = st.text_input("Injetar comando customizado na IA:", placeholder="Escreva sua dúvida técnica...")
         botao_enviar = st.form_submit_button("DISPARAR PROMPT")
         
-    # Aglutinação lógica de gatilhos (Texto ou Botão de comando)
     pergunta_final = pergunta_texto if botao_enviar else comando_acionado
     
     if pergunta_final.strip():
         st.session_state["chat_history_soc"].append({"role": "user", "content": pergunta_final})
         
-        # Criação de um super prompt de contexto enriquecido com seus dados reais do CSV
         prompt_contextualizado = f"""Você é o motor cognitivo principal do Cyber SOC da empresa SentinelAI.
         Seu operador logado é o analista '{user_atual}'. 
         
