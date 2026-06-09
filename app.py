@@ -85,89 +85,46 @@ if not st.session_state["termo_aceito"]:
     st.stop()
 
 # ==============================================================================
-# 5. LÓGICA DE NAVEGAÇÃO: PÁGINA DE LOGIN (CONTROLE DE PERFIS)
+# 5. LÓGICA DE NAVEGAÇÃO: TELA DE LOGIN (PROFISSIONAL)
 # ==============================================================================
 
 if not st.session_state["autenticado"]:
-    # Mantém o sidebar oculto na tela de login
     st.markdown("<style>[data-testid='stSidebar']{display:none;} header{visibility:hidden;}</style>", unsafe_allow_html=True)
     
     _, col_login, _ = st.columns([1, 1.6, 1])
-    
     with col_login:
-        st.markdown("<br><br>", unsafe_allow_html=True)
         st.markdown('''
-            <div class="hud-card" style="text-align: center; margin-bottom: 20px;">
-                <span style="color: #ff3333; font-weight:700; font-size:0.8rem; letter-spacing:2px;">SISTEMA DE IDENTIDADE SENTINELAI</span>
-                <h2 class="titulo-h" style="margin-top:10px;">Autenticação de Operador</h2>
+            <div class="hud-card" style="text-align: center; margin-bottom: 30px;">
+                <p style="color: #ff3333; font-weight:700; font-size:0.75rem; letter-spacing:3px; margin-bottom:10px;">SENTINELAI // IDENTITY CORE</p>
+                <h2 class="titulo-h">AUTENTICAÇÃO DE OPERADOR</h2>
             </div>
         ''', unsafe_allow_html=True)
         
-        # TABELA DE REFERÊNCIA PARA VOCÊ NÃO ESQUECER OS USUÁRIOS (Opcional - pode apagar depois)
-        st.info("💡 **DICA DO SISTEMA:** Admin: `admin` / `root99` | Analista: `analista` / `soc123` | Nubank: `nubank_user` / `nu2026`")
-
         with st.form("form_login"):
-            usuario = st.text_input("👤 Credencial de Acesso", placeholder="Digite seu usuário")
-            senha = st.text_input("🔑 Assinatura Criptográfica", type="password", placeholder="••••••••")
+            usuario = st.text_input("Usuário")
+            senha = st.text_input("Senha", type="password")
             
-            botao_login = st.form_submit_button("AUTENTICAR NO DASHBOARD", use_container_width=True)
-            
-            if botao_login:
-                # 1. PERFIL: ADMINISTRADOR (ACESSO TOTAL)
-                if usuario == "admin" and senha == "root99":
-                    st.session_state.update({
-                        "autenticado": True,
-                        "perfil_usuario": "Administrador",
-                        "cliente_usuario": "Todos"
-                    })
-                    st.rerun()
+            if st.form_submit_button("ACESSAR SISTEMA", use_container_width=True):
+                # Estrutura de Autenticação (Adicionei todos os clientes solicitados)
+                auth_data = {
+                    "admin": {"pwd": "root99", "perfil": "Administrador", "cliente": "Todos"},
+                    "analista": {"pwd": "soc123", "perfil": "Analista", "cliente": "Todos"},
+                    "nubank": {"pwd": "nu2026", "perfil": "Cliente", "cliente": "Nubank"},
+                    "ifood": {"pwd": "ifood77", "perfil": "Cliente", "cliente": "iFood"},
+                    "mercadolivre": {"pwd": "ml2026", "perfil": "Cliente", "cliente": "Mercado Livre"},
+                    "santander": {"pwd": "san99", "perfil": "Cliente", "cliente": "Santander"},
+                    "vivo": {"pwd": "vivo2026", "perfil": "Cliente", "cliente": "Vivo"},
+                    "xp": {"pwd": "xp2026", "perfil": "Cliente", "cliente": "XP Investimentos"},
+                    "magazine": {"pwd": "magalu2026", "perfil": "Cliente", "cliente": "Magazine Luiza"}
+                }
                 
-                # 2. PERFIL: ANALISTA (IP MASCARADO)
-                elif usuario == "analista" and senha == "soc123":
+                if usuario in auth_data and auth_data[usuario]["pwd"] == senha:
                     st.session_state.update({
                         "autenticado": True,
-                        "perfil_usuario": "Analista",
-                        "cliente_usuario": "Todos"
+                        "perfil_usuario": auth_data[usuario]["perfil"],
+                        "cliente_usuario": auth_data[usuario]["cliente"]
                     })
                     st.rerun()
-
-                # 3. PERFIL: CLIENTE - NUBANK
-                elif usuario == "nubank_user" and senha == "nu2026":
-                    st.session_state.update({
-                        "autenticado": True,
-                        "perfil_usuario": "Viewer Cliente",
-                        "cliente_usuario": "Nubank"
-                    })
-                    st.rerun()
-
-                # 4. PERFIL: CLIENTE - IFOOD
-                elif usuario == "ifood_user" and senha == "ifood77":
-                    st.session_state.update({
-                        "autenticado": True,
-                        "perfil_usuario": "Viewer Cliente",
-                        "cliente_usuario": "iFood"
-                    })
-                    st.rerun()
-
-                # 5. PERFIL: CLIENTE - MERCADO LIVRE
-                elif usuario == "mercado_user" and senha == "ml2026":
-                    st.session_state.update({
-                        "autenticado": True,
-                        "perfil_usuario": "Viewer Cliente",
-                        "cliente_usuario": "Mercado Livre"
-                    })
-                    st.rerun()
-
-                # 6. PERFIL: CLIENTE - SANTANDER
-                elif usuario == "santander_user" and senha == "san99":
-                    st.session_state.update({
-                        "autenticado": True,
-                        "perfil_usuario": "Viewer Cliente",
-                        "cliente_usuario": "Santander"
-                    })
-                    st.rerun()
-
                 else:
-                    st.error("❌ Falha na autenticação. Verifique as chaves de acesso.")
-
+                    st.error("Credenciais inválidas.")
     st.stop()
