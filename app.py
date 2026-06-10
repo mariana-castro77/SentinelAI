@@ -584,8 +584,9 @@ body{
 <div class="particles" id="particles"></div>
 <div class="card">
     <div class="robot-wrap">
-       <img class="robot-img" src="https://raw.githubusercontent.com/mariana-castro77/SentinelAI/main/robo.png" alt="Sentinel AI"
-     onerror="this.outerHTML='<div style=font-size:80px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>&#129302;</div>'">
+        <img class="robot-img" src="https://raw.githubusercontent.com/mariana-castro77/SentinelAI/main/robo.png" alt="Sentinel AI"
+             onerror="this.outerHTML='<div style=font-size:80px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>&#129302;</div>'">
+    </div>
     <div class="title">
         <h1>Sentinel<span>AI</span></h1>
         <p>SECURITY OPERATIONS CENTER &mdash; ACESSO SEGURO</p>
@@ -602,19 +603,19 @@ body{
         Nenhum dado é compartilhado com terceiros sem consentimento. Ao continuar, você consente com estes termos.
     </div>
     <div class="privacy-grid">
-        <div class="privacy-item"><span class="priv-icon">&#128274;</span>Dados criptografados em trânsito</div>
-        <div class="privacy-item"><span class="priv-icon">&#127917;</span>IPs mascarados por perfil</div>
-        <div class="privacy-item"><span class="priv-icon">&#128203;</span>Auditoria completa de ações</div>
-        <div class="privacy-item"><span class="priv-icon">&#128683;</span>Zero compartilhamento externo</div>
-        <div class="privacy-item"><span class="priv-icon">&#128190;</span>Backup automático SQLite</div>
-        <div class="privacy-item"><span class="priv-icon">&#9201;</span>Sessões com timeout automático</div>
+        <div class="privacy-item"><span class="priv-icon">🔐</span>Dados criptografados em trânsito</div>
+        <div class="privacy-item"><span class="priv-icon">🎭</span>IPs mascarados por perfil</div>
+        <div class="privacy-item"><span class="priv-icon">📋</span>Auditoria completa de ações</div>
+        <div class="privacy-item"><span class="priv-icon">🚫</span>Zero compartilhamento externo</div>
+        <div class="privacy-item"><span class="priv-icon">💾</span>Backup automático SQLite</div>
+        <div class="privacy-item"><span class="priv-icon">⏱️</span>Sessões com timeout automático</div>
     </div>
     <div class="btn-row">
-        <button class="btn-accept" onclick="acceptCookies()">Aceitar e Continuar</button>
-        <button class="btn-reject" onclick="rejectCookies()">Recusar (bloqueia acesso)</button>
+        <button class="btn-accept" onclick="acceptCookies()">✅ ACEITAR E CONTINUAR</button>
+        <button class="btn-reject" onclick="rejectCookies()">❌ RECUSAR (BLOQUEIA ACESSO)</button>
     </div>
     <div class="counter">
-        <span class="pulse-dot"></span>MONITORAMENTO ATIVO &middot; <span id="ctime"></span>
+        <span class="pulse-dot"></span>MONITORAMENTO ATIVO · <span id="ctime"></span>
     </div>
 </div>
 <script>
@@ -641,16 +642,15 @@ function rejectCookies(){ window.parent.postMessage({type:'streamlit:setComponen
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("Aceitar e Continuar", use_container_width=True, key="lgpd_accept"):
+        if st.button("✅ Aceitar e Continuar", use_container_width=True, key="lgpd_accept"):
             st.session_state["lgpd"] = True
             log("sistema", "LGPD_ACEITO")
             st.rerun()
     with col2:
-        if st.button("Recusar (bloqueia acesso)", use_container_width=True, key="lgpd_reject"):
+        if st.button("❌ Recusar (bloqueia acesso)", use_container_width=True, key="lgpd_reject"):
             st.error("Você recusou os termos. Acesso bloqueado.")
             st.stop()
     st.stop()
-
 # ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
