@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/app.py << 'ENDOFFILE'
 import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
@@ -12,9 +11,6 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 
 GEMINI_API_KEY = "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA"
 
-# ─────────────────────────────────────────────────────────────────────────────
-# PAGE CONFIG
-# ─────────────────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="SentinelAI — SOC Platform",
     page_icon="🛡️",
@@ -22,9 +18,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
-# GLOBAL CSS
-# ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -55,7 +48,6 @@ html, body, [class*="css"] { font-family: 'Inter', system-ui, sans-serif; }
 
 .block-container { padding: 1.2rem 2rem 3rem !important; max-width: 100% !important; }
 
-/* ── Metrics ── */
 div[data-testid="metric-container"] {
     background: linear-gradient(135deg, rgba(139,0,0,0.12) 0%, rgba(10,5,7,0.95) 100%);
     border: 1px solid rgba(180,0,0,0.22);
@@ -76,7 +68,6 @@ div[data-testid="metric-container"]:hover {
 [data-testid="stMetricLabel"] { color:#6b7280!important; font-size:0.6rem!important; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; }
 [data-testid="stMetricValue"] { color:#ff4444!important; font-size:1.45rem!important; font-weight:800; font-family:'JetBrains Mono',monospace!important; }
 
-/* ── Buttons ── */
 div.stButton > button {
     background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%);
     color: white !important; border: 1px solid rgba(220,38,38,0.4); border-radius: 10px;
@@ -90,73 +81,127 @@ div.stButton > button:hover {
     border-color: rgba(248,113,113,0.5);
 }
 
-/* ── Inputs ── */
 input, textarea, [data-baseweb="input"] input {
-    background: rgba(10,5,7,0.9) !important; border: 1px solid rgba(180,0,0,0.25) !important;
-    border-radius: 10px !important; color: #f1f5f9 !important; font-family: 'Inter', sans-serif !important;
+    background: rgba(10,5,7,0.9) !important;
+    border: 1px solid rgba(180,0,0,0.25) !important;
+    border-radius: 10px !important;
+    color: #f1f5f9 !important;
+    font-family: 'Inter', sans-serif !important;
 }
 [data-baseweb="select"] > div {
-    background: rgba(10,5,7,0.9) !important; border: 1px solid rgba(180,0,0,0.25) !important;
-    border-radius: 10px !important; color: #f1f5f9 !important;
+    background: rgba(10,5,7,0.9) !important;
+    border: 1px solid rgba(180,0,0,0.25) !important;
+    border-radius: 10px !important;
+    color: #f1f5f9 !important;
 }
 
-/* ── Tabs ── */
 .stTabs [data-baseweb="tab-list"] {
-    background: rgba(10,5,7,0.85); border-radius: 12px; padding: 4px; gap: 2px;
+    background: rgba(10,5,7,0.85);
+    border-radius: 12px;
+    padding: 4px;
+    gap: 2px;
     border: 1px solid rgba(180,0,0,0.1);
 }
 .stTabs [data-baseweb="tab"] {
-    border-radius: 9px; color: #6b7280; font-weight: 600; font-size: 0.75rem;
-    padding: 0.5rem 1rem; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.2s;
+    border-radius: 9px;
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
 }
 .stTabs [aria-selected="true"] {
     background: linear-gradient(135deg, rgba(139,0,0,0.4), rgba(180,0,0,0.25)) !important;
-    color: #ff6666 !important; box-shadow: 0 0 12px rgba(180,0,0,0.2);
+    color: #ff6666 !important;
+    box-shadow: 0 0 12px rgba(180,0,0,0.2);
 }
 
-/* ── Chat ── */
 .chat-user {
     background: linear-gradient(135deg, #7f1d1d, #991b1b);
-    border-radius: 18px 18px 4px 18px; padding: 0.75rem 1.1rem;
-    margin: 0.6rem 0 0.6rem auto; max-width: 75%; width: fit-content;
-    color: white; font-size: 0.82rem; line-height: 1.6; box-shadow: 0 4px 16px rgba(139,0,0,0.3);
+    border-radius: 18px 18px 4px 18px;
+    padding: 0.75rem 1.1rem;
+    margin: 0.6rem 0 0.6rem auto;
+    max-width: 75%;
+    width: fit-content;
+    color: white;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    box-shadow: 0 4px 16px rgba(139,0,0,0.3);
 }
 .chat-ai {
-    background: rgba(10,5,7,0.95); border: 1px solid rgba(180,0,0,0.2);
-    border-radius: 18px 18px 18px 4px; padding: 0.75rem 1.1rem; margin: 0.6rem 0;
-    max-width: 75%; width: fit-content; color: #cbd5e1; font-size: 0.82rem; line-height: 1.6;
+    background: rgba(10,5,7,0.95);
+    border: 1px solid rgba(180,0,0,0.2);
+    border-radius: 18px 18px 18px 4px;
+    padding: 0.75rem 1.1rem;
+    margin: 0.6rem 0;
+    max-width: 75%;
+    width: fit-content;
+    color: #cbd5e1;
+    font-size: 0.82rem;
+    line-height: 1.6;
 }
 .chat-support {
     background: linear-gradient(135deg, rgba(0,100,200,0.15), rgba(0,50,120,0.2));
-    border: 1px solid rgba(0,150,255,0.25); border-radius: 18px 18px 18px 4px;
-    padding: 0.75rem 1.1rem; margin: 0.6rem 0; max-width: 75%; width: fit-content;
-    color: #bae6fd; font-size: 0.82rem; line-height: 1.6;
+    border: 1px solid rgba(0,150,255,0.25);
+    border-radius: 18px 18px 18px 4px;
+    padding: 0.75rem 1.1rem;
+    margin: 0.6rem 0;
+    max-width: 75%;
+    width: fit-content;
+    color: #bae6fd;
+    font-size: 0.82rem;
+    line-height: 1.6;
 }
 
-/* ── SOC Header ── */
 .soc-header {
     background: linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(10,5,7,0.97) 100%);
-    border: 1px solid rgba(180,0,0,0.15); border-radius: 18px; padding: 1.4rem 2rem;
-    margin-bottom: 1.4rem; position: relative; overflow: hidden;
+    border: 1px solid rgba(180,0,0,0.15);
+    border-radius: 18px;
+    padding: 1.4rem 2rem;
+    margin-bottom: 1.4rem;
+    position: relative;
+    overflow: hidden;
 }
 .soc-header::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
     background: linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 50%, transparent 100%);
 }
 
-/* ── Badges ── */
 .badge-online {
-    display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,100,0.06);
-    border:1px solid rgba(0,255,100,0.22);color:#4ade80;padding:4px 14px;border-radius:20px;
-    font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,255,100,0.06);
+    border: 1px solid rgba(0,255,100,0.22);
+    color: #4ade80;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 .badge-critical {
-    display:inline-flex;align-items:center;gap:6px;background:rgba(220,38,38,0.1);
-    border:1px solid rgba(220,38,38,0.35);color:#f87171;padding:4px 14px;border-radius:20px;
-    font-size:0.6rem;font-weight:700;letter-spacing:0.1em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.35);
+    color: #f87171;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
 }
 
-/* ── Robot animation (sidebar) ── */
 @keyframes float-robot {
     0%   { transform: translateY(0px) rotate(-2deg); }
     25%  { transform: translateY(-12px) rotate(1deg); }
@@ -170,10 +215,11 @@ input, textarea, [data-baseweb="input"] input {
 }
 .robot-float {
     animation: float-robot 4s ease-in-out infinite, glow-pulse 2.5s ease-in-out infinite;
-    font-size: 3.5rem; display: block; text-align: center;
+    font-size: 3.5rem;
+    display: block;
+    text-align: center;
 }
 
-/* ── Scan line ── */
 @keyframes scan {
     0%   { transform: translateY(-100%); opacity: 0; }
     10%  { opacity: 1; }
@@ -181,12 +227,17 @@ input, textarea, [data-baseweb="input"] input {
     100% { transform: translateY(100vh); opacity: 0; }
 }
 .scan-line {
-    position: fixed; top: 0; left: 0; right: 0; height: 2px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
     background: linear-gradient(90deg, transparent, rgba(220,38,38,0.4), transparent);
-    animation: scan 6s linear infinite; pointer-events: none; z-index: 0;
+    animation: scan 6s linear infinite;
+    pointer-events: none;
+    z-index: 0;
 }
 
-/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: rgba(10,5,7,0.8); }
 ::-webkit-scrollbar-thumb { background: rgba(180,0,0,0.4); border-radius: 10px; }
@@ -199,18 +250,34 @@ details summary { color:#f87171!important; font-weight:600; font-size:0.82rem; }
 details { background:rgba(10,5,7,0.7); border:1px solid rgba(180,0,0,0.15); border-radius:10px; padding:0.5rem 1rem; }
 
 .info-box {
-    background:rgba(139,0,0,0.08); border:1px solid rgba(180,0,0,0.2);
-    border-left:3px solid #dc2626; border-radius:8px; padding:0.8rem 1rem;
-    margin:0.5rem 0; font-size:0.8rem; color:#94a3b8; line-height:1.6;
+    background:rgba(139,0,0,0.08);
+    border:1px solid rgba(180,0,0,0.2);
+    border-left:3px solid #dc2626;
+    border-radius:8px;
+    padding:0.8rem 1rem;
+    margin:0.5rem 0;
+    font-size:0.8rem;
+    color:#94a3b8;
+    line-height:1.6;
 }
 .info-box-blue {
-    background:rgba(0,100,200,0.08); border:1px solid rgba(0,150,255,0.2);
-    border-left:3px solid #3b82f6; border-radius:8px; padding:0.8rem 1rem;
-    margin:0.5rem 0; font-size:0.8rem; color:#93c5fd; line-height:1.6;
+    background:rgba(0,100,200,0.08);
+    border:1px solid rgba(0,150,255,0.2);
+    border-left:3px solid #3b82f6;
+    border-radius:8px;
+    padding:0.8rem 1rem;
+    margin:0.5rem 0;
+    font-size:0.8rem;
+    color:#93c5fd;
+    line-height:1.6;
 }
 .ticket-card {
-    background:rgba(10,5,7,0.9); border:1px solid rgba(180,0,0,0.2);
-    border-radius:12px; padding:1rem 1.2rem; margin:0.5rem 0; transition:all 0.2s;
+    background:rgba(10,5,7,0.9);
+    border:1px solid rgba(180,0,0,0.2);
+    border-radius:12px;
+    padding:1rem 1.2rem;
+    margin:0.5rem 0;
+    transition:all 0.2s;
 }
 .ticket-card:hover { border-color:rgba(220,38,38,0.4); box-shadow:0 4px 20px rgba(139,0,0,0.2); }
 
@@ -224,9 +291,6 @@ details { background:rgba(10,5,7,0.7); border:1px solid rgba(180,0,0,0.15); bord
 <div class="scan-line"></div>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# DATABASE — SQLite
-# ─────────────────────────────────────────────────────────────────────────────
 DB_PATH = "sentinelai_backup.db"
 
 def get_db():
@@ -235,7 +299,8 @@ def get_db():
     return conn
 
 def init_db():
-    conn = get_db(); c = conn.cursor()
+    conn = get_db()
+    c = conn.cursor()
     c.executescript("""
         CREATE TABLE IF NOT EXISTS incidentes_analisados (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -272,100 +337,128 @@ def init_db():
             FOREIGN KEY(ticket_id) REFERENCES tickets_suporte(id)
         );
     """)
-    conn.commit(); conn.close()
+    conn.commit()
+    conn.close()
 
 init_db()
 
 def db_log(usuario, acao, detalhe=""):
     try:
         conn = get_db()
-        conn.execute("INSERT INTO logs_auditoria (usuario,acao,detalhe) VALUES (?,?,?)",(usuario,acao,detalhe[:500]))
-        conn.commit(); conn.close()
-    except: pass
+        conn.execute("INSERT INTO logs_auditoria (usuario,acao,detalhe) VALUES (?,?,?)", (usuario, acao, detalhe[:500]))
+        conn.commit()
+        conn.close()
+    except:
+        pass
 
 def db_salvar_incidente(d):
     try:
         conn = get_db()
         conn.execute("""INSERT INTO incidentes_analisados (usuario,tipo,origem,status,severidade,cliente,risco,prejuizo)
-            VALUES (?,?,?,?,?,?,?,?)""",(d["usuario"],d["tipo"],d["origem"],d["status"],d["severidade"],d["cliente"],d["risco"],d["prejuizo"]))
-        conn.commit(); conn.close(); return True
-    except: return False
+            VALUES (?,?,?,?,?,?,?,?)""", (d["usuario"], d["tipo"], d["origem"], d["status"], d["severidade"], d["cliente"], d["risco"], d["prejuizo"]))
+        conn.commit()
+        conn.close()
+        return True
+    except:
+        return False
 
 def db_salvar_chat(usuario, pergunta, resposta):
     try:
         conn = get_db()
-        conn.execute("INSERT INTO chat_historico (usuario,pergunta,resposta) VALUES (?,?,?)",(usuario,pergunta[:1000],resposta[:2000]))
-        conn.commit(); conn.close()
-    except: pass
+        conn.execute("INSERT INTO chat_historico (usuario,pergunta,resposta) VALUES (?,?,?)", (usuario, pergunta[:1000], resposta[:2000]))
+        conn.commit()
+        conn.close()
+    except:
+        pass
 
 def db_buscar_incidentes():
     try:
-        conn = get_db(); df = pd.read_sql("SELECT * FROM incidentes_analisados ORDER BY ts DESC LIMIT 100",conn)
-        conn.close(); return df
-    except: return pd.DataFrame()
+        conn = get_db()
+        df = pd.read_sql("SELECT * FROM incidentes_analisados ORDER BY ts DESC LIMIT 100", conn)
+        conn.close()
+        return df
+    except:
+        return pd.DataFrame()
 
 def db_buscar_logs():
     try:
-        conn = get_db(); df = pd.read_sql("SELECT * FROM logs_auditoria ORDER BY ts DESC LIMIT 200",conn)
-        conn.close(); return df
-    except: return pd.DataFrame()
+        conn = get_db()
+        df = pd.read_sql("SELECT * FROM logs_auditoria ORDER BY ts DESC LIMIT 200", conn)
+        conn.close()
+        return df
+    except:
+        return pd.DataFrame()
 
 def db_meta_backup(usuario, tipo, registros):
     try:
         conn = get_db()
-        conn.execute("INSERT INTO backups_meta (usuario,tipo,registros) VALUES (?,?,?)",(usuario,tipo,registros))
-        conn.commit(); conn.close()
-    except: pass
+        conn.execute("INSERT INTO backups_meta (usuario,tipo,registros) VALUES (?,?,?)", (usuario, tipo, registros))
+        conn.commit()
+        conn.close()
+    except:
+        pass
 
 def db_criar_ticket(cliente, assunto, mensagem, prioridade="normal"):
     try:
         conn = get_db()
-        cur = conn.execute("INSERT INTO tickets_suporte (cliente,assunto,mensagem,prioridade) VALUES (?,?,?,?)",(cliente,assunto,mensagem,prioridade))
+        cur = conn.execute("INSERT INTO tickets_suporte (cliente,assunto,mensagem,prioridade) VALUES (?,?,?,?)", (cliente, assunto, mensagem, prioridade))
         tid = cur.lastrowid
-        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)",(tid,cliente,mensagem))
-        conn.commit(); conn.close(); return tid
-    except: return None
+        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)", (tid, cliente, mensagem))
+        conn.commit()
+        conn.close()
+        return tid
+    except:
+        return None
 
 def db_buscar_tickets(cliente=None):
     try:
         conn = get_db()
         if cliente:
-            df = pd.read_sql("SELECT * FROM tickets_suporte WHERE cliente=? ORDER BY ts DESC",conn,params=(cliente,))
+            df = pd.read_sql("SELECT * FROM tickets_suporte WHERE cliente=? ORDER BY ts DESC", conn, params=(cliente,))
         else:
-            df = pd.read_sql("SELECT * FROM tickets_suporte ORDER BY ts DESC",conn)
-        conn.close(); return df
-    except: return pd.DataFrame()
+            df = pd.read_sql("SELECT * FROM tickets_suporte ORDER BY ts DESC", conn)
+        conn.close()
+        return df
+    except:
+        return pd.DataFrame()
 
 def db_responder_ticket(ticket_id, resposta, status="respondido"):
     try:
         conn = get_db()
-        conn.execute("UPDATE tickets_suporte SET resposta=?,status=?,ts_resposta=CURRENT_TIMESTAMP WHERE id=?",(resposta,status,ticket_id))
-        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)",(ticket_id,"SentinelAI",resposta))
-        conn.commit(); conn.close(); return True
-    except: return False
+        conn.execute("UPDATE tickets_suporte SET resposta=?,status=?,ts_resposta=CURRENT_TIMESTAMP WHERE id=?", (resposta, status, ticket_id))
+        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)", (ticket_id, "SentinelAI", resposta))
+        conn.commit()
+        conn.close()
+        return True
+    except:
+        return False
 
 def db_buscar_chat_ticket(ticket_id):
     try:
-        conn = get_db(); df = pd.read_sql("SELECT * FROM chat_suporte WHERE ticket_id=? ORDER BY ts ASC",conn,params=(ticket_id,))
-        conn.close(); return df
-    except: return pd.DataFrame()
+        conn = get_db()
+        df = pd.read_sql("SELECT * FROM chat_suporte WHERE ticket_id=? ORDER BY ts ASC", conn, params=(ticket_id,))
+        conn.close()
+        return df
+    except:
+        return pd.DataFrame()
 
 def db_adicionar_msg_ticket(ticket_id, remetente, mensagem):
     try:
         conn = get_db()
-        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)",(ticket_id,remetente,mensagem))
-        conn.commit(); conn.close(); return True
-    except: return False
+        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)", (ticket_id, remetente, mensagem))
+        conn.commit()
+        conn.close()
+        return True
+    except:
+        return False
 
 def log(usuario, acao, detalhe=""):
-    if "logs" not in st.session_state: st.session_state["logs"] = []
+    if "logs" not in st.session_state:
+        st.session_state["logs"] = []
     ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     st.session_state["logs"].append(f"[{ts}] {usuario} → {acao} {detalhe}")
     db_log(usuario, acao, detalhe)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# USERS / RBAC
-# ─────────────────────────────────────────────────────────────────────────────
 USERS = {
     "admin":        {"pw":"admin123",    "role":"Administrador",  "export":True,  "analyze":True,  "pii":True,  "client":None,           "support_admin":True},
     "analista":     {"pw":"analista123", "role":"Analista SOC",   "export":False, "analyze":True,  "pii":False, "client":None,           "support_admin":True},
@@ -375,19 +468,22 @@ USERS = {
     "ifood":        {"pw":"ifood123",    "role":"Cliente",        "export":False, "analyze":False, "pii":False, "client":"iFood",        "support_admin":False},
     "viewer":       {"pw":"viewer123",   "role":"Visualizador",   "export":False, "analyze":False, "pii":False, "client":None,           "support_admin":False},
 }
-_H = {u: hashlib.sha256(v["pw"].encode()).hexdigest() for u,v in USERS.items()}
+_H = {u: hashlib.sha256(v["pw"].encode()).hexdigest() for u, v in USERS.items()}
 
-def auth(u,p): return u in _H and hashlib.sha256(p.encode()).hexdigest() == _H[u]
+def auth(u, p):
+    return u in _H and hashlib.sha256(p.encode()).hexdigest() == _H[u]
+
 def mask_ip(ip):
-    if not ip or str(ip)=="Nenhum" or pd.isna(ip): return "***.***.***"
-    p=str(ip).split("."); return f"{p[0]}.{p[1]}.***.***" if len(p)==4 else "***"
+    if not ip or str(ip) == "Nenhum" or pd.isna(ip):
+        return "***.***.***"
+    p = str(ip).split(".")
+    return f"{p[0]}.{p[1]}.***.***" if len(p) == 4 else "***"
 
-# SESSION INIT
-for k,v in {"authed":False,"user":None,"lgpd":False,"chat":[],"chat_suporte":[],"logs":[],"ticket_ativo":None}.items():
-    if k not in st.session_state: st.session_state[k]=v
+for k, v in {"authed":False, "user":None, "lgpd":False, "chat":[], "chat_suporte":[], "logs":[], "ticket_ativo":None}.items():
+    if k not in st.session_state:
+        st.session_state[k] = v
 
 def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
-    """Chama a API Gemini e retorna a resposta como string."""
     key = GEMINI_API_KEY
     if not key:
         return "⚠️ Configure GEMINI_API_KEY nos Secrets do Streamlit."
@@ -410,14 +506,17 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
         if r.status_code == 200:
             data = r.json()
             return data["candidates"][0]["content"]["parts"][0]["text"]
+        elif r.status_code == 400:
+            return "❌ Chave da API inválida ou mal formatada. Verifique GEMINI_API_KEY nos Secrets."
+        elif r.status_code == 403:
+            return "❌ Acesso negado. Certifique-se que a API Generative Language está habilitada no Google Cloud Console."
         else:
             return f"❌ Erro {r.status_code}. Tente novamente."
+    except requests.exceptions.Timeout:
+        return "❌ Timeout na API. Tente novamente."
     except Exception as e:
         return f"❌ Erro de conexão: {str(e)[:100]}"
 
-# ─────────────────────────────────────────────────────────────────────────────
-# LGPD — com imagem do robô e botões lado a lado
-# ─────────────────────────────────────────────────────────────────────────────
 if not st.session_state["lgpd"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
 
@@ -544,7 +643,9 @@ if not st.session_state["lgpd"]:
     <div class="particles" id="particles"></div>
     <div class="card">
         <div class="robot-wrap">
-            <span class="robot-emoji">🤖</span>
+            <img class="robot-img" src="robo.png" alt="Sentinel AI Robot"
+                 onerror="this.style.display='none'; document.getElementById('robot-fallback').style.display='block'">
+            <span id="robot-fallback" class="robot-emoji" style="display:none">🤖</span>
         </div>
         <div class="title">
             <h1>Sentinel<span>AI</span></h1>
@@ -570,10 +671,10 @@ if not st.session_state["lgpd"]:
             <div class="privacy-item"><span>⏱️</span> Sessões com timeout automático</div>
         </div>
         <div class="btn-row">
-            <button class="btn-accept" onclick="window.parent.postMessage({type:'streamlit:setComponentValue',value:'accept'},'*');">
+            <button class="btn-accept" onclick="window.parent.postMessage({type:'streamlit:setComponentValue',value:'accept'},'*'); acceptCookies()">
                 ✅ Aceitar e Acessar
             </button>
-            <button class="btn-reject" onclick="window.parent.postMessage({type:'streamlit:setComponentValue',value:'reject'},'*');">
+            <button class="btn-reject" onclick="window.parent.postMessage({type:'streamlit:setComponentValue',value:'reject'},'*'); rejectCookies()">
                 ❌ Recusar Acesso
             </button>
         </div>
@@ -604,15 +705,14 @@ if not st.session_state["lgpd"]:
     with col1:
         if st.button("✅ Aceitar e Continuar", use_container_width=True, key="lgpd_accept"):
             st.session_state["lgpd"] = True
-            log("sistema","LGPD_ACEITO"); st.rerun()
+            log("sistema", "LGPD_ACEITO")
+            st.rerun()
     with col2:
         if st.button("❌ Recusar (bloqueia acesso)", use_container_width=True, key="lgpd_reject"):
-            st.error("Você recusou os termos. Acesso bloqueado."); st.stop()
+            st.error("Você recusou os termos. Acesso bloqueado.")
+            st.stop()
     st.stop()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# LOGIN PAGE
-# ─────────────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
     st.markdown("""
@@ -628,7 +728,7 @@ if not st.session_state["authed"]:
         </div>
     </div>""", unsafe_allow_html=True)
 
-    _, col_login, _ = st.columns([1,1.4,1])
+    _, col_login, _ = st.columns([1, 1.4, 1])
     with col_login:
         st.markdown("""
         <div style="background:linear-gradient(135deg,rgba(139,0,0,0.07),rgba(10,5,7,0.98));
@@ -637,10 +737,10 @@ if not st.session_state["authed"]:
           <p style="color:#6b7280;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1rem;">
             Credenciais de Acesso
           </p>""", unsafe_allow_html=True)
-        creds=[("admin","admin123","🔴 Administrador"),("analista","analista123","🟠 Analista SOC"),
-               ("nubank","nubank123","🔵 Nubank"),("mercadolivre","ml123","🟢 Mercado Livre"),
-               ("santander","sant123","🟣 Santander"),("ifood","ifood123","🟡 iFood"),("viewer","viewer123","⚪ Visualizador")]
-        for u,p,label in creds:
+        creds = [("admin","admin123","🔴 Administrador"),("analista","analista123","🟠 Analista SOC"),
+                 ("nubank","nubank123","🔵 Nubank"),("mercadolivre","ml123","🟢 Mercado Livre"),
+                 ("santander","sant123","🟣 Santander"),("ifood","ifood123","🟡 iFood"),("viewer","viewer123","⚪ Visualizador")]
+        for u, p, label in creds:
             st.markdown(f"""
             <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;
                         border-radius:8px;margin:3px 0;background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.1);">
@@ -651,22 +751,20 @@ if not st.session_state["authed"]:
         with st.form("login_form"):
             u_in = st.text_input("", placeholder="👤  Usuário", label_visibility="collapsed")
             p_in = st.text_input("", placeholder="🔑  Senha", type="password", label_visibility="collapsed")
-            ok   = st.form_submit_button("ACESSAR O SISTEMA →", use_container_width=True)
+            ok = st.form_submit_button("ACESSAR O SISTEMA →", use_container_width=True)
         if ok:
             if auth(u_in.strip(), p_in):
-                st.session_state.update({"authed":True,"user":u_in.strip()})
-                log(u_in.strip(),"LOGIN","Acesso concedido"); st.rerun()
+                st.session_state.update({"authed": True, "user": u_in.strip()})
+                log(u_in.strip(), "LOGIN", "Acesso concedido")
+                st.rerun()
             else:
-                log(u_in.strip() or "?","LOGIN_FAIL","Credenciais inválidas")
+                log(u_in.strip() or "?", "LOGIN_FAIL", "Credenciais inválidas")
                 st.error("❌  Usuário ou senha incorretos.")
     st.stop()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# AUTHENTICATED
-# ─────────────────────────────────────────────────────────────────────────────
 USER = st.session_state["user"]
 PROF = USERS[USER]
-log(USER,"SESSION_ACTIVE")
+log(USER, "SESSION_ACTIVE")
 
 @st.cache_data
 def load_data():
@@ -675,30 +773,29 @@ def load_data():
     df["DATA"] = pd.to_datetime(df["DATA"], errors="coerce")
     for col in ["TIPO INCIDENTE","SEVERIDADE","ORIGEM","STATUS"]:
         df[col] = df[col].str.strip().str.lower()
-    enc = {k:LabelEncoder() for k in ["tipo","orig","stat","sev"]}
+    enc = {k: LabelEncoder() for k in ["tipo","orig","stat","sev"]}
     df["TE"] = enc["tipo"].fit_transform(df["TIPO INCIDENTE"])
     df["OE"] = enc["orig"].fit_transform(df["ORIGEM"])
     df["SE"] = enc["stat"].fit_transform(df["STATUS"])
     df["VE"] = enc["sev"].fit_transform(df["SEVERIDADE"])
-    X = df[["TE","OE","TEMPO RESOLUÇÃO","SE"]]; y = df["VE"]
-    Xt,Xv,yt,yv = train_test_split(X,y,test_size=.2,random_state=42)
-    m = DecisionTreeClassifier(random_state=42); m.fit(Xt,yt)
-    acc = accuracy_score(yv,m.predict(Xv))
-    return df,enc,m,acc,Xv,yv
+    X = df[["TE","OE","TEMPO RESOLUÇÃO","SE"]]
+    y = df["VE"]
+    Xt, Xv, yt, yv = train_test_split(X, y, test_size=0.2, random_state=42)
+    m = DecisionTreeClassifier(random_state=42)
+    m.fit(Xt, yt)
+    acc = accuracy_score(yv, m.predict(Xv))
+    return df, enc, m, acc, Xv, yv
 
-df_all,ENC,MODEL,ACC,Xv,yv = load_data()
-CLT  = PROF["client"]
-df   = df_all[df_all["CLIENTE"]==CLT].copy() if CLT else df_all.copy()
+df_all, ENC, MODEL, ACC, Xv, yv = load_data()
+CLT = PROF["client"]
+df = df_all[df_all["CLIENTE"] == CLT].copy() if CLT else df_all.copy()
 prej = df["PREJUIZO_ESTIMADO"].sum()
 total = len(df)
-crit  = len(df[df["SEVERIDADE"]=="crítica"])
-bloq  = len(df[df["BLOQUEADO_AUTOMATICAMENTE"].str.lower()=="sim"])
-resol = len(df[df["STATUS"]=="resolvido"])
-pend  = len(df[df["STATUS"]=="pendente"])
+crit = len(df[df["SEVERIDADE"] == "crítica"])
+bloq = len(df[df["BLOQUEADO_AUTOMATICAMENTE"].str.lower() == "sim"])
+resol = len(df[df["STATUS"] == "resolvido"])
+pend = len(df[df["STATUS"] == "pendente"])
 
-# ─────────────────────────────────────────────────────────────────────────────
-# SIDEBAR
-# ─────────────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
     <div style="text-align:center;padding:1.5rem 0 0.5rem;">
@@ -706,8 +803,8 @@ with st.sidebar:
       <p style="color:#dc2626;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;margin-top:8px;">SENTINEL CORE</p>
     </div>""", unsafe_allow_html=True)
     st.markdown("<hr>", unsafe_allow_html=True)
-    db_ok   = os.path.exists(DB_PATH)
-    db_size = round(os.path.getsize(DB_PATH)/1024,1) if db_ok else 0
+    db_ok = os.path.exists(DB_PATH)
+    db_size = round(os.path.getsize(DB_PATH)/1024, 1) if db_ok else 0
     st.markdown(f"""
     <div style="background:rgba(139,0,0,0.07);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:0.9rem 1rem;margin-bottom:0.8rem;">
       <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">OPERADOR</p>
@@ -719,24 +816,30 @@ with st.sidebar:
       <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;margin-bottom:4px;">💾 ARMAZENAMENTO</p>
       <p style="color:#4ade80;font-size:0.72rem;font-weight:600;">✅ SQLite · {db_size} KB</p>
       <p style="color:#6b7280;font-size:0.6rem;">📁 {DB_PATH} · Streamlit Cloud</p>
+      <p style="color:#f59e0b;font-size:0.6rem;margin-top:3px;">⚠️ Configure MYSQL_URL para persistência total</p>
     </div>""", unsafe_allow_html=True)
     st.markdown("<p style='color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;'>PERMISSÕES</p>", unsafe_allow_html=True)
-    for label,flag in [("Análise ML",PROF["analyze"]),("Exportar dados",PROF["export"]),("Ver IPs / PII",PROF["pii"]),("Suporte Admin",PROF["support_admin"])]:
-        c,i = ("#4ade80","✓") if flag else ("#ef4444","✗")
+    for label, flag in [("Análise ML", PROF["analyze"]), ("Exportar dados", PROF["export"]), ("Ver IPs / PII", PROF["pii"]), ("Suporte Admin", PROF["support_admin"])]:
+        c, i = ("#4ade80", "✓") if flag else ("#ef4444", "✗")
         st.markdown(f"<p style='color:{c};font-size:0.72rem;margin:3px 0;'><b>{i}</b> {label}</p>", unsafe_allow_html=True)
     st.markdown(f"""
     <div style="background:rgba(139,0,0,0.08);border-radius:10px;padding:0.7rem 1rem;margin:0.8rem 0;text-align:center;">
       <p style="color:#4b5563;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;">Acurácia IA</p>
       <p style="color:#dc2626;font-size:1.4rem;font-weight:800;font-family:'JetBrains Mono',monospace;">{ACC:.1%}</p>
     </div>""", unsafe_allow_html=True)
+    tks_side = db_buscar_tickets(CLT if CLT else None)
+    n_abertos_side = len(tks_side[tks_side["status"] == "aberto"]) if not tks_side.empty else 0
+    if n_abertos_side > 0:
+        st.markdown(f"""<div style="background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:10px;padding:0.7rem 1rem;margin-bottom:0.8rem;text-align:center;">
+          <p style="color:#f87171;font-size:0.72rem;font-weight:700;">🎫 {n_abertos_side} ticket(s) aberto(s)</p>
+        </div>""", unsafe_allow_html=True)
     st.markdown("<hr>", unsafe_allow_html=True)
     if st.button("🚪  Encerrar Sessão", use_container_width=True):
-        log(USER,"LOGOUT"); st.session_state.update({"authed":False,"user":None,"chat":[],"chat_suporte":[]}); st.rerun()
+        log(USER, "LOGOUT")
+        st.session_state.update({"authed": False, "user": None, "chat": [], "chat_suporte": []})
+        st.rerun()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# HEADER
-# ─────────────────────────────────────────────────────────────────────────────
-now   = datetime.datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
+now = datetime.datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
 scope = f"Cliente: {CLT}" if CLT else "Visão Global — Todos os Clientes"
 st.markdown(f"""
 <div class="soc-header">
@@ -761,120 +864,128 @@ st.markdown(f"""
   </div>
 </div>""", unsafe_allow_html=True)
 
-# KPIs
-c1,c2,c3,c4,c5,c6=st.columns(6)
-with c1: st.metric("INCIDENTES",f"{total:,}")
-with c2: st.metric("CRÍTICOS",f"{crit:,}")
-with c3: st.metric("IPs BLOQUEADOS",f"{bloq:,}")
-with c4: st.metric("RESOLVIDOS",f"{resol:,}")
-with c5: st.metric("PENDENTES",f"{pend:,}")
-with c6: st.metric("PREJUÍZO",f"R$ {prej/1e6:.2f}Mi")
+c1, c2, c3, c4, c5, c6 = st.columns(6)
+with c1: st.metric("INCIDENTES", f"{total:,}")
+with c2: st.metric("CRÍTICOS", f"{crit:,}")
+with c3: st.metric("IPs BLOQUEADOS", f"{bloq:,}")
+with c4: st.metric("RESOLVIDOS", f"{resol:,}")
+with c5: st.metric("PENDENTES", f"{pend:,}")
+with c6: st.metric("PREJUÍZO", f"R$ {prej/1e6:.2f}Mi")
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# TABS
-# ─────────────────────────────────────────────────────────────────────────────
 tabs = st.tabs(["🔍 Análise","📊 Dashboard","🌍 Mapa de Ameaças","🤖 Sentinel Bot","🎫 Suporte","💾 Backup & DB","📋 Auditoria"])
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 1 — ANÁLISE
-# ══════════════════════════════════════════════════════════════════════════════
 with tabs[0]:
     st.markdown("### 🔍 Análise Inteligente de Incidentes")
     if not PROF["analyze"]:
         st.markdown('<div class="info-box">⛔ Perfil sem permissão para análise. Contate o Administrador.</div>', unsafe_allow_html=True)
     else:
-        c1,c2=st.columns(2)
+        c1, c2 = st.columns(2)
         with c1:
-            tipo   = st.selectbox("Tipo de Incidente",ENC["tipo"].classes_)
-            orig   = st.selectbox("Origem",ENC["orig"].classes_)
-            cli_af = st.selectbox("Cliente Afetado",sorted(df_all["CLIENTE"].unique()))
+            tipo = st.selectbox("Tipo de Incidente", ENC["tipo"].classes_)
+            orig = st.selectbox("Origem", ENC["orig"].classes_)
+            cli_af = st.selectbox("Cliente Afetado", sorted(df_all["CLIENTE"].unique()))
         with c2:
-            tempo  = st.slider("Tempo de Resolução (min)",1,120,30)
-            stat   = st.selectbox("Status",ENC["stat"].classes_)
-        if st.button("🚀  INICIAR ANÁLISE FORENSE",use_container_width=True):
-            log(USER,"ANALISE",f"tipo={tipo}")
+            tempo = st.slider("Tempo de Resolução (min)", 1, 120, 30)
+            stat = st.selectbox("Status", ENC["stat"].classes_)
+        if st.button("🚀  INICIAR ANÁLISE FORENSE", use_container_width=True):
+            log(USER, "ANALISE", f"tipo={tipo}")
             with st.spinner("Processando com IA..."):
                 time.sleep(1)
-            entrada = pd.DataFrame({"TE":[ENC["tipo"].transform([tipo])[0]],"OE":[ENC["orig"].transform([orig])[0]],"TEMPO RESOLUÇÃO":[tempo],"SE":[ENC["stat"].transform([stat])[0]]})
+            entrada = pd.DataFrame({"TE": [ENC["tipo"].transform([tipo])[0]], "OE": [ENC["orig"].transform([orig])[0]], "TEMPO RESOLUÇÃO": [tempo], "SE": [ENC["stat"].transform([stat])[0]]})
             sev = ENC["sev"].inverse_transform(MODEL.predict(entrada))[0]
-            if stat=="resolvido": sev="baixa"
-            elif tipo in ["ataque","falha servidor"]: sev="crítica"
-            elif tipo in ["lentidão","erro sistema"]: sev=random.choice(["baixa","média"])
-            risco=random.randint(10,99); prej_val=random.uniform(3000,30000)
-            risco_fin="ALTO" if prej_val>15000 else ("MÉDIO" if prej_val>7000 else "BAIXO")
-            atks=df_all[df_all["TIPO INCIDENTE"]=="ataque"]
+            if stat == "resolvido":
+                sev = "baixa"
+            elif tipo in ["ataque", "falha servidor"]:
+                sev = "crítica"
+            elif tipo in ["lentidão", "erro sistema"]:
+                sev = random.choice(["baixa", "média"])
+            risco = random.randint(10, 99)
+            prej_val = random.uniform(3000, 30000)
+            risco_fin = "ALTO" if prej_val > 15000 else ("MÉDIO" if prej_val > 7000 else "BAIXO")
+            atks = df_all[df_all["TIPO INCIDENTE"] == "ataque"]
             if not atks.empty:
-                row=atks.sample(1).iloc[0]
-                ip=str(row["IP_SUSPEITO"]) if PROF["pii"] else mask_ip(row["IP_SUSPEITO"])
-                pais=row["PAIS_ATAQUE"]
-            else: ip,pais="N/A","Interno"
-            st.markdown("<hr>",unsafe_allow_html=True)
-            if sev=="crítica": st.error("🔴  SEVERIDADE PREVISTA: **CRÍTICA**")
-            elif sev=="média": st.warning("🟡  SEVERIDADE PREVISTA: **MÉDIA**")
-            else: st.success("🟢  SEVERIDADE PREVISTA: **BAIXA**")
-            r1,r2,r3,r4=st.columns(4)
-            with r1: st.metric("THREAT SCORE",f"{risco}/100")
-            with r2: st.metric("PREJUÍZO EST.",f"R$ {prej_val:,.0f}".replace(",","X").replace(".",",").replace("X","."))
-            with r3: st.metric("RISCO FIN.",risco_fin)
-            with r4: st.metric("CLIENTE",cli_af)
-            if tipo=="ataque":
+                row = atks.sample(1).iloc[0]
+                ip = str(row["IP_SUSPEITO"]) if PROF["pii"] else mask_ip(row["IP_SUSPEITO"])
+                pais = row["PAIS_ATAQUE"]
+            else:
+                ip, pais = "N/A", "Interno"
+            st.markdown("<hr>", unsafe_allow_html=True)
+            if sev == "crítica":
+                st.error("🔴  SEVERIDADE PREVISTA: **CRÍTICA**")
+            elif sev == "média":
+                st.warning("🟡  SEVERIDADE PREVISTA: **MÉDIA**")
+            else:
+                st.success("🟢  SEVERIDADE PREVISTA: **BAIXA**")
+            r1, r2, r3, r4 = st.columns(4)
+            with r1: st.metric("THREAT SCORE", f"{risco}/100")
+            with r2: st.metric("PREJUÍZO EST.", f"R$ {prej_val:,.0f}".replace(",", "X").replace(".", ",").replace("X", "."))
+            with r3: st.metric("RISCO FIN.", risco_fin)
+            with r4: st.metric("CLIENTE", cli_af)
+            if tipo == "ataque":
                 st.error(f"🌍 Origem: **{pais}**  |  IP: `{ip}`")
                 with st.expander("🛡️ Resposta Automática Acionada"):
-                    for a in ["✅ IP bloqueado","✅ Firewall atualizado","✅ Equipe SOC notificada","✅ Logs enviados para auditoria"]: st.write(a)
-            saved = db_salvar_incidente({"usuario":USER,"tipo":tipo,"origem":orig,"status":stat,"severidade":sev,"cliente":cli_af,"risco":risco,"prejuizo":prej_val})
-            if saved: st.success("💾 Incidente salvo no banco de dados SQLite")
+                    for a in ["✅ IP bloqueado", "✅ Firewall atualizado", "✅ Equipe SOC notificada", "✅ Logs enviados para auditoria"]:
+                        st.write(a)
+            saved = db_salvar_incidente({"usuario": USER, "tipo": tipo, "origem": orig, "status": stat, "severidade": sev, "cliente": cli_af, "risco": risco, "prejuizo": prej_val})
+            if saved:
+                st.success("💾 Incidente salvo no banco de dados SQLite")
         st.markdown("### 📋 Registros do Dataset")
-        cols_show=["DATA","TIPO INCIDENTE","SEVERIDADE","STATUS","CLIENTE","PAIS_ATAQUE","PREJUIZO_ESTIMADO"]
-        if PROF["pii"]: cols_show.append("IP_SUSPEITO")
-        df_show=df[cols_show].copy()
-        if not PROF["pii"] and "IP_SUSPEITO" in df_show.columns: df_show["IP_SUSPEITO"]=df_show["IP_SUSPEITO"].apply(mask_ip)
-        st.dataframe(df_show,use_container_width=True,height=300)
+        cols_show = ["DATA","TIPO INCIDENTE","SEVERIDADE","STATUS","CLIENTE","PAIS_ATAQUE","PREJUIZO_ESTIMADO"]
+        if PROF["pii"]:
+            cols_show.append("IP_SUSPEITO")
+        df_show = df[cols_show].copy()
+        if not PROF["pii"] and "IP_SUSPEITO" in df_show.columns:
+            df_show["IP_SUSPEITO"] = df_show["IP_SUSPEITO"].apply(mask_ip)
+        st.dataframe(df_show, use_container_width=True, height=300)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — DASHBOARD
-# ══════════════════════════════════════════════════════════════════════════════
 with tabs[1]:
     st.markdown("### 📊 Telemetria & Métricas")
-    L=dict(paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",font_color="#94a3b8",font_family="Inter")
-    g1,g2=st.columns(2)
+    L = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#94a3b8", font_family="Inter")
+    g1, g2 = st.columns(2)
     with g1:
-        fig=px.pie(df,names="SEVERIDADE",title="Distribuição de Severidade",color_discrete_sequence=["#dc2626","#f59e0b","#22c55e"])
-        fig.update_layout(**L,title_font_color="white"); st.plotly_chart(fig,use_container_width=True)
+        fig = px.pie(df, names="SEVERIDADE", title="Distribuição de Severidade", color_discrete_sequence=["#dc2626","#f59e0b","#22c55e"])
+        fig.update_layout(**L, title_font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
     with g2:
-        vc=df["TIPO INCIDENTE"].value_counts().reset_index()
-        fig=px.bar(vc,x="TIPO INCIDENTE",y="count",title="Incidentes por Tipo",color_discrete_sequence=["#dc2626"])
-        fig.update_layout(**L,title_font_color="white"); st.plotly_chart(fig,use_container_width=True)
-    dt=df.groupby("DATA").size().reset_index(name="n")
-    fig=px.area(dt,x="DATA",y="n",title="Volume ao Longo do Tempo",color_discrete_sequence=["#dc2626"])
-    fig.update_traces(fill="tozeroy",fillcolor="rgba(220,38,38,0.1)"); fig.update_layout(**L,title_font_color="white"); st.plotly_chart(fig,use_container_width=True)
-    g3,g4=st.columns(2)
+        vc = df["TIPO INCIDENTE"].value_counts().reset_index()
+        fig = px.bar(vc, x="TIPO INCIDENTE", y="count", title="Incidentes por Tipo", color_discrete_sequence=["#dc2626"])
+        fig.update_layout(**L, title_font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
+    dt = df.groupby("DATA").size().reset_index(name="n")
+    fig = px.area(dt, x="DATA", y="n", title="Volume ao Longo do Tempo", color_discrete_sequence=["#dc2626"])
+    fig.update_traces(fill="tozeroy", fillcolor="rgba(220,38,38,0.1)")
+    fig.update_layout(**L, title_font_color="white")
+    st.plotly_chart(fig, use_container_width=True)
+    g3, g4 = st.columns(2)
     with g3:
-        fig=px.histogram(df,x="PAIS_ATAQUE",title="Ataques por País",color_discrete_sequence=["#b91c1c"])
-        fig.update_layout(**L,title_font_color="white"); st.plotly_chart(fig,use_container_width=True)
+        fig = px.histogram(df, x="PAIS_ATAQUE", title="Ataques por País", color_discrete_sequence=["#b91c1c"])
+        fig.update_layout(**L, title_font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
     with g4:
-        dp=df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index().sort_values("PREJUIZO_ESTIMADO",ascending=False).head(7)
-        fig=px.bar(dp,x="CLIENTE",y="PREJUIZO_ESTIMADO",title="Prejuízo por Cliente",color_discrete_sequence=["#991b1b"])
-        fig.update_layout(**L,title_font_color="white"); st.plotly_chart(fig,use_container_width=True)
+        dp = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index().sort_values("PREJUIZO_ESTIMADO", ascending=False).head(7)
+        fig = px.bar(dp, x="CLIENTE", y="PREJUIZO_ESTIMADO", title="Prejuízo por Cliente", color_discrete_sequence=["#991b1b"])
+        fig.update_layout(**L, title_font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
     st.markdown("### 🤖 Performance do Modelo de IA")
-    m1,m2,m3=st.columns(3)
-    with m1: st.metric("ACURÁCIA",f"{ACC:.1%}")
-    with m2: st.metric("TREINO",f"{int(len(df_all)*0.8):,}")
-    with m3: st.metric("TESTE",f"{int(len(df_all)*0.2):,}")
-    ypred=MODEL.predict(Xv); cm=confusion_matrix(yv,ypred); lbs=ENC["sev"].classes_
-    fig=go.Figure(go.Heatmap(z=cm,x=lbs,y=lbs,colorscale=[[0,"#0a0507"],[0.5,"#7f1d1d"],[1,"#dc2626"]],text=cm,texttemplate="%{text}",showscale=True))
-    fig.update_layout(title="Matriz de Confusão",xaxis_title="Previsto",yaxis_title="Real",height=320,**L,title_font_color="white")
-    st.plotly_chart(fig,use_container_width=True)
+    m1, m2, m3 = st.columns(3)
+    with m1: st.metric("ACURÁCIA", f"{ACC:.1%}")
+    with m2: st.metric("TREINO", f"{int(len(df_all)*0.8):,}")
+    with m3: st.metric("TESTE", f"{int(len(df_all)*0.2):,}")
+    ypred = MODEL.predict(Xv)
+    cm = confusion_matrix(yv, ypred)
+    lbs = ENC["sev"].classes_
+    fig = go.Figure(go.Heatmap(z=cm, x=lbs, y=lbs, colorscale=[[0,"#0a0507"],[0.5,"#7f1d1d"],[1,"#dc2626"]], text=cm, texttemplate="%{text}", showscale=True))
+    fig.update_layout(title="Matriz de Confusão", xaxis_title="Previsto", yaxis_title="Real", height=320, **L, title_font_color="white")
+    st.plotly_chart(fig, use_container_width=True)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 3 — MAPA DE AMEAÇAS GLOBAL (Globe 3D interativo estilo Kaspersky)
-# ══════════════════════════════════════════════════════════════════════════════
 with tabs[2]:
     st.markdown("### 🌍 Mapa Global de Ameaças Cibernéticas")
     st.caption("Globo 3D interativo com divisórias de países reais (GeoJSON) · Arraste para girar · Scroll para zoom · Clique nos países para threat intel")
 
-    atk_df = df[df["TIPO INCIDENTE"]=="ataque"]
-    cc = atk_df["PAIS_ATAQUE"].value_counts().reset_index(); cc.columns=["country","total"]
+    atk_df = df[df["TIPO INCIDENTE"] == "ataque"]
+    cc = atk_df["PAIS_ATAQUE"].value_counts().reset_index()
+    cc.columns = ["country", "total"]
 
     THREAT_INTEL = [
         {"country":"China","lat":35.86,"lon":104.19,"score":98,"groups":["APT41","APT10","Volt Typhoon"],"target":"Espionagem industrial · infraestrutura crítica"},
@@ -887,23 +998,23 @@ with tabs[2]:
         {"country":"Pakistan","lat":30.37,"lon":69.34,"score":62,"groups":["Transparent Tribe","APT36"],"target":"Sul-asiáticos · governo"},
         {"country":"Ukraine","lat":48.38,"lon":31.17,"score":70,"groups":["Sandworm (alvo)","TA473"],"target":"Infraestrutura crítica"},
         {"country":"United States","lat":37.09,"lon":-95.71,"score":60,"groups":["NSA (defesa)","FBI Cyber"],"target":"Principal alvo de APTs globais"},
+        {"country":"Netherlands","lat":52.13,"lon":5.29,"score":55,"groups":["Bulletproof hosters"],"target":"Hospedagem maliciosa · C2 servers"},
+        {"country":"Turkey","lat":38.96,"lon":35.24,"score":58,"groups":["Sea Turtle","StrongPity"],"target":"DNS hijacking · oposição política"},
     ]
 
-    COORDS={"China":(35.86,104.19),"Russia":(61.52,105.31),"United States":(37.09,-95.71),"Germany":(51.16,10.45),
+    COORDS = {"China":(35.86,104.19),"Russia":(61.52,105.31),"United States":(37.09,-95.71),"Germany":(51.16,10.45),
             "North Korea":(40.33,127.51),"Canada":(56.13,-106.34),"India":(20.59,78.96),"France":(46.23,2.21),
             "United Kingdom":(55.37,-3.43),"Iran":(32.43,53.69),"Japan":(36.20,138.25),"Australia":(-25.27,133.77),
             "South Korea":(35.90,127.76),"Ukraine":(48.38,31.17),"Romania":(45.94,24.96),"Nigeria":(9.08,8.67),
             "Pakistan":(30.37,69.34),"Vietnam":(14.05,108.27),"Indonesia":(-0.78,113.92),"Netherlands":(52.13,5.29),
             "Turkey":(38.96,35.24),"Argentina":(-38.41,-63.61),"Mexico":(23.63,-102.55),"Colombia":(4.57,-74.29),}
 
-    arcs=[]
-    for _,row in cc.iterrows():
-        c=row["country"]
-        if c in COORDS and c!="Brazil":
-            s=COORDS[c]; arcs.append({"slat":s[0],"slon":s[1],"dlat":-14.23,"dlon":-51.92,"name":c,"n":int(row["total"])})
-
-    arcs_json = json.dumps(arcs)
-    threat_json = json.dumps(THREAT_INTEL)
+    arcs = []
+    for _, row in cc.iterrows():
+        c = row["country"]
+        if c in COORDS and c != "Brazil":
+            s = COORDS[c]
+            arcs.append({"slat": s[0], "slon": s[1], "dlat": -14.23, "dlon": -51.92, "name": c, "n": int(row["total"])})
 
     globe_html = f"""<!DOCTYPE html>
 <html>
@@ -980,8 +1091,8 @@ canvas.dragging{{cursor:grabbing;}}
 </div>
 
 <script>
-const ARCS = {arcs_json};
-const THREATS = {threat_json};
+const ARCS = {json.dumps(arcs)};
+const THREATS = {json.dumps(THREAT_INTEL)};
 const THREAT_MAP = {{}};
 THREATS.forEach(t => THREAT_MAP[t.country] = t);
 document.getElementById('ctr-val').textContent = THREATS.length;
@@ -1033,6 +1144,17 @@ const COUNTRY_BORDERS = [
     {{name:"India",pts:[[36,76],[36,80],[22,88],[8,77],[8,76],[22,70],[28,72],[36,72],[36,76]]}},
     {{name:"Japan",pts:[[43,143],[45,142],[44,142],[38,141],[34,135],[34,131],[38,141],[43,143]]}},
     {{name:"Canada",pts:[[83,-70],[70,-60],[50,-53],[45,-64],[45,-82],[49,-90],[49,-124],[60,-140],[72,-140],[83,-100],[83,-70]]}},
+    {{name:"Mexico",pts:[[32,-117],[30,-105],[24,-98],[16,-92],[18,-88],[22,-88],[30,-110],[32,-117]]}},
+    {{name:"Argentina",pts:[[-22,-63],[-22,-53],[-40,-62],[-55,-68],[-55,-66],[-40,-70],[-35,-72],[-22,-68],[-22,-63]]}},
+    {{name:"Saudi Arabia",pts:[[30,38],[30,48],[22,58],[16,52],[15,45],[22,40],[30,38]]}},
+    {{name:"Iran",pts:[[38,44],[38,62],[26,60],[26,56],[30,48],[38,44]]}},
+    {{name:"UK",pts:[[61,-1],[58,0],[53,0],[50,2],[52,5],[58,-4],[61,-1]]}},
+    {{name:"Ukraine",pts:[[51,24],[52,38],[47,38],[45,34],[44,34],[46,30],[46,24],[51,24]]}},
+    {{name:"South Korea",pts:[[38,126],[38,130],[35,130],[34,126],[38,126]]}},
+    {{name:"North Korea",pts:[[42,124],[42,130],[40,130],[38,128],[38,124],[42,124]]}},
+    {{name:"Vietnam",pts:[[22,104],[22,107],[16,108],[10,104],[10,103],[16,105],[22,103],[22,104]]}},
+    {{name:"Turkey",pts:[[42,28],[42,44],[36,44],[36,35],[38,28],[42,28]]}},
+    {{name:"Nigeria",pts:[[14,3],[14,15],[6,15],[4,7],[6,3],[14,3]]}},
 ];
 
 function drawBorders() {{
@@ -1047,6 +1169,7 @@ function drawBorders() {{
             const p3 = latLonTo3D(lat, lon, r + 0.5);
             const {{px, py, z}} = project(p3.x, p3.y, p3.z);
             if(z < -r * 0.85) {{ first = true; return; }}
+            const vis = (z + r) / (2 * r);
             if(first) {{ ctx.moveTo(px, py); first = false; }}
             else ctx.lineTo(px, py);
         }});
@@ -1102,35 +1225,48 @@ function drawGlobe() {{
         const p3=latLonTo3D(t.lat,t.lon,r);
         const {{px,py,scale,z}}=project(p3.x,p3.y,p3.z);
         if(z<-r*.88) return;
+        const vis=Math.max(0,(z+r)/(2*r));
         const col=t.score>=90?'#ff0000':t.score>=70?'#ff5500':t.score>=50?'#ffaa00':'#ff4488';
         const sz=(3+t.score/18)*scale;
+
         if(t.score>=80) {{
             const pulse=0.5+0.5*Math.sin(frame*.07+t.lat);
             ctx.beginPath(); ctx.arc(px,py,sz*2.2+pulse*5,0,Math.PI*2);
-            ctx.strokeStyle=`rgba(255,0,0,${{0.15*pulse}})`; ctx.lineWidth=1; ctx.stroke();
+            ctx.strokeStyle=`rgba(255,0,0,${{vis*0.15*pulse}})`; ctx.lineWidth=1; ctx.stroke();
+            ctx.beginPath(); ctx.arc(px,py,sz*3.5+pulse*8,0,Math.PI*2);
+            ctx.strokeStyle=`rgba(255,0,0,${{vis*0.06*pulse}})`; ctx.lineWidth=0.5; ctx.stroke();
         }}
+
         ctx.beginPath(); ctx.arc(px,py,sz,0,Math.PI*2);
-        ctx.fillStyle=col; ctx.fill();
+        ctx.globalAlpha=vis; ctx.fillStyle=col; ctx.fill();
+
+        const glow=ctx.createRadialGradient(px,py,0,px,py,sz*3);
+        glow.addColorStop(0,col.replace('ff','aa')); glow.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.beginPath(); ctx.arc(px,py,sz*3,0,Math.PI*2);
+        ctx.globalAlpha=vis*.3; ctx.fillStyle=glow; ctx.fill();
+        ctx.globalAlpha=1;
+
         if(scale>.6) {{
             ctx.font=`bold ${{Math.round(8*scale)}}px Inter`;
-            ctx.fillStyle=`rgba(230,140,140,0.85)`;
+            ctx.fillStyle=`rgba(230,140,140,${{vis*.85}})`;
             ctx.fillText(t.country.substring(0,3).toUpperCase(), px+sz+4, py+3);
         }}
     }});
 
     const bz=latLonTo3D(-14.23,-51.92,r); const {{px:bpx,py:bpy,scale:bsc,z:bzz}}=project(bz.x,bz.y,bz.z);
     if(bzz>-r*.88) {{
+        const vis=Math.max(0,(bzz+r)/(2*r));
         [12,20,30].forEach((sr,i)=>{{
             const pulse=0.5+0.5*Math.sin(frame*.05+i*2);
             ctx.beginPath(); ctx.arc(bpx,bpy,(sr+pulse*4)*bsc,0,Math.PI*2);
-            ctx.strokeStyle=`rgba(0,255,136,${{0.25-i*.07}})`;
+            ctx.strokeStyle=`rgba(0,255,136,${{vis*(0.25-i*.07)}})`;
             ctx.lineWidth=1; ctx.stroke();
         }});
         ctx.beginPath(); ctx.arc(bpx,bpy,7*bsc,0,Math.PI*2);
-        ctx.fillStyle='#00ff88'; ctx.fill();
+        ctx.globalAlpha=vis; ctx.fillStyle='#00ff88'; ctx.fill(); ctx.globalAlpha=1;
         if(bsc>.6) {{
             ctx.font=`bold ${{Math.round(9*bsc)}}px Inter`;
-            ctx.fillStyle=`rgba(0,255,136,0.9)`; ctx.fillText('BRA',bpx+10*bsc,bpy+3);
+            ctx.fillStyle=`rgba(0,255,136,${{vis*.9}})`; ctx.fillText('BRA',bpx+10*bsc,bpy+3);
         }}
     }}
     ctx.restore();
@@ -1165,13 +1301,16 @@ class Particle {{
             const a=i/this.trail.length;
             const tp=this.trail[i], pp=this.trail[i-1];
             if(tp.z<-r*.85) continue;
+            const vis=Math.max(0,(tp.z+r)/(2*r));
             ctx.beginPath(); ctx.moveTo(pp.px,pp.py); ctx.lineTo(tp.px,tp.py);
-            ctx.strokeStyle=`rgba(${{this.col}},${{a*.9}})`; ctx.lineWidth=1.8*a; ctx.stroke();
+            ctx.strokeStyle=`rgba(${{this.col}},${{a*vis*.9}})`;
+            ctx.lineWidth=1.8*a; ctx.stroke();
         }}
         const last=this.trail[this.trail.length-1];
         if(last && last.z>-r*.85) {{
+            const vis=Math.max(0,(last.z+r)/(2*r));
             ctx.beginPath(); ctx.arc(last.px,last.py,3,0,Math.PI*2);
-            ctx.fillStyle=`rgba(${{this.col}},0.9)`; ctx.fill();
+            ctx.fillStyle=`rgba(${{this.col}},${{vis}})`; ctx.fill();
             if(this.t>0.97) {{
                 ctx.beginPath(); ctx.arc(last.px,last.py,8*(1-this.t)*10,0,Math.PI*2);
                 ctx.strokeStyle=`rgba(${{this.col}},0.4)`; ctx.lineWidth=1; ctx.stroke();
@@ -1197,13 +1336,15 @@ const FEED_MSGS=[
     "SQL Injection bloqueado · RU","Ransomware signature detectada · UA","C2 callback bloqueado · IR",
     "Phishing domain takedown · NG","Credential stuffing · KP","Port scan massivo · CN",
     "Zero-day exploit tentativa · RU","BEC attack interceptado · NG","DNS hijack attempt · TR",
+    "Mimikatz detectado em memória · RU","Cobalt Strike beacon · CN","Lazarus waterhole attack · KP",
 ];
 let feedItems=[];
 function addFeed() {{
     const t=new Date().toLocaleTimeString('pt-BR',{{hour:'2-digit',minute:'2-digit',second:'2-digit'}});
     feedItems.unshift(`[${{t}}] ${{FEED_MSGS[Math.floor(Math.random()*FEED_MSGS.length)]}}`);
     if(feedItems.length>5) feedItems.pop();
-    document.getElementById('feed-list').innerHTML=feedItems.map((f,i)=>`<div class="feed-item ${{i===0?"new":""}}">${{f}}</div>`).join('');
+    document.getElementById('feed-list').innerHTML=feedItems.map((f,i)=>
+        `<div class="feed-item ${{i===0?'new':""}}">${{f}}</div>`).join('');
 }}
 addFeed(); setInterval(addFeed,2600);
 
@@ -1211,14 +1352,17 @@ function animate() {{
     requestAnimationFrame(animate);
     ctx.clearRect(0,0,W,H);
     ctx.fillStyle='#060508'; ctx.fillRect(0,0,W,H);
+
     stars.forEach(s=>{{
         ctx.beginPath(); ctx.arc(s.x%W, s.y%H, s.r, 0, Math.PI*2);
         ctx.fillStyle=`rgba(255,200,200,${{s.a*(0.7+0.3*Math.sin(frame*.02+s.x))}})`; ctx.fill();
     }});
+
     if(!isDrag) rotY += 0.0022;
     frame++;
     drawGlobe();
     if(frame%7===0) spawnParticles();
+
     particles=particles.filter(p=>{{
         const alive=p.update(); p.draw();
         if(!alive) {{ ac++; bc=Math.floor(ac*.71); document.getElementById('atk-val').textContent=ac.toLocaleString(); document.getElementById('blk-val').textContent=bc.toLocaleString(); }}
@@ -1238,6 +1382,21 @@ window.addEventListener('mousemove',e=>{{
 C.addEventListener('wheel',e=>{{
     e.preventDefault();
     zoom = Math.max(0.5, Math.min(2.5, zoom - e.deltaY*.001));
+}},{{passive:false}});
+
+let lastTouchX=0,lastTouchY=0,lastDist=0;
+C.addEventListener('touchstart',e=>{{ e.preventDefault(); lastTouchX=e.touches[0].clientX; lastTouchY=e.touches[0].clientY; if(e.touches.length===2)lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); }},{{passive:false}});
+C.addEventListener('touchmove',e=>{{
+    e.preventDefault();
+    if(e.touches.length===1){{
+        rotY+=(e.touches[0].clientX-lastTouchX)*.005;
+        rotX+=(e.touches[0].clientY-lastTouchY)*.003;
+        rotX=Math.max(-0.8,Math.min(0.8,rotX));
+        lastTouchX=e.touches[0].clientX; lastTouchY=e.touches[0].clientY;
+    }} else if(e.touches.length===2){{
+        const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+        zoom=Math.max(0.5,Math.min(2.5,zoom*(d/lastDist))); lastDist=d;
+    }}
 }},{{passive:false}});
 
 C.addEventListener('click',e=>{{
@@ -1268,29 +1427,34 @@ animate();
     components.html(globe_html, height=640, scrolling=False)
 
     st.markdown("### 🏴‍☠️ Threat Intelligence — Países de Alto Risco")
-    threat_df = pd.DataFrame([
-        {{"País":t["country"],"Threat Score":t["score"],"Grupos APT":", ".join(t["groups"]),"Alvos Primários":t["target"]}}
-        for t in sorted(THREAT_INTEL,key=lambda x:-x["score"])
-    ])
-    st.dataframe(threat_df,use_container_width=True,hide_index=True)
+    threat_df = pd.DataFrame([{"País":t["country"],"Threat Score":t["score"],"Grupos APT":", ".join(t["groups"]),"Alvos Primários":t["target"]} for t in sorted(THREAT_INTEL, key=lambda x: -x["score"])])
+    st.dataframe(threat_df, use_container_width=True, hide_index=True)
 
     if not cc.empty:
         st.markdown("### 📊 Ataques por País — Dataset Atual")
-        ta=cc.copy(); ta.columns=["País","Ataques"]
-        ta["% do Total"]=(ta["Ataques"]/ta["Ataques"].sum()*100).round(1).astype(str)+"%"
-        st.dataframe(ta,use_container_width=True,hide_index=True)
+        ta = cc.copy()
+        ta.columns = ["País", "Ataques"]
+        ta["% do Total"] = (ta["Ataques"] / ta["Ataques"].sum() * 100).round(1).astype(str) + "%"
+        st.dataframe(ta, use_container_width=True, hide_index=True)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 4 — SENTINEL BOT
-# ══════════════════════════════════════════════════════════════════════════════
 with tabs[3]:
     st.markdown("### 🤖 Sentinel Bot — Assistente de Segurança")
     st.caption("IA especialista em cibersegurança com acesso aos dados do sistema em tempo real.")
 
-    top_cli=df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
-    top_pai=df[df["TIPO INCIDENTE"]=="ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
+    api_ok = bool(GEMINI_API_KEY)
+    if not api_ok:
+        st.markdown("""
+        <div class="info-box" style="border-left-color:#f59e0b;">
+          ⚙️ <strong>Configure a API Gemini:</strong><br>
+          No Streamlit Cloud: <code>Settings → Secrets</code> e adicione:<br>
+          <code>GEMINI_API_KEY = "AIza..."</code><br>
+          A chave deve ser do <strong>Google AI Studio</strong> em <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#60a5fa;">aistudio.google.com</a>
+        </div>""", unsafe_allow_html=True)
 
-    SYSTEM_BOT=f"""Você é o Sentinel Bot, assistente especialista em segurança cibernética da plataforma SentinelAI.
+    top_cli = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
+    top_pai = df[df["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
+
+    SYSTEM_BOT = f"""Você é o Sentinel Bot, assistente especialista em segurança cibernética da plataforma SentinelAI.
 Responda SEMPRE em português brasileiro, de forma profissional, objetiva e direta.
 Use dados reais do sistema nas respostas. Não invente informações.
 
@@ -1306,50 +1470,55 @@ Escopo: {"Todos os clientes" if not CLT else CLT}
 BD: SQLite {db_size}KB ativo"""
 
     for msg in st.session_state["chat"]:
-        css="chat-user" if msg["role"]=="user" else "chat-ai"
-        icon="👤" if msg["role"]=="user" else "🤖"
-        st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>',unsafe_allow_html=True)
+        css = "chat-user" if msg["role"] == "user" else "chat-ai"
+        icon = "👤" if msg["role"] == "user" else "🤖"
+        st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>', unsafe_allow_html=True)
 
     if not st.session_state["chat"]:
         st.markdown("""<div class="chat-ai">🤖 <strong>Sentinel Bot ativo.</strong><br><br>
-        Olá! Sou o assistente de segurança da SentinelAI. Posso analisar incidentes, identificar padrões de ameaças e recomendar ações.<br><br>Como posso ajudar?</div>""",unsafe_allow_html=True)
+        Olá! Sou o assistente de segurança da SentinelAI. Posso analisar incidentes, identificar padrões de ameaças e recomendar ações.<br><br>Como posso ajudar?</div>""", unsafe_allow_html=True)
 
-    sugs=["Qual cliente tem mais prejuízo?","Quais países mais atacaram?","Status dos incidentes críticos","Recomendações urgentes","Como funciona o modelo IA?","Explique os grupos APT"]
-    st.markdown("<p style='color:#4b5563;font-size:0.68rem;margin:10px 0 5px;text-transform:uppercase;'>💡 Perguntas rápidas</p>",unsafe_allow_html=True)
-    scols=st.columns(len(sugs)); sug_click=None
-    for i,s in enumerate(sugs):
+    sugs = ["Qual cliente tem mais prejuízo?", "Quais países mais atacaram?", "Status dos incidentes críticos", "Recomendações urgentes", "Como funciona o modelo IA?", "Explique os grupos APT"]
+    st.markdown("<p style='color:#4b5563;font-size:0.68rem;margin:10px 0 5px;text-transform:uppercase;'>💡 Perguntas rápidas</p>", unsafe_allow_html=True)
+    scols = st.columns(len(sugs))
+    sug_click = None
+    for i, s in enumerate(sugs):
         with scols[i]:
-            if st.button(s,key=f"sg{i}",use_container_width=True): sug_click=s
+            if st.button(s, key=f"sg{i}", use_container_width=True):
+                sug_click = s
 
-    with st.form("chat_f",clear_on_submit=True):
-        ci,cb=st.columns([5,1])
-        with ci: q=st.text_input("",placeholder="Digite sua pergunta sobre segurança...",label_visibility="collapsed")
-        with cb: send=st.form_submit_button("Enviar",use_container_width=True)
+    with st.form("chat_f", clear_on_submit=True):
+        ci, cb = st.columns([5, 1])
+        with ci:
+            q = st.text_input("", placeholder="Digite sua pergunta sobre segurança...", label_visibility="collapsed")
+        with cb:
+            send = st.form_submit_button("Enviar", use_container_width=True)
 
-    if sug_click: q=sug_click; send=True
+    if sug_click:
+        q = sug_click
+        send = True
 
     if send and q:
-        log(USER,"CHAT",q[:80])
-        st.session_state["chat"].append({{"role":"user","content":q}})
-        msgs=st.session_state["chat"].copy()
-        resp=gemini_chat(SYSTEM_BOT,msgs)
-        st.session_state["chat"].append({{"role":"assistant","content":resp}})
-        db_salvar_chat(USER,q,resp); st.rerun()
+        log(USER, "CHAT", q[:80])
+        st.session_state["chat"].append({"role": "user", "content": q})
+        msgs = st.session_state["chat"].copy()
+        resp = gemini_chat(SYSTEM_BOT, msgs)
+        st.session_state["chat"].append({"role": "assistant", "content": resp})
+        db_salvar_chat(USER, q, resp)
+        st.rerun()
 
     if st.session_state["chat"]:
-        if st.button("🗑️ Limpar conversa",key="clear_chat"):
-            st.session_state["chat"]=[]; st.rerun()
+        if st.button("🗑️ Limpar conversa", key="clear_chat"):
+            st.session_state["chat"] = []
+            st.rerun()
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 5 — SUPORTE AO CLIENTE
-# ══════════════════════════════════════════════════════════════════════════════
 with tabs[4]:
     st.markdown("### 🎫 Suporte ao Cliente — Canal Direto com a SentinelAI")
 
-    is_client      = bool(CLT)
+    is_client = bool(CLT)
     is_support_adm = PROF["support_admin"]
 
-    SUPPORT_SYS=f"""Você é o agente de suporte da SentinelAI, empresa brasileira de cibersegurança.
+    SUPPORT_SYS = f"""Você é o agente de suporte da SentinelAI, empresa brasileira de cibersegurança.
 Responda em português, de forma cordial, profissional e objetiva.
 Auxilia clientes empresariais com dúvidas sobre segurança, incidentes e a plataforma.
 Cliente: {CLT or 'Equipe interna'}
@@ -1357,135 +1526,158 @@ Dados: {len(df)} incidentes · Acurácia IA {ACC:.1%} · Prejuízo R$ {prej:,.0f
 Nunca revele dados de outros clientes."""
 
     if is_client:
-        st.markdown(f'<div class="info-box-blue">🏢 <strong>Bem-vindo ao suporte, {CLT}!</strong><br>Chat com IA de suporte, consulte seus tickets ou abra um novo chamado.</div>',unsafe_allow_html=True)
+        st.markdown(f'<div class="info-box-blue">🏢 <strong>Bem-vindo ao suporte, {CLT}!</strong><br>Chat com IA de suporte, consulte seus tickets ou abra um novo chamado.</div>', unsafe_allow_html=True)
 
-        ctabs=st.tabs(["💬 Chat Suporte","🎫 Meus Tickets","➕ Novo Ticket"])
+        ctabs = st.tabs(["💬 Chat Suporte", "🎫 Meus Tickets", "➕ Novo Ticket"])
 
         with ctabs[0]:
             st.markdown("#### 💬 Chat com Suporte SentinelAI")
             if not st.session_state["chat_suporte"]:
-                st.markdown(f"""<div class="chat-support">🛡️ <strong>Suporte SentinelAI ativo.</strong><br><br>Olá, {CLT}! Como posso ajudar hoje?</div>""",unsafe_allow_html=True)
+                st.markdown(f"""<div class="chat-support">🛡️ <strong>Suporte SentinelAI ativo.</strong><br><br>Olá, {CLT}! Como posso ajudar hoje?</div>""", unsafe_allow_html=True)
             for msg in st.session_state["chat_suporte"]:
-                css="chat-user" if msg["role"]=="user" else "chat-support"
-                icon="🏢" if msg["role"]=="user" else "🛡️"
-                st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>',unsafe_allow_html=True)
+                css = "chat-user" if msg["role"] == "user" else "chat-support"
+                icon = "🏢" if msg["role"] == "user" else "🛡️"
+                st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>', unsafe_allow_html=True)
 
-            sup_sugs=[f"Status incidentes {CLT}","Como interpretar threat score?","O que fazer em caso de ataque?","Como exportar relatórios?"]
-            sc=st.columns(len(sup_sugs)); sup_click=None
-            for i,s in enumerate(sup_sugs):
+            sup_sugs = [f"Status incidentes {CLT}", "Como interpretar threat score?", "O que fazer em caso de ataque?", "Como exportar relatórios?"]
+            sc = st.columns(len(sup_sugs))
+            sup_click = None
+            for i, s in enumerate(sup_sugs):
                 with sc[i]:
-                    if st.button(s,key=f"sup_sg{i}",use_container_width=True): sup_click=s
+                    if st.button(s, key=f"sup_sg{i}", use_container_width=True):
+                        sup_click = s
 
-            with st.form("chat_sup_f",clear_on_submit=True):
-                si,sb=st.columns([5,1])
-                with si: sq=st.text_input("",placeholder="Mensagem para o suporte...",label_visibility="collapsed")
-                with sb: ssend=st.form_submit_button("Enviar",use_container_width=True)
+            with st.form("chat_sup_f", clear_on_submit=True):
+                si, sb = st.columns([5, 1])
+                with si:
+                    sq = st.text_input("", placeholder="Mensagem para o suporte...", label_visibility="collapsed")
+                with sb:
+                    ssend = st.form_submit_button("Enviar", use_container_width=True)
 
-            if sup_click: sq=sup_click; ssend=True
+            if sup_click:
+                sq = sup_click
+                ssend = True
 
             if ssend and sq:
-                log(USER,"SUPORTE_CHAT",sq[:80])
-                st.session_state["chat_suporte"].append({{"role":"user","content":sq}})
-                sup_resp=gemini_chat(SUPPORT_SYS,st.session_state["chat_suporte"].copy(),temperature=0.6,max_tokens=800)
-                st.session_state["chat_suporte"].append({{"role":"assistant","content":sup_resp}}); st.rerun()
+                log(USER, "SUPORTE_CHAT", sq[:80])
+                st.session_state["chat_suporte"].append({"role": "user", "content": sq})
+                sup_resp = gemini_chat(SUPPORT_SYS, st.session_state["chat_suporte"].copy(), temperature=0.6, max_tokens=800)
+                st.session_state["chat_suporte"].append({"role": "assistant", "content": sup_resp})
+                st.rerun()
 
             if st.session_state["chat_suporte"]:
-                if st.button("🗑️ Limpar chat",key="clear_sup"): st.session_state["chat_suporte"]=[]; st.rerun()
+                if st.button("🗑️ Limpar chat", key="clear_sup"):
+                    st.session_state["chat_suporte"] = []
+                    st.rerun()
 
         with ctabs[1]:
             st.markdown("#### 🎫 Meus Tickets")
-            tks_cli=db_buscar_tickets(CLT)
+            tks_cli = db_buscar_tickets(CLT)
             if tks_cli.empty:
                 st.info("Nenhum ticket ainda. Abra um na aba 'Novo Ticket'.")
             else:
-                for _,row in tks_cli.iterrows():
-                    sc_color={"aberto":"#dc2626","respondido":"#4ade80","fechado":"#6b7280"}.get(row["status"],"#f59e0b")
-                    pri_icon={"urgente":"🔴","alta":"🟠","normal":"🟡","baixa":"🟢"}.get(row["prioridade"],"⚪")
+                for _, row in tks_cli.iterrows():
+                    sc_color = {"aberto": "#dc2626", "respondido": "#4ade80", "fechado": "#6b7280"}.get(row["status"], "#f59e0b")
+                    pri_icon = {"urgente": "🔴", "alta": "🟠", "normal": "🟡", "baixa": "🟢"}.get(row["prioridade"], "⚪")
                     st.markdown(f"""<div class="ticket-card">
                       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                         <span style="color:white;font-weight:700;font-size:0.82rem;">{pri_icon} #{row['id']} — {row['assunto']}</span>
                         <span style="color:{sc_color};font-size:0.7rem;font-weight:700;">{row['status'].upper()}</span>
                       </div>
                       <p style="color:#6b7280;font-size:0.7rem;">📅 {row['ts']}</p>
-                    </div>""",unsafe_allow_html=True)
+                    </div>""", unsafe_allow_html=True)
                     with st.expander(f"Ver ticket #{row['id']}"):
-                        chat_t=db_buscar_chat_ticket(int(row["id"]))
+                        chat_t = db_buscar_chat_ticket(int(row["id"]))
                         if not chat_t.empty:
-                            for _,m in chat_t.iterrows():
-                                is_me=m["remetente"]==CLT
-                                st.markdown(f'<div class="{"chat-user" if is_me else "chat-support"}">{"🏢" if is_me else "🛡️"} <strong>{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>',unsafe_allow_html=True)
-                        if row["status"]!="fechado":
+                            for _, m in chat_t.iterrows():
+                                is_me = m["remetente"] == CLT
+                                st.markdown(f'<div class="{"chat-user" if is_me else "chat-support"}">{"🏢" if is_me else "🛡️"} <strong>{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
+                        if row["status"] != "fechado":
                             with st.form(f"reply_{row['id']}"):
-                                rm=st.text_area("Adicionar mensagem",key=f"rm_{row['id']}",height=70)
-                                cr1,cr2=st.columns(2)
+                                rm = st.text_area("Adicionar mensagem", key=f"rm_{row['id']}", height=70)
+                                cr1, cr2 = st.columns(2)
                                 with cr1:
-                                    if st.form_submit_button("📤 Enviar",use_container_width=True):
-                                        if rm.strip(): db_adicionar_msg_ticket(int(row["id"]),CLT,rm.strip()); log(USER,"TICKET_MSG",f"#{row['id']}"); st.rerun()
+                                    if st.form_submit_button("📤 Enviar", use_container_width=True):
+                                        if rm.strip():
+                                            db_adicionar_msg_ticket(int(row["id"]), CLT, rm.strip())
+                                            log(USER, "TICKET_MSG", f"#{row['id']}")
+                                            st.rerun()
                                 with cr2:
-                                    if st.form_submit_button("✅ Fechar ticket",use_container_width=True):
-                                        db_responder_ticket(int(row["id"]),"Fechado pelo cliente.","fechado"); log(USER,"TICKET_FECHADO",f"#{row['id']}"); st.rerun()
+                                    if st.form_submit_button("✅ Fechar ticket", use_container_width=True):
+                                        db_responder_ticket(int(row["id"]), "Fechado pelo cliente.", "fechado")
+                                        log(USER, "TICKET_FECHADO", f"#{row['id']}")
+                                        st.rerun()
 
         with ctabs[2]:
             st.markdown("#### ➕ Abrir Novo Ticket")
             with st.form("novo_ticket"):
-                assunto    =st.text_input("Assunto*",placeholder="Ex: Alerta não reconhecido")
-                prioridade =st.selectbox("Prioridade",["normal","alta","urgente","baixa"])
-                mensagem   =st.text_area("Descrição*",height=110,placeholder="Descreva o problema, quando ocorreu e o impacto...")
-                submitted  =st.form_submit_button("📤 Abrir Ticket",use_container_width=True)
+                assunto = st.text_input("Assunto*", placeholder="Ex: Alerta não reconhecido")
+                prioridade = st.selectbox("Prioridade", ["normal", "alta", "urgente", "baixa"])
+                mensagem = st.text_area("Descrição*", height=110, placeholder="Descreva o problema, quando ocorreu e o impacto...")
+                submitted = st.form_submit_button("📤 Abrir Ticket", use_container_width=True)
             if submitted:
                 if assunto.strip() and mensagem.strip():
-                    tid=db_criar_ticket(CLT,assunto.strip(),mensagem.strip(),prioridade)
+                    tid = db_criar_ticket(CLT, assunto.strip(), mensagem.strip(), prioridade)
                     if tid:
-                        log(USER,"TICKET_CRIADO",f"id={tid}")
+                        log(USER, "TICKET_CRIADO", f"id={tid}")
                         st.success(f"✅ Ticket #{tid} criado!")
-                        auto=gemini_chat(SUPPORT_SYS,[{{"role":"user","content":f"Cliente {CLT} abriu ticket: '{assunto}'. Mensagem: {mensagem}. Responda confirmando recebimento e com orientações iniciais."}}],temperature=0.5,max_tokens=400)
-                        db_adicionar_msg_ticket(tid,"SentinelAI",auto); st.rerun()
-                    else: st.error("Erro ao criar ticket.")
-                else: st.warning("Preencha todos os campos.")
+                        auto = gemini_chat(SUPPORT_SYS, [{"role": "user", "content": f"Cliente {CLT} abriu ticket: '{assunto}'. Mensagem: {mensagem}. Responda confirmando recebimento e com orientações iniciais."}], temperature=0.5, max_tokens=400)
+                        db_adicionar_msg_ticket(tid, "SentinelAI", auto)
+                        st.rerun()
+                    else:
+                        st.error("Erro ao criar ticket.")
+                else:
+                    st.warning("Preencha todos os campos.")
 
     elif is_support_adm:
-        st.markdown('<div class="info-box">🔧 <strong>Painel Administrativo de Suporte</strong> — Gerencie todos os tickets dos clientes.</div>',unsafe_allow_html=True)
-        all_tks=db_buscar_tickets()
+        st.markdown('<div class="info-box">🔧 <strong>Painel Administrativo de Suporte</strong> — Gerencie todos os tickets dos clientes.</div>', unsafe_allow_html=True)
+        all_tks = db_buscar_tickets()
         if all_tks.empty:
             st.info("Nenhum ticket registrado.")
         else:
-            n_ab=len(all_tks[all_tks["status"]=="aberto"]); n_re=len(all_tks[all_tks["status"]=="respondido"]); n_fe=len(all_tks[all_tks["status"]=="fechado"])
-            ma1,ma2,ma3=st.columns(3)
-            with ma1: st.metric("🔴 Abertos",n_ab)
-            with ma2: st.metric("🟡 Respondidos",n_re)
-            with ma3: st.metric("🟢 Fechados",n_fe)
-            filtro=st.selectbox("Filtrar",["todos","aberto","respondido","fechado"])
-            tks_f=all_tks if filtro=="todos" else all_tks[all_tks["status"]==filtro]
-            for _,row in tks_f.iterrows():
-                pri_icon={"urgente":"🔴","alta":"🟠","normal":"🟡","baixa":"🟢"}.get(row["prioridade"],"⚪")
+            n_ab = len(all_tks[all_tks["status"] == "aberto"])
+            n_re = len(all_tks[all_tks["status"] == "respondido"])
+            n_fe = len(all_tks[all_tks["status"] == "fechado"])
+            ma1, ma2, ma3 = st.columns(3)
+            with ma1: st.metric("🔴 Abertos", n_ab)
+            with ma2: st.metric("🟡 Respondidos", n_re)
+            with ma3: st.metric("🟢 Fechados", n_fe)
+            filtro = st.selectbox("Filtrar", ["todos", "aberto", "respondido", "fechado"])
+            tks_f = all_tks if filtro == "todos" else all_tks[all_tks["status"] == filtro]
+            for _, row in tks_f.iterrows():
+                pri_icon = {"urgente": "🔴", "alta": "🟠", "normal": "🟡", "baixa": "🟢"}.get(row["prioridade"], "⚪")
                 with st.expander(f"{pri_icon} #{row['id']} [{row['cliente']}] {row['assunto']} — {row['status'].upper()}"):
-                    chat_t=db_buscar_chat_ticket(int(row["id"]))
+                    chat_t = db_buscar_chat_ticket(int(row["id"]))
                     if not chat_t.empty:
-                        for _,m in chat_t.iterrows():
-                            is_sen=m["remetente"]=="SentinelAI"
-                            st.markdown(f'<div class="{"chat-support" if is_sen else "chat-user"}">{"🛡️" if is_sen else "🏢"} <strong>{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>',unsafe_allow_html=True)
-                    if row["status"]!="fechado":
-                        if st.button(f"🤖 Sugestão IA para #{row['id']}",key=f"ia_{row['id']}",use_container_width=True):
-                            sugestao=gemini_chat(SUPPORT_SYS,[{{"role":"user","content":f"Analista precisa responder ticket do cliente {row['cliente']}. Assunto: '{row['assunto']}'. Mensagem: '{row['mensagem']}'. Gere resposta profissional e empática."}}],temperature=0.5,max_tokens=400)
+                        for _, m in chat_t.iterrows():
+                            is_sen = m["remetente"] == "SentinelAI"
+                            st.markdown(f'<div class="{"chat-support" if is_sen else "chat-user"}">{"🛡️" if is_sen else "🏢"} <strong>{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
+                    if row["status"] != "fechado":
+                        if st.button(f"🤖 Sugestão IA para #{row['id']}", key=f"ia_{row['id']}", use_container_width=True):
+                            sugestao = gemini_chat(SUPPORT_SYS, [{"role": "user", "content": f"Analista precisa responder ticket do cliente {row['cliente']}. Assunto: '{row['assunto']}'. Mensagem: '{row['mensagem']}'. Gere resposta profissional e empática."}], temperature=0.5, max_tokens=400)
                             st.info(f"💡 Sugestão:\n\n{sugestao}")
                         with st.form(f"adm_{row['id']}"):
-                            resp_adm=st.text_area("Resposta",height=80,key=f"ra_{row['id']}")
-                            ca1,ca2,ca3=st.columns(3)
+                            resp_adm = st.text_area("Resposta", height=80, key=f"ra_{row['id']}")
+                            ca1, ca2, ca3 = st.columns(3)
                             with ca1:
-                                if st.form_submit_button("📤 Responder",use_container_width=True):
-                                    if resp_adm.strip(): db_responder_ticket(int(row["id"]),resp_adm.strip(),"respondido"); log(USER,"TICKET_RESP",f"#{row['id']}"); st.rerun()
+                                if st.form_submit_button("📤 Responder", use_container_width=True):
+                                    if resp_adm.strip():
+                                        db_responder_ticket(int(row["id"]), resp_adm.strip(), "respondido")
+                                        log(USER, "TICKET_RESP", f"#{row['id']}")
+                                        st.rerun()
                             with ca2:
-                                if st.form_submit_button("✅ Fechar",use_container_width=True):
-                                    db_responder_ticket(int(row["id"]),resp_adm.strip() or "Resolvido.","fechado"); log(USER,"TICKET_FECH",f"#{row['id']}"); st.rerun()
+                                if st.form_submit_button("✅ Fechar", use_container_width=True):
+                                    db_responder_ticket(int(row["id"]), resp_adm.strip() or "Resolvido.", "fechado")
+                                    log(USER, "TICKET_FECH", f"#{row['id']}")
+                                    st.rerun()
                             with ca3:
-                                if st.form_submit_button("🚨 Escalar",use_container_width=True):
-                                    db_adicionar_msg_ticket(int(row["id"]),USER,"⚠️ ESCALADO como URGENTE pelo SOC."); log(USER,"TICKET_ESC",f"#{row['id']}"); st.rerun()
+                                if st.form_submit_button("🚨 Escalar", use_container_width=True):
+                                    db_adicionar_msg_ticket(int(row["id"]), USER, "⚠️ ESCALADO como URGENTE pelo SOC.")
+                                    log(USER, "TICKET_ESC", f"#{row['id']}")
+                                    st.rerun()
     else:
-        st.markdown('<div class="info-box">⛔ Sem acesso ao módulo de suporte.</div>',unsafe_allow_html=True)
+        st.markdown('<div class="info-box">⛔ Sem acesso ao módulo de suporte.</div>', unsafe_allow_html=True)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 6 — BACKUP & DB
-# ══════════════════════════════════════════════════════════════════════════════
 with tabs[5]:
     st.markdown("### 💾 Backup e Gerenciamento de Dados")
     st.markdown("""
@@ -1499,7 +1691,7 @@ with tabs[5]:
       • Serviços gratuitos: <strong>PlanetScale</strong>, <strong>Railway</strong>, <strong>Aiven</strong><br>
       • Backup automático · sem perda em redeploys<br><br>
       <strong style="color:#4ade80;">Exportação manual:</strong> use os botões abaixo para CSV/TXT a qualquer momento.
-    </div>""",unsafe_allow_html=True)
+    </div>""", unsafe_allow_html=True)
 
     with st.expander("⚙️ Como configurar MySQL (PlanetScale / Railway)"):
         st.code("""# 1. PlanetScale (planetscale.com) — crie banco 'sentinelai'
@@ -1508,81 +1700,85 @@ with tabs[5]:
 
 MYSQL_URL = "mysql://user:senha@host/sentinelai" """, language="bash")
 
-    b1,b2,b3,b4=st.columns(4)
+    b1, b2, b3, b4 = st.columns(4)
     with b1:
         st.markdown(f"""<div style="background:rgba(0,180,80,0.06);border:1px solid rgba(0,180,80,0.2);border-radius:12px;padding:1rem;text-align:center;">
           <p style="color:#4b5563;font-size:0.6rem;text-transform:uppercase;">SQLite Status</p>
           <p style="color:#4ade80;font-size:1rem;font-weight:700;">✅ ATIVO</p>
           <p style="color:#6b7280;font-size:0.7rem;">{db_size} KB</p>
-        </div>""",unsafe_allow_html=True)
+        </div>""", unsafe_allow_html=True)
     with b2:
-        n_inc=len(db_buscar_incidentes())
+        n_inc = len(db_buscar_incidentes())
         st.markdown(f"""<div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.2);border-radius:12px;padding:1rem;text-align:center;">
           <p style="color:#4b5563;font-size:0.6rem;text-transform:uppercase;">Incidentes Salvos</p>
           <p style="color:#dc2626;font-size:1rem;font-weight:700;">{n_inc}</p>
-        </div>""",unsafe_allow_html=True)
+        </div>""", unsafe_allow_html=True)
     with b3:
-        n_tks_db=len(db_buscar_tickets())
+        n_tks_db = len(db_buscar_tickets())
         st.markdown(f"""<div style="background:rgba(0,100,200,0.06);border:1px solid rgba(0,150,255,0.2);border-radius:12px;padding:1rem;text-align:center;">
           <p style="color:#4b5563;font-size:0.6rem;text-transform:uppercase;">Tickets Suporte</p>
           <p style="color:#60a5fa;font-size:1rem;font-weight:700;">{n_tks_db}</p>
-        </div>""",unsafe_allow_html=True)
+        </div>""", unsafe_allow_html=True)
     with b4:
-        n_logs_db=len(db_buscar_logs())
+        n_logs_db = len(db_buscar_logs())
         st.markdown(f"""<div style="background:rgba(100,50,0,0.06);border:1px solid rgba(180,100,0,0.2);border-radius:12px;padding:1rem;text-align:center;">
           <p style="color:#4b5563;font-size:0.6rem;text-transform:uppercase;">Logs Auditoria</p>
           <p style="color:#f59e0b;font-size:1rem;font-weight:700;">{n_logs_db}</p>
-        </div>""",unsafe_allow_html=True)
+        </div>""", unsafe_allow_html=True)
 
     st.markdown("### 📥 Exportar Dados")
     if not PROF["export"]:
         st.error("⛔ Apenas Administradores podem exportar.")
     else:
-        ts_exp=datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        e1,e2,e3,e4,e5=st.columns(5)
-        with e1: st.download_button("⬇️ Dataset Completo",df_all.to_csv(index=False).encode(),f"sentinel_full_{ts_exp}.csv","text/csv",use_container_width=True)
+        ts_exp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        e1, e2, e3, e4, e5 = st.columns(5)
+        with e1:
+            st.download_button("⬇️ Dataset Completo", df_all.to_csv(index=False).encode(), f"sentinel_full_{ts_exp}.csv", "text/csv", use_container_width=True)
         with e2:
-            df_anon=df_all.drop(columns=["IP_SUSPEITO"],errors="ignore")
-            st.download_button("⬇️ Anonimizado",df_anon.to_csv(index=False).encode(),f"sentinel_anon_{ts_exp}.csv","text/csv",use_container_width=True)
+            df_anon = df_all.drop(columns=["IP_SUSPEITO"], errors="ignore")
+            st.download_button("⬇️ Anonimizado", df_anon.to_csv(index=False).encode(), f"sentinel_anon_{ts_exp}.csv", "text/csv", use_container_width=True)
         with e3:
-            df_inc_exp=db_buscar_incidentes()
-            if not df_inc_exp.empty: st.download_button("⬇️ Incidentes DB",df_inc_exp.to_csv(index=False).encode(),f"sentinel_db_{ts_exp}.csv","text/csv",use_container_width=True)
+            df_inc_exp = db_buscar_incidentes()
+            if not df_inc_exp.empty:
+                st.download_button("⬇️ Incidentes DB", df_inc_exp.to_csv(index=False).encode(), f"sentinel_db_{ts_exp}.csv", "text/csv", use_container_width=True)
         with e4:
-            df_tks_exp=db_buscar_tickets()
-            if not df_tks_exp.empty: st.download_button("⬇️ Tickets",df_tks_exp.to_csv(index=False).encode(),f"sentinel_tickets_{ts_exp}.csv","text/csv",use_container_width=True)
+            df_tks_exp = db_buscar_tickets()
+            if not df_tks_exp.empty:
+                st.download_button("⬇️ Tickets", df_tks_exp.to_csv(index=False).encode(), f"sentinel_tickets_{ts_exp}.csv", "text/csv", use_container_width=True)
         with e5:
-            if st.session_state.get("logs"): st.download_button("⬇️ Logs Sessão","\n".join(st.session_state["logs"]).encode(),f"sentinel_logs_{ts_exp}.txt","text/plain",use_container_width=True)
-        db_meta_backup(USER,"EXPORT_FULL",len(df_all))
+            if st.session_state.get("logs"):
+                st.download_button("⬇️ Logs Sessão", "\n".join(st.session_state["logs"]).encode(), f"sentinel_logs_{ts_exp}.txt", "text/plain", use_container_width=True)
+        db_meta_backup(USER, "EXPORT_FULL", len(df_all))
 
     st.markdown("### 📋 Incidentes no Banco")
-    df_db_view=db_buscar_incidentes()
-    if not df_db_view.empty: st.dataframe(df_db_view,use_container_width=True,height=220)
-    else: st.info("Nenhum incidente registrado. Use Análise para gerar registros.")
+    df_db_view = db_buscar_incidentes()
+    if not df_db_view.empty:
+        st.dataframe(df_db_view, use_container_width=True, height=220)
+    else:
+        st.info("Nenhum incidente registrado. Use Análise para gerar registros.")
 
     st.markdown("### 👁️ Prévia — Dataset Principal")
-    st.dataframe(df.head(20),use_container_width=True,height=200)
+    st.dataframe(df.head(20), use_container_width=True, height=200)
     st.caption(f"{len(df)} registros · {len(df.columns)} colunas")
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 7 — AUDITORIA
-# ══════════════════════════════════════════════════════════════════════════════
 with tabs[6]:
     st.markdown("### 📋 Logs de Auditoria — Rastreabilidade Completa")
     st.caption("Todas as ações registradas com timestamp · Conformidade LGPD e ISO 27001")
-    df_logs=db_buscar_logs()
+    df_logs = db_buscar_logs()
     if not df_logs.empty:
-        al1,al2,al3=st.columns(3)
-        with al1: st.metric("Total Eventos",len(df_logs))
-        with al2: st.metric("Usuários Ativos",df_logs["usuario"].nunique())
-        with al3: st.metric("Ações Distintas",df_logs["acao"].nunique())
-        st.dataframe(df_logs,use_container_width=True,height=380)
+        al1, al2, al3 = st.columns(3)
+        with al1: st.metric("Total Eventos", len(df_logs))
+        with al2: st.metric("Usuários Ativos", df_logs["usuario"].nunique())
+        with al3: st.metric("Ações Distintas", df_logs["acao"].nunique())
+        st.dataframe(df_logs, use_container_width=True, height=380)
         if PROF["export"]:
-            ts_aud=datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            st.download_button("⬇️ Exportar Auditoria",df_logs.to_csv(index=False).encode(),f"auditoria_{ts_aud}.csv","text/csv")
-    else: st.info("Nenhum log ainda.")
+            ts_aud = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            st.download_button("⬇️ Exportar Auditoria", df_logs.to_csv(index=False).encode(), f"auditoria_{ts_aud}.csv", "text/csv")
+    else:
+        st.info("Nenhum log ainda.")
     st.markdown("### Logs da Sessão")
     if st.session_state.get("logs"):
-        for l in reversed(st.session_state["logs"][-40:]): st.code(l,language=None)
-    else: st.info("Nenhum log nesta sessão.")
-ENDOFFILE
-echo "Done: $(wc -l < /mnt/user-data/outputs/app.py) lines"
+        for l in reversed(st.session_state["logs"][-40:]):
+            st.code(l, language=None)
+    else:
+        st.info("Nenhum log nesta sessão.")
