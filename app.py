@@ -459,7 +459,10 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
         return f"Erro na API: {str(e)}"
 
 # ─── LGPD ────────────────────────────────────────────────────────────────────
-lgpd_html = """<!DOCTYPE html>
+if not st.session_state["lgpd"]:
+    st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
+
+    lgpd_html = """<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -500,7 +503,7 @@ body{
     border:1px solid rgba(180,0,0,0.25);border-radius:24px;
     padding:2rem 2rem;
     max-width:700px;
-    width:100%;
+    width:90%;
     position:relative;z-index:10;
     box-shadow:0 40px 120px rgba(139,0,0,0.3),0 0 60px rgba(0,0,0,0.8);
 }
@@ -644,6 +647,20 @@ function rejectCookies(){ window.parent.postMessage({type:'streamlit:setComponen
 </script>
 </body>
 </html>"""
+
+    components.html(lgpd_html, height=650, scrolling=True)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("✅ ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept"):
+            st.session_state["lgpd"] = True
+            log("sistema", "LGPD_ACEITO")
+            st.rerun()
+    with col2:
+        if st.button("❌ RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject"):
+            st.error("Você recusou os termos. Acesso bloqueado.")
+            st.stop()
+    st.stop()
 # ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
