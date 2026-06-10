@@ -8,8 +8,15 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
+from openai import OpenAI
 
 GEMINI_API_KEY = "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA"
+
+# Cliente DeepSeek
+deepseek_client = OpenAI(
+    api_key="sk-76a16c32a34f4fa785ce5723b8622997",
+    base_url="https://api.deepseek.com"
+)
 
 st.set_page_config(
     page_title="SentinelAI — SOC Platform",
@@ -484,38 +491,27 @@ for k, v in {"authed":False, "user":None, "lgpd":False, "chat":[], "chat_suporte
         st.session_state[k] = v
 
 def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
-    key = GEMINI_API_KEY
-    if not key:
-        return "⚠️ Configure GEMINI_API_KEY nos Secrets do Streamlit."
-    
-    contents = []
-    for m in messages:
-        role = "user" if m["role"] == "user" else "model"
-        contents.append({"role": role, "parts": [{"text": m["content"]}]})
-    
-    payload = {
-        "system_instruction": {"parts": [{"text": system_prompt}]},
-        "contents": contents,
-        "generationConfig": {"temperature": temperature, "maxOutputTokens": max_tokens}
-    }
-    
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={key}"
-    
+    """Chatbot usando DeepSeek API (gratuito e compatível com OpenAI)"""
     try:
-        r = requests.post(url, json=payload, timeout=30)
-        if r.status_code == 200:
-            data = r.json()
-            return data["candidates"][0]["content"]["parts"][0]["text"]
-        elif r.status_code == 400:
-            return "❌ Chave da API inválida ou mal formatada. Verifique GEMINI_API_KEY nos Secrets."
-        elif r.status_code == 403:
-            return "❌ Acesso negado. Certifique-se que a API Generative Language está habilitada no Google Cloud Console."
-        else:
-            return f"❌ Erro {r.status_code}. Tente novamente."
-    except requests.exceptions.Timeout:
-        return "❌ Timeout na API. Tente novamente."
+        openai_messages = [{"role": "system", "content": system_prompt}]
+        
+        for m in messages:
+            openai_messages.append({
+                "role": m["role"],
+                "content": m["content"]
+            })
+        
+        response = deepseek_client.chat.completions.create(
+            model="deepseek-chat",
+            messages=openai_messages,
+            temperature=temperature,
+            max_tokens=max_tokens
+        )
+        
+        return response.choices[0].message.content
+        
     except Exception as e:
-        return f"❌ Erro de conexão: {str(e)[:100]}"
+        return f"❌ Erro na API DeepSeek: {str(e)}"
 
 if not st.session_state["lgpd"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
