@@ -1069,8 +1069,15 @@ with st.sidebar:
     <div style="background:rgba(139,0,0,0.07);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:0.9rem 1rem;margin-bottom:0.8rem;">
       <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">OPERADOR</p>
       nome_usuario = "Usuário"  # ou pegue da sua sessão: st.session_state.get('usuario', 'Usuário')
+if 'nome' in st.session_state:
+    nome_usuario = st.session_state['nome']
+elif 'username' in st.session_state:
+    nome_usuario = st.session_state['username']
+elif 'user' in st.session_state:
+    nome_usuario = st.session_state['user']
+else:
+    nome_usuario = 'Usuário'
 st.markdown(f'<p style="color:white;font-weight:700;font-size:0.9rem;margin:0;">@{nome_usuario}</p>', unsafe_allow_html=True)
-      <p style="color:#9ca3af;font-size:0.7rem;margin:3px 0 8px;">{PROF['role']}</p>
       <span class="badge-online">&#9679; ONLINE</span>
     </div>
     <div style="background:rgba(0,200,100,0.04);border:1px solid rgba(0,200,100,0.15);border-radius:10px;padding:0.7rem 1rem;margin-bottom:0.5rem;">
