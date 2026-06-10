@@ -14,7 +14,7 @@ groq_client = Groq(api_key="gsk_uNBe6IM3SOiH4ZQheyL9WGdyb3FYBggRQz5YvmTZf30CBJIx
 
 st.set_page_config(
     page_title="SentinelAI — SOC Platform",
-    page_icon="assets/robo.png" if os.path.exists("assets/robo.png") else "🛡️",
+    page_icon="robo.png" if os.path.exists("robo.png") else "🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -585,7 +585,7 @@ body{
 <div class="card">
     <div class="robot-wrap">
         <img class="robot-img" src="robo.png" alt="Sentinel AI"
-             onerror="this.outerHTML='<div style=font-size:80px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>&#129302;</div>'">
+     onerror="this.outerHTML='<div style=font-size:80px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>&#129302;</div>'">
     </div>
     <div class="title">
         <h1>Sentinel<span>AI</span></h1>
@@ -744,10 +744,8 @@ with st.sidebar:
 
     st.markdown(f"""
     <div style="text-align:center;padding:1.5rem 0 0.8rem;">
-      <img src="robo.png" class="robot-float-img" alt="Sentinel"
-           onerror="this.outerHTML='<div style=font-size:52px;text-align:center;filter:drop-shadow(0 0 12px rgba(220,38,38,0.7))>&#129302;</div>'">
-      <p style="color:#dc2626;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;margin-top:10px;">SENTINEL CORE</p>
-    </div>
+     <img src="robo.png" class="robot-float-img" alt="Sentinel"
+     onerror="this.outerHTML='<div style=font-size:52px;text-align:center;filter:drop-shadow(0 0 12px rgba(220,38,38,0.7))>&#129302;</div>'">
     <hr>
     <div style="background:rgba(139,0,0,0.07);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:0.9rem 1rem;margin-bottom:0.8rem;">
       <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">OPERADOR</p>
