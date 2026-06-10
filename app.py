@@ -433,7 +433,7 @@ def enviar_email_lead(empresa, nome, email, telefone, segmento, tamanho, plano, 
         SMTP_SERVER = "smtp.gmail.com"
         SMTP_PORT = 587
         REMETENTE = "sentinelai.contato@gmail.com"
-        SENHA = os.environ.get("GMAIL_APP_PASSWORD", "")
+        SENHA = os.environ.get("EMAIL_PASSWORD", "")
 
         if not SENHA:
             return False
