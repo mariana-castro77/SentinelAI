@@ -156,7 +156,6 @@ input, textarea, [data-baseweb="input"] input {
     line-height: 1.6;
 }
 
-/* Animação de digitação */
 .typing-indicator {
     background: rgba(10,5,7,0.95);
     border: 1px solid rgba(180,0,0,0.2);
@@ -209,7 +208,6 @@ input, textarea, [data-baseweb="input"] input {
     font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
 }
 
-/* Robot flutuante — usa imagem */
 @keyframes float-robot {
     0%   { transform: translateY(0px) rotate(-2deg); }
     25%  { transform: translateY(-12px) rotate(1deg); }
@@ -439,7 +437,7 @@ def mask_ip(ip):
     p = str(ip).split(".")
     return f"{p[0]}.{p[1]}.***.***" if len(p) == 4 else "***"
 
-for k, v in {"authed":False,"user":None,"lgpd":False,"chat":[],"chat_suporte":[],"logs":[],"ticket_ativo":None}.items():
+for k, v in {"authed":False,"user":None,"lgpd":False,"chat":[],"chat_suporte":[],"logs":[],"ticket_ativo":None,"show_prospect":False}.items():
     if k not in st.session_state:
         st.session_state[k] = v
 
@@ -462,7 +460,6 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
 if not st.session_state["lgpd"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
 
-    # HTML apenas para o DESIGN (sem botões)
     lgpd_html = """<!DOCTYPE html>
 <html>
 <head>
@@ -628,7 +625,6 @@ tick(); setInterval(tick,1000);
 
     components.html(lgpd_html, height=600, scrolling=True)
 
-    # Botões do Streamlit (funcionam 100%)
     st.markdown("<br>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
@@ -641,6 +637,7 @@ tick(); setInterval(tick,1000);
             st.error("Você recusou os termos. Acesso bloqueado.")
             st.stop()
     st.stop()
+
 # ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
@@ -684,490 +681,573 @@ if not st.session_state["authed"]:
             ok = st.form_submit_button("ACESSAR O SISTEMA", use_container_width=True)
         if ok:
             if auth(u_in.strip(), p_in):
-                st.session_state.update({"authed":True,"user":u_in.strip()})
+                st.session_state.update({"authed":True,"user":u_in.strip(),"show_prospect":False})
                 log(u_in.strip(),"LOGIN","Acesso concedido")
                 st.rerun()
             else:
                 log(u_in.strip() or "?","LOGIN_FAIL","Credenciais inválidas")
                 st.error("Usuário ou senha incorretos.")
 
-if not st.session_state["authed"]:
-    st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
-    st.markdown("""
-    <div style="text-align:center;padding:3rem 0 2rem;">
-        <h1 style="font-size:2.8rem;font-weight:900;color:white;letter-spacing:-1px;margin:0;">
-            Sentinel<span style="color:#dc2626;">AI</span>
-        </h1>
-        <p style="color:#6b7280;font-size:0.9rem;margin:8px 0 0;">Security Operations Center — Plataforma de Inteligência Cibernética</p>
-        <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
-          <span class="badge-online">&#9679; SISTEMA OPERACIONAL</span>
-          <span class="badge-critical">ACESSO RESTRITO</span>
-        </div>
-    </div>""", unsafe_allow_html=True)
-
-    _, col_login, _ = st.columns([1, 1.4, 1])
-    with col_login:
+        # ── Divisor prospect ──────────────────────────────────────────────────
         st.markdown("""
-        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.07),rgba(10,5,7,0.98));
-                    border:1px solid rgba(180,0,0,0.2);border-radius:20px;padding:2rem;margin-bottom:1.2rem;
-                    box-shadow:0 24px 80px rgba(139,0,0,0.2);">
-          <p style="color:#6b7280;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1rem;">
-            Credenciais de Acesso
-          </p>""", unsafe_allow_html=True)
-        creds = [
-            ("admin","admin123","Administrador"),("analista","analista123","Analista SOC"),
-            ("nubank","nubank123","Nubank"),("mercadolivre","ml123","Mercado Livre"),
-            ("santander","sant123","Santander"),("ifood","ifood123","iFood"),("viewer","viewer123","Visualizador")
-        ]
-        for u, p, label in creds:
-            st.markdown(f"""
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;
-                        border-radius:8px;margin:3px 0;background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.1);">
-              <span style="color:#e2e8f0;font-size:0.72rem;font-weight:500;">{label}</span>
-              <code style="color:#f87171;font-size:0.65rem;background:rgba(220,38,38,0.08);padding:2px 8px;border-radius:4px;">{u} / {p}</code>
-            </div>""", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-        
-        with st.form("login_form"):
-            u_in = st.text_input("", placeholder="Usuario", label_visibility="collapsed")
-            p_in = st.text_input("", placeholder="Senha", type="password", label_visibility="collapsed")
-            ok = st.form_submit_button("ACESSAR O SISTEMA", use_container_width=True)
-        if ok:
-            if auth(u_in.strip(), p_in):
-                st.session_state.update({"authed":True,"user":u_in.strip()})
-                log(u_in.strip(),"LOGIN","Acesso concedido")
-                st.rerun()
-            else:
-                log(u_in.strip() or "?","LOGIN_FAIL","Credenciais inválidas")
-                st.error("Usuário ou senha incorretos.")
+        <div style="display:flex;align-items:center;gap:10px;margin:1.2rem 0 0.8rem;">
+          <div style="flex:1;height:1px;background:rgba(180,0,0,0.15);"></div>
+          <span style="color:#374151;font-size:0.62rem;font-weight:600;letter-spacing:0.08em;white-space:nowrap;">
+            AINDA NÃO É CLIENTE?
+          </span>
+          <div style="flex:1;height:1px;background:rgba(180,0,0,0.15);"></div>
+        </div>""", unsafe_allow_html=True)
 
-    # ============================================================
-    # 🚀 SEÇÃO COMERCIAL PARA CLIENTES INTERESSADOS (COLOQUE AQUI)
-    # ============================================================
-    st.markdown("---")
-    st.markdown("### Conheca a SentinelAI")
+        if st.button(
+            "Conheça os planos SentinelAI",
+            use_container_width=True,
+            key="btn_prospect"
+        ):
+            st.session_state["show_prospect"] = not st.session_state["show_prospect"]
+            st.rerun()
 
-    # Abas para organizar o conteudo
-    aba_empresa, aba_servicos, aba_precos, aba_contato = st.tabs([
-        "Quem Somos", "Nossos Servicos", "Planos e Precos", "Fale Conosco"
-    ])
+    # ── Landing page de prospecção ─────────────────────────────────────────────
+    if st.session_state["show_prospect"]:
+        prospect_html = _PROSPECT_HTML  # definido abaixo
+        components.html(prospect_html, height=5400, scrolling=True)
 
-    # ABA 1: QUEM SOMOS
-    with aba_empresa:
-        st.markdown("""
-        <div class="info-box-blue" style="margin-bottom: 1rem;">
-            <p style="font-size: 1rem; margin-bottom: 0.5rem;">
-                <strong>SentinelAI</strong> e uma empresa brasileira especializada em 
-                <strong>Seguranca Cibernetica e Inteligencia contra Ameacas</strong>.
-            </p>
-            <p style="margin: 0.5rem 0;">
-                Fundada em 2024, nossa missao e proteger empresas contra ataques ciberneticos 
-                utilizando <strong>Inteligencia Artificial de ponta</strong> e monitoramento 24/7.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        col_missao, col_visao, col_valores = st.columns(3)
-        
-        with col_missao:
-            st.markdown("""
-            <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
-                <div style="font-size:2rem;">🎯</div>
-                <h4 style="color:#dc2626;margin:0.5rem 0;">Missao</h4>
-                <p style="color:#9ca3af;font-size:0.75rem;">Proteger empresas com tecnologia de ponta, antecipando e neutralizando ameacas ciberneticas.</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col_visao:
-            st.markdown("""
-            <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
-                <div style="font-size:2rem;">👁️</div>
-                <h4 style="color:#dc2626;margin:0.5rem 0;">Visao</h4>
-                <p style="color:#9ca3af;font-size:0.75rem;">Ser referencia em seguranca cibernetica na America Latina, reconhecida pela inovacao e confiabilidade.</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col_valores:
-            st.markdown("""
-            <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
-                <div style="font-size:2rem;">⭐</div>
-                <h4 style="color:#dc2626;margin:0.5rem 0;">Valores</h4>
-                <p style="color:#9ca3af;font-size:0.75rem;">Transparencia, Inovacao, Excelencia, Confianca e Compromisso com o cliente.</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div style="margin-top: 1rem; text-align: center;">
-            <p style="color:#6b7280; font-size: 0.8rem;">
-                <strong>+50</strong> clientes protegidos &nbsp;|&nbsp;
-                <strong>99.99%</strong> de uptime &nbsp;|&nbsp;
-                <strong>24/7</strong> monitoramento
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # ABA 2: NOSSOS SERVICOS
-    with aba_servicos:
-        st.markdown("### O que oferecemos")
-        
-        col_serv1, col_serv2 = st.columns(2)
-        
-        with col_serv1:
-            st.markdown("""
-            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                    <div style="font-size:1.8rem;">🤖</div>
-                    <div>
-                        <h4 style="color:#dc2626;margin:0;">IA Preditiva</h4>
-                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Modelos de ML para antecipar ataques</p>
-                    </div>
-                </div>
-            </div>
-            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                    <div style="font-size:1.8rem;">🌍</div>
-                    <div>
-                        <h4 style="color:#dc2626;margin:0;">Monitoramento Global</h4>
-                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Threat map em tempo real</p>
-                    </div>
-                </div>
-            </div>
-            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;">
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                    <div style="font-size:1.8rem;">⚡</div>
-                    <div>
-                        <h4 style="color:#dc2626;margin:0;">Resposta Automatica</h4>
-                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Bloqueio de IPs e firewall em milissegundos</p>
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col_serv2:
-            st.markdown("""
-            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                    <div style="font-size:1.8rem;">📋</div>
-                    <div>
-                        <h4 style="color:#dc2626;margin:0;">Auditoria Completa</h4>
-                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Logs e rastreabilidade total</p>
-                    </div>
-                </div>
-            </div>
-            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                    <div style="font-size:1.8rem;">🔐</div>
-                    <div>
-                        <h4 style="color:#dc2626;margin:0;">LGPD Compliance</h4>
-                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Protecao de dados e privacidade</p>
-                    </div>
-                </div>
-            </div>
-            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;">
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                    <div style="font-size:1.8rem;">💬</div>
-                    <div>
-                        <h4 style="color:#dc2626;margin:0;">Suporte 24/7</h4>
-                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Atendimento especializado</p>
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-
-    # ABA 3: PLANOS E PRECOS
-    with aba_precos:
-        st.markdown("### Planos para sua empresa")
-        
-        st.markdown("""
-        <div class="info-box" style="margin-bottom: 1rem; border-left-color: #00d4ff;">
-            Precos baseados no mercado brasileiro de seguranca cibernetica. 
-            Planos com previsibilidade de custos e sem surpresas na fatura.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        if "plano_selecionado" not in st.session_state:
-            st.session_state["plano_selecionado"] = None
-        if "plano_valor" not in st.session_state:
-            st.session_state["plano_valor"] = None
-        
-        col_plano1, col_plano2, col_plano3 = st.columns(3)
-        
-        with col_plano1:
-            is_selected = st.session_state["plano_selecionado"] == "Essential"
-            border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
-            shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
-            
-            st.markdown(f"""
-            <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));
-                        border:{border_style};
-                        border-radius:16px;
-                        padding:1.2rem;
-                        text-align:center;
-                        box-shadow:{shadow_style};
-                        transition: all 0.3s ease;">
-                <h3 style="color:#dc2626;margin:0.5rem 0;">Essential</h3>
-                <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 4.999,00<span style="font-size:0.8rem;">/mes</span></div>
-                <div style="font-size:0.7rem;color:#6b7280;">ou R$ 54.990,00/ano (12x de R$ 4.582,50)</div>
-                <hr style="margin:0.8rem 0;">
-                <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
-                    Monitoramento basico 24/7<br>
-                    Dashboard essencial<br>
-                    Relatorios mensais<br>
-                    Suporte comercial<br>
-                    Ate 100 endpoints<br>
-                    30 dias de retencao de logs
-                </p>
-                <div style="margin-top:0.8rem;">
-                    <span style="background:rgba(0,212,255,0.1);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Para pequenas empresas</span>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("Selecionar Plano Essential", key="btn_essential", use_container_width=True):
-                st.session_state["plano_selecionado"] = "Essential"
-                st.session_state["plano_valor"] = "R$ 4.999,00/mes"
-                st.session_state["ir_para_contato"] = True
-                st.rerun()
-        
-        with col_plano2:
-            is_selected = st.session_state["plano_selecionado"] == "Professional"
-            border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
-            shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
-            
-            st.markdown(f"""
-            <div style="background:linear-gradient(135deg,rgba(139,0,0,0.15),rgba(10,5,7,0.95));
-                        border:{border_style};
-                        border-radius:16px;
-                        padding:1.2rem;
-                        text-align:center;
-                        position:relative;
-                        box-shadow:{shadow_style};
-                        transition: all 0.3s ease;">
-                <div style="position:absolute;top:-10px;right:10px;background:#dc2626;color:white;font-size:0.6rem;padding:2px 8px;border-radius:10px;">MAIS VENDIDO</div>
-                <h3 style="color:#dc2626;margin:0.5rem 0;">Professional</h3>
-                <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 9.990,00<span style="font-size:0.8rem;">/mes</span></div>
-                <div style="font-size:0.7rem;color:#6b7280;">ou R$ 109.890,00/ano (12x de R$ 9.157,50)</div>
-                <hr style="margin:0.8rem 0;">
-                <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
-                    Monitoramento avancado 24/7<br>
-                    IA Preditiva completa<br>
-                    Threat map em tempo real<br>
-                    Resposta automatica<br>
-                    Relatorios semanais<br>
-                    Suporte prioritario<br>
-                    Ate 500 endpoints<br>
-                    90 dias de retencao de logs<br>
-                    Threat hunting proativo
-                </p>
-                <div style="margin-top:0.8rem;">
-                    <span style="background:rgba(0,212,255,0.15);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Ideal para medias empresas</span>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("Selecionar Plano Professional", key="btn_professional", use_container_width=True):
-                st.session_state["plano_selecionado"] = "Professional"
-                st.session_state["plano_valor"] = "R$ 9.990,00/mes"
-                st.session_state["ir_para_contato"] = True
-                st.rerun()
-        
-        with col_plano3:
-            is_selected = st.session_state["plano_selecionado"] == "Enterprise"
-            border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
-            shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
-            
-            st.markdown(f"""
-            <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));
-                        border:{border_style};
-                        border-radius:16px;
-                        padding:1.2rem;
-                        text-align:center;
-                        box-shadow:{shadow_style};
-                        transition: all 0.3s ease;">
-                <h3 style="color:#dc2626;margin:0.5rem 0;">Enterprise</h3>
-                <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">Sob consulta</div>
-                <div style="font-size:0.7rem;color:#6b7280;">a partir de R$ 29.900,00/mes</div>
-                <hr style="margin:0.8rem 0;">
-                <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
-                    Tudo do Professional<br>
-                    SOC dedicado 24/7<br>
-                    On-premise opcional<br>
-                    SLA 99,99%<br>
-                    Consultoria especializada<br>
-                    Treinamento personalizado<br>
-                    Endpoints ilimitados<br>
-                    Retencao de logs personalizada<br>
-                    Analista dedicado
-                </p>
-                <div style="margin-top:0.8rem;">
-                    <span style="background:rgba(0,212,255,0.1);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Para grandes corporacoes</span>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("Selecionar Plano Enterprise", key="btn_enterprise", use_container_width=True):
-                st.session_state["plano_selecionado"] = "Enterprise"
-                st.session_state["plano_valor"] = "Sob consulta (a partir de R$ 29.900,00/mes)"
-                st.session_state["ir_para_contato"] = True
-                st.rerun()
-        
-        st.markdown("""
-        <div style="margin-top: 1rem; background:rgba(139,0,0,0.06); border-radius:8px; padding:0.8rem; text-align:center;">
-            <p style="color:#6b7280; font-size:0.7rem;">
-                Comparado a montar um SOC interno (cerca de R$ 1,5 milhao por ano), nossa solucao reduz custos em ate 90 por cento.
-                Todos os planos incluem suporte em portugues e conformidade com a LGPD.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # ABA 4: FORMULARIO DE CONTATO
-    with aba_contato:
-        st.markdown("### Solicite uma demonstracao gratuita")
-        
-        st.markdown("""
-        <div class="info-box-blue" style="margin-bottom: 1rem;">
-            Preencha o formulario abaixo e nossa equipe comercial entrara em contato em ate <strong>24 horas</strong>.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        EMAIL_SENTINEL = "sentinelai.contato@gmail.com"
-        
-        with st.form("lead_form"):
-            col_form1, col_form2 = st.columns(2)
-            with col_form1:
-                nome_empresa = st.text_input("Nome da Empresa *", placeholder="Ex: Tech Solutions Ltda")
-                porte_empresa = st.selectbox("Porte da empresa", ["Startup", "Pequena (ate 49 func)", "Media (50-499 func)", "Grande (500+ func)", "Corporacao"])
-                telefone = st.text_input("Telefone", placeholder="(11) 99999-9999")
-                segmento = st.text_input("Segmento", placeholder="Ex: Fintech, E-commerce, Saude...")
-            
-            with col_form2:
-                nome_contato = st.text_input("Nome do Contato *", placeholder="Ex: Joao Silva")
-                cargo = st.text_input("Cargo", placeholder="Ex: CISO, Diretor de TI, Gerente")
-                email_contato = st.text_input("E-mail para contato *", placeholder="joao@empresa.com")
-                interesse = st.selectbox("Principal interesse", [
-                    "Demonstracao do produto",
-                    "Consultoria de seguranca",
-                    "Implementacao urgente",
-                    "Orcamento para minha empresa",
-                    "Outro"
-                ])
-            
-            if st.session_state.get("plano_selecionado"):
-                servico_desejado = st.text_input(
-                    "Servico desejado", 
-                    value=f"{st.session_state['plano_selecionado']} - {st.session_state.get('plano_valor', '')}",
-                    placeholder="Ex: Plano Professional, Consultoria, etc."
-                )
-                st.caption(f"Plano selecionado: {st.session_state['plano_selecionado']}. Voce pode editar o campo acima se necessario.")
-            else:
-                servico_desejado = st.text_input(
-                    "Servico desejado", 
-                    placeholder="Ex: Plano Professional, Consultoria de seguranca, etc."
-                )
-            
-            mensagem = st.text_area("Mensagem / Necessidade", 
-                                    placeholder="Conte-nos um pouco sobre sua necessidade...",
-                                    height=80)
-            
-            lgpd_consent = st.checkbox("Li e concordo com a Politica de Privacidade e com o tratamento dos meus dados conforme a LGPD.")
-            
-            enviar = st.form_submit_button("Enviar solicitacao", use_container_width=True)
-            
-            if enviar:
-                if not nome_empresa or not nome_contato or not email_contato:
-                    st.warning("Por favor, preencha os campos obrigatorios.")
-                elif not lgpd_consent:
-                    st.warning("Voce precisa aceitar a Politica de Privacidade para enviar a mensagem.")
-                else:
-                    try:
-                        import smtplib
-                        from email.mime.text import MIMEText
-                        from email.mime.multipart import MIMEMultipart
-                        
-                        corpo_html = f"""
-                        <!DOCTYPE html>
-                        <html>
-                        <head><meta charset="utf-8"></head>
-                        <body style="font-family: Arial, sans-serif; background:#0a0c10; color:#e2e8f0; padding:20px;">
-                            <div style="max-width:600px; margin:0 auto; background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95)); border:1px solid rgba(180,0,0,0.3); border-radius:16px; padding:24px;">
-                                <div style="text-align:center; margin-bottom:20px;">
-                                    <div style="font-size:48px;">🛡️</div>
-                                    <h2 style="color:#dc2626; margin:0;">Nova solicitacao de contato - SentinelAI</h2>
-                                </div>
-                                
-                                <h3 style="color:#00d4ff;">Dados da Empresa</h3>
-                                <p><strong>Empresa:</strong> {nome_empresa}</p>
-                                <p><strong>Porte:</strong> {porte_empresa}</p>
-                                <p><strong>Segmento:</strong> {segmento if segmento else "Nao informado"}</p>
-                                
-                                <h3 style="color:#00d4ff; margin-top:16px;">Dados do Contato</h3>
-                                <p><strong>Nome:</strong> {nome_contato}</p>
-                                <p><strong>Cargo:</strong> {cargo if cargo else "Nao informado"}</p>
-                                <p><strong>E-mail:</strong> {email_contato}</p>
-                                <p><strong>Telefone:</strong> {telefone if telefone else "Nao informado"}</p>
-                                
-                                <h3 style="color:#00d4ff; margin-top:16px;">Interesse</h3>
-                                <p><strong>Principal interesse:</strong> {interesse}</p>
-                                <p><strong>Servico desejado:</strong> {servico_desejado if servico_desejado else "Nao informado"}</p>
-                                
-                                <h3 style="color:#00d4ff; margin-top:16px;">Mensagem</h3>
-                                <p style="background:rgba(139,0,0,0.08); border-left:3px solid #dc2626; padding:10px; border-radius:8px;">
-                                    {mensagem if mensagem else "Nenhuma mensagem adicional"}
-                                </p>
-                                
-                                <hr style="border-color:rgba(180,0,0,0.2); margin:20px 0;">
-                                <p style="color:#6b7280; font-size:12px; text-align:center;">
-                                    Esta mensagem foi enviada atraves do formulario de contato do site SentinelAI.<br>
-                                    Responder diretamente a este e-mail enviara a resposta para {email_contato}
-                                </p>
-                            </div>
-                        </body>
-                        </html>
-                        """
-                        
-                        msg = MIMEMultipart()
-                        msg["From"] = EMAIL_SENTINEL
-                        msg["To"] = EMAIL_SENTINEL
-                        msg["Subject"] = f"Novo Lead - {nome_empresa} - {interesse}"
-                        msg.attach(MIMEText(corpo_html, "html"))
-                        
-                        senha_app = st.secrets.get("EMAIL_PASSWORD", "")
-                        
-                        if senha_app:
-                            server = smtplib.SMTP("smtp.gmail.com", 587)
-                            server.starttls()
-                            server.login(EMAIL_SENTINEL, senha_app)
-                            server.send_message(msg)
-                            server.quit()
-                            st.balloons()
-                            st.success(f"""
-                            ✅ **Solicitacao recebida com sucesso, {nome_empresa}!**  
-                            
-                            Agradecemos pela confianca em nossa solucao. Nossa equipe comercial entrara em contato em ate **24 horas** via e-mail: **{email_contato}**.  
-                            
-                            Fique atento a sua caixa de entrada e pasta de spam.
-                            """)
-                        else:
-                            st.success(f"""
-                            ✅ **Solicitacao recebida com sucesso, {nome_empresa}!**  
-                            
-                            Agradecemos pela confianca em nossa solucao. Nossa equipe comercial entrara em contato em ate **24 horas** via e-mail: **{email_contato}**.  
-                            
-                            Fique atento a sua caixa de entrada e pasta de spam.
-                            """)
-                            st.info(f"Voce tambem pode nos escrever diretamente: {EMAIL_SENTINEL}")
-                            
-                    except Exception as e:
-                        st.error(f"Erro ao enviar: {str(e)}")
-                        st.info(f"Por favor, entre em contato diretamente pelo e-mail: {EMAIL_SENTINEL}")
-
-    # Redirecionar para a aba de contato se necessario
-    if st.session_state.get("ir_para_contato"):
-        st.session_state["ir_para_contato"] = False
-        st.rerun()
-    
     st.stop()
 
+# ─── HTML DA LANDING PAGE (definido como constante para não poluir o fluxo) ──
+_PROSPECT_HTML = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --r9:#7f1d1d;--r8:#991b1b;--r7:#b91c1c;--r6:#dc2626;--r4:#f87171;--r3:#fca5a5;
+  --bg:#060508;--card:rgba(10,5,7,0.95);--brd:rgba(180,0,0,0.2);--brdh:rgba(220,38,38,0.45);
+  --tm:#6b7280;--td:#94a3b8;--tb:#cbd5e1;--tw:#f1f5f9;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',system-ui,sans-serif;
+  background:radial-gradient(ellipse at 20% 50%,rgba(139,0,0,0.18) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 20%,rgba(180,0,0,0.12) 0%,transparent 55%),
+             radial-gradient(ellipse at 50% 80%,rgba(100,0,0,0.10) 0%,transparent 50%),#060508;
+  color:var(--tb);min-height:100vh;}
+.grid-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(180,0,0,0.035) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(180,0,0,0.035) 1px,transparent 1px);
+  background-size:60px 60px;}
+.scan{position:fixed;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(220,38,38,0.4),transparent);
+  animation:sc 7s linear infinite;pointer-events:none;z-index:1;}
+@keyframes sc{0%{top:-1px;}100%{top:100vh;}}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px;position:relative;z-index:2;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(6,5,8,0.93);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--brd);padding:13px 0;}
+.nav-in{max-width:1060px;margin:0 auto;padding:0 22px;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-size:1.35rem;font-weight:900;letter-spacing:-0.5px;color:var(--tw);text-decoration:none;}
+.logo s{color:var(--r6);font-style:normal;text-decoration:none;}
+.logo sub{font-size:0.44rem;color:var(--tm);font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
+  margin-left:6px;vertical-align:0.2em;font-family:'JetBrains Mono',monospace;}
+.bon{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(0,255,100,0.05);border:1px solid rgba(0,255,100,0.2);color:#4ade80;
+  padding:4px 12px;border-radius:20px;font-size:0.57rem;font-weight:700;letter-spacing:0.1em;}
+.dot{display:inline-block;width:5px;height:5px;background:#4ade80;border-radius:50%;animation:pa 1.6s infinite;}
+@keyframes pa{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.4);}50%{box-shadow:0 0 0 5px rgba(74,222,128,0);}}
+
+/* HERO */
+.hero{padding:88px 0 68px;text-align:center;}
+.eye{display:inline-block;margin-bottom:20px;
+  background:rgba(139,0,0,0.1);border:1px solid rgba(220,38,38,0.25);color:var(--r4);
+  padding:5px 18px;border-radius:20px;font-size:0.61rem;font-weight:700;letter-spacing:0.14em;
+  text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.hero h1{font-size:clamp(2.3rem,6vw,4rem);font-weight:900;color:var(--tw);
+  letter-spacing:-1.5px;line-height:1.06;margin-bottom:20px;}
+.hero h1 em{color:var(--r6);font-style:normal;}
+.hero p{font-size:clamp(0.88rem,2vw,1.02rem);color:var(--td);max-width:600px;
+  margin:0 auto 34px;line-height:1.75;font-weight:400;}
+.cta{display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.btn-p{background:linear-gradient(135deg,var(--r9),var(--r8),var(--r7));color:white;
+  border:1px solid rgba(220,38,38,0.4);border-radius:11px;padding:13px 28px;
+  font-weight:700;font-size:0.79rem;letter-spacing:0.06em;text-transform:uppercase;
+  cursor:pointer;transition:all .22s;text-decoration:none;box-shadow:0 6px 20px rgba(139,0,0,0.35);}
+.btn-p:hover{background:linear-gradient(135deg,var(--r8),var(--r7),var(--r6));
+  transform:translateY(-2px);box-shadow:0 10px 30px rgba(220,38,38,0.4);}
+.btn-g{background:transparent;color:var(--td);border:1px solid var(--brd);border-radius:11px;
+  padding:13px 28px;font-weight:600;font-size:0.79rem;cursor:pointer;transition:all .22s;text-decoration:none;}
+.btn-g:hover{border-color:var(--brdh);color:var(--r4);}
+
+/* STATS */
+.stats{border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);padding:26px 0;margin-bottom:76px;}
+.stats-in{max-width:1060px;margin:0 auto;padding:0 22px;
+  display:flex;justify-content:space-around;flex-wrap:wrap;gap:22px;}
+.sv{font-size:1.65rem;font-weight:900;color:var(--r4);font-family:'JetBrains Mono',monospace;line-height:1;text-align:center;}
+.sl{color:var(--tm);font-size:0.61rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;text-align:center;}
+
+/* SECTION */
+.sec{padding:68px 0;}
+.slbl{color:var(--r4);font-size:0.59rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;margin-bottom:11px;}
+.stit{font-size:clamp(1.45rem,3.5vw,2.1rem);font-weight:800;color:var(--tw);letter-spacing:-0.5px;margin-bottom:13px;}
+.ssub{color:var(--td);font-size:0.9rem;line-height:1.72;max-width:540px;}
+
+/* SERVICES */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:15px;margin-top:40px;}
+.sc{background:var(--card);border:1px solid var(--brd);border-radius:16px;padding:24px 26px;
+  position:relative;overflow:hidden;transition:all .28s cubic-bezier(0.4,0,.2,1);}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(220,38,38,0.5),transparent);opacity:0;transition:opacity .28s;}
+.sc:hover{border-color:var(--brdh);transform:translateY(-3px);box-shadow:0 12px 40px rgba(139,0,0,0.2);}
+.sc:hover::before{opacity:1;}
+.si{width:36px;height:36px;background:rgba(139,0,0,0.12);border:1px solid rgba(220,38,38,0.2);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:0.95rem;}
+.sn{color:var(--tw);font-size:0.9rem;font-weight:700;margin-bottom:7px;}
+.sd{color:var(--td);font-size:0.77rem;line-height:1.65;}
+.stag{display:inline-block;margin-top:13px;background:rgba(139,0,0,0.1);border:1px solid rgba(220,38,38,0.18);
+  color:var(--r4);padding:3px 10px;border-radius:20px;font-size:0.57rem;font-weight:700;
+  letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;}
+
+/* PRICING */
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(295px,1fr));gap:17px;margin-top:40px;}
+.pc{background:var(--card);border:1px solid var(--brd);border-radius:18px;padding:28px 26px;
+  position:relative;overflow:hidden;transition:all .28s cubic-bezier(0.4,0,.2,1);cursor:pointer;}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(220,38,38,0.4),transparent);}
+.pc.featured{border-color:rgba(220,38,38,0.5);
+  background:linear-gradient(145deg,rgba(139,0,0,0.1),rgba(10,5,7,0.98));
+  box-shadow:0 0 0 1px rgba(220,38,38,0.12),0 16px 50px rgba(139,0,0,0.22);}
+.pc.featured::before{background:linear-gradient(90deg,transparent,rgba(220,38,38,0.8),transparent);opacity:1;}
+.pc.selected{border-color:rgba(220,38,38,0.7)!important;
+  box-shadow:0 0 0 2px rgba(220,38,38,0.25),0 16px 50px rgba(139,0,0,0.3)!important;
+  transform:translateY(-4px);}
+.pc:hover:not(.selected){border-color:rgba(220,38,38,0.35);transform:translateY(-2px);}
+.pb{display:inline-block;margin-bottom:13px;background:rgba(220,38,38,0.15);
+  border:1px solid rgba(220,38,38,0.3);color:var(--r4);padding:3px 12px;border-radius:20px;
+  font-size:0.57rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;}
+.pb.pop{background:rgba(220,38,38,0.2);border-color:rgba(220,38,38,0.5);color:var(--r3);}
+.pn{color:var(--tw);font-size:1.08rem;font-weight:800;margin-bottom:3px;}
+.pt{color:var(--tm);font-size:0.71rem;margin-bottom:18px;}
+.pm{color:var(--tw);font-size:1.95rem;font-weight:900;font-family:'JetBrains Mono',monospace;letter-spacing:-1px;}
+.pm span{color:var(--r4);font-size:0.98rem;font-weight:600;vertical-align:top;margin-top:5px;display:inline-block;}
+.pp{color:var(--tm);font-size:0.69rem;margin:4px 0 2px;}
+.pa{color:#4ade80;font-size:0.67rem;font-weight:600;margin-bottom:18px;}
+.pdiv{border:none;border-top:1px solid rgba(180,0,0,0.12);margin:16px 0;}
+.pf{list-style:none;padding:0;margin-bottom:22px;}
+.pf li{display:flex;align-items:flex-start;gap:7px;color:var(--td);font-size:0.75rem;line-height:1.55;margin-bottom:8px;}
+.pf li .ck{color:var(--r4);font-size:0.69rem;flex-shrink:0;margin-top:2px;}
+.pf li .xk{color:#374151;font-size:0.69rem;flex-shrink:0;margin-top:2px;}
+.pf li.dis{color:#374151;}
+.bpl{width:100%;padding:11px;border-radius:10px;font-weight:700;font-size:0.74rem;
+  letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:all .22s;
+  border:1px solid rgba(220,38,38,0.3);background:rgba(139,0,0,0.12);color:var(--r4);}
+.bpl:hover,.bpl.active{background:linear-gradient(135deg,var(--r9),var(--r8));
+  color:white;border-color:rgba(220,38,38,0.5);box-shadow:0 4px 16px rgba(139,0,0,0.3);}
+.bpl.active{background:linear-gradient(135deg,var(--r7),var(--r6));}
+
+/* BILLING TABS */
+.tabs{display:flex;gap:4px;background:rgba(10,5,7,0.85);border:1px solid rgba(180,0,0,0.1);
+  border-radius:12px;padding:4px;margin-top:40px;width:fit-content;}
+.tb{padding:9px 20px;border-radius:8px;font-size:0.71rem;font-weight:700;
+  letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;
+  color:var(--tm);background:transparent;border:none;transition:all .2s;}
+.tb.active{background:linear-gradient(135deg,rgba(139,0,0,0.4),rgba(180,0,0,0.25));
+  color:var(--r4);box-shadow:0 0 12px rgba(180,0,0,0.18);}
+
+/* FORM */
+.fsec{background:var(--card);border:1px solid var(--brd);border-radius:20px;
+  padding:38px 42px;margin-top:18px;position:relative;overflow:hidden;}
+.fsec::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(220,38,38,0.6),transparent);}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
+.fgrp{display:flex;flex-direction:column;gap:6px;}
+.fgrp.full{grid-column:1/-1;}
+.flbl{color:var(--tm);font-size:0.64rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;}
+.flbl .req{color:var(--r4);margin-left:2px;}
+.fi,.fsel,.fta{background:rgba(15,7,9,0.8);border:1px solid rgba(180,0,0,0.2);
+  border-radius:10px;color:var(--tw);font-family:'Inter',sans-serif;font-size:0.81rem;
+  padding:11px 13px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;}
+.fi::placeholder,.fta::placeholder{color:var(--tm);}
+.fi:focus,.fsel:focus,.fta:focus{border-color:rgba(220,38,38,0.5);box-shadow:0 0 0 3px rgba(220,38,38,0.08);}
+.fsel{cursor:pointer;}
+.fsel option{background:#0f0507;color:var(--tw);}
+.fta{resize:vertical;min-height:98px;line-height:1.6;}
+.spd{background:rgba(139,0,0,0.1);border:1px solid rgba(220,38,38,0.25);
+  border-radius:10px;padding:11px 13px;color:var(--r3);font-size:0.81rem;font-weight:600;
+  min-height:43px;display:flex;align-items:center;gap:7px;}
+.spd.empty{color:var(--tm);font-weight:400;}
+.bsub{width:100%;padding:14px;border-radius:12px;font-weight:800;font-size:0.84rem;
+  letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all .25s;
+  background:linear-gradient(135deg,var(--r9),var(--r8),var(--r7));color:white;
+  border:1px solid rgba(220,38,38,0.4);box-shadow:0 6px 24px rgba(139,0,0,0.35);margin-top:22px;}
+.bsub:hover{background:linear-gradient(135deg,var(--r8),var(--r7),var(--r6));
+  transform:translateY(-2px);box-shadow:0 12px 36px rgba(220,38,38,0.4);}
+.bsub:active{transform:translateY(0);}
+.fnote{color:var(--tm);font-size:0.64rem;text-align:center;margin-top:13px;line-height:1.6;}
+
+/* SUCCESS */
+.succ{display:none;text-align:center;padding:48px 20px;}
+.succ.show{display:block;}
+.succ-icon{width:68px;height:68px;background:rgba(0,200,80,0.08);
+  border:2px solid rgba(0,200,80,0.25);border-radius:50%;display:flex;align-items:center;
+  justify-content:center;margin:0 auto 22px;font-size:1.75rem;}
+.succ-title{color:var(--tw);font-size:1.35rem;font-weight:800;margin-bottom:9px;}
+.succ-co{color:var(--r4);}
+.succ-body{color:var(--td);font-size:0.84rem;line-height:1.75;max-width:450px;margin:0 auto 26px;}
+
+/* FAQ */
+.faq{margin-top:18px;}
+.fi-wrap{background:var(--card);border:1px solid var(--brd);border-radius:12px;margin-bottom:7px;overflow:hidden;}
+.fq{width:100%;padding:15px 19px;text-align:left;background:none;border:none;
+  color:var(--tw);font-size:0.81rem;font-weight:600;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:11px;transition:color .2s;}
+.fq:hover{color:var(--r4);}
+.fq .arr{color:var(--tm);font-size:0.69rem;transition:transform .22s;flex-shrink:0;}
+.fq.open .arr{transform:rotate(180deg);color:var(--r4);}
+.fa{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;
+  color:var(--td);font-size:0.79rem;line-height:1.7;padding:0 19px;}
+.fa.open{max-height:200px;padding:0 19px 15px;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--brd);padding:30px 0;margin-top:76px;
+  text-align:center;color:var(--tm);font-size:0.67rem;}
+
+@media(max-width:660px){
+  .fg{grid-template-columns:1fr;}
+  .fsec{padding:26px 18px;}
+  .pg{grid-template-columns:1fr;}
+  .stats-in{gap:26px;}
+  .hero{padding:56px 0 46px;}
+  .sec{padding:46px 0;}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scan"></div>
+
+<nav>
+  <div class="nav-in">
+    <a href="#" class="logo">Sentinel<s>AI</s><sub>SOC PLATFORM</sub></a>
+    <span class="bon"><span class="dot"></span>SISTEMA OPERACIONAL</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eye">Seguranca Cibernetica Gerenciada &middot; SOC 24/7</div>
+    <h1>Protecao de nivel corporativo<br>para a <em>sua empresa</em></h1>
+    <p>A SentinelAI opera um Centro de Operacoes de Seguranca com monitoramento continuo, inteligencia artificial e resposta a incidentes em tempo real — para que voce cuide do negocio enquanto nos cuidamos das ameacas.</p>
+    <div class="cta">
+      <a href="#planos" class="btn-p">Ver planos e precos</a>
+      <a href="#contato" class="btn-g">Falar com um especialista</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stats-in">
+    <div><div class="sv">99,97%</div><div class="sl">Disponibilidade do SOC</div></div>
+    <div><div class="sv">&lt; 4 min</div><div class="sl">Tempo medio de deteccao</div></div>
+    <div><div class="sv">23 Bi+</div><div class="sl">Ameacas bloqueadas/ano BR</div></div>
+    <div><div class="sv">LGPD</div><div class="sl">Conformidade certificada</div></div>
+  </div>
+</div>
+
+<section class="sec" id="servicos">
+  <div class="wrap">
+    <div class="slbl">O que entregamos</div>
+    <div class="stit">Solucoes de seguranca end-to-end</div>
+    <p class="ssub">Do monitoramento continuo a resposta forense, a SentinelAI cobre todo o ciclo de vida da ameaca com tecnologia propria e analistas especializados.</p>
+    <div class="sg">
+      <div class="sc"><div class="si">&#128737;</div><div class="sn">SOC como Servico</div><div class="sd">Centro de Operacoes de Seguranca dedicado com analistas 24h/7d monitorando sua infraestrutura, correlacionando eventos e emitindo alertas priorizados por severidade.</div><span class="stag">24 x 7 x 365</span></div>
+      <div class="sc"><div class="si">&#128269;</div><div class="sn">Deteccao e Resposta (MDR)</div><div class="sd">Identificacao proativa de ameacas avancadas com EDR/XDR, threat hunting manual e contencao automatizada de incidentes em minutos, nao em dias.</div><span class="stag">MDR / XDR</span></div>
+      <div class="sc"><div class="si">&#129302;</div><div class="sn">Inteligencia Artificial</div><div class="sd">Motor de IA treinado em dados de ameacas globais classifica incidentes, prediz severidade e reduz falsos positivos em ate 87% — permitindo que seus times foquem no que importa.</div><span class="stag">Machine Learning</span></div>
+      <div class="sc"><div class="si">&#128200;</div><div class="sn">Gestao de Vulnerabilidades</div><div class="sd">Escaneamento continuo, priorizacao por risco real de negocio e plano de remediacao com SLA definido por criticidade de ativo.</div><span class="stag">CTEM / RBVM</span></div>
+      <div class="sc"><div class="si">&#128196;</div><div class="sn">Conformidade e LGPD</div><div class="sd">Dashboards de conformidade, relatorios de auditoria e evidencias para atender LGPD, ISO 27001 e PCI-DSS. Historico completo de acoes e eventos para a ANPD.</div><span class="stag">GRC / ISO 27001</span></div>
+      <div class="sc"><div class="si">&#127758;</div><div class="sn">Threat Intelligence Global</div><div class="sd">Feeds de inteligencia de ameacas de mais de 190 paises com correlacao de APTs, grupos criminosos e campanhas ativas para antecipar ataques antes que ocorram.</div><span class="stag">Threat Intel</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="planos">
+  <div class="wrap">
+    <div class="slbl">Planos e investimento</div>
+    <div class="stit">Escolha a cobertura ideal</div>
+    <p class="ssub">Contratos anuais com SLA garantido. Todos os planos incluem onboarding dedicado, relatorios mensais e acesso a plataforma SentinelAI.</p>
+
+    <div class="tabs">
+      <button class="tb active" onclick="swBill('monthly',this)">Mensal</button>
+      <button class="tb" onclick="swBill('annual',this)">Anual &mdash; 2 meses gratis</button>
+    </div>
+
+    <div class="pg" id="pgrid">
+      <!-- ESSENCIAL -->
+      <div class="pc" id="pc-e" onclick="selPlan('Essencial — Monitoramento 24/7',this)">
+        <span class="pb">Essencial</span>
+        <div class="pn">Essencial</div>
+        <div class="pt">Para empresas que dao os primeiros passos em seguranca gerenciada</div>
+        <div class="pm" data-m="8.900" data-a="7.417"><span>R$</span><span id="pv-e">8.900</span></div>
+        <div class="pp">/mes &middot; ate 150 ativos monitorados</div>
+        <div class="pa" id="pa-e" style="visibility:hidden">R$ 89.004/ano &mdash; economia de R$ 17.796</div>
+        <hr class="pdiv">
+        <ul class="pf">
+          <li><span class="ck">+</span>SOC monitoramento 8h/dia (horario comercial)</li>
+          <li><span class="ck">+</span>SIEM basico com retencao de 30 dias</li>
+          <li><span class="ck">+</span>Gestao de vulnerabilidades mensal</li>
+          <li><span class="ck">+</span>Relatorio executivo mensal</li>
+          <li><span class="ck">+</span>Suporte por e-mail (SLA 8h)</li>
+          <li class="dis"><span class="xk">-</span>Threat hunting proativo</li>
+          <li class="dis"><span class="xk">-</span>Resposta a incidentes inclusa</li>
+          <li class="dis"><span class="xk">-</span>CISO virtual dedicado</li>
+        </ul>
+        <button class="bpl" id="bb-e">Selecionar plano</button>
+      </div>
+
+      <!-- PROFESSIONAL -->
+      <div class="pc featured" id="pc-p" onclick="selPlan('Professional — SOC 24/7 + MDR',this)">
+        <span class="pb pop">Mais contratado</span>
+        <div class="pn">Professional</div>
+        <div class="pt">SOC 24/7 completo com deteccao e resposta a incidentes</div>
+        <div class="pm" data-m="19.900" data-a="16.583"><span>R$</span><span id="pv-p">19.900</span></div>
+        <div class="pp">/mes &middot; ate 500 ativos monitorados</div>
+        <div class="pa" id="pa-p" style="visibility:hidden">R$ 198.996/ano &mdash; economia de R$ 39.804</div>
+        <hr class="pdiv">
+        <ul class="pf">
+          <li><span class="ck">+</span>SOC monitoramento 24h/7d/365</li>
+          <li><span class="ck">+</span>SIEM avancado com retencao de 90 dias</li>
+          <li><span class="ck">+</span>MDR &mdash; deteccao e resposta gerenciada</li>
+          <li><span class="ck">+</span>Gestao de vulnerabilidades continua</li>
+          <li><span class="ck">+</span>Threat hunting mensal</li>
+          <li><span class="ck">+</span>Relatorios semanais e dashboard ao vivo</li>
+          <li><span class="ck">+</span>Suporte prioritario 24/7 (SLA 2h)</li>
+          <li class="dis"><span class="xk">-</span>CISO virtual dedicado</li>
+        </ul>
+        <button class="bpl" id="bb-p">Selecionar plano</button>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="pc" id="pc-n" onclick="selPlan('Enterprise — Cobertura Total + CISO Virtual',this)">
+        <span class="pb">Enterprise</span>
+        <div class="pn">Enterprise</div>
+        <div class="pt">Cobertura total para grandes organizacoes e infraestruturas criticas</div>
+        <div class="pm" data-m="49.900" data-a="41.583"><span>R$</span><span id="pv-n">49.900</span></div>
+        <div class="pp">/mes &middot; ativos ilimitados</div>
+        <div class="pa" id="pa-n" style="visibility:hidden">R$ 498.996/ano &mdash; economia de R$ 99.804</div>
+        <hr class="pdiv">
+        <ul class="pf">
+          <li><span class="ck">+</span>Tudo do plano Professional</li>
+          <li><span class="ck">+</span>CISO virtual dedicado (reunioes semanais)</li>
+          <li><span class="ck">+</span>Red team e pentest trimestral incluso</li>
+          <li><span class="ck">+</span>SIEM ilimitado com retencao de 12 meses</li>
+          <li><span class="ck">+</span>Threat hunting continuo e dedicado</li>
+          <li><span class="ck">+</span>Resposta a incidentes on-site inclusa</li>
+          <li><span class="ck">+</span>Relatorio de conformidade ISO/LGPD</li>
+          <li><span class="ck">+</span>SLA de resposta garantido em 30 minutos</li>
+        </ul>
+        <button class="bpl" id="bb-n">Selecionar plano</button>
+      </div>
+    </div>
+
+    <p style="color:var(--tm);font-size:0.67rem;margin-top:16px;text-align:center;">
+      Todos os valores em BRL. Contratos com fidelidade minima de 12 meses. Precos sujeitos a ajuste conforme escopo tecnico apos avaliacao inicial sem custo.
+    </p>
+  </div>
+</section>
+
+<section class="sec" id="contato">
+  <div class="wrap">
+    <div class="slbl">Solicitar proposta</div>
+    <div class="stit">Fale com nossa equipe comercial</div>
+    <p class="ssub">Preencha o formulario abaixo. Um especialista SentinelAI entrara em contato em ate 1 dia util com uma proposta personalizada para o seu ambiente.</p>
+
+    <div class="fsec" id="fwrap">
+      <div id="cform">
+        <div class="fg">
+          <div class="fgrp">
+            <label class="flbl">Nome da Empresa <span class="req">*</span></label>
+            <input type="text" class="fi" id="fe" placeholder="Ex.: Acme Solucoes Ltda." required>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Seu Nome <span class="req">*</span></label>
+            <input type="text" class="fi" id="fn" placeholder="Nome completo" required>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">E-mail Corporativo <span class="req">*</span></label>
+            <input type="email" class="fi" id="fem" placeholder="voce@empresa.com.br" required>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Telefone / WhatsApp</label>
+            <input type="tel" class="fi" id="ft" placeholder="(11) 9 0000-0000">
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Numero de colaboradores <span class="req">*</span></label>
+            <select class="fsel" id="fp">
+              <option value="">Selecione</option>
+              <option>1 a 50</option>
+              <option>51 a 200</option>
+              <option>201 a 1.000</option>
+              <option>1.001 a 5.000</option>
+              <option>Acima de 5.000</option>
+            </select>
+          </div>
+          <div class="fgrp">
+            <label class="flbl">Setor de atuacao <span class="req">*</span></label>
+            <select class="fsel" id="fse">
+              <option value="">Selecione</option>
+              <option>Financeiro / Fintechs</option>
+              <option>Varejo / E-commerce</option>
+              <option>Saude</option>
+              <option>Industria / Manufatura</option>
+              <option>Tecnologia / SaaS</option>
+              <option>Telecomunicacoes</option>
+              <option>Educacao</option>
+              <option>Governo / Setor Publico</option>
+              <option>Logistica / Transporte</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="fgrp full">
+            <label class="flbl">Servico de interesse</label>
+            <div class="spd empty" id="spd">Nenhum plano selecionado &mdash; escolha acima ou selecione abaixo</div>
+            <select class="fsel" id="fpl" style="margin-top:7px;">
+              <option value="">Selecione um servico</option>
+              <option>Essencial — Monitoramento 24/7</option>
+              <option>Professional — SOC 24/7 + MDR</option>
+              <option>Enterprise — Cobertura Total + CISO Virtual</option>
+              <option>Consultoria pontual / Pentest</option>
+              <option>Resposta a Incidente urgente</option>
+              <option>Ainda nao sei — quero orientacao</option>
+            </select>
+          </div>
+          <div class="fgrp full">
+            <label class="flbl">Contexto e principais preocupacoes</label>
+            <textarea class="fta" id="fmsg" placeholder="Descreva brevemente o cenario atual: sofreu incidentes recentes, tem exigencias regulatorias, quer substituir uma solucao existente, etc. Quanto mais detalhes, mais assertiva sera nossa proposta."></textarea>
+          </div>
+        </div>
+        <button class="bsub" onclick="subForm()">Solicitar proposta comercial</button>
+        <p class="fnote">
+          Ao enviar, voce concorda com nossa Politica de Privacidade (LGPD). Seus dados serao usados exclusivamente para retorno comercial.<br>
+          Contato direto: <strong style="color:var(--r4);">sentinelai.contato@gmail.com</strong>
+        </p>
+      </div>
+
+      <div class="succ" id="succ">
+        <div class="succ-icon">&#10003;</div>
+        <div class="succ-title">Solicitacao recebida, <span class="succ-co" id="sco"></span>!</div>
+        <p class="succ-body">
+          Obrigado pela confianca na SentinelAI. Nossa equipe comercial ja recebeu sua solicitacao e entrara em contato pelo e-mail informado em breve — fique atento a sua caixa de entrada, incluindo a pasta de spam.<br><br>
+          Caso precise de atendimento imediato, escreva para <strong style="color:var(--r4);">sentinelai.contato@gmail.com</strong>.
+        </p>
+        <a href="#planos" class="btn-g" style="display:inline-block;">Ver novamente os planos</a>
+      </div>
+    </div>
+
+    <div style="margin-top:54px;">
+      <div class="slbl" style="margin-bottom:18px;">Duvidas frequentes</div>
+      <div class="faq">
+        <div class="fi-wrap"><button class="fq" onclick="tog(this)">Qual o prazo minimo de contrato? <span class="arr">&#9660;</span></button><div class="fa">Os contratos tem fidelidade minima de 12 meses, com renovacao automatica anual. Esse periodo e necessario porque os primeiros 60 a 90 dias sao dedicados ao onboarding, integracao com seu ambiente e calibracao das regras de deteccao.</div></div>
+        <div class="fi-wrap"><button class="fq" onclick="tog(this)">Consigo comecar com o plano Essencial e migrar depois? <span class="arr">&#9660;</span></button><div class="fa">Sim. A migracao entre planos e feita com aviso previo de 30 dias. O onboarding inicial ja e projetado para facilitar a expansao futura, sem necessidade de reimplementar integracoes.</div></div>
+        <div class="fi-wrap"><button class="fq" onclick="tog(this)">Os dados da minha empresa ficam na SentinelAI? <span class="arr">&#9660;</span></button><div class="fa">Eventos de seguranca ficam armazenados em ambiente isolado por cliente, com criptografia em repouso e em transito. Nenhum dado e compartilhado entre clientes. O contrato define claramente propriedade, retencao e descarte conforme a LGPD.</div></div>
+        <div class="fi-wrap"><button class="fq" onclick="tog(this)">Ja temos uma equipe de TI interna. Como a SentinelAI complementa? <span class="arr">&#9660;</span></button><div class="fa">A SentinelAI opera no modelo co-gerenciado: sua equipe mantem o controle do ambiente enquanto nosso SOC provem visibilidade, alertas e resposta para os eventos que exigem expertise especializada em seguranca, reduzindo a sobrecarga sem remover autonomia.</div></div>
+        <div class="fi-wrap"><button class="fq" onclick="tog(this)">O que acontece em caso de incidente real durante o contrato? <span class="arr">&#9660;</span></button><div class="fa">Nos planos Professional e Enterprise, a resposta a incidentes esta inclusa. Nossa equipe aciona o playbook correspondente, contem a ameaca, preserva evidencias e emite relatorio forense. No plano Essencial, o suporte a incidentes e cobrado por hora com prioridade garantida.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div style="margin-bottom:9px;">
+      <span style="color:var(--tw);font-weight:800;font-size:0.88rem;">Sentinel<span style="color:var(--r6);">AI</span></span>
+      <span style="margin:0 9px;color:var(--brd);">|</span>Security Operations Center
+    </div>
+    <p>sentinelai.contato@gmail.com &nbsp;&middot;&nbsp; LGPD Lei 13.709/2018 &nbsp;&middot;&nbsp; ISO 27001</p>
+    <p style="margin-top:5px;">&copy; 2025 SentinelAI. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<script>
+let billMode='monthly', selName='';
+
+function swBill(m,btn){
+  billMode=m;
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  [['e','8.900','7.417','89.004','17.796'],
+   ['p','19.900','16.583','198.996','39.804'],
+   ['n','49.900','41.583','498.996','99.804']].forEach(([id,mo,an,ytot,ysave])=>{
+    document.getElementById('pv-'+id).textContent = m==='monthly' ? mo : an;
+    document.getElementById('pa-'+id).style.visibility = m==='annual' ? 'visible' : 'hidden';
+  });
+}
+
+function selPlan(name, card){
+  selName=name;
+  document.querySelectorAll('.pc').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.bpl').forEach(b=>{b.classList.remove('active');b.textContent='Selecionar plano';});
+  card.classList.add('selected');
+  const btn=card.querySelector('.bpl');
+  btn.classList.add('active'); btn.textContent='Plano selecionado';
+  const spd=document.getElementById('spd');
+  spd.textContent=name; spd.classList.remove('empty');
+  const sel=document.getElementById('fpl');
+  for(let i=0;i<sel.options.length;i++){
+    if(sel.options[i].text===name){sel.selectedIndex=i;break;}
+  }
+  setTimeout(()=>document.getElementById('contato').scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+
+document.getElementById('fpl').addEventListener('change',function(){
+  if(this.value){
+    const spd=document.getElementById('spd');
+    spd.textContent=this.value; spd.classList.remove('empty');
+  }
+});
+
+function subForm(){
+  const e=document.getElementById('fe').value.trim();
+  const n=document.getElementById('fn').value.trim();
+  const em=document.getElementById('fem').value.trim();
+  const p=document.getElementById('fp').value;
+  const se=document.getElementById('fse').value;
+  const t=document.getElementById('ft').value.trim();
+  const pl=document.getElementById('fpl').value || selName || 'Nao informado';
+  const msg=document.getElementById('fmsg').value.trim();
+  if(!e||!n||!em||!p||!se){alert('Preencha todos os campos obrigatorios (*).'); return;}
+  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(em)){alert('Informe um e-mail valido.'); return;}
+  const sub=encodeURIComponent('Solicitacao de proposta — '+e);
+  const body=encodeURIComponent(
+    'Nova solicitacao de proposta recebida pela pagina SentinelAI.\\n\\n'+
+    '--- DADOS DO PROSPECT ---\\n'+
+    'Empresa: '+e+'\\nResponsavel: '+n+'\\nE-mail: '+em+
+    '\\nTelefone: '+(t||'Nao informado')+'\\nPorte: '+p+
+    '\\nSetor: '+se+'\\nServico de interesse: '+pl+
+    '\\n\\n--- MENSAGEM ---\\n'+(msg||'Nao preenchida.')+
+    '\\n\\n---\\nEnviado via pagina de prospectos SentinelAI'
+  );
+  window.location.href='mailto:sentinelai.contato@gmail.com?subject='+sub+'&body='+body;
+  document.getElementById('cform').style.display='none';
+  const s=document.getElementById('succ');
+  s.classList.add('show');
+  document.getElementById('sco').textContent=e;
+  s.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function tog(btn){
+  const a=btn.nextElementSibling;
+  const open=a.classList.contains('open');
+  document.querySelectorAll('.fa').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.fq').forEach(x=>x.classList.remove('open'));
+  if(!open){a.classList.add('open');btn.classList.add('open');}
+}
+</script>
+</body>
+</html>"""
+
+# ─── APP PRINCIPAL ─────────────────────────────────────────────────────────────
 USER = st.session_state["user"]
 PROF = USERS[USER]
 log(USER, "SESSION_ACTIVE")
@@ -1345,56 +1425,50 @@ with tabs[0]:
 with tabs[1]:
     st.markdown("### Telemetria & Métricas")
     L = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#94a3b8", font_family="Inter")
-    
+
     g1, g2 = st.columns(2)
     with g1:
         ordem_cores = {"crítica": "#dc2626", "média": "#f59e0b", "baixa": "#22c55e"}
         fig = px.pie(df, names="SEVERIDADE", title="Distribuição de Severidade",
-                     color="SEVERIDADE",
-                     color_discrete_map=ordem_cores)
+                     color="SEVERIDADE", color_discrete_map=ordem_cores)
         fig.update_layout(**L, title_font_color="white")
         st.plotly_chart(fig, use_container_width=True)
-    
     with g2:
         vc = df["TIPO INCIDENTE"].value_counts().reset_index()
         fig = px.bar(vc, x="TIPO INCIDENTE", y="count", title="Incidentes por Tipo", color_discrete_sequence=["#dc2626"])
         fig.update_layout(**L, title_font_color="white")
         st.plotly_chart(fig, use_container_width=True)
-    
+
     dt = df.groupby("DATA").size().reset_index(name="n")
     fig = px.area(dt, x="DATA", y="n", title="Volume ao Longo do Tempo", color_discrete_sequence=["#dc2626"])
     fig.update_traces(fill="tozeroy", fillcolor="rgba(220,38,38,0.1)")
     fig.update_layout(**L, title_font_color="white")
     st.plotly_chart(fig, use_container_width=True)
-    
+
     g3, g4 = st.columns(2)
     with g3:
         fig = px.histogram(df, x="PAIS_ATAQUE", title="Ataques por País", color_discrete_sequence=["#b91c1c"])
         fig.update_layout(**L, title_font_color="white")
         st.plotly_chart(fig, use_container_width=True)
-    
     with g4:
         dp = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index().sort_values("PREJUIZO_ESTIMADO", ascending=False).head(7)
         fig = px.bar(dp, x="CLIENTE", y="PREJUIZO_ESTIMADO", title="Prejuízo por Cliente", color_discrete_sequence=["#991b1b"])
         fig.update_layout(**L, title_font_color="white")
         st.plotly_chart(fig, use_container_width=True)
-    
+
     st.markdown("### Performance do Modelo de IA")
     m1, m2, m3 = st.columns(3)
-    with m1:
-        st.metric("ACURÁCIA", f"{ACC:.1%}")
-    with m2:
-        st.metric("TREINO", f"{int(len(df_all)*0.8):,}")
-    with m3:
-        st.metric("TESTE", f"{int(len(df_all)*0.2):,}")
-    
+    with m1: st.metric("ACURÁCIA", f"{ACC:.1%}")
+    with m2: st.metric("TREINO", f"{int(len(df_all)*0.8):,}")
+    with m3: st.metric("TESTE", f"{int(len(df_all)*0.2):,}")
+
     ypred = MODEL.predict(Xv)
     cm = confusion_matrix(yv, ypred)
     lbs = ENC["sev"].classes_
     fig = go.Figure(go.Heatmap(z=cm, x=lbs, y=lbs, colorscale=[[0, "#0a0507"], [0.5, "#7f1d1d"], [1, "#dc2626"]], text=cm, texttemplate="%{text}", showscale=True))
     fig.update_layout(title="Matriz de Confusão", xaxis_title="Previsto", yaxis_title="Real", height=320, **L, title_font_color="white")
     st.plotly_chart(fig, use_container_width=True)
-    
+
 # ─── TAB 2: MAPA ─────────────────────────────────────────────────────────────
 with tabs[2]:
     st.markdown("### Mapa Global de Ameaças Cibernéticas")
@@ -1437,7 +1511,6 @@ with tabs[2]:
             s = COORDS[c]
             arcs.append({"slat":s[0],"slon":s[1],"dlat":-14.23,"dlon":-51.92,"name":c,"n":int(row["total"])})
 
-    # Arcos extras fixos para demonstração visual
     extra_arcs = [
         {"slat":61.52,"slon":105.31,"dlat":-14.23,"dlon":-51.92,"name":"Russia","n":50},
         {"slat":40.33,"slon":127.51,"dlat":-14.23,"dlon":-51.92,"name":"North Korea","n":45},
@@ -1556,7 +1629,6 @@ function proj(x,y,z){{
     return {{px:W/2+rx*sc, py:H/2+ry2*sc, scale:sc, z:rz2}};
 }}
 
-// ── Bordas de países ──────────────────────────────────────────────────────────
 const BORDERS=[
   {{n:"Russia",pts:[[68,32],[69,60],[72,105],[68,140],[50,142],[45,135],[44,130],[47,142],[55,120],[60,105],[68,60],[68,32]]}},
   {{n:"China",pts:[[53,122],[48,135],[40,130],[22,114],[22,108],[25,98],[28,97],[35,76],[40,76],[42,82],[48,87],[50,117],[53,122]]}},
@@ -1581,7 +1653,6 @@ const BORDERS=[
 
 function drawGlobe(){{
     const r=GR();
-    // Atmosfera
     const atm=ctx.createRadialGradient(W/2,H/2,r*.85,W/2,H/2,r*1.18);
     atm.addColorStop(0,'rgba(0,0,0,0)');
     atm.addColorStop(.5,'rgba(180,20,20,0.05)');
@@ -1589,7 +1660,6 @@ function drawGlobe(){{
     ctx.beginPath(); ctx.arc(W/2,H/2,r*1.18,0,Math.PI*2);
     ctx.fillStyle=atm; ctx.fill();
 
-    // Corpo do globo
     const g=ctx.createRadialGradient(W/2-r*.22,H/2-r*.22,r*.04,W/2,H/2,r);
     g.addColorStop(0,'rgba(30,6,6,0.96)');
     g.addColorStop(.55,'rgba(14,3,4,0.98)');
@@ -1597,7 +1667,6 @@ function drawGlobe(){{
     ctx.beginPath(); ctx.arc(W/2,H/2,r,0,Math.PI*2);
     ctx.fillStyle=g; ctx.fill();
 
-    // Grade lat/lon
     ctx.save();
     for(let lat=-80;lat<=80;lat+=15){{
         ctx.beginPath(); let f=true;
@@ -1619,7 +1688,6 @@ function drawGlobe(){{
         ctx.strokeStyle='rgba(140,20,20,0.04)'; ctx.lineWidth=.3; ctx.stroke();
     }}
 
-    // Bordas dos países
     BORDERS.forEach(b=>{{
         if(b.pts.length<2) return;
         ctx.beginPath(); let f=true;
@@ -1632,7 +1700,6 @@ function drawGlobe(){{
     }});
     ctx.restore();
 
-    // Highlights das ameaças
     ctx.save(); ctx.beginPath(); ctx.arc(W/2,H/2,r,0,Math.PI*2); ctx.clip();
     THREATS.forEach(t=>{{
         const p=ll3d(t.lat,t.lon,r),q=proj(p.x,p.y,p.z);
@@ -1665,7 +1732,6 @@ function drawGlobe(){{
         }}
     }});
 
-    // Brasil — alvo protegido
     const bz=ll3d(-14.23,-51.92,r),bq=proj(bz.x,bz.y,bz.z);
     if(bq.z>-r*.86){{
         const vis=Math.max(0,(bq.z+r)/(2*r));
@@ -1684,7 +1750,6 @@ function drawGlobe(){{
     }}
     ctx.restore();
 
-    // Brilho do rim
     const rim=ctx.createRadialGradient(W/2,H/2,r*.92,W/2,H/2,r*1.06);
     rim.addColorStop(0,'rgba(180,30,30,0)');
     rim.addColorStop(.5,'rgba(180,30,30,0.07)');
@@ -1693,23 +1758,13 @@ function drawGlobe(){{
     ctx.fillStyle=rim; ctx.fill();
 }}
 
-// ── Partículas de ataque estilo Kaspersky ─────────────────────────────────────
 class Missile{{
     constructor(arc){{
-        this.arc=arc;
-        this.t=0;
-        this.spd=0.0025+Math.random()*.004;
-        this.trail=[];
-        this.maxTrail=32;
-        this.dead=false;
-        this.impactFrame=0;
+        this.arc=arc; this.t=0; this.spd=0.0025+Math.random()*.004;
+        this.trail=[]; this.maxTrail=32; this.dead=false; this.impactFrame=0;
         const th=TMAP[arc.name];
-        if(th){{
-            this.col=th.score>=90?[255,26,26]:th.score>=70?[255,102,0]:th.score>=50?[255,170,0]:[255,68,136];
-        }} else {{
-            this.col=[220,100,50];
-        }}
-        // arco bezier com altura proporcional à distância
+        if(th){{this.col=th.score>=90?[255,26,26]:th.score>=70?[255,102,0]:th.score>=50?[255,170,0]:[255,68,136];}}
+        else{{this.col=[220,100,50];}}
         const r=GR();
         const s=ll3d(arc.slat,arc.slon,r);
         const d=ll3d(arc.dlat,arc.dlon,r);
@@ -1720,73 +1775,47 @@ class Missile{{
         const r=GR();
         const s=ll3d(this.arc.slat,this.arc.slon,r);
         const d=ll3d(this.arc.dlat,this.arc.dlon,r);
-        // Ponto de controle elevado acima da superfície
         const mx=(s.x+d.x)/2, my=(s.y+d.y)/2, mz=(s.z+d.z)/2;
         const len=Math.sqrt(mx*mx+my*my+mz*mz)||1;
-        const cx=mx+mx/len*this.arcH;
-        const cy=my+my/len*this.arcH;
-        const cz=mz+mz/len*this.arcH;
+        const cx=mx+mx/len*this.arcH, cy=my+my/len*this.arcH, cz=mz+mz/len*this.arcH;
         const u=1-t;
-        return {{
-            x:u*u*s.x+2*u*t*cx+t*t*d.x,
-            y:u*u*s.y+2*u*t*cy+t*t*d.y,
-            z:u*u*s.z+2*u*t*cz+t*t*d.z
-        }};
+        return {{x:u*u*s.x+2*u*t*cx+t*t*d.x, y:u*u*s.y+2*u*t*cy+t*t*d.y, z:u*u*s.z+2*u*t*cz+t*t*d.z}};
     }}
     update(){{
         if(this.dead) return false;
         this.t=Math.min(this.t+this.spd,1);
-        const p=this.bezier(this.t);
-        const q=proj(p.x,p.y,p.z);
+        const p=this.bezier(this.t), q=proj(p.x,p.y,p.z);
         this.trail.push({{px:q.px,py:q.py,z:q.z,scale:q.scale}});
         if(this.trail.length>this.maxTrail) this.trail.shift();
-        if(this.t>=1){{
-            this.impactFrame++;
-            if(this.impactFrame>18) this.dead=true;
-        }}
+        if(this.t>=1){{this.impactFrame++; if(this.impactFrame>18) this.dead=true;}}
         return true;
     }}
     draw(){{
         const r=GR();
         if(this.trail.length<2) return;
         const [cr,cg,cb]=this.col;
-
-        // Rastro com fade e espessura crescente
         for(let i=1;i<this.trail.length;i++){{
-            const a=i/this.trail.length;
-            const tp=this.trail[i], pp=this.trail[i-1];
+            const a=i/this.trail.length, tp=this.trail[i], pp=this.trail[i-1];
             if(tp.z<-r*.88) continue;
             const vis=Math.max(0,(tp.z+r)/(2*r));
             ctx.beginPath(); ctx.moveTo(pp.px,pp.py); ctx.lineTo(tp.px,tp.py);
-            ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{a*vis*.95}})`;
-            ctx.lineWidth=a*2.2; ctx.stroke();
+            ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{a*vis*.95}})`; ctx.lineWidth=a*2.2; ctx.stroke();
         }}
-
-        // Cabeça do míssil
         const last=this.trail[this.trail.length-1];
         if(last && last.z>-r*.88){{
             const vis=Math.max(0,(last.z+r)/(2*r));
-            // Glow da cabeça
             const gw=ctx.createRadialGradient(last.px,last.py,0,last.px,last.py,8*last.scale);
             gw.addColorStop(0,`rgba(${{cr}},${{cg}},${{cb}},${{vis*.9}})`);
             gw.addColorStop(1,'rgba(0,0,0,0)');
-            ctx.beginPath(); ctx.arc(last.px,last.py,8*last.scale,0,Math.PI*2);
-            ctx.fillStyle=gw; ctx.fill();
-            // Ponto sólido
+            ctx.beginPath(); ctx.arc(last.px,last.py,8*last.scale,0,Math.PI*2); ctx.fillStyle=gw; ctx.fill();
             ctx.beginPath(); ctx.arc(last.px,last.py,2.5*last.scale,0,Math.PI*2);
             ctx.fillStyle=`rgba(255,255,255,${{vis}})`; ctx.fill();
-
-            // Impacto — onda de choque
             if(this.t>=1){{
-                const prog=this.impactFrame/18;
-                const rad=(12+prog*30)*last.scale;
+                const prog=this.impactFrame/18, rad=(12+prog*30)*last.scale;
                 ctx.beginPath(); ctx.arc(last.px,last.py,rad,0,Math.PI*2);
-                ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{(1-prog)*.6}})`;
-                ctx.lineWidth=2; ctx.stroke();
-                // 2a onda menor
+                ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{(1-prog)*.6}})`; ctx.lineWidth=2; ctx.stroke();
                 ctx.beginPath(); ctx.arc(last.px,last.py,rad*.5,0,Math.PI*2);
-                ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{(1-prog)*.35}})`;
-                ctx.lineWidth=1; ctx.stroke();
+                ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{(1-prog)*.35}})`; ctx.lineWidth=1; ctx.stroke();
             }}
         }}
     }}
@@ -1794,12 +1823,9 @@ class Missile{{
 
 let missiles=[];
 function spawnMissiles(){{
-    ARCS.forEach(arc=>{{
-        if(Math.random()<.055) missiles.push(new Missile(arc));
-    }});
+    ARCS.forEach(arc=>{{ if(Math.random()<.055) missiles.push(new Missile(arc)); }});
 }}
 
-// Feed de eventos
 const FEED_MSGS=[
     "APT28 tentativa SSH bloqueada · RU","Flood DDoS mitigado 48Gbps · CN",
     "Brute force detectado · KP","SQL Injection bloqueado · RU",
@@ -1820,21 +1846,17 @@ function addFeed(){{
 }}
 addFeed(); setInterval(addFeed,2800);
 
-// Loop de animação
 function animate(){{
     requestAnimationFrame(animate);
     ctx.clearRect(0,0,W,H);
     ctx.fillStyle='#060508'; ctx.fillRect(0,0,W,H);
-
     stars.forEach(s=>{{
         ctx.beginPath(); ctx.arc(s.x%W,s.y%H,s.r,0,Math.PI*2);
         ctx.fillStyle=`rgba(255,200,200,${{s.a*(.6+.4*Math.sin(frame*.018+s.x))}})`; ctx.fill();
     }});
-
     if(!isDrag) rotY+=.0018;
     frame++;
     drawGlobe();
-
     if(frame%9===0) spawnMissiles();
     missiles=missiles.filter(m=>{{
         const alive=m.update(); m.draw();
@@ -1847,7 +1869,6 @@ function animate(){{
     }});
 }}
 
-// Interação
 C.addEventListener('mousedown',e=>{{isDrag=true;lastX=e.clientX;lastY=e.clientY;C.classList.add('dragging');}});
 window.addEventListener('mouseup',()=>{{isDrag=false;C.classList.remove('dragging');}});
 window.addEventListener('mousemove',e=>{{
@@ -1860,7 +1881,6 @@ C.addEventListener('wheel',e=>{{
     zoom=Math.max(.5,Math.min(2.5,zoom-e.deltaY*.001));
 }},{{passive:false}});
 
-// Touch
 let ltx=0,lty=0,ldist=0;
 C.addEventListener('touchstart',e=>{{e.preventDefault();ltx=e.touches[0].clientX;lty=e.touches[0].clientY;if(e.touches.length===2)ldist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{{passive:false}});
 C.addEventListener('touchmove',e=>{{
@@ -1869,7 +1889,6 @@ C.addEventListener('touchmove',e=>{{
     else if(e.touches.length===2){{const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);zoom=Math.max(.5,Math.min(2.5,zoom*(d/ldist)));ldist=d;}}
 }},{{passive:false}});
 
-// Click — info do país
 C.addEventListener('click',e=>{{
     const rect=C.getBoundingClientRect();
     const mx=e.clientX-rect.left, my=e.clientY-rect.top;
@@ -1909,7 +1928,6 @@ animate();
         st.dataframe(ta, use_container_width=True, hide_index=True)
 
 # ─── TAB 3: SENTINEL BOT ─────────────────────────────────────────────────────
-# ─── TAB 3: SENTINEL BOT ─────────────────────────────────────────────────────
 with tabs[3]:
     st.markdown("### Sentinel Bot — Assistente de Segurança")
     st.caption("IA especialista em cibersegurança com acesso aos dados do sistema em tempo real.")
@@ -1931,27 +1949,21 @@ Status: {df['STATUS'].value_counts().to_dict()}
 Severidades: {df['SEVERIDADE'].value_counts().to_dict()}
 Escopo: {"Todos os clientes" if not CLT else CLT}"""
 
-    # Container para o chat
     chat_container = st.container()
-    
     with chat_container:
-        # Renderiza histórico
         for msg in st.session_state["chat"]:
             css = "chat-user" if msg["role"]=="user" else "chat-ai"
             label = "Você" if msg["role"]=="user" else "Sentinel Bot"
             st.markdown(f'<div class="{css}"><strong style="font-size:0.68rem;opacity:0.6;">{label}</strong><br>{msg["content"]}</div>', unsafe_allow_html=True)
-
         if not st.session_state["chat"]:
             st.markdown("""<div class="chat-ai">
             <strong style="font-size:0.68rem;opacity:0.6;">Sentinel Bot</strong><br>
             Olá! Sou o assistente de segurança da SentinelAI. Analiso incidentes, identifico padrões de ameaças e recomendo ações de mitigação.<br><br>Como posso ajudar?
             </div>""", unsafe_allow_html=True)
 
-    # Botões de perguntas rápidas
     st.markdown("---")
     st.markdown("<p style='color:#4b5563;font-size:0.7rem;margin-bottom:0.8rem;font-weight:600;'>PERGUNTAS RÁPIDAS</p>", unsafe_allow_html=True)
-    
-    # Botões organizados em 3 linhas de 2 botões cada
+
     sugs = [
         "Qual cliente tem mais prejuízo?",
         "Quais países mais atacaram?",
@@ -1960,49 +1972,36 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
         "Como funciona o modelo IA?",
         "Explique os grupos APT"
     ]
-    
-    # Linha 1
+
     col1, col2 = st.columns(2)
     with col1:
-        if st.button(sugs[0], key="sg0", use_container_width=True):
-            sug_click = sugs[0]
+        if st.button(sugs[0], key="sg0", use_container_width=True): sug_click = sugs[0]
     with col2:
-        if st.button(sugs[1], key="sg1", use_container_width=True):
-            sug_click = sugs[1]
-    
-    # Linha 2
+        if st.button(sugs[1], key="sg1", use_container_width=True): sug_click = sugs[1]
     col3, col4 = st.columns(2)
     with col3:
-        if st.button(sugs[2], key="sg2", use_container_width=True):
-            sug_click = sugs[2]
+        if st.button(sugs[2], key="sg2", use_container_width=True): sug_click = sugs[2]
     with col4:
-        if st.button(sugs[3], key="sg3", use_container_width=True):
-            sug_click = sugs[3]
-    
-    # Linha 3
+        if st.button(sugs[3], key="sg3", use_container_width=True): sug_click = sugs[3]
     col5, col6 = st.columns(2)
     with col5:
-        if st.button(sugs[4], key="sg4", use_container_width=True):
-            sug_click = sugs[4]
+        if st.button(sugs[4], key="sg4", use_container_width=True): sug_click = sugs[4]
     with col6:
-        if st.button(sugs[5], key="sg5", use_container_width=True):
-            sug_click = sugs[5]
-    
+        if st.button(sugs[5], key="sg5", use_container_width=True): sug_click = sugs[5]
+
     st.markdown("---")
-    
-    # Input e botão enviar
     with st.form("chat_f", clear_on_submit=True):
         col_input, col_button = st.columns([5,1])
         with col_input:
             q = st.text_input("", placeholder="Digite sua pergunta sobre segurança...", label_visibility="collapsed")
         with col_button:
             send = st.form_submit_button("Enviar", use_container_width=True)
-    
+
     sug_click = None
     for i in range(6):
         if f"sg{i}" in st.session_state and st.session_state[f"sg{i}"]:
             sug_click = sugs[i]
-    
+
     if sug_click:
         q = sug_click
         send = True
@@ -2010,7 +2009,6 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
     if send and q:
         log(USER,"CHAT",q[:80])
         st.session_state["chat"].append({"role":"user","content":q})
-        # Mostra animação de digitando
         typing_placeholder = st.empty()
         typing_placeholder.markdown("""
         <div class="typing-indicator">
