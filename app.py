@@ -987,72 +987,74 @@ with aba_contato:
     
     st.markdown("""
     <div class="info-box-blue" style="margin-bottom: 1rem;">
-        Preencha o formulário abaixo e nossa equipe comercial entrará em contato em ate 24 horas.
+        Preencha o formulário abaixo e nossa equipe comercial entrará em contato em até <strong>24 horas</strong>.
     </div>
     """, unsafe_allow_html=True)
     
     EMAIL_SENTINEL = "sentinelai.contato@gmail.com"
     
-    # Formulário de contato
     with st.form("lead_form"):
         col_form1, col_form2 = st.columns(2)
         with col_form1:
             nome_empresa = st.text_input("Nome da Empresa *", placeholder="Ex: Tech Solutions Ltda")
-            porte_empresa = st.selectbox("Porte da empresa", ["Startup", "Pequena (ate 49 func)", "Media (50-499 func)", "Grande (500+ func)", "Corporacao"])
+            porte_empresa = st.selectbox("Porte da empresa", ["Startup", "Pequena (até 49 func)", "Média (50-499 func)", "Grande (500+ func)", "Corporação"])
             telefone = st.text_input("Telefone", placeholder="(11) 99999-9999")
-            segmento = st.text_input("Segmento", placeholder="Ex: Fintech, E-commerce, Saude...")
+            segmento = st.text_input("Segmento", placeholder="Ex: Fintech, E-commerce, Saúde...")
         
         with col_form2:
-            nome_contato = st.text_input("Nome do Contato *", placeholder="Ex: Joao Silva")
+            nome_contato = st.text_input("Nome do Contato *", placeholder="Ex: João Silva")
             cargo = st.text_input("Cargo", placeholder="Ex: CISO, Diretor de TI, Gerente")
             email_contato = st.text_input("E-mail para contato *", placeholder="joao@empresa.com")
             interesse = st.selectbox("Principal interesse", [
-                "Demonstracao do produto",
-                "Consultoria de seguranca",
-                "Implementacao urgente",
-                "Orcamento para minha empresa",
+                "Demonstração do produto",
+                "Consultoria de segurança",
+                "Implementação urgente",
+                "Orçamento para minha empresa",
                 "Outro"
             ])
         
-        # Servico desejado (pre-preenchido pelo plano selecionado)
+        # Serviço desejado (pré-preenchido pelo plano selecionado)
         if st.session_state.get("plano_selecionado"):
-            servico_desejado = st.text_input("Servico desejado", 
+            servico_desejado = st.text_input(
+                "Serviço desejado", 
                 value=f"{st.session_state['plano_selecionado']} - {st.session_state.get('plano_valor', '')}",
-                disabled=False)
-            st.caption(f"Plano selecionado: {st.session_state['plano_selecionado']}. Voce pode editar se necessario.")
+                placeholder="Ex: Plano Professional, Consultoria, etc."
+            )
+            st.caption(f"✅ Plano selecionado: {st.session_state['plano_selecionado']}. Você pode editar o campo acima se necessário.")
         else:
-            servico_desejado = st.text_input("Servico desejado", placeholder="Ex: Plano Professional, Consultoria, etc.")
+            servico_desejado = st.text_input(
+                "Serviço desejado", 
+                placeholder="Ex: Plano Professional, Consultoria de segurança, etc."
+            )
         
         mensagem = st.text_area("Mensagem / Necessidade", 
                                 placeholder="Conte-nos um pouco sobre sua necessidade...",
                                 height=80)
         
-        lgpd_consent = st.checkbox("Li e concordo com a Politica de Privacidade e com o tratamento dos meus dados conforme a LGPD.")
+        lgpd_consent = st.checkbox("Li e concordo com a Política de Privacidade e com o tratamento dos meus dados conforme a LGPD.")
         
-        enviar = st.form_submit_button("Enviar solicitacao", use_container_width=True)
+        enviar = st.form_submit_button("Enviar solicitação", use_container_width=True)
         
         if enviar:
             if not nome_empresa or not nome_contato or not email_contato:
-                st.warning("Por favor, preencha os campos obrigatorios.")
+                st.warning("Por favor, preencha os campos obrigatórios.")
             elif not lgpd_consent:
-                st.warning("Voce precisa aceitar a Politica de Privacidade para enviar a mensagem.")
+                st.warning("Você precisa aceitar a Política de Privacidade para enviar a mensagem.")
             else:
-                # Mensagem de sucesso personalizada com o nome da empresa
+                # Mensagem de sucesso personalizada
                 st.balloons()
                 st.success(f"""
-                ✅ **Solicitacao recebida com sucesso, {nome_empresa}!**  
+                ✅ **Solicitação recebida com sucesso, {nome_empresa}!**  
                 
-                Agradecemos pela confianca em nossa solucao. Nossa equipe comercial entrara em contato em ate 24 horas via e-mail: **{email_contato}**.  
+                Agradecemos pela confiança em nossa solução. Nossa equipe comercial entrará em contato em até **24 horas** via e-mail: **{email_contato}**.  
                 
-                Fique atento a sua caixa de entrada e spam. Caso prefira, voce tambem pode nos contatar diretamente pelo e-mail: **{EMAIL_SENTINEL}**
+                Fique atento à sua caixa de entrada e pasta de spam.
                 """)
+                st.info(f"📧 Você também pode nos escrever diretamente: {EMAIL_SENTINEL}")
                 
-                # Limpar o plano selecionado apos o envio
-                st.session_state["plano_selecionado"] = None
-                st.session_state["plano_valor"] = None
-                
-                # Opcional: enviar e-mail real (se configurado)
-                # (código de envio de e-mail aqui)
+                # Opcional: limpar o plano selecionado após o envio
+                # st.session_state["plano_selecionado"] = None
+                # st.session_state["plano_valor"] = None
 
 # ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 with st.sidebar:
