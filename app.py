@@ -826,7 +826,6 @@ with aba_servicos:
         """, unsafe_allow_html=True)
 
 # ─── ABA 3: PLANOS E PREÇOS ──────────────────────────────────────────────────
-# ─── ABA 3: PLANOS E PREÇOS ──────────────────────────────────────────────────
 with aba_precos:
     st.markdown("### Planos para sua empresa")
     
@@ -840,6 +839,8 @@ with aba_precos:
     # Estado do plano selecionado
     if "plano_selecionado" not in st.session_state:
         st.session_state["plano_selecionado"] = None
+    if "plano_valor" not in st.session_state:
+        st.session_state["plano_valor"] = None
     
     col_plano1, col_plano2, col_plano3 = st.columns(3)
     
@@ -849,21 +850,14 @@ with aba_precos:
         border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
         shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
         
-        if st.button("Selecionar Plano Essential", key="btn_essential", use_container_width=True):
-            st.session_state["plano_selecionado"] = "Essential"
-            st.session_state["plano_valor"] = "R$ 4.999,00/mês"
-            st.rerun()
-        
         st.markdown(f"""
         <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));
                     border:{border_style};
                     border-radius:16px;
                     padding:1.2rem;
                     text-align:center;
-                    height:100%;
                     box-shadow:{shadow_style};
                     transition: all 0.3s ease;">
-            <div style="font-size:1.8rem;">📊</div>
             <h3 style="color:#dc2626;margin:0.5rem 0;">Essential</h3>
             <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 4.999,00<span style="font-size:0.8rem;">/mês</span></div>
             <div style="font-size:0.7rem;color:#6b7280;">ou R$ 54.990,00/ano (12x de R$ 4.582,50)</div>
@@ -881,6 +875,12 @@ with aba_precos:
             </div>
         </div>
         """, unsafe_allow_html=True)
+        
+        if st.button("Selecionar Plano Essential", key="btn_essential", use_container_width=True):
+            st.session_state["plano_selecionado"] = "Essential"
+            st.session_state["plano_valor"] = "R$ 4.999,00/mês"
+            st.session_state["ir_para_contato"] = True
+            st.rerun()
     
     # Plano Professional
     with col_plano2:
@@ -888,23 +888,16 @@ with aba_precos:
         border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
         shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
         
-        if st.button("Selecionar Plano Professional", key="btn_professional", use_container_width=True):
-            st.session_state["plano_selecionado"] = "Professional"
-            st.session_state["plano_valor"] = "R$ 9.990,00/mês"
-            st.rerun()
-        
         st.markdown(f"""
         <div style="background:linear-gradient(135deg,rgba(139,0,0,0.15),rgba(10,5,7,0.95));
                     border:{border_style};
                     border-radius:16px;
                     padding:1.2rem;
                     text-align:center;
-                    height:100%;
                     position:relative;
                     box-shadow:{shadow_style};
                     transition: all 0.3s ease;">
             <div style="position:absolute;top:-10px;right:10px;background:#dc2626;color:white;font-size:0.6rem;padding:2px 8px;border-radius:10px;">MAIS VENDIDO</div>
-            <div style="font-size:1.8rem;">🛡️</div>
             <h3 style="color:#dc2626;margin:0.5rem 0;">Professional</h3>
             <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 9.990,00<span style="font-size:0.8rem;">/mês</span></div>
             <div style="font-size:0.7rem;color:#6b7280;">ou R$ 109.890,00/ano (12x de R$ 9.157,50)</div>
@@ -925,6 +918,12 @@ with aba_precos:
             </div>
         </div>
         """, unsafe_allow_html=True)
+        
+        if st.button("Selecionar Plano Professional", key="btn_professional", use_container_width=True):
+            st.session_state["plano_selecionado"] = "Professional"
+            st.session_state["plano_valor"] = "R$ 9.990,00/mês"
+            st.session_state["ir_para_contato"] = True
+            st.rerun()
     
     # Plano Enterprise
     with col_plano3:
@@ -932,21 +931,14 @@ with aba_precos:
         border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
         shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
         
-        if st.button("Selecionar Plano Enterprise", key="btn_enterprise", use_container_width=True):
-            st.session_state["plano_selecionado"] = "Enterprise"
-            st.session_state["plano_valor"] = "Sob consulta (a partir de R$ 29.900,00/mês)"
-            st.rerun()
-        
         st.markdown(f"""
         <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));
                     border:{border_style};
                     border-radius:16px;
                     padding:1.2rem;
                     text-align:center;
-                    height:100%;
                     box-shadow:{shadow_style};
                     transition: all 0.3s ease;">
-            <div style="font-size:1.8rem;">🏢</div>
             <h3 style="color:#dc2626;margin:0.5rem 0;">Enterprise</h3>
             <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">Sob consulta</div>
             <div style="font-size:0.7rem;color:#6b7280;">a partir de R$ 29.900,00/mês</div>
@@ -955,7 +947,7 @@ with aba_precos:
                 Tudo do Professional<br>
                 SOC dedicado 24/7<br>
                 On-premise opcional<br>
-                SLA 99.99%<br>
+                SLA 99,99%<br>
                 Consultoria especializada<br>
                 Treinamento personalizado<br>
                 Endpoints ilimitados<br>
@@ -967,6 +959,12 @@ with aba_precos:
             </div>
         </div>
         """, unsafe_allow_html=True)
+        
+        if st.button("Selecionar Plano Enterprise", key="btn_enterprise", use_container_width=True):
+            st.session_state["plano_selecionado"] = "Enterprise"
+            st.session_state["plano_valor"] = "Sob consulta (a partir de R$ 29.900,00/mês)"
+            st.session_state["ir_para_contato"] = True
+            st.rerun()
     
     st.markdown("""
     <div style="margin-top: 1rem; background:rgba(139,0,0,0.06); border-radius:8px; padding:0.8rem; text-align:center;">
@@ -977,89 +975,84 @@ with aba_precos:
     </div>
     """, unsafe_allow_html=True)
     
+    # Verificar se precisa ir para a aba de contato
+    if st.session_state.get("ir_para_contato"):
+        st.session_state["ir_para_contato"] = False
+        st.session_state["aba_ativa"] = "Fale Conosco"
+        st.rerun()
+    
 # ─── ABA 4: FORMULÁRIO DE CONTATO ─────────────────────────────────────────────
 with aba_contato:
     st.markdown("### Solicite uma demonstração gratuita")
     
     st.markdown("""
     <div class="info-box-blue" style="margin-bottom: 1rem;">
-        Preencha o formulário abaixo e nossa equipe comercial entrará em contato em até <strong>24 horas</strong>.
+        Preencha o formulário abaixo e nossa equipe comercial entrará em contato em ate 24 horas.
     </div>
     """, unsafe_allow_html=True)
     
     EMAIL_SENTINEL = "sentinelai.contato@gmail.com"
     
+    # Formulário de contato
     with st.form("lead_form"):
         col_form1, col_form2 = st.columns(2)
         with col_form1:
             nome_empresa = st.text_input("Nome da Empresa *", placeholder="Ex: Tech Solutions Ltda")
-            porte_empresa = st.selectbox("Porte da empresa", ["Startup", "Pequena (até 49 func)", "Média (50-499 func)", "Grande (500+ func)", "Corporação"])
+            porte_empresa = st.selectbox("Porte da empresa", ["Startup", "Pequena (ate 49 func)", "Media (50-499 func)", "Grande (500+ func)", "Corporacao"])
             telefone = st.text_input("Telefone", placeholder="(11) 99999-9999")
-            segmento = st.text_input("Segmento", placeholder="Ex: Fintech, E-commerce, Saúde...")
+            segmento = st.text_input("Segmento", placeholder="Ex: Fintech, E-commerce, Saude...")
         
         with col_form2:
-            nome_contato = st.text_input("Nome do Contato *", placeholder="Ex: João Silva")
+            nome_contato = st.text_input("Nome do Contato *", placeholder="Ex: Joao Silva")
             cargo = st.text_input("Cargo", placeholder="Ex: CISO, Diretor de TI, Gerente")
             email_contato = st.text_input("E-mail para contato *", placeholder="joao@empresa.com")
             interesse = st.selectbox("Principal interesse", [
-                "Demonstração do produto",
-                "Consultoria de segurança",
-                "Implementação urgente",
-                "Orçamento para minha empresa",
+                "Demonstracao do produto",
+                "Consultoria de seguranca",
+                "Implementacao urgente",
+                "Orcamento para minha empresa",
                 "Outro"
             ])
+        
+        # Servico desejado (pre-preenchido pelo plano selecionado)
+        if st.session_state.get("plano_selecionado"):
+            servico_desejado = st.text_input("Servico desejado", 
+                value=f"{st.session_state['plano_selecionado']} - {st.session_state.get('plano_valor', '')}",
+                disabled=False)
+            st.caption(f"Plano selecionado: {st.session_state['plano_selecionado']}. Voce pode editar se necessario.")
+        else:
+            servico_desejado = st.text_input("Servico desejado", placeholder="Ex: Plano Professional, Consultoria, etc.")
         
         mensagem = st.text_area("Mensagem / Necessidade", 
                                 placeholder="Conte-nos um pouco sobre sua necessidade...",
                                 height=80)
         
-        lgpd_consent = st.checkbox("Li e concordo com a Política de Privacidade e com o tratamento dos meus dados conforme a LGPD.")
+        lgpd_consent = st.checkbox("Li e concordo com a Politica de Privacidade e com o tratamento dos meus dados conforme a LGPD.")
         
-        enviar = st.form_submit_button("Enviar solicitação", use_container_width=True)
+        enviar = st.form_submit_button("Enviar solicitacao", use_container_width=True)
         
         if enviar:
             if not nome_empresa or not nome_contato or not email_contato:
-                st.warning("Por favor, preencha os campos obrigatórios.")
+                st.warning("Por favor, preencha os campos obrigatorios.")
             elif not lgpd_consent:
-                st.warning("Você precisa aceitar a Política de Privacidade para enviar a mensagem.")
+                st.warning("Voce precisa aceitar a Politica de Privacidade para enviar a mensagem.")
             else:
-                st.success(f"Solicitação recebida, {nome_contato}! Nossa equipe entrará em contato em breve.")
-                st.info(f"Você também pode nos escrever diretamente: {EMAIL_SENTINEL}")
-    st.stop()
-
-USER = st.session_state["user"]
-PROF = USERS[USER]
-log(USER, "SESSION_ACTIVE")
-
-@st.cache_data
-def load_data():
-    df = pd.read_csv("dataset_final.csv")
-    df = df.dropna(subset=["TIPO INCIDENTE","SEVERIDADE","ORIGEM","STATUS"])
-    df["DATA"] = pd.to_datetime(df["DATA"], errors="coerce")
-    for col in ["TIPO INCIDENTE","SEVERIDADE","ORIGEM","STATUS"]:
-        df[col] = df[col].str.strip().str.lower()
-    enc = {k: LabelEncoder() for k in ["tipo","orig","stat","sev"]}
-    df["TE"] = enc["tipo"].fit_transform(df["TIPO INCIDENTE"])
-    df["OE"] = enc["orig"].fit_transform(df["ORIGEM"])
-    df["SE"] = enc["stat"].fit_transform(df["STATUS"])
-    df["VE"] = enc["sev"].fit_transform(df["SEVERIDADE"])
-    X = df[["TE","OE","TEMPO RESOLUÇÃO","SE"]]
-    y = df["VE"]
-    Xt, Xv, yt, yv = train_test_split(X, y, test_size=0.2, random_state=42)
-    m = DecisionTreeClassifier(random_state=42)
-    m.fit(Xt, yt)
-    acc = accuracy_score(yv, m.predict(Xv))
-    return df, enc, m, acc, Xv, yv
-
-df_all, ENC, MODEL, ACC, Xv, yv = load_data()
-CLT = PROF["client"]
-df = df_all[df_all["CLIENTE"] == CLT].copy() if CLT else df_all.copy()
-prej = df["PREJUIZO_ESTIMADO"].sum()
-total = len(df)
-crit = len(df[df["SEVERIDADE"] == "crítica"])
-bloq = len(df[df["BLOQUEADO_AUTOMATICAMENTE"].str.lower() == "sim"])
-resol = len(df[df["STATUS"] == "resolvido"])
-pend = len(df[df["STATUS"] == "pendente"])
+                # Mensagem de sucesso personalizada com o nome da empresa
+                st.balloons()
+                st.success(f"""
+                ✅ **Solicitacao recebida com sucesso, {nome_empresa}!**  
+                
+                Agradecemos pela confianca em nossa solucao. Nossa equipe comercial entrara em contato em ate 24 horas via e-mail: **{email_contato}**.  
+                
+                Fique atento a sua caixa de entrada e spam. Caso prefira, voce tambem pode nos contatar diretamente pelo e-mail: **{EMAIL_SENTINEL}**
+                """)
+                
+                # Limpar o plano selecionado apos o envio
+                st.session_state["plano_selecionado"] = None
+                st.session_state["plano_valor"] = None
+                
+                # Opcional: enviar e-mail real (se configurado)
+                # (código de envio de e-mail aqui)
 
 # ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 with st.sidebar:
