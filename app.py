@@ -690,6 +690,482 @@ if not st.session_state["authed"]:
             else:
                 log(u_in.strip() or "?","LOGIN_FAIL","Credenciais inválidas")
                 st.error("Usuário ou senha incorretos.")
+
+if not st.session_state["authed"]:
+    st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style="text-align:center;padding:3rem 0 2rem;">
+        <h1 style="font-size:2.8rem;font-weight:900;color:white;letter-spacing:-1px;margin:0;">
+            Sentinel<span style="color:#dc2626;">AI</span>
+        </h1>
+        <p style="color:#6b7280;font-size:0.9rem;margin:8px 0 0;">Security Operations Center — Plataforma de Inteligência Cibernética</p>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
+          <span class="badge-online">&#9679; SISTEMA OPERACIONAL</span>
+          <span class="badge-critical">ACESSO RESTRITO</span>
+        </div>
+    </div>""", unsafe_allow_html=True)
+
+    _, col_login, _ = st.columns([1, 1.4, 1])
+    with col_login:
+        st.markdown("""
+        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.07),rgba(10,5,7,0.98));
+                    border:1px solid rgba(180,0,0,0.2);border-radius:20px;padding:2rem;margin-bottom:1.2rem;
+                    box-shadow:0 24px 80px rgba(139,0,0,0.2);">
+          <p style="color:#6b7280;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1rem;">
+            Credenciais de Acesso
+          </p>""", unsafe_allow_html=True)
+        creds = [
+            ("admin","admin123","Administrador"),("analista","analista123","Analista SOC"),
+            ("nubank","nubank123","Nubank"),("mercadolivre","ml123","Mercado Livre"),
+            ("santander","sant123","Santander"),("ifood","ifood123","iFood"),("viewer","viewer123","Visualizador")
+        ]
+        for u, p, label in creds:
+            st.markdown(f"""
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;
+                        border-radius:8px;margin:3px 0;background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.1);">
+              <span style="color:#e2e8f0;font-size:0.72rem;font-weight:500;">{label}</span>
+              <code style="color:#f87171;font-size:0.65rem;background:rgba(220,38,38,0.08);padding:2px 8px;border-radius:4px;">{u} / {p}</code>
+            </div>""", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        with st.form("login_form"):
+            u_in = st.text_input("", placeholder="Usuario", label_visibility="collapsed")
+            p_in = st.text_input("", placeholder="Senha", type="password", label_visibility="collapsed")
+            ok = st.form_submit_button("ACESSAR O SISTEMA", use_container_width=True)
+        if ok:
+            if auth(u_in.strip(), p_in):
+                st.session_state.update({"authed":True,"user":u_in.strip()})
+                log(u_in.strip(),"LOGIN","Acesso concedido")
+                st.rerun()
+            else:
+                log(u_in.strip() or "?","LOGIN_FAIL","Credenciais inválidas")
+                st.error("Usuário ou senha incorretos.")
+
+    # ============================================================
+    # 🚀 SEÇÃO COMERCIAL PARA CLIENTES INTERESSADOS (COLOQUE AQUI)
+    # ============================================================
+    st.markdown("---")
+    st.markdown("### Conheca a SentinelAI")
+
+    # Abas para organizar o conteudo
+    aba_empresa, aba_servicos, aba_precos, aba_contato = st.tabs([
+        "Quem Somos", "Nossos Servicos", "Planos e Precos", "Fale Conosco"
+    ])
+
+    # ABA 1: QUEM SOMOS
+    with aba_empresa:
+        st.markdown("""
+        <div class="info-box-blue" style="margin-bottom: 1rem;">
+            <p style="font-size: 1rem; margin-bottom: 0.5rem;">
+                <strong>SentinelAI</strong> e uma empresa brasileira especializada em 
+                <strong>Seguranca Cibernetica e Inteligencia contra Ameacas</strong>.
+            </p>
+            <p style="margin: 0.5rem 0;">
+                Fundada em 2024, nossa missao e proteger empresas contra ataques ciberneticos 
+                utilizando <strong>Inteligencia Artificial de ponta</strong> e monitoramento 24/7.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col_missao, col_visao, col_valores = st.columns(3)
+        
+        with col_missao:
+            st.markdown("""
+            <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
+                <div style="font-size:2rem;">🎯</div>
+                <h4 style="color:#dc2626;margin:0.5rem 0;">Missao</h4>
+                <p style="color:#9ca3af;font-size:0.75rem;">Proteger empresas com tecnologia de ponta, antecipando e neutralizando ameacas ciberneticas.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col_visao:
+            st.markdown("""
+            <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
+                <div style="font-size:2rem;">👁️</div>
+                <h4 style="color:#dc2626;margin:0.5rem 0;">Visao</h4>
+                <p style="color:#9ca3af;font-size:0.75rem;">Ser referencia em seguranca cibernetica na America Latina, reconhecida pela inovacao e confiabilidade.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col_valores:
+            st.markdown("""
+            <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
+                <div style="font-size:2rem;">⭐</div>
+                <h4 style="color:#dc2626;margin:0.5rem 0;">Valores</h4>
+                <p style="color:#9ca3af;font-size:0.75rem;">Transparencia, Inovacao, Excelencia, Confianca e Compromisso com o cliente.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div style="margin-top: 1rem; text-align: center;">
+            <p style="color:#6b7280; font-size: 0.8rem;">
+                <strong>+50</strong> clientes protegidos &nbsp;|&nbsp;
+                <strong>99.99%</strong> de uptime &nbsp;|&nbsp;
+                <strong>24/7</strong> monitoramento
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # ABA 2: NOSSOS SERVICOS
+    with aba_servicos:
+        st.markdown("### O que oferecemos")
+        
+        col_serv1, col_serv2 = st.columns(2)
+        
+        with col_serv1:
+            st.markdown("""
+            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
+                <div style="display:flex;align-items:center;gap:0.8rem;">
+                    <div style="font-size:1.8rem;">🤖</div>
+                    <div>
+                        <h4 style="color:#dc2626;margin:0;">IA Preditiva</h4>
+                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Modelos de ML para antecipar ataques</p>
+                    </div>
+                </div>
+            </div>
+            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
+                <div style="display:flex;align-items:center;gap:0.8rem;">
+                    <div style="font-size:1.8rem;">🌍</div>
+                    <div>
+                        <h4 style="color:#dc2626;margin:0;">Monitoramento Global</h4>
+                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Threat map em tempo real</p>
+                    </div>
+                </div>
+            </div>
+            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;">
+                <div style="display:flex;align-items:center;gap:0.8rem;">
+                    <div style="font-size:1.8rem;">⚡</div>
+                    <div>
+                        <h4 style="color:#dc2626;margin:0;">Resposta Automatica</h4>
+                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Bloqueio de IPs e firewall em milissegundos</p>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col_serv2:
+            st.markdown("""
+            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
+                <div style="display:flex;align-items:center;gap:0.8rem;">
+                    <div style="font-size:1.8rem;">📋</div>
+                    <div>
+                        <h4 style="color:#dc2626;margin:0;">Auditoria Completa</h4>
+                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Logs e rastreabilidade total</p>
+                    </div>
+                </div>
+            </div>
+            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
+                <div style="display:flex;align-items:center;gap:0.8rem;">
+                    <div style="font-size:1.8rem;">🔐</div>
+                    <div>
+                        <h4 style="color:#dc2626;margin:0;">LGPD Compliance</h4>
+                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Protecao de dados e privacidade</p>
+                    </div>
+                </div>
+            </div>
+            <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;">
+                <div style="display:flex;align-items:center;gap:0.8rem;">
+                    <div style="font-size:1.8rem;">💬</div>
+                    <div>
+                        <h4 style="color:#dc2626;margin:0;">Suporte 24/7</h4>
+                        <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Atendimento especializado</p>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # ABA 3: PLANOS E PRECOS
+    with aba_precos:
+        st.markdown("### Planos para sua empresa")
+        
+        st.markdown("""
+        <div class="info-box" style="margin-bottom: 1rem; border-left-color: #00d4ff;">
+            Precos baseados no mercado brasileiro de seguranca cibernetica. 
+            Planos com previsibilidade de custos e sem surpresas na fatura.
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if "plano_selecionado" not in st.session_state:
+            st.session_state["plano_selecionado"] = None
+        if "plano_valor" not in st.session_state:
+            st.session_state["plano_valor"] = None
+        
+        col_plano1, col_plano2, col_plano3 = st.columns(3)
+        
+        with col_plano1:
+            is_selected = st.session_state["plano_selecionado"] == "Essential"
+            border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
+            shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
+            
+            st.markdown(f"""
+            <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));
+                        border:{border_style};
+                        border-radius:16px;
+                        padding:1.2rem;
+                        text-align:center;
+                        box-shadow:{shadow_style};
+                        transition: all 0.3s ease;">
+                <h3 style="color:#dc2626;margin:0.5rem 0;">Essential</h3>
+                <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 4.999,00<span style="font-size:0.8rem;">/mes</span></div>
+                <div style="font-size:0.7rem;color:#6b7280;">ou R$ 54.990,00/ano (12x de R$ 4.582,50)</div>
+                <hr style="margin:0.8rem 0;">
+                <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
+                    Monitoramento basico 24/7<br>
+                    Dashboard essencial<br>
+                    Relatorios mensais<br>
+                    Suporte comercial<br>
+                    Ate 100 endpoints<br>
+                    30 dias de retencao de logs
+                </p>
+                <div style="margin-top:0.8rem;">
+                    <span style="background:rgba(0,212,255,0.1);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Para pequenas empresas</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("Selecionar Plano Essential", key="btn_essential", use_container_width=True):
+                st.session_state["plano_selecionado"] = "Essential"
+                st.session_state["plano_valor"] = "R$ 4.999,00/mes"
+                st.session_state["ir_para_contato"] = True
+                st.rerun()
+        
+        with col_plano2:
+            is_selected = st.session_state["plano_selecionado"] == "Professional"
+            border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
+            shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
+            
+            st.markdown(f"""
+            <div style="background:linear-gradient(135deg,rgba(139,0,0,0.15),rgba(10,5,7,0.95));
+                        border:{border_style};
+                        border-radius:16px;
+                        padding:1.2rem;
+                        text-align:center;
+                        position:relative;
+                        box-shadow:{shadow_style};
+                        transition: all 0.3s ease;">
+                <div style="position:absolute;top:-10px;right:10px;background:#dc2626;color:white;font-size:0.6rem;padding:2px 8px;border-radius:10px;">MAIS VENDIDO</div>
+                <h3 style="color:#dc2626;margin:0.5rem 0;">Professional</h3>
+                <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 9.990,00<span style="font-size:0.8rem;">/mes</span></div>
+                <div style="font-size:0.7rem;color:#6b7280;">ou R$ 109.890,00/ano (12x de R$ 9.157,50)</div>
+                <hr style="margin:0.8rem 0;">
+                <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
+                    Monitoramento avancado 24/7<br>
+                    IA Preditiva completa<br>
+                    Threat map em tempo real<br>
+                    Resposta automatica<br>
+                    Relatorios semanais<br>
+                    Suporte prioritario<br>
+                    Ate 500 endpoints<br>
+                    90 dias de retencao de logs<br>
+                    Threat hunting proativo
+                </p>
+                <div style="margin-top:0.8rem;">
+                    <span style="background:rgba(0,212,255,0.15);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Ideal para medias empresas</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("Selecionar Plano Professional", key="btn_professional", use_container_width=True):
+                st.session_state["plano_selecionado"] = "Professional"
+                st.session_state["plano_valor"] = "R$ 9.990,00/mes"
+                st.session_state["ir_para_contato"] = True
+                st.rerun()
+        
+        with col_plano3:
+            is_selected = st.session_state["plano_selecionado"] == "Enterprise"
+            border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
+            shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
+            
+            st.markdown(f"""
+            <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));
+                        border:{border_style};
+                        border-radius:16px;
+                        padding:1.2rem;
+                        text-align:center;
+                        box-shadow:{shadow_style};
+                        transition: all 0.3s ease;">
+                <h3 style="color:#dc2626;margin:0.5rem 0;">Enterprise</h3>
+                <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">Sob consulta</div>
+                <div style="font-size:0.7rem;color:#6b7280;">a partir de R$ 29.900,00/mes</div>
+                <hr style="margin:0.8rem 0;">
+                <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
+                    Tudo do Professional<br>
+                    SOC dedicado 24/7<br>
+                    On-premise opcional<br>
+                    SLA 99,99%<br>
+                    Consultoria especializada<br>
+                    Treinamento personalizado<br>
+                    Endpoints ilimitados<br>
+                    Retencao de logs personalizada<br>
+                    Analista dedicado
+                </p>
+                <div style="margin-top:0.8rem;">
+                    <span style="background:rgba(0,212,255,0.1);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Para grandes corporacoes</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("Selecionar Plano Enterprise", key="btn_enterprise", use_container_width=True):
+                st.session_state["plano_selecionado"] = "Enterprise"
+                st.session_state["plano_valor"] = "Sob consulta (a partir de R$ 29.900,00/mes)"
+                st.session_state["ir_para_contato"] = True
+                st.rerun()
+        
+        st.markdown("""
+        <div style="margin-top: 1rem; background:rgba(139,0,0,0.06); border-radius:8px; padding:0.8rem; text-align:center;">
+            <p style="color:#6b7280; font-size:0.7rem;">
+                Comparado a montar um SOC interno (cerca de R$ 1,5 milhao por ano), nossa solucao reduz custos em ate 90 por cento.
+                Todos os planos incluem suporte em portugues e conformidade com a LGPD.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # ABA 4: FORMULARIO DE CONTATO
+    with aba_contato:
+        st.markdown("### Solicite uma demonstracao gratuita")
+        
+        st.markdown("""
+        <div class="info-box-blue" style="margin-bottom: 1rem;">
+            Preencha o formulario abaixo e nossa equipe comercial entrara em contato em ate <strong>24 horas</strong>.
+        </div>
+        """, unsafe_allow_html=True)
+        
+        EMAIL_SENTINEL = "sentinelai.contato@gmail.com"
+        
+        with st.form("lead_form"):
+            col_form1, col_form2 = st.columns(2)
+            with col_form1:
+                nome_empresa = st.text_input("Nome da Empresa *", placeholder="Ex: Tech Solutions Ltda")
+                porte_empresa = st.selectbox("Porte da empresa", ["Startup", "Pequena (ate 49 func)", "Media (50-499 func)", "Grande (500+ func)", "Corporacao"])
+                telefone = st.text_input("Telefone", placeholder="(11) 99999-9999")
+                segmento = st.text_input("Segmento", placeholder="Ex: Fintech, E-commerce, Saude...")
+            
+            with col_form2:
+                nome_contato = st.text_input("Nome do Contato *", placeholder="Ex: Joao Silva")
+                cargo = st.text_input("Cargo", placeholder="Ex: CISO, Diretor de TI, Gerente")
+                email_contato = st.text_input("E-mail para contato *", placeholder="joao@empresa.com")
+                interesse = st.selectbox("Principal interesse", [
+                    "Demonstracao do produto",
+                    "Consultoria de seguranca",
+                    "Implementacao urgente",
+                    "Orcamento para minha empresa",
+                    "Outro"
+                ])
+            
+            if st.session_state.get("plano_selecionado"):
+                servico_desejado = st.text_input(
+                    "Servico desejado", 
+                    value=f"{st.session_state['plano_selecionado']} - {st.session_state.get('plano_valor', '')}",
+                    placeholder="Ex: Plano Professional, Consultoria, etc."
+                )
+                st.caption(f"Plano selecionado: {st.session_state['plano_selecionado']}. Voce pode editar o campo acima se necessario.")
+            else:
+                servico_desejado = st.text_input(
+                    "Servico desejado", 
+                    placeholder="Ex: Plano Professional, Consultoria de seguranca, etc."
+                )
+            
+            mensagem = st.text_area("Mensagem / Necessidade", 
+                                    placeholder="Conte-nos um pouco sobre sua necessidade...",
+                                    height=80)
+            
+            lgpd_consent = st.checkbox("Li e concordo com a Politica de Privacidade e com o tratamento dos meus dados conforme a LGPD.")
+            
+            enviar = st.form_submit_button("Enviar solicitacao", use_container_width=True)
+            
+            if enviar:
+                if not nome_empresa or not nome_contato or not email_contato:
+                    st.warning("Por favor, preencha os campos obrigatorios.")
+                elif not lgpd_consent:
+                    st.warning("Voce precisa aceitar a Politica de Privacidade para enviar a mensagem.")
+                else:
+                    try:
+                        import smtplib
+                        from email.mime.text import MIMEText
+                        from email.mime.multipart import MIMEMultipart
+                        
+                        corpo_html = f"""
+                        <!DOCTYPE html>
+                        <html>
+                        <head><meta charset="utf-8"></head>
+                        <body style="font-family: Arial, sans-serif; background:#0a0c10; color:#e2e8f0; padding:20px;">
+                            <div style="max-width:600px; margin:0 auto; background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95)); border:1px solid rgba(180,0,0,0.3); border-radius:16px; padding:24px;">
+                                <div style="text-align:center; margin-bottom:20px;">
+                                    <div style="font-size:48px;">🛡️</div>
+                                    <h2 style="color:#dc2626; margin:0;">Nova solicitacao de contato - SentinelAI</h2>
+                                </div>
+                                
+                                <h3 style="color:#00d4ff;">Dados da Empresa</h3>
+                                <p><strong>Empresa:</strong> {nome_empresa}</p>
+                                <p><strong>Porte:</strong> {porte_empresa}</p>
+                                <p><strong>Segmento:</strong> {segmento if segmento else "Nao informado"}</p>
+                                
+                                <h3 style="color:#00d4ff; margin-top:16px;">Dados do Contato</h3>
+                                <p><strong>Nome:</strong> {nome_contato}</p>
+                                <p><strong>Cargo:</strong> {cargo if cargo else "Nao informado"}</p>
+                                <p><strong>E-mail:</strong> {email_contato}</p>
+                                <p><strong>Telefone:</strong> {telefone if telefone else "Nao informado"}</p>
+                                
+                                <h3 style="color:#00d4ff; margin-top:16px;">Interesse</h3>
+                                <p><strong>Principal interesse:</strong> {interesse}</p>
+                                <p><strong>Servico desejado:</strong> {servico_desejado if servico_desejado else "Nao informado"}</p>
+                                
+                                <h3 style="color:#00d4ff; margin-top:16px;">Mensagem</h3>
+                                <p style="background:rgba(139,0,0,0.08); border-left:3px solid #dc2626; padding:10px; border-radius:8px;">
+                                    {mensagem if mensagem else "Nenhuma mensagem adicional"}
+                                </p>
+                                
+                                <hr style="border-color:rgba(180,0,0,0.2); margin:20px 0;">
+                                <p style="color:#6b7280; font-size:12px; text-align:center;">
+                                    Esta mensagem foi enviada atraves do formulario de contato do site SentinelAI.<br>
+                                    Responder diretamente a este e-mail enviara a resposta para {email_contato}
+                                </p>
+                            </div>
+                        </body>
+                        </html>
+                        """
+                        
+                        msg = MIMEMultipart()
+                        msg["From"] = EMAIL_SENTINEL
+                        msg["To"] = EMAIL_SENTINEL
+                        msg["Subject"] = f"Novo Lead - {nome_empresa} - {interesse}"
+                        msg.attach(MIMEText(corpo_html, "html"))
+                        
+                        senha_app = st.secrets.get("EMAIL_PASSWORD", "")
+                        
+                        if senha_app:
+                            server = smtplib.SMTP("smtp.gmail.com", 587)
+                            server.starttls()
+                            server.login(EMAIL_SENTINEL, senha_app)
+                            server.send_message(msg)
+                            server.quit()
+                            st.balloons()
+                            st.success(f"""
+                            ✅ **Solicitacao recebida com sucesso, {nome_empresa}!**  
+                            
+                            Agradecemos pela confianca em nossa solucao. Nossa equipe comercial entrara em contato em ate **24 horas** via e-mail: **{email_contato}**.  
+                            
+                            Fique atento a sua caixa de entrada e pasta de spam.
+                            """)
+                        else:
+                            st.success(f"""
+                            ✅ **Solicitacao recebida com sucesso, {nome_empresa}!**  
+                            
+                            Agradecemos pela confianca em nossa solucao. Nossa equipe comercial entrara em contato em ate **24 horas** via e-mail: **{email_contato}**.  
+                            
+                            Fique atento a sua caixa de entrada e pasta de spam.
+                            """)
+                            st.info(f"Voce tambem pode nos escrever diretamente: {EMAIL_SENTINEL}")
+                            
+                    except Exception as e:
+                        st.error(f"Erro ao enviar: {str(e)}")
+                        st.info(f"Por favor, entre em contato diretamente pelo e-mail: {EMAIL_SENTINEL}")
+
+    # Redirecionar para a aba de contato se necessario
+    if st.session_state.get("ir_para_contato"):
+        st.session_state["ir_para_contato"] = False
+        st.rerun()
+    
     st.stop()
 
 USER = st.session_state["user"]
