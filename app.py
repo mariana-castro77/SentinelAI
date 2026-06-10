@@ -9,6 +9,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 from groq import Groq
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 groq_client = Groq(api_key="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")
 
@@ -690,6 +693,246 @@ if not st.session_state["authed"]:
             else:
                 log(u_in.strip() or "?","LOGIN_FAIL","Credenciais inválidas")
                 st.error("Usuário ou senha incorretos.")
+
+# ─── SEÇÃO PARA CLIENTES INTERESSADOS ─────────────────────────────────────────
+st.markdown("---")
+st.markdown("### Conheça a SentinelAI")
+
+# Abas para organizar o conteúdo
+aba_empresa, aba_servicos, aba_precos, aba_contato = st.tabs([
+    "Quem Somos", "Nossos Serviços", "Planos e Preços", "Fale Conosco"
+])
+
+# ─── ABA 1: QUEM SOMOS ───────────────────────────────────────────────────────
+with aba_empresa:
+    st.markdown("""
+    <div class="info-box-blue" style="margin-bottom: 1rem;">
+        <p style="font-size: 1rem; margin-bottom: 0.5rem;">
+            <strong>SentinelAI</strong> é uma empresa brasileira especializada em 
+            <strong>Segurança Cibernética e Inteligência contra Ameaças</strong>.
+        </p>
+        <p style="margin: 0.5rem 0;">
+            Fundada em 2024, nossa missão é proteger empresas contra ataques cibernéticos 
+            utilizando <strong>Inteligência Artificial de ponta</strong> e monitoramento 24/7.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col_missao, col_visao, col_valores = st.columns(3)
+    
+    with col_missao:
+        st.markdown("""
+        <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
+            <div style="font-size:2rem;">🎯</div>
+            <h4 style="color:#dc2626;margin:0.5rem 0;">Missão</h4>
+            <p style="color:#9ca3af;font-size:0.75rem;">Proteger empresas com tecnologia de ponta, antecipando e neutralizando ameaças cibernéticas.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_visao:
+        st.markdown("""
+        <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
+            <div style="font-size:2rem;">👁️</div>
+            <h4 style="color:#dc2626;margin:0.5rem 0;">Visão</h4>
+            <p style="color:#9ca3af;font-size:0.75rem;">Ser referência em segurança cibernética na América Latina, reconhecida pela inovação e confiabilidade.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_valores:
+        st.markdown("""
+        <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;text-align:center;height:100%;">
+            <div style="font-size:2rem;">⭐</div>
+            <h4 style="color:#dc2626;margin:0.5rem 0;">Valores</h4>
+            <p style="color:#9ca3af;font-size:0.75rem;">Transparência, Inovação, Excelência, Confiança e Compromisso com o cliente.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div style="margin-top: 1rem; text-align: center;">
+        <p style="color:#6b7280; font-size: 0.8rem;">
+            <strong>+50</strong> clientes protegidos &nbsp;|&nbsp;
+            <strong>99.99%</strong> de uptime &nbsp;|&nbsp;
+            <strong>24/7</strong> monitoramento
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ─── ABA 2: NOSSOS SERVIÇOS ──────────────────────────────────────────────────
+with aba_servicos:
+    st.markdown("### O que oferecemos")
+    
+    col_serv1, col_serv2 = st.columns(2)
+    
+    with col_serv1:
+        st.markdown("""
+        <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
+            <div style="display:flex;align-items:center;gap:0.8rem;">
+                <div style="font-size:1.8rem;">🤖</div>
+                <div>
+                    <h4 style="color:#dc2626;margin:0;">IA Preditiva</h4>
+                    <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Modelos de ML para antecipar ataques</p>
+                </div>
+            </div>
+        </div>
+        <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
+            <div style="display:flex;align-items:center;gap:0.8rem;">
+                <div style="font-size:1.8rem;">🌍</div>
+                <div>
+                    <h4 style="color:#dc2626;margin:0;">Monitoramento Global</h4>
+                    <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Threat map em tempo real</p>
+                </div>
+            </div>
+        </div>
+        <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;">
+            <div style="display:flex;align-items:center;gap:0.8rem;">
+                <div style="font-size:1.8rem;">⚡</div>
+                <div>
+                    <h4 style="color:#dc2626;margin:0;">Resposta Automática</h4>
+                    <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Bloqueio de IPs e firewall em milissegundos</p>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_serv2:
+        st.markdown("""
+        <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
+            <div style="display:flex;align-items:center;gap:0.8rem;">
+                <div style="font-size:1.8rem;">📋</div>
+                <div>
+                    <h4 style="color:#dc2626;margin:0;">Auditoria Completa</h4>
+                    <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Logs e rastreabilidade total</p>
+                </div>
+            </div>
+        </div>
+        <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;margin-bottom:0.8rem;">
+            <div style="display:flex;align-items:center;gap:0.8rem;">
+                <div style="font-size:1.8rem;">🔐</div>
+                <div>
+                    <h4 style="color:#dc2626;margin:0;">LGPD Compliance</h4>
+                    <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Proteção de dados e privacidade</p>
+                </div>
+            </div>
+        </div>
+        <div style="background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:1rem;">
+            <div style="display:flex;align-items:center;gap:0.8rem;">
+                <div style="font-size:1.8rem;">💬</div>
+                <div>
+                    <h4 style="color:#dc2626;margin:0;">Suporte 24/7</h4>
+                    <p style="color:#9ca3af;font-size:0.7rem;margin:0;">Atendimento especializado</p>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+# ─── ABA 3: PLANOS E PREÇOS ──────────────────────────────────────────────────
+with aba_precos:
+    st.markdown("### Planos para sua empresa")
+    
+    col_plano1, col_plano2, col_plano3 = st.columns(3)
+    
+    with col_plano1:
+        st.markdown("""
+        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));border:1px solid rgba(180,0,0,0.3);border-radius:16px;padding:1.2rem;text-align:center;height:100%;">
+            <div style="font-size:1.8rem;">📊</div>
+            <h3 style="color:#dc2626;margin:0.5rem 0;">Essential</h3>
+            <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 997<span style="font-size:0.8rem;">/mês</span></div>
+            <hr style="margin:0.8rem 0;">
+            <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
+                Monitoramento básico<br>
+                Dashboard essencial<br>
+                Relatórios mensais<br>
+                Suporte comercial<br>
+                Até 500 incidentes/mês
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_plano2:
+        st.markdown("""
+        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.15),rgba(10,5,7,0.95));border:2px solid #dc2626;border-radius:16px;padding:1.2rem;text-align:center;height:100%;position:relative;">
+            <div style="position:absolute;top:-10px;right:10px;background:#dc2626;color:white;font-size:0.6rem;padding:2px 8px;border-radius:10px;">MAIS VENDIDO</div>
+            <div style="font-size:1.8rem;">🛡️</div>
+            <h3 style="color:#dc2626;margin:0.5rem 0;">Professional</h3>
+            <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 1.997<span style="font-size:0.8rem;">/mês</span></div>
+            <hr style="margin:0.8rem 0;">
+            <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
+                Monitoramento avançado 24/7<br>
+                IA Preditiva completa<br>
+                Threat map em tempo real<br>
+                Resposta automática<br>
+                Relatórios semanais<br>
+                Suporte prioritário
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_plano3:
+        st.markdown("""
+        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));border:1px solid rgba(180,0,0,0.3);border-radius:16px;padding:1.2rem;text-align:center;height:100%;">
+            <div style="font-size:1.8rem;">🏢</div>
+            <h3 style="color:#dc2626;margin:0.5rem 0;">Enterprise</h3>
+            <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">Sob consulta</div>
+            <hr style="margin:0.8rem 0;">
+            <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
+                Tudo do Professional<br>
+                SOC dedicado<br>
+                On-premise opcional<br>
+                SLA 99.99%<br>
+                Consultoria especializada<br>
+                Treinamento personalizado
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# ─── ABA 4: FORMULÁRIO DE CONTATO ─────────────────────────────────────────────
+with aba_contato:
+    st.markdown("### Solicite uma demonstração gratuita")
+    
+    st.markdown("""
+    <div class="info-box-blue" style="margin-bottom: 1rem;">
+        Preencha o formulário abaixo e nossa equipe comercial entrará em contato em até <strong>24 horas</strong>.
+    </div>
+    """, unsafe_allow_html=True)
+    
+    EMAIL_SENTINEL = "sentinelai.contato@gmail.com"
+    
+    with st.form("lead_form"):
+        col_form1, col_form2 = st.columns(2)
+        with col_form1:
+            nome_empresa = st.text_input("Nome da Empresa *", placeholder="Ex: Tech Solutions Ltda")
+            porte_empresa = st.selectbox("Porte da empresa", ["Startup", "Pequena (até 49 func)", "Média (50-499 func)", "Grande (500+ func)", "Corporação"])
+            telefone = st.text_input("Telefone", placeholder="(11) 99999-9999")
+            segmento = st.text_input("Segmento", placeholder="Ex: Fintech, E-commerce, Saúde...")
+        
+        with col_form2:
+            nome_contato = st.text_input("Nome do Contato *", placeholder="Ex: João Silva")
+            cargo = st.text_input("Cargo", placeholder="Ex: CISO, Diretor de TI, Gerente")
+            email_contato = st.text_input("E-mail para contato *", placeholder="joao@empresa.com")
+            interesse = st.selectbox("Principal interesse", [
+                "Demonstração do produto",
+                "Consultoria de segurança",
+                "Implementação urgente",
+                "Orçamento para minha empresa",
+                "Outro"
+            ])
+        
+        mensagem = st.text_area("Mensagem / Necessidade", 
+                                placeholder="Conte-nos um pouco sobre sua necessidade...",
+                                height=80)
+        
+        lgpd_consent = st.checkbox("Li e concordo com a Política de Privacidade e com o tratamento dos meus dados conforme a LGPD.")
+        
+        enviar = st.form_submit_button("Enviar solicitação", use_container_width=True)
+        
+        if enviar:
+            if not nome_empresa or not nome_contato or not email_contato:
+                st.warning("Por favor, preencha os campos obrigatórios.")
+            elif not lgpd_consent:
+                st.warning("Você precisa aceitar a Política de Privacidade para enviar a mensagem.")
+            else:
+                st.success(f"Solicitação recebida, {nome_contato}! Nossa equipe entrará em contato em breve.")
+                st.info(f"Você também pode nos escrever diretamente: {EMAIL_SENTINEL}")
     st.stop()
 
 USER = st.session_state["user"]
