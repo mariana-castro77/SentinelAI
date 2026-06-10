@@ -8,15 +8,12 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
-from openai import OpenAI
+from groq import Groq
 
-GEMINI_API_KEY = "AQ.Ab8RN6JQCK4sNXAmcF1MuR_xMH6TiyijiYKMTlYeEQrG4gLwqA"
+# Cliente Groq (gratuito e rápido)
+from groq import Groq
 
-# Cliente DeepSeek
-deepseek_client = OpenAI(
-    api_key="sk-76a16c32a34f4fa785ce5723b8622997",
-    base_url="https://api.deepseek.com"
-)
+groq_client = Groq(api_key="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")
 
 st.set_page_config(
     page_title="SentinelAI — SOC Platform",
@@ -490,8 +487,11 @@ for k, v in {"authed":False, "user":None, "lgpd":False, "chat":[], "chat_suporte
     if k not in st.session_state:
         st.session_state[k] = v
 
+# Configuração do cliente Groq
+groq_client = Groq(api_key="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")
+
 def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
-    """Chatbot usando DeepSeek API (gratuito e compatível com OpenAI)"""
+    """Chatbot usando Groq API (gratuita e super rápida)"""
     try:
         openai_messages = [{"role": "system", "content": system_prompt}]
         
@@ -501,8 +501,8 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
                 "content": m["content"]
             })
         
-        response = deepseek_client.chat.completions.create(
-            model="deepseek-chat",
+        response = groq_client.chat.completions.create(
+            model="llama-3.1-8b-instant",  # Modelo rápido e gratuito
             messages=openai_messages,
             temperature=temperature,
             max_tokens=max_tokens
@@ -511,7 +511,7 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
         return response.choices[0].message.content
         
     except Exception as e:
-        return f"❌ Erro na API DeepSeek: {str(e)}"
+        return f"❌ Erro na API Groq: {str(e)}"
 
 if not st.session_state["lgpd"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
@@ -1435,17 +1435,9 @@ animate();
 
 with tabs[3]:
     st.markdown("### 🤖 Sentinel Bot — Assistente de Segurança")
-    st.caption("IA especialista em cibersegurança com acesso aos dados do sistema em tempo real.")
+    st.caption("IA especialista em cibersegurança com acesso aos dados do sistema em tempo real. (Groq API)")
 
-    api_ok = bool(GEMINI_API_KEY)
-    if not api_ok:
-        st.markdown("""
-        <div class="info-box" style="border-left-color:#f59e0b;">
-          ⚙️ <strong>Configure a API Gemini:</strong><br>
-          No Streamlit Cloud: <code>Settings → Secrets</code> e adicione:<br>
-          <code>GEMINI_API_KEY = "AIza..."</code><br>
-          A chave deve ser do <strong>Google AI Studio</strong> em <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#60a5fa;">aistudio.google.com</a>
-        </div>""", unsafe_allow_html=True)
+    api_ok = True  # Groq API está configurada
 
     top_cli = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
     top_pai = df[df["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
@@ -1471,7 +1463,7 @@ BD: SQLite {db_size}KB ativo"""
         st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>', unsafe_allow_html=True)
 
     if not st.session_state["chat"]:
-        st.markdown("""<div class="chat-ai">🤖 <strong>Sentinel Bot ativo.</strong><br><br>
+        st.markdown("""<div class="chat-ai">🤖 <strong>Sentinel Bot ativo (Groq).</strong><br><br>
         Olá! Sou o assistente de segurança da SentinelAI. Posso analisar incidentes, identificar padrões de ameaças e recomendar ações.<br><br>Como posso ajudar?</div>""", unsafe_allow_html=True)
 
     sugs = ["Qual cliente tem mais prejuízo?", "Quais países mais atacaram?", "Status dos incidentes críticos", "Recomendações urgentes", "Como funciona o modelo IA?", "Explique os grupos APT"]
