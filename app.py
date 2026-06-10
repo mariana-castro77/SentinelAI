@@ -621,8 +621,8 @@ body{
         <div class="privacy-item"><span class="priv-icon">⏱️</span>Sessões com timeout automático</div>
     </div>
     <div class="btn-row">
-        <button class="btn-accept" onclick="acceptCookies()">✅ ACEITAR E CONTINUAR</button>
-        <button class="btn-reject" onclick="rejectCookies()">❌ RECUSAR (BLOQUEIA ACESSO)</button>
+        <button class="btn-accept" id="acceptBtn">✅ ACEITAR E CONTINUAR</button>
+        <button class="btn-reject" id="rejectBtn">❌ RECUSAR (BLOQUEIA ACESSO)</button>
     </div>
     <div class="counter">
         <span class="pulse-dot"></span>MONITORAMENTO ATIVO · <span id="ctime"></span>
@@ -642,24 +642,28 @@ for(let i=0;i<20;i++){
 }
 function tick(){ document.getElementById('ctime').textContent=new Date().toLocaleTimeString('pt-BR'); }
 tick(); setInterval(tick,1000);
-function acceptCookies(){ window.parent.postMessage({type:'streamlit:setComponentValue',value:'accept'},'*'); }
-function rejectCookies(){ window.parent.postMessage({type:'streamlit:setComponentValue',value:'reject'},'*'); }
+document.getElementById('acceptBtn').onclick = function() {
+    window.parent.postMessage({type:'streamlit:setComponentValue',value:'accept'},'*');
+};
+document.getElementById('rejectBtn').onclick = function() {
+    window.parent.postMessage({type:'streamlit:setComponentValue',value:'reject'},'*');
+};
 </script>
 </body>
 </html>"""
 
     components.html(lgpd_html, height=650, scrolling=True)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("✅ ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept"):
-            st.session_state["lgpd"] = True
-            log("sistema", "LGPD_ACEITO")
-            st.rerun()
-    with col2:
-        if st.button("❌ RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject"):
-            st.error("Você recusou os termos. Acesso bloqueado.")
-            st.stop()
+    
+    # Aguarda a resposta do JavaScript
+    import time
+    msg_recebida = None
+    
+    # Aguarda a mensagem do JavaScript
+    for _ in range(100):
+        time.sleep(0.1)
+        # Verifica se há mensagem do componente
+        pass
+    
     st.stop()
 # ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
