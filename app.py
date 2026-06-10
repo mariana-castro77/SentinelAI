@@ -462,6 +462,7 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
 if not st.session_state["lgpd"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
 
+    # HTML apenas para o DESIGN (sem botões)
     lgpd_html = """<!DOCTYPE html>
 <html>
 <head>
@@ -562,27 +563,10 @@ body{
     display:inline-block;background:rgba(220,38,38,0.2);
     border-radius:3px;font-size:9px;line-height:14px;text-align:center;color:#f87171;
 }
-.btn-row{display:flex;gap:12px;margin-top:0.5rem;}
-.btn-accept{
-    flex:1;padding:0.8rem;border-radius:12px;border:none;cursor:pointer;font-weight:700;
-    font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;
-    background:linear-gradient(135deg,#7f1d1d,#991b1b,#b91c1c);color:white;
-    box-shadow:0 4px 20px rgba(139,0,0,0.4);
-    font-family:'Inter',sans-serif;
-}
-.btn-accept:hover{background:linear-gradient(135deg,#991b1b,#b91c1c,#dc2626);transform:translateY(-2px);}
-.btn-reject{
-    flex:1;padding:0.8rem;border-radius:12px;cursor:pointer;font-weight:700;
-    font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;
-    background:rgba(10,5,7,0.9);border:1px solid rgba(180,0,0,0.25);color:#6b7280;
-    font-family:'Inter',sans-serif;
-}
-.btn-reject:hover{border-color:rgba(220,38,38,0.4);color:#f87171;}
 .counter{text-align:center;margin-top:0.8rem;color:#374151;font-size:0.55rem;font-family:'JetBrains Mono',monospace;}
 @media (max-width: 600px){
     .card{padding:1.2rem;}
     .privacy-grid{grid-template-columns:1fr;}
-    .btn-row{flex-direction:column;}
     .robot-img{width:60px;height:60px;}
     .title h1{font-size:1.4rem;}
 }
@@ -620,10 +604,6 @@ body{
         <div class="privacy-item"><span class="priv-icon">💾</span>Backup automático SQLite</div>
         <div class="privacy-item"><span class="priv-icon">⏱️</span>Sessões com timeout automático</div>
     </div>
-    <div class="btn-row">
-        <button class="btn-accept" id="acceptBtn">✅ ACEITAR E CONTINUAR</button>
-        <button class="btn-reject" id="rejectBtn">❌ RECUSAR (BLOQUEIA ACESSO)</button>
-    </div>
     <div class="counter">
         <span class="pulse-dot"></span>MONITORAMENTO ATIVO · <span id="ctime"></span>
     </div>
@@ -642,28 +622,24 @@ for(let i=0;i<20;i++){
 }
 function tick(){ document.getElementById('ctime').textContent=new Date().toLocaleTimeString('pt-BR'); }
 tick(); setInterval(tick,1000);
-document.getElementById('acceptBtn').onclick = function() {
-    window.parent.postMessage({type:'streamlit:setComponentValue',value:'accept'},'*');
-};
-document.getElementById('rejectBtn').onclick = function() {
-    window.parent.postMessage({type:'streamlit:setComponentValue',value:'reject'},'*');
-};
 </script>
 </body>
 </html>"""
 
-    components.html(lgpd_html, height=650, scrolling=True)
-    
-    # Aguarda a resposta do JavaScript
-    import time
-    msg_recebida = None
-    
-    # Aguarda a mensagem do JavaScript
-    for _ in range(100):
-        time.sleep(0.1)
-        # Verifica se há mensagem do componente
-        pass
-    
+    components.html(lgpd_html, height=600, scrolling=True)
+
+    # Botões do Streamlit (funcionam 100%)
+    st.markdown("<br>", unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("✅ ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept"):
+            st.session_state["lgpd"] = True
+            log("sistema", "LGPD_ACEITO")
+            st.rerun()
+    with col2:
+        if st.button("❌ RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject"):
+            st.error("Você recusou os termos. Acesso bloqueado.")
+            st.stop()
     st.stop()
 # ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
