@@ -10,14 +10,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 from groq import Groq
 
-# Cliente Groq (gratuito e rápido)
-from groq import Groq
-
 groq_client = Groq(api_key="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")
 
 st.set_page_config(
     page_title="SentinelAI — SOC Platform",
-    page_icon="🛡️",
+    page_icon="assets/robo.png" if os.path.exists("assets/robo.png") else "🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -159,6 +156,31 @@ input, textarea, [data-baseweb="input"] input {
     line-height: 1.6;
 }
 
+/* Animação de digitação */
+.typing-indicator {
+    background: rgba(10,5,7,0.95);
+    border: 1px solid rgba(180,0,0,0.2);
+    border-radius: 18px 18px 18px 4px;
+    padding: 0.75rem 1.1rem;
+    margin: 0.6rem 0;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.typing-dot {
+    width: 7px; height: 7px;
+    background: #dc2626;
+    border-radius: 50%;
+    animation: typing-bounce 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-6px); opacity: 1; }
+}
+
 .soc-header {
     background: linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(10,5,7,0.97) 100%);
     border: 1px solid rgba(180,0,0,0.15);
@@ -170,42 +192,24 @@ input, textarea, [data-baseweb="input"] input {
 }
 .soc-header::before {
     content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
     background: linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 50%, transparent 100%);
 }
 
 .badge-online {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(0,255,100,0.06);
-    border: 1px solid rgba(0,255,100,0.22);
-    color: #4ade80;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(0,255,100,0.06); border: 1px solid rgba(0,255,100,0.22);
+    color: #4ade80; padding: 4px 14px; border-radius: 20px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
 }
 .badge-critical {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(220,38,38,0.1);
-    border: 1px solid rgba(220,38,38,0.35);
-    color: #f87171;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.35);
+    color: #f87171; padding: 4px 14px; border-radius: 20px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
 }
 
+/* Robot flutuante — usa imagem */
 @keyframes float-robot {
     0%   { transform: translateY(0px) rotate(-2deg); }
     25%  { transform: translateY(-12px) rotate(1deg); }
@@ -217,11 +221,10 @@ input, textarea, [data-baseweb="input"] input {
     0%,100% { filter: drop-shadow(0 0 8px rgba(220,38,38,0.6)) drop-shadow(0 0 20px rgba(139,0,0,0.4)); }
     50%      { filter: drop-shadow(0 0 20px rgba(220,38,38,0.9)) drop-shadow(0 0 40px rgba(180,0,0,0.6)); }
 }
-.robot-float {
+.robot-float-img {
+    width: 72px; height: 72px; object-fit: contain;
     animation: float-robot 4s ease-in-out infinite, glow-pulse 2.5s ease-in-out infinite;
-    font-size: 3.5rem;
-    display: block;
-    text-align: center;
+    display: block; margin: 0 auto;
 }
 
 @keyframes scan {
@@ -231,15 +234,10 @@ input, textarea, [data-baseweb="input"] input {
     100% { transform: translateY(100vh); opacity: 0; }
 }
 .scan-line {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
+    position: fixed; top: 0; left: 0; right: 0; height: 2px;
     background: linear-gradient(90deg, transparent, rgba(220,38,38,0.4), transparent);
     animation: scan 6s linear infinite;
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
 }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -254,34 +252,18 @@ details summary { color:#f87171!important; font-weight:600; font-size:0.82rem; }
 details { background:rgba(10,5,7,0.7); border:1px solid rgba(180,0,0,0.15); border-radius:10px; padding:0.5rem 1rem; }
 
 .info-box {
-    background:rgba(139,0,0,0.08);
-    border:1px solid rgba(180,0,0,0.2);
-    border-left:3px solid #dc2626;
-    border-radius:8px;
-    padding:0.8rem 1rem;
-    margin:0.5rem 0;
-    font-size:0.8rem;
-    color:#94a3b8;
-    line-height:1.6;
+    background:rgba(139,0,0,0.08); border:1px solid rgba(180,0,0,0.2);
+    border-left:3px solid #dc2626; border-radius:8px; padding:0.8rem 1rem;
+    margin:0.5rem 0; font-size:0.8rem; color:#94a3b8; line-height:1.6;
 }
 .info-box-blue {
-    background:rgba(0,100,200,0.08);
-    border:1px solid rgba(0,150,255,0.2);
-    border-left:3px solid #3b82f6;
-    border-radius:8px;
-    padding:0.8rem 1rem;
-    margin:0.5rem 0;
-    font-size:0.8rem;
-    color:#93c5fd;
-    line-height:1.6;
+    background:rgba(0,100,200,0.08); border:1px solid rgba(0,150,255,0.2);
+    border-left:3px solid #3b82f6; border-radius:8px; padding:0.8rem 1rem;
+    margin:0.5rem 0; font-size:0.8rem; color:#93c5fd; line-height:1.6;
 }
 .ticket-card {
-    background:rgba(10,5,7,0.9);
-    border:1px solid rgba(180,0,0,0.2);
-    border-radius:12px;
-    padding:1rem 1.2rem;
-    margin:0.5rem 0;
-    transition:all 0.2s;
+    background:rgba(10,5,7,0.9); border:1px solid rgba(180,0,0,0.2);
+    border-radius:12px; padding:1rem 1.2rem; margin:0.5rem 0; transition:all 0.2s;
 }
 .ticket-card:hover { border-color:rgba(220,38,38,0.4); box-shadow:0 4px 20px rgba(139,0,0,0.2); }
 
@@ -352,67 +334,52 @@ def db_log(usuario, acao, detalhe=""):
         conn.execute("INSERT INTO logs_auditoria (usuario,acao,detalhe) VALUES (?,?,?)", (usuario, acao, detalhe[:500]))
         conn.commit()
         conn.close()
-    except:
-        pass
+    except: pass
 
 def db_salvar_incidente(d):
     try:
         conn = get_db()
         conn.execute("""INSERT INTO incidentes_analisados (usuario,tipo,origem,status,severidade,cliente,risco,prejuizo)
-            VALUES (?,?,?,?,?,?,?,?)""", (d["usuario"], d["tipo"], d["origem"], d["status"], d["severidade"], d["cliente"], d["risco"], d["prejuizo"]))
-        conn.commit()
-        conn.close()
-        return True
-    except:
-        return False
+            VALUES (?,?,?,?,?,?,?,?)""", (d["usuario"],d["tipo"],d["origem"],d["status"],d["severidade"],d["cliente"],d["risco"],d["prejuizo"]))
+        conn.commit(); conn.close(); return True
+    except: return False
 
 def db_salvar_chat(usuario, pergunta, resposta):
     try:
         conn = get_db()
         conn.execute("INSERT INTO chat_historico (usuario,pergunta,resposta) VALUES (?,?,?)", (usuario, pergunta[:1000], resposta[:2000]))
-        conn.commit()
-        conn.close()
-    except:
-        pass
+        conn.commit(); conn.close()
+    except: pass
 
 def db_buscar_incidentes():
     try:
         conn = get_db()
         df = pd.read_sql("SELECT * FROM incidentes_analisados ORDER BY ts DESC LIMIT 100", conn)
-        conn.close()
-        return df
-    except:
-        return pd.DataFrame()
+        conn.close(); return df
+    except: return pd.DataFrame()
 
 def db_buscar_logs():
     try:
         conn = get_db()
         df = pd.read_sql("SELECT * FROM logs_auditoria ORDER BY ts DESC LIMIT 200", conn)
-        conn.close()
-        return df
-    except:
-        return pd.DataFrame()
+        conn.close(); return df
+    except: return pd.DataFrame()
 
 def db_meta_backup(usuario, tipo, registros):
     try:
         conn = get_db()
         conn.execute("INSERT INTO backups_meta (usuario,tipo,registros) VALUES (?,?,?)", (usuario, tipo, registros))
-        conn.commit()
-        conn.close()
-    except:
-        pass
+        conn.commit(); conn.close()
+    except: pass
 
 def db_criar_ticket(cliente, assunto, mensagem, prioridade="normal"):
     try:
         conn = get_db()
-        cur = conn.execute("INSERT INTO tickets_suporte (cliente,assunto,mensagem,prioridade) VALUES (?,?,?,?)", (cliente, assunto, mensagem, prioridade))
+        cur = conn.execute("INSERT INTO tickets_suporte (cliente,assunto,mensagem,prioridade) VALUES (?,?,?,?)", (cliente,assunto,mensagem,prioridade))
         tid = cur.lastrowid
         conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)", (tid, cliente, mensagem))
-        conn.commit()
-        conn.close()
-        return tid
-    except:
-        return None
+        conn.commit(); conn.close(); return tid
+    except: return None
 
 def db_buscar_tickets(cliente=None):
     try:
@@ -421,40 +388,30 @@ def db_buscar_tickets(cliente=None):
             df = pd.read_sql("SELECT * FROM tickets_suporte WHERE cliente=? ORDER BY ts DESC", conn, params=(cliente,))
         else:
             df = pd.read_sql("SELECT * FROM tickets_suporte ORDER BY ts DESC", conn)
-        conn.close()
-        return df
-    except:
-        return pd.DataFrame()
+        conn.close(); return df
+    except: return pd.DataFrame()
 
 def db_responder_ticket(ticket_id, resposta, status="respondido"):
     try:
         conn = get_db()
-        conn.execute("UPDATE tickets_suporte SET resposta=?,status=?,ts_resposta=CURRENT_TIMESTAMP WHERE id=?", (resposta, status, ticket_id))
-        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)", (ticket_id, "SentinelAI", resposta))
-        conn.commit()
-        conn.close()
-        return True
-    except:
-        return False
+        conn.execute("UPDATE tickets_suporte SET resposta=?,status=?,ts_resposta=CURRENT_TIMESTAMP WHERE id=?", (resposta,status,ticket_id))
+        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)", (ticket_id,"SentinelAI",resposta))
+        conn.commit(); conn.close(); return True
+    except: return False
 
 def db_buscar_chat_ticket(ticket_id):
     try:
         conn = get_db()
         df = pd.read_sql("SELECT * FROM chat_suporte WHERE ticket_id=? ORDER BY ts ASC", conn, params=(ticket_id,))
-        conn.close()
-        return df
-    except:
-        return pd.DataFrame()
+        conn.close(); return df
+    except: return pd.DataFrame()
 
 def db_adicionar_msg_ticket(ticket_id, remetente, mensagem):
     try:
         conn = get_db()
-        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)", (ticket_id, remetente, mensagem))
-        conn.commit()
-        conn.close()
-        return True
-    except:
-        return False
+        conn.execute("INSERT INTO chat_suporte (ticket_id,remetente,mensagem) VALUES (?,?,?)", (ticket_id,remetente,mensagem))
+        conn.commit(); conn.close(); return True
+    except: return False
 
 def log(usuario, acao, detalhe=""):
     if "logs" not in st.session_state:
@@ -478,248 +435,234 @@ def auth(u, p):
     return u in _H and hashlib.sha256(p.encode()).hexdigest() == _H[u]
 
 def mask_ip(ip):
-    if not ip or str(ip) == "Nenhum" or pd.isna(ip):
-        return "***.***.***"
+    if not ip or str(ip) == "Nenhum" or pd.isna(ip): return "***.***.***"
     p = str(ip).split(".")
     return f"{p[0]}.{p[1]}.***.***" if len(p) == 4 else "***"
 
-for k, v in {"authed":False, "user":None, "lgpd":False, "chat":[], "chat_suporte":[], "logs":[], "ticket_ativo":None}.items():
+for k, v in {"authed":False,"user":None,"lgpd":False,"chat":[],"chat_suporte":[],"logs":[],"ticket_ativo":None}.items():
     if k not in st.session_state:
         st.session_state[k] = v
 
-# Configuração do cliente Groq
-groq_client = Groq(api_key="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")
-
 def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
-    """Chatbot usando Groq API (gratuita e super rápida)"""
     try:
-        openai_messages = [{"role": "system", "content": system_prompt}]
-        
+        openai_messages = [{"role":"system","content":system_prompt}]
         for m in messages:
-            openai_messages.append({
-                "role": m["role"],
-                "content": m["content"]
-            })
-        
+            openai_messages.append({"role":m["role"],"content":m["content"]})
         response = groq_client.chat.completions.create(
-            model="llama-3.1-8b-instant",  # Modelo rápido e gratuito
+            model="llama-3.1-8b-instant",
             messages=openai_messages,
             temperature=temperature,
             max_tokens=max_tokens
         )
-        
         return response.choices[0].message.content
-        
     except Exception as e:
-        return f"❌ Erro na API Groq: {str(e)}"
+        return f"Erro na API: {str(e)}"
 
+# ─── LGPD ────────────────────────────────────────────────────────────────────
 if not st.session_state["lgpd"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
 
-    lgpd_html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="utf-8">
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-        background: radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.2) 0%, transparent 60%),
-                    radial-gradient(ellipse at 80% 20%, rgba(180,0,0,0.15) 0%, transparent 55%),
-                    #060508;
-        min-height: 100vh; display:flex; align-items:center; justify-content:center;
-        font-family: 'Inter', sans-serif; overflow:hidden; position:relative;
-    }
-    .particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
-    .particle {
-        position:absolute; width:2px; height:2px; background:rgba(220,38,38,0.4); border-radius:50%;
-        animation: float-particle linear infinite;
-    }
-    @keyframes float-particle {
-        0%   { transform:translateY(100vh) rotate(0deg); opacity:0; }
-        10%  { opacity:1; }
-        90%  { opacity:1; }
-        100% { transform:translateY(-100px) rotate(720deg); opacity:0; }
-    }
-    .grid-bg {
-        position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none;
-        background-image:
-            linear-gradient(rgba(180,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(180,0,0,0.04) 1px, transparent 1px);
-        background-size: 50px 50px;
-        animation: grid-move 20s linear infinite;
-    }
-    @keyframes grid-move { 0%{background-position:0 0;} 100%{background-position:50px 50px;} }
-    .scan-line {
-        position:fixed; top:0; left:0; right:0; height:2px;
-        background:linear-gradient(90deg,transparent,rgba(220,38,38,0.5),transparent);
-        animation: scan 5s linear infinite; z-index:1;
-    }
-    @keyframes scan { 0%{top:-2px;} 100%{top:100vh;} }
-    .card {
-        background: linear-gradient(135deg, rgba(15,5,8,0.98), rgba(10,5,7,0.99));
-        border:1px solid rgba(180,0,0,0.25); border-radius:24px;
-        padding:2.5rem 3rem; max-width:720px; width:90%;
-        position:relative; z-index:10;
-        box-shadow: 0 40px 120px rgba(139,0,0,0.3), 0 0 60px rgba(0,0,0,0.8);
-    }
-    .card::before {
-        content:''; position:absolute; top:0; left:0; right:0; height:1px; border-radius:24px 24px 0 0;
-        background:linear-gradient(90deg,transparent,rgba(220,38,38,0.7),transparent);
-    }
-    .robot-wrap { display:flex; justify-content:center; margin-bottom:1.5rem; }
-    .robot-img {
-        width:120px; height:120px; object-fit:contain;
-        animation: robot-float 3s ease-in-out infinite;
-        filter: drop-shadow(0 0 20px rgba(220,38,38,0.7)) drop-shadow(0 0 40px rgba(139,0,0,0.5));
-    }
-    @keyframes robot-float {
-        0%,100% { transform:translateY(0px) rotate(-3deg); }
-        25%      { transform:translateY(-15px) rotate(2deg); }
-        50%      { transform:translateY(-8px) rotate(-1deg); }
-        75%      { transform:translateY(-20px) rotate(3deg); }
-    }
-    .robot-emoji {
-        font-size:5rem; display:block; text-align:center;
-        animation: robot-float 3s ease-in-out infinite;
-        filter: drop-shadow(0 0 20px rgba(220,38,38,0.7));
-    }
-    .title { text-align:center; margin-bottom:1.5rem; }
-    .title h1 { color:white; font-size:2rem; font-weight:900; letter-spacing:-0.5px; }
-    .title h1 span { color:#dc2626; }
-    .title p { color:#6b7280; font-size:0.8rem; margin-top:4px; font-family:'JetBrains Mono',monospace; }
-    .badges { display:flex; gap:8px; justify-content:center; margin-bottom:1.5rem; flex-wrap:wrap; }
-    .badge-green {
-        background:rgba(0,255,100,0.06); border:1px solid rgba(0,255,100,0.22); color:#4ade80;
-        padding:4px 14px; border-radius:20px; font-size:0.6rem; font-weight:700; letter-spacing:0.1em;
-        display:inline-flex; align-items:center; gap:5px;
-    }
-    .badge-red {
-        background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.35); color:#f87171;
-        padding:4px 14px; border-radius:20px; font-size:0.6rem; font-weight:700; letter-spacing:0.1em;
-    }
-    .lgpd-text {
-        background:rgba(139,0,0,0.06); border:1px solid rgba(180,0,0,0.15); border-left:3px solid #dc2626;
-        border-radius:10px; padding:1rem 1.2rem; margin-bottom:1.5rem; color:#94a3b8;
-        font-size:0.78rem; line-height:1.8;
-    }
-    .lgpd-text strong { color:#fca5a5; }
-    .privacy-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:1.5rem; }
-    .privacy-item {
-        background:rgba(10,5,7,0.8); border:1px solid rgba(180,0,0,0.12); border-radius:8px;
-        padding:0.6rem 0.8rem; display:flex; align-items:center; gap:8px;
-        font-size:0.72rem; color:#9ca3af;
-    }
-    .privacy-item span { font-size:1rem; }
-    .btn-row { display:flex; gap:12px; }
-    .btn-accept {
-        flex:1; padding:0.9rem; border-radius:12px; border:none; cursor:pointer; font-weight:700;
-        font-size:0.82rem; letter-spacing:0.05em; text-transform:uppercase; transition:all 0.2s;
-        background:linear-gradient(135deg,#7f1d1d,#991b1b,#b91c1c); color:white;
-        box-shadow:0 4px 20px rgba(139,0,0,0.4);
-        font-family:'Inter',sans-serif;
-    }
-    .btn-accept:hover { background:linear-gradient(135deg,#991b1b,#b91c1c,#dc2626); transform:translateY(-2px); box-shadow:0 8px 30px rgba(220,38,38,0.5); }
-    .btn-reject {
-        flex:1; padding:0.9rem; border-radius:12px; cursor:pointer; font-weight:700;
-        font-size:0.82rem; letter-spacing:0.05em; text-transform:uppercase; transition:all 0.2s;
-        background:rgba(10,5,7,0.9); border:1px solid rgba(180,0,0,0.25); color:#6b7280;
-        font-family:'Inter',sans-serif;
-    }
-    .btn-reject:hover { border-color:rgba(220,38,38,0.4); color:#f87171; }
-    .counter { text-align:center; margin-top:1rem; color:#374151; font-size:0.62rem; font-family:'JetBrains Mono',monospace; }
-    .pulse-dot { display:inline-block; width:6px; height:6px; background:#4ade80; border-radius:50%; animation:pulse 1.5s infinite; margin-right:5px; }
-    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.5);} 50%{box-shadow:0 0 0 5px rgba(74,222,128,0);} }
-    </style>
-    </head>
-    <body>
-    <div class="grid-bg"></div>
-    <div class="scan-line"></div>
-    <div class="particles" id="particles"></div>
-    <div class="card">
-        <div class="robot-wrap">
-            <img class="robot-img" src="robo.png" alt="Sentinel AI Robot"
-                 onerror="this.style.display='none'; document.getElementById('robot-fallback').style.display='block'">
-            <span id="robot-fallback" class="robot-emoji" style="display:none">🤖</span>
-        </div>
-        <div class="title">
-            <h1>Sentinel<span>AI</span></h1>
-            <p>SECURITY OPERATIONS CENTER — ACESSO SEGURO</p>
-        </div>
-        <div class="badges">
-            <span class="badge-green"><span class="pulse-dot"></span>SISTEMA ONLINE</span>
-            <span class="badge-red">LGPD Lei 13.709/2018</span>
-            <span class="badge-red">ISO 27001</span>
-        </div>
-        <div class="lgpd-text">
-            Esta plataforma utiliza cookies de sessão para <strong>autenticação, controle de acesso baseado em perfil (RBAC) e auditoria completa</strong>.
-            Todos os dados são tratados conforme a <strong>Lei Geral de Proteção de Dados (LGPD)</strong>.
-            IPs e informações pessoais identificáveis são <strong>mascarados automaticamente</strong> para perfis não autorizados.
-            Nenhum dado é compartilhado com terceiros sem consentimento. Ao continuar, você consente com estes termos.
-        </div>
-        <div class="privacy-grid">
-            <div class="privacy-item"><span>🔐</span> Dados criptografados em trânsito</div>
-            <div class="privacy-item"><span>🎭</span> IPs mascarados por perfil</div>
-            <div class="privacy-item"><span>📋</span> Auditoria completa de ações</div>
-            <div class="privacy-item"><span>🚫</span> Zero compartilhamento externo</div>
-            <div class="privacy-item"><span>💾</span> Backup automático SQLite</div>
-            <div class="privacy-item"><span>⏱️</span> Sessões com timeout automático</div>
-        </div>
-        <div class="btn-row">
-            <button class="btn-accept" onclick="window.parent.postMessage({type:'streamlit:setComponentValue',value:'accept'},'*'); acceptCookies()">
-                ✅ Aceitar e Acessar
-            </button>
-            <button class="btn-reject" onclick="window.parent.postMessage({type:'streamlit:setComponentValue',value:'reject'},'*'); rejectCookies()">
-                ❌ Recusar Acesso
-            </button>
-        </div>
-        <div class="counter" id="counter">
-            <span class="pulse-dot"></span>MONITORAMENTO ATIVO · <span id="ctime"></span>
-        </div>
+    lgpd_html = """<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    background:radial-gradient(ellipse at 20% 50%,rgba(139,0,0,0.2) 0%,transparent 60%),
+               radial-gradient(ellipse at 80% 20%,rgba(180,0,0,0.15) 0%,transparent 55%),#060508;
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    font-family:'Inter',sans-serif; overflow-y:auto; position:relative; padding:20px;
+}
+.grid-bg{
+    position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
+    background-image:linear-gradient(rgba(180,0,0,0.04) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(180,0,0,0.04) 1px,transparent 1px);
+    background-size:50px 50px; animation:grid-move 20s linear infinite;
+}
+@keyframes grid-move{0%{background-position:0 0;}100%{background-position:50px 50px;}}
+.scan-line{
+    position:fixed;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,rgba(220,38,38,0.5),transparent);
+    animation:scan 5s linear infinite;z-index:1;
+}
+@keyframes scan{0%{top:-2px;}100%{top:100vh;}}
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.particle{
+    position:absolute;border-radius:50%;
+    animation:float-particle linear infinite;
+}
+@keyframes float-particle{
+    0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
+    10%{opacity:1;}90%{opacity:1;}
+    100%{transform:translateY(-100px) rotate(720deg);opacity:0;}
+}
+.card{
+    background:linear-gradient(135deg,rgba(15,5,8,0.98),rgba(10,5,7,0.99));
+    border:1px solid rgba(180,0,0,0.25);border-radius:24px;
+    padding:2.5rem 3rem;max-width:700px;width:100%;
+    position:relative;z-index:10;
+    box-shadow:0 40px 120px rgba(139,0,0,0.3),0 0 60px rgba(0,0,0,0.8);
+}
+.card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;border-radius:24px 24px 0 0;
+    background:linear-gradient(90deg,transparent,rgba(220,38,38,0.7),transparent);
+}
+.robot-wrap{display:flex;justify-content:center;margin-bottom:1.5rem;}
+.robot-img{
+    width:110px;height:110px;object-fit:contain;
+    animation:robot-float 3s ease-in-out infinite;
+    filter:drop-shadow(0 0 20px rgba(220,38,38,0.7)) drop-shadow(0 0 40px rgba(139,0,0,0.5));
+}
+@keyframes robot-float{
+    0%,100%{transform:translateY(0px) rotate(-3deg);}
+    25%{transform:translateY(-15px) rotate(2deg);}
+    50%{transform:translateY(-8px) rotate(-1deg);}
+    75%{transform:translateY(-20px) rotate(3deg);}
+}
+.title{text-align:center;margin-bottom:1.5rem;}
+.title h1{color:white;font-size:2rem;font-weight:900;letter-spacing:-0.5px;}
+.title h1 span{color:#dc2626;}
+.title p{color:#6b7280;font-size:0.75rem;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.badges{display:flex;gap:8px;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap;}
+.badge-green{
+    background:rgba(0,255,100,0.06);border:1px solid rgba(0,255,100,0.22);color:#4ade80;
+    padding:4px 14px;border-radius:20px;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;
+    display:inline-flex;align-items:center;gap:5px;
+}
+.badge-red{
+    background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.35);color:#f87171;
+    padding:4px 14px;border-radius:20px;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;
+}
+.pulse-dot{
+    display:inline-block;width:6px;height:6px;background:#4ade80;border-radius:50%;
+    animation:pulse-anim 1.5s infinite;
+}
+@keyframes pulse-anim{
+    0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.5);}
+    50%{box-shadow:0 0 0 5px rgba(74,222,128,0);}
+}
+.lgpd-text{
+    background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-left:3px solid #dc2626;
+    border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;color:#94a3b8;
+    font-size:0.78rem;line-height:1.8;
+}
+.lgpd-text strong{color:#fca5a5;}
+.privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.8rem;}
+.privacy-item{
+    background:rgba(10,5,7,0.8);border:1px solid rgba(180,0,0,0.12);border-radius:8px;
+    padding:0.6rem 0.9rem;display:flex;align-items:center;gap:8px;
+    font-size:0.72rem;color:#9ca3af;
+}
+.priv-icon{
+    width:16px;height:16px;flex-shrink:0;
+    display:inline-block;background:rgba(220,38,38,0.2);
+    border-radius:3px;font-size:10px;line-height:16px;text-align:center;color:#f87171;
+}
+.btn-row{display:flex;gap:12px;}
+.btn-accept{
+    flex:1;padding:0.9rem;border-radius:12px;border:none;cursor:pointer;font-weight:700;
+    font-size:0.82rem;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;
+    background:linear-gradient(135deg,#7f1d1d,#991b1b,#b91c1c);color:white;
+    box-shadow:0 4px 20px rgba(139,0,0,0.4);font-family:'Inter',sans-serif;
+}
+.btn-accept:hover{background:linear-gradient(135deg,#991b1b,#b91c1c,#dc2626);transform:translateY(-2px);box-shadow:0 8px 30px rgba(220,38,38,0.5);}
+.btn-reject{
+    flex:1;padding:0.9rem;border-radius:12px;cursor:pointer;font-weight:700;
+    font-size:0.82rem;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;
+    background:rgba(10,5,7,0.9);border:1px solid rgba(180,0,0,0.25);color:#6b7280;
+    font-family:'Inter',sans-serif;
+}
+.btn-reject:hover{border-color:rgba(220,38,38,0.4);color:#f87171;}
+.counter{text-align:center;margin-top:1rem;color:#374151;font-size:0.62rem;font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scan-line"></div>
+<div class="particles" id="particles"></div>
+<div class="card">
+    <div class="robot-wrap">
+        <img class="robot-img" src="robo.png" alt="Sentinel AI"
+             onerror="this.outerHTML='<div style=font-size:80px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>&#129302;</div>'">
     </div>
-    <script>
-    const pc = document.getElementById('particles');
-    for(let i=0;i<25;i++){
-        const p=document.createElement('div'); p.className='particle';
-        p.style.left=Math.random()*100+'%';
-        p.style.animationDuration=(8+Math.random()*12)+'s';
-        p.style.animationDelay=(-Math.random()*20)+'s';
-        p.style.width=p.style.height=(1+Math.random()*3)+'px';
-        p.style.background=`rgba(${Math.random()>0.5?'220,38,38':'139,0,0'},${0.3+Math.random()*0.5})`;
-        pc.appendChild(p);
-    }
-    function tick(){ document.getElementById('ctime').textContent=new Date().toLocaleTimeString('pt-BR'); }
-    tick(); setInterval(tick,1000);
-    </script>
-    </body>
-    </html>
-    """
-    components.html(lgpd_html, height=650, scrolling=False)
+    <div class="title">
+        <h1>Sentinel<span>AI</span></h1>
+        <p>SECURITY OPERATIONS CENTER &mdash; ACESSO SEGURO</p>
+    </div>
+    <div class="badges">
+        <span class="badge-green"><span class="pulse-dot"></span>SISTEMA ONLINE</span>
+        <span class="badge-red">LGPD Lei 13.709/2018</span>
+        <span class="badge-red">ISO 27001</span>
+    </div>
+    <div class="lgpd-text">
+        Esta plataforma utiliza cookies de sessão para <strong>autenticação, controle de acesso baseado em perfil (RBAC) e auditoria completa</strong>.
+        Todos os dados são tratados conforme a <strong>Lei Geral de Proteção de Dados (LGPD)</strong>.
+        IPs e informações pessoais identificáveis são <strong>mascarados automaticamente</strong> para perfis não autorizados.
+        Nenhum dado é compartilhado com terceiros sem consentimento. Ao continuar, você consente com estes termos.
+    </div>
+    <div class="privacy-grid">
+        <div class="privacy-item"><span class="priv-icon">&#128274;</span>Dados criptografados em trânsito</div>
+        <div class="privacy-item"><span class="priv-icon">&#127917;</span>IPs mascarados por perfil</div>
+        <div class="privacy-item"><span class="priv-icon">&#128203;</span>Auditoria completa de ações</div>
+        <div class="privacy-item"><span class="priv-icon">&#128683;</span>Zero compartilhamento externo</div>
+        <div class="privacy-item"><span class="priv-icon">&#128190;</span>Backup automático SQLite</div>
+        <div class="privacy-item"><span class="priv-icon">&#9201;</span>Sessões com timeout automático</div>
+    </div>
+    <div class="btn-row">
+        <button class="btn-accept" onclick="acceptCookies()">Aceitar e Continuar</button>
+        <button class="btn-reject" onclick="rejectCookies()">Recusar (bloqueia acesso)</button>
+    </div>
+    <div class="counter">
+        <span class="pulse-dot"></span>MONITORAMENTO ATIVO &middot; <span id="ctime"></span>
+    </div>
+</div>
+<script>
+const pc = document.getElementById('particles');
+for(let i=0;i<25;i++){
+    const p=document.createElement('div'); p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(8+Math.random()*12)+'s';
+    p.style.animationDelay=(-Math.random()*20)+'s';
+    const sz=1+Math.random()*3;
+    p.style.width=p.style.height=sz+'px';
+    p.style.background=`rgba(${Math.random()>.5?'220,38,38':'139,0,0'},${0.3+Math.random()*.5})`;
+    pc.appendChild(p);
+}
+function tick(){ document.getElementById('ctime').textContent=new Date().toLocaleTimeString('pt-BR'); }
+tick(); setInterval(tick,1000);
+function acceptCookies(){ window.parent.postMessage({type:'streamlit:setComponentValue',value:'accept'},'*'); }
+function rejectCookies(){ window.parent.postMessage({type:'streamlit:setComponentValue',value:'reject'},'*'); }
+</script>
+</body>
+</html>"""
+
+    components.html(lgpd_html, height=700, scrolling=True)
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("✅ Aceitar e Continuar", use_container_width=True, key="lgpd_accept"):
+        if st.button("Aceitar e Continuar", use_container_width=True, key="lgpd_accept"):
             st.session_state["lgpd"] = True
             log("sistema", "LGPD_ACEITO")
             st.rerun()
     with col2:
-        if st.button("❌ Recusar (bloqueia acesso)", use_container_width=True, key="lgpd_reject"):
+        if st.button("Recusar (bloqueia acesso)", use_container_width=True, key="lgpd_reject"):
             st.error("Você recusou os termos. Acesso bloqueado.")
             st.stop()
     st.stop()
 
+# ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
     st.markdown("""
     <div style="text-align:center;padding:3rem 0 2rem;">
-        <div style="font-size:4rem;margin-bottom:0.5rem;filter:drop-shadow(0 0 30px rgba(220,38,38,0.8));">🛡️</div>
         <h1 style="font-size:2.8rem;font-weight:900;color:white;letter-spacing:-1px;margin:0;">
             Sentinel<span style="color:#dc2626;">AI</span>
         </h1>
         <p style="color:#6b7280;font-size:0.9rem;margin:8px 0 0;">Security Operations Center — Plataforma de Inteligência Cibernética</p>
         <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
-          <span class="badge-online">● SISTEMA OPERACIONAL</span>
+          <span class="badge-online">&#9679; SISTEMA OPERACIONAL</span>
           <span class="badge-critical">ACESSO RESTRITO</span>
         </div>
     </div>""", unsafe_allow_html=True)
@@ -733,9 +676,11 @@ if not st.session_state["authed"]:
           <p style="color:#6b7280;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1rem;">
             Credenciais de Acesso
           </p>""", unsafe_allow_html=True)
-        creds = [("admin","admin123","🔴 Administrador"),("analista","analista123","🟠 Analista SOC"),
-                 ("nubank","nubank123","🔵 Nubank"),("mercadolivre","ml123","🟢 Mercado Livre"),
-                 ("santander","sant123","🟣 Santander"),("ifood","ifood123","🟡 iFood"),("viewer","viewer123","⚪ Visualizador")]
+        creds = [
+            ("admin","admin123","Administrador"),("analista","analista123","Analista SOC"),
+            ("nubank","nubank123","Nubank"),("mercadolivre","ml123","Mercado Livre"),
+            ("santander","sant123","Santander"),("ifood","ifood123","iFood"),("viewer","viewer123","Visualizador")
+        ]
         for u, p, label in creds:
             st.markdown(f"""
             <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;
@@ -745,17 +690,17 @@ if not st.session_state["authed"]:
             </div>""", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
         with st.form("login_form"):
-            u_in = st.text_input("", placeholder="👤  Usuário", label_visibility="collapsed")
-            p_in = st.text_input("", placeholder="🔑  Senha", type="password", label_visibility="collapsed")
-            ok = st.form_submit_button("ACESSAR O SISTEMA →", use_container_width=True)
+            u_in = st.text_input("", placeholder="Usuario", label_visibility="collapsed")
+            p_in = st.text_input("", placeholder="Senha", type="password", label_visibility="collapsed")
+            ok = st.form_submit_button("ACESSAR O SISTEMA", use_container_width=True)
         if ok:
             if auth(u_in.strip(), p_in):
-                st.session_state.update({"authed": True, "user": u_in.strip()})
-                log(u_in.strip(), "LOGIN", "Acesso concedido")
+                st.session_state.update({"authed":True,"user":u_in.strip()})
+                log(u_in.strip(),"LOGIN","Acesso concedido")
                 st.rerun()
             else:
-                log(u_in.strip() or "?", "LOGIN_FAIL", "Credenciais inválidas")
-                st.error("❌  Usuário ou senha incorretos.")
+                log(u_in.strip() or "?","LOGIN_FAIL","Credenciais inválidas")
+                st.error("Usuário ou senha incorretos.")
     st.stop()
 
 USER = st.session_state["user"]
@@ -792,56 +737,62 @@ bloq = len(df[df["BLOQUEADO_AUTOMATICAMENTE"].str.lower() == "sim"])
 resol = len(df[df["STATUS"] == "resolvido"])
 pend = len(df[df["STATUS"] == "pendente"])
 
+# ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("""
-    <div style="text-align:center;padding:1.5rem 0 0.5rem;">
-      <span class="robot-float">🤖</span>
-      <p style="color:#dc2626;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;margin-top:8px;">SENTINEL CORE</p>
-    </div>""", unsafe_allow_html=True)
-    st.markdown("<hr>", unsafe_allow_html=True)
     db_ok = os.path.exists(DB_PATH)
     db_size = round(os.path.getsize(DB_PATH)/1024, 1) if db_ok else 0
+
     st.markdown(f"""
+    <div style="text-align:center;padding:1.5rem 0 0.8rem;">
+      <img src="robo.png" class="robot-float-img" alt="Sentinel"
+           onerror="this.outerHTML='<div style=font-size:52px;text-align:center;filter:drop-shadow(0 0 12px rgba(220,38,38,0.7))>&#129302;</div>'">
+      <p style="color:#dc2626;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;margin-top:10px;">SENTINEL CORE</p>
+    </div>
+    <hr>
     <div style="background:rgba(139,0,0,0.07);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:0.9rem 1rem;margin-bottom:0.8rem;">
       <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">OPERADOR</p>
       <p style="color:white;font-weight:700;font-size:0.9rem;margin:0;">@{USER}</p>
       <p style="color:#9ca3af;font-size:0.7rem;margin:3px 0 8px;">{PROF['role']}</p>
-      <span class="badge-online">● ONLINE</span>
+      <span class="badge-online">&#9679; ONLINE</span>
     </div>
     <div style="background:rgba(0,200,100,0.04);border:1px solid rgba(0,200,100,0.15);border-radius:10px;padding:0.7rem 1rem;margin-bottom:0.5rem;">
-      <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;margin-bottom:4px;">💾 ARMAZENAMENTO</p>
-      <p style="color:#4ade80;font-size:0.72rem;font-weight:600;">✅ SQLite · {db_size} KB</p>
-      <p style="color:#6b7280;font-size:0.6rem;">📁 {DB_PATH} · Streamlit Cloud</p>
-      <p style="color:#f59e0b;font-size:0.6rem;margin-top:3px;">⚠️ Configure MYSQL_URL para persistência total</p>
+      <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;margin-bottom:4px;">ARMAZENAMENTO</p>
+      <p style="color:#4ade80;font-size:0.72rem;font-weight:600;">SQLite &middot; {db_size} KB</p>
+      <p style="color:#6b7280;font-size:0.6rem;">{DB_PATH} &middot; Streamlit Cloud</p>
+      <p style="color:#f59e0b;font-size:0.6rem;margin-top:3px;">Configure MYSQL_URL para persistência total</p>
     </div>""", unsafe_allow_html=True)
+
     st.markdown("<p style='color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;'>PERMISSÕES</p>", unsafe_allow_html=True)
-    for label, flag in [("Análise ML", PROF["analyze"]), ("Exportar dados", PROF["export"]), ("Ver IPs / PII", PROF["pii"]), ("Suporte Admin", PROF["support_admin"])]:
-        c, i = ("#4ade80", "✓") if flag else ("#ef4444", "✗")
-        st.markdown(f"<p style='color:{c};font-size:0.72rem;margin:3px 0;'><b>{i}</b> {label}</p>", unsafe_allow_html=True)
+    for label, flag in [("Análise ML",PROF["analyze"]),("Exportar dados",PROF["export"]),("Ver IPs / PII",PROF["pii"]),("Suporte Admin",PROF["support_admin"])]:
+        c_col, icon = ("#4ade80","✓") if flag else ("#ef4444","✗")
+        st.markdown(f"<p style='color:{c_col};font-size:0.72rem;margin:3px 0;'><b>{icon}</b> {label}</p>", unsafe_allow_html=True)
+
     st.markdown(f"""
     <div style="background:rgba(139,0,0,0.08);border-radius:10px;padding:0.7rem 1rem;margin:0.8rem 0;text-align:center;">
       <p style="color:#4b5563;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;">Acurácia IA</p>
       <p style="color:#dc2626;font-size:1.4rem;font-weight:800;font-family:'JetBrains Mono',monospace;">{ACC:.1%}</p>
     </div>""", unsafe_allow_html=True)
+
     tks_side = db_buscar_tickets(CLT if CLT else None)
     n_abertos_side = len(tks_side[tks_side["status"] == "aberto"]) if not tks_side.empty else 0
     if n_abertos_side > 0:
         st.markdown(f"""<div style="background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:10px;padding:0.7rem 1rem;margin-bottom:0.8rem;text-align:center;">
-          <p style="color:#f87171;font-size:0.72rem;font-weight:700;">🎫 {n_abertos_side} ticket(s) aberto(s)</p>
+          <p style="color:#f87171;font-size:0.72rem;font-weight:700;">{n_abertos_side} ticket(s) aberto(s)</p>
         </div>""", unsafe_allow_html=True)
+
     st.markdown("<hr>", unsafe_allow_html=True)
-    if st.button("🚪  Encerrar Sessão", use_container_width=True):
-        log(USER, "LOGOUT")
-        st.session_state.update({"authed": False, "user": None, "chat": [], "chat_suporte": []})
+    if st.button("Encerrar Sessão", use_container_width=True):
+        log(USER,"LOGOUT")
+        st.session_state.update({"authed":False,"user":None,"chat":[],"chat_suporte":[]})
         st.rerun()
 
+# ─── HEADER ──────────────────────────────────────────────────────────────────
 now = datetime.datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
 scope = f"Cliente: {CLT}" if CLT else "Visão Global — Todos os Clientes"
 st.markdown(f"""
 <div class="soc-header">
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
     <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-      <span style="font-size:1.8rem;filter:drop-shadow(0 0 12px rgba(220,38,38,0.7));">🛡️</span>
       <div>
         <h1 style="color:white;font-size:1.5rem;font-weight:900;letter-spacing:-0.5px;margin:0;">
           Sentinel<span style="color:#dc2626;">AI</span>
@@ -852,7 +803,7 @@ st.markdown(f"""
     </div>
     <div style="text-align:right;">
       <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:6px;">
-        <span class="badge-online">● SISTEMA ONLINE</span>
+        <span class="badge-online">&#9679; SISTEMA ONLINE</span>
         <span class="badge-critical">LGPD COMPLIANT</span>
       </div>
       <p style="color:#374151;font-size:0.62rem;font-family:'JetBrains Mono',monospace;">{now}</p>
@@ -860,7 +811,7 @@ st.markdown(f"""
   </div>
 </div>""", unsafe_allow_html=True)
 
-c1, c2, c3, c4, c5, c6 = st.columns(6)
+c1,c2,c3,c4,c5,c6 = st.columns(6)
 with c1: st.metric("INCIDENTES", f"{total:,}")
 with c2: st.metric("CRÍTICOS", f"{crit:,}")
 with c3: st.metric("IPs BLOQUEADOS", f"{bloq:,}")
@@ -869,12 +820,13 @@ with c5: st.metric("PENDENTES", f"{pend:,}")
 with c6: st.metric("PREJUÍZO", f"R$ {prej/1e6:.2f}Mi")
 st.markdown("<hr>", unsafe_allow_html=True)
 
-tabs = st.tabs(["🔍 Análise","📊 Dashboard","🌍 Mapa de Ameaças","🤖 Sentinel Bot","🎫 Suporte","💾 Backup & DB","📋 Auditoria"])
+tabs = st.tabs(["Análise","Dashboard","Mapa de Ameaças","Sentinel Bot","Suporte","Backup & DB","Auditoria"])
 
+# ─── TAB 0: ANÁLISE ───────────────────────────────────────────────────────────
 with tabs[0]:
-    st.markdown("### 🔍 Análise Inteligente de Incidentes")
+    st.markdown("### Análise Inteligente de Incidentes")
     if not PROF["analyze"]:
-        st.markdown('<div class="info-box">⛔ Perfil sem permissão para análise. Contate o Administrador.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="info-box">Perfil sem permissão para análise. Contate o Administrador.</div>', unsafe_allow_html=True)
     else:
         c1, c2 = st.columns(2)
         with c1:
@@ -884,133 +836,142 @@ with tabs[0]:
         with c2:
             tempo = st.slider("Tempo de Resolução (min)", 1, 120, 30)
             stat = st.selectbox("Status", ENC["stat"].classes_)
-        if st.button("🚀  INICIAR ANÁLISE FORENSE", use_container_width=True):
-            log(USER, "ANALISE", f"tipo={tipo}")
+        if st.button("INICIAR ANÁLISE FORENSE", use_container_width=True):
+            log(USER,"ANALISE",f"tipo={tipo}")
             with st.spinner("Processando com IA..."):
                 time.sleep(1)
-            entrada = pd.DataFrame({"TE": [ENC["tipo"].transform([tipo])[0]], "OE": [ENC["orig"].transform([orig])[0]], "TEMPO RESOLUÇÃO": [tempo], "SE": [ENC["stat"].transform([stat])[0]]})
+            entrada = pd.DataFrame({"TE":[ENC["tipo"].transform([tipo])[0]],"OE":[ENC["orig"].transform([orig])[0]],"TEMPO RESOLUÇÃO":[tempo],"SE":[ENC["stat"].transform([stat])[0]]})
             sev = ENC["sev"].inverse_transform(MODEL.predict(entrada))[0]
-            if stat == "resolvido":
-                sev = "baixa"
-            elif tipo in ["ataque", "falha servidor"]:
-                sev = "crítica"
-            elif tipo in ["lentidão", "erro sistema"]:
-                sev = random.choice(["baixa", "média"])
-            risco = random.randint(10, 99)
-            prej_val = random.uniform(3000, 30000)
-            risco_fin = "ALTO" if prej_val > 15000 else ("MÉDIO" if prej_val > 7000 else "BAIXO")
+            if stat == "resolvido": sev = "baixa"
+            elif tipo in ["ataque","falha servidor"]: sev = "crítica"
+            elif tipo in ["lentidão","erro sistema"]: sev = random.choice(["baixa","média"])
+            risco = random.randint(10,99)
+            prej_val = random.uniform(3000,30000)
+            risco_fin = "ALTO" if prej_val>15000 else ("MÉDIO" if prej_val>7000 else "BAIXO")
             atks = df_all[df_all["TIPO INCIDENTE"] == "ataque"]
             if not atks.empty:
                 row = atks.sample(1).iloc[0]
                 ip = str(row["IP_SUSPEITO"]) if PROF["pii"] else mask_ip(row["IP_SUSPEITO"])
                 pais = row["PAIS_ATAQUE"]
-            else:
-                ip, pais = "N/A", "Interno"
+            else: ip, pais = "N/A","Interno"
             st.markdown("<hr>", unsafe_allow_html=True)
-            if sev == "crítica":
-                st.error("🔴  SEVERIDADE PREVISTA: **CRÍTICA**")
-            elif sev == "média":
-                st.warning("🟡  SEVERIDADE PREVISTA: **MÉDIA**")
-            else:
-                st.success("🟢  SEVERIDADE PREVISTA: **BAIXA**")
-            r1, r2, r3, r4 = st.columns(4)
+            if sev == "crítica": st.error("SEVERIDADE PREVISTA: CRÍTICA")
+            elif sev == "média": st.warning("SEVERIDADE PREVISTA: MÉDIA")
+            else: st.success("SEVERIDADE PREVISTA: BAIXA")
+            r1,r2,r3,r4 = st.columns(4)
             with r1: st.metric("THREAT SCORE", f"{risco}/100")
-            with r2: st.metric("PREJUÍZO EST.", f"R$ {prej_val:,.0f}".replace(",", "X").replace(".", ",").replace("X", "."))
+            with r2: st.metric("PREJUÍZO EST.", f"R$ {prej_val:,.0f}".replace(",","X").replace(".",",").replace("X","."))
             with r3: st.metric("RISCO FIN.", risco_fin)
             with r4: st.metric("CLIENTE", cli_af)
             if tipo == "ataque":
-                st.error(f"🌍 Origem: **{pais}**  |  IP: `{ip}`")
-                with st.expander("🛡️ Resposta Automática Acionada"):
-                    for a in ["✅ IP bloqueado", "✅ Firewall atualizado", "✅ Equipe SOC notificada", "✅ Logs enviados para auditoria"]:
-                        st.write(a)
-            saved = db_salvar_incidente({"usuario": USER, "tipo": tipo, "origem": orig, "status": stat, "severidade": sev, "cliente": cli_af, "risco": risco, "prejuizo": prej_val})
-            if saved:
-                st.success("💾 Incidente salvo no banco de dados SQLite")
-        st.markdown("### 📋 Registros do Dataset")
+                st.error(f"Origem: {pais}  |  IP: {ip}")
+                with st.expander("Resposta Automática Acionada"):
+                    for a in ["IP bloqueado no firewall","Regras de firewall atualizadas","Equipe SOC notificada","Logs enviados para auditoria"]:
+                        st.write(f"✓ {a}")
+            saved = db_salvar_incidente({"usuario":USER,"tipo":tipo,"origem":orig,"status":stat,"severidade":sev,"cliente":cli_af,"risco":risco,"prejuizo":prej_val})
+            if saved: st.success("Incidente salvo no banco de dados SQLite")
+        st.markdown("### Registros do Dataset")
         cols_show = ["DATA","TIPO INCIDENTE","SEVERIDADE","STATUS","CLIENTE","PAIS_ATAQUE","PREJUIZO_ESTIMADO"]
-        if PROF["pii"]:
-            cols_show.append("IP_SUSPEITO")
+        if PROF["pii"]: cols_show.append("IP_SUSPEITO")
         df_show = df[cols_show].copy()
         if not PROF["pii"] and "IP_SUSPEITO" in df_show.columns:
             df_show["IP_SUSPEITO"] = df_show["IP_SUSPEITO"].apply(mask_ip)
         st.dataframe(df_show, use_container_width=True, height=300)
 
+# ─── TAB 1: DASHBOARD ─────────────────────────────────────────────────────────
 with tabs[1]:
-    st.markdown("### 📊 Telemetria & Métricas")
-    L = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#94a3b8", font_family="Inter")
-    g1, g2 = st.columns(2)
+    st.markdown("### Telemetria & Métricas")
+    L = dict(paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",font_color="#94a3b8",font_family="Inter")
+    g1,g2 = st.columns(2)
     with g1:
-        fig = px.pie(df, names="SEVERIDADE", title="Distribuição de Severidade", color_discrete_sequence=["#dc2626","#f59e0b","#22c55e"])
-        fig.update_layout(**L, title_font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
+        fig = px.pie(df,names="SEVERIDADE",title="Distribuição de Severidade",color_discrete_sequence=["#dc2626","#f59e0b","#22c55e"])
+        fig.update_layout(**L,title_font_color="white")
+        st.plotly_chart(fig,use_container_width=True)
     with g2:
         vc = df["TIPO INCIDENTE"].value_counts().reset_index()
-        fig = px.bar(vc, x="TIPO INCIDENTE", y="count", title="Incidentes por Tipo", color_discrete_sequence=["#dc2626"])
-        fig.update_layout(**L, title_font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
+        fig = px.bar(vc,x="TIPO INCIDENTE",y="count",title="Incidentes por Tipo",color_discrete_sequence=["#dc2626"])
+        fig.update_layout(**L,title_font_color="white")
+        st.plotly_chart(fig,use_container_width=True)
     dt = df.groupby("DATA").size().reset_index(name="n")
-    fig = px.area(dt, x="DATA", y="n", title="Volume ao Longo do Tempo", color_discrete_sequence=["#dc2626"])
-    fig.update_traces(fill="tozeroy", fillcolor="rgba(220,38,38,0.1)")
-    fig.update_layout(**L, title_font_color="white")
-    st.plotly_chart(fig, use_container_width=True)
-    g3, g4 = st.columns(2)
+    fig = px.area(dt,x="DATA",y="n",title="Volume ao Longo do Tempo",color_discrete_sequence=["#dc2626"])
+    fig.update_traces(fill="tozeroy",fillcolor="rgba(220,38,38,0.1)")
+    fig.update_layout(**L,title_font_color="white")
+    st.plotly_chart(fig,use_container_width=True)
+    g3,g4 = st.columns(2)
     with g3:
-        fig = px.histogram(df, x="PAIS_ATAQUE", title="Ataques por País", color_discrete_sequence=["#b91c1c"])
-        fig.update_layout(**L, title_font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
+        fig = px.histogram(df,x="PAIS_ATAQUE",title="Ataques por País",color_discrete_sequence=["#b91c1c"])
+        fig.update_layout(**L,title_font_color="white")
+        st.plotly_chart(fig,use_container_width=True)
     with g4:
-        dp = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index().sort_values("PREJUIZO_ESTIMADO", ascending=False).head(7)
-        fig = px.bar(dp, x="CLIENTE", y="PREJUIZO_ESTIMADO", title="Prejuízo por Cliente", color_discrete_sequence=["#991b1b"])
-        fig.update_layout(**L, title_font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-    st.markdown("### 🤖 Performance do Modelo de IA")
-    m1, m2, m3 = st.columns(3)
+        dp = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index().sort_values("PREJUIZO_ESTIMADO",ascending=False).head(7)
+        fig = px.bar(dp,x="CLIENTE",y="PREJUIZO_ESTIMADO",title="Prejuízo por Cliente",color_discrete_sequence=["#991b1b"])
+        fig.update_layout(**L,title_font_color="white")
+        st.plotly_chart(fig,use_container_width=True)
+    st.markdown("### Performance do Modelo de IA")
+    m1,m2,m3 = st.columns(3)
     with m1: st.metric("ACURÁCIA", f"{ACC:.1%}")
     with m2: st.metric("TREINO", f"{int(len(df_all)*0.8):,}")
     with m3: st.metric("TESTE", f"{int(len(df_all)*0.2):,}")
     ypred = MODEL.predict(Xv)
-    cm = confusion_matrix(yv, ypred)
+    cm = confusion_matrix(yv,ypred)
     lbs = ENC["sev"].classes_
-    fig = go.Figure(go.Heatmap(z=cm, x=lbs, y=lbs, colorscale=[[0,"#0a0507"],[0.5,"#7f1d1d"],[1,"#dc2626"]], text=cm, texttemplate="%{text}", showscale=True))
-    fig.update_layout(title="Matriz de Confusão", xaxis_title="Previsto", yaxis_title="Real", height=320, **L, title_font_color="white")
-    st.plotly_chart(fig, use_container_width=True)
+    fig = go.Figure(go.Heatmap(z=cm,x=lbs,y=lbs,colorscale=[[0,"#0a0507"],[0.5,"#7f1d1d"],[1,"#dc2626"]],text=cm,texttemplate="%{text}",showscale=True))
+    fig.update_layout(title="Matriz de Confusão",xaxis_title="Previsto",yaxis_title="Real",height=320,**L,title_font_color="white")
+    st.plotly_chart(fig,use_container_width=True)
 
+# ─── TAB 2: MAPA ─────────────────────────────────────────────────────────────
 with tabs[2]:
-    st.markdown("### 🌍 Mapa Global de Ameaças Cibernéticas")
-    st.caption("Globo 3D interativo com divisórias de países reais (GeoJSON) · Arraste para girar · Scroll para zoom · Clique nos países para threat intel")
+    st.markdown("### Mapa Global de Ameaças Cibernéticas")
+    st.caption("Globo 3D interativo · Arraste para girar · Scroll para zoom · Clique nos países para threat intel")
 
     atk_df = df[df["TIPO INCIDENTE"] == "ataque"]
     cc = atk_df["PAIS_ATAQUE"].value_counts().reset_index()
-    cc.columns = ["country", "total"]
+    cc.columns = ["country","total"]
 
     THREAT_INTEL = [
         {"country":"China","lat":35.86,"lon":104.19,"score":98,"groups":["APT41","APT10","Volt Typhoon"],"target":"Espionagem industrial · infraestrutura crítica"},
-        {"country":"Russia","lat":61.52,"lon":105.31,"score":97,"groups":["APT28/Fancy Bear","APT29/Cozy Bear","Sandworm"],"target":"Governos · energia · eleições"},
+        {"country":"Russia","lat":61.52,"lon":105.31,"score":97,"groups":["APT28","APT29","Sandworm"],"target":"Governos · energia · eleições"},
         {"country":"North Korea","lat":40.33,"lon":127.51,"score":91,"groups":["Lazarus Group","Kimsuky","APT38"],"target":"Bancos · exchanges · defesa"},
-        {"country":"Iran","lat":32.43,"lon":53.69,"score":85,"groups":["APT33/Elfin","APT35/Charming Kitten","MuddyWater"],"target":"Energia · governo · telecom"},
-        {"country":"Vietnam","lat":14.05,"lon":108.27,"score":72,"groups":["APT32/OceanLotus"],"target":"Manufatura · governos ASEAN"},
-        {"country":"Romania","lat":45.94,"lon":24.96,"score":68,"groups":["SilverTerrier"],"target":"Fraude financeira · skimming ATM"},
-        {"country":"Nigeria","lat":9.08,"lon":8.67,"score":65,"groups":["BEC groups","SilverTerrier"],"target":"Fraude BEC · phishing corporativo"},
+        {"country":"Iran","lat":32.43,"lon":53.69,"score":85,"groups":["APT33","APT35","MuddyWater"],"target":"Energia · governo · telecom"},
+        {"country":"Vietnam","lat":14.05,"lon":108.27,"score":72,"groups":["APT32"],"target":"Manufatura · governos ASEAN"},
+        {"country":"Romania","lat":45.94,"lon":24.96,"score":68,"groups":["SilverTerrier"],"target":"Fraude financeira · ATM"},
+        {"country":"Nigeria","lat":9.08,"lon":8.67,"score":65,"groups":["BEC groups","SilverTerrier"],"target":"Fraude BEC · phishing"},
         {"country":"Pakistan","lat":30.37,"lon":69.34,"score":62,"groups":["Transparent Tribe","APT36"],"target":"Sul-asiáticos · governo"},
-        {"country":"Ukraine","lat":48.38,"lon":31.17,"score":70,"groups":["Sandworm (alvo)","TA473"],"target":"Infraestrutura crítica"},
-        {"country":"United States","lat":37.09,"lon":-95.71,"score":60,"groups":["NSA (defesa)","FBI Cyber"],"target":"Principal alvo de APTs globais"},
-        {"country":"Netherlands","lat":52.13,"lon":5.29,"score":55,"groups":["Bulletproof hosters"],"target":"Hospedagem maliciosa · C2 servers"},
+        {"country":"Ukraine","lat":48.38,"lon":31.17,"score":70,"groups":["TA473"],"target":"Infraestrutura crítica"},
+        {"country":"United States","lat":37.09,"lon":-95.71,"score":60,"groups":["NSA","FBI Cyber"],"target":"Principal alvo de APTs globais"},
+        {"country":"Netherlands","lat":52.13,"lon":5.29,"score":55,"groups":["Bulletproof hosters"],"target":"Hospedagem maliciosa · C2"},
         {"country":"Turkey","lat":38.96,"lon":35.24,"score":58,"groups":["Sea Turtle","StrongPity"],"target":"DNS hijacking · oposição política"},
     ]
 
-    COORDS = {"China":(35.86,104.19),"Russia":(61.52,105.31),"United States":(37.09,-95.71),"Germany":(51.16,10.45),
-            "North Korea":(40.33,127.51),"Canada":(56.13,-106.34),"India":(20.59,78.96),"France":(46.23,2.21),
-            "United Kingdom":(55.37,-3.43),"Iran":(32.43,53.69),"Japan":(36.20,138.25),"Australia":(-25.27,133.77),
-            "South Korea":(35.90,127.76),"Ukraine":(48.38,31.17),"Romania":(45.94,24.96),"Nigeria":(9.08,8.67),
-            "Pakistan":(30.37,69.34),"Vietnam":(14.05,108.27),"Indonesia":(-0.78,113.92),"Netherlands":(52.13,5.29),
-            "Turkey":(38.96,35.24),"Argentina":(-38.41,-63.61),"Mexico":(23.63,-102.55),"Colombia":(4.57,-74.29),}
+    COORDS = {
+        "China":(35.86,104.19),"Russia":(61.52,105.31),"United States":(37.09,-95.71),
+        "Germany":(51.16,10.45),"North Korea":(40.33,127.51),"Canada":(56.13,-106.34),
+        "India":(20.59,78.96),"France":(46.23,2.21),"United Kingdom":(55.37,-3.43),
+        "Iran":(32.43,53.69),"Japan":(36.20,138.25),"Australia":(-25.27,133.77),
+        "South Korea":(35.90,127.76),"Ukraine":(48.38,31.17),"Romania":(45.94,24.96),
+        "Nigeria":(9.08,8.67),"Pakistan":(30.37,69.34),"Vietnam":(14.05,108.27),
+        "Indonesia":(-0.78,113.92),"Netherlands":(52.13,5.29),"Turkey":(38.96,35.24),
+        "Argentina":(-38.41,-63.61),"Mexico":(23.63,-102.55),"Colombia":(4.57,-74.29),
+    }
 
     arcs = []
     for _, row in cc.iterrows():
         c = row["country"]
         if c in COORDS and c != "Brazil":
             s = COORDS[c]
-            arcs.append({"slat": s[0], "slon": s[1], "dlat": -14.23, "dlon": -51.92, "name": c, "n": int(row["total"])})
+            arcs.append({"slat":s[0],"slon":s[1],"dlat":-14.23,"dlon":-51.92,"name":c,"n":int(row["total"])})
+
+    # Arcos extras fixos para demonstração visual
+    extra_arcs = [
+        {"slat":61.52,"slon":105.31,"dlat":-14.23,"dlon":-51.92,"name":"Russia","n":50},
+        {"slat":40.33,"slon":127.51,"dlat":-14.23,"dlon":-51.92,"name":"North Korea","n":45},
+        {"slat":32.43,"slon":53.69,"dlat":-14.23,"dlon":-51.92,"name":"Iran","n":35},
+        {"slat":9.08,"slon":8.67,"dlat":-14.23,"dlon":-51.92,"name":"Nigeria","n":30},
+        {"slat":35.86,"slon":104.19,"dlat":-14.23,"dlon":-51.92,"name":"China","n":60},
+        {"slat":38.96,"slon":35.24,"dlat":-14.23,"dlon":-51.92,"name":"Turkey","n":25},
+        {"slat":14.05,"slon":108.27,"dlat":-14.23,"dlon":-51.92,"name":"Vietnam","n":20},
+    ]
+    all_arcs = arcs + [a for a in extra_arcs if not any(x["name"]==a["name"] for x in arcs)]
 
     globe_html = f"""<!DOCTYPE html>
 <html>
@@ -1022,397 +983,432 @@ with tabs[2]:
 body{{background:#060508;overflow:hidden;font-family:'Inter',sans-serif;user-select:none;}}
 canvas{{display:block;cursor:grab;}}
 canvas.dragging{{cursor:grabbing;}}
-.panel{{position:absolute;background:rgba(6,5,8,0.92);border:1px solid rgba(220,38,38,0.22);border-radius:12px;padding:12px 16px;backdrop-filter:blur(12px);}}
-#legend{{top:14px;left:14px;min-width:190px;}}
-#legend h4{{color:#dc2626;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:9px;}}
-.leg-item{{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:9.5px;color:#9ca3af;}}
-.leg-dot{{width:8px;height:8px;border-radius:50%;flex-shrink:0;}}
-#counters{{top:14px;right:14px;text-align:right;min-width:140px;}}
-#counters .lbl{{color:#4b5563;font-size:8.5px;text-transform:uppercase;letter-spacing:0.1em;}}
-#counters .val{{color:#dc2626;font-size:1.3rem;font-weight:800;line-height:1.2;font-family:'JetBrains Mono',monospace;}}
-#status{{bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;white-space:nowrap;}}
-.pulse{{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 1.5s infinite;}}
-@keyframes pulse{{0%,100%{{box-shadow:0 0 0 0 rgba(74,222,128,0.5);}}50%{{box-shadow:0 0 0 5px transparent;}}}}
-#status span{{color:#4ade80;font-size:9.5px;}}
-#feed{{bottom:14px;left:14px;max-width:280px;}}
-#feed h4{{color:#dc2626;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;}}
-.feed-item{{color:#6b7280;font-size:8.5px;line-height:1.5;margin:2px 0;padding-left:6px;border-left:2px solid rgba(220,38,38,0.25);}}
+.panel{{
+    position:absolute;background:rgba(4,2,6,0.88);
+    border:1px solid rgba(180,30,30,0.28);border-radius:10px;
+    padding:10px 14px;backdrop-filter:blur(16px);
+}}
+#legend{{top:12px;left:12px;min-width:180px;}}
+#legend h4{{color:#dc2626;font-size:9.5px;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;font-weight:700;}}
+.leg-item{{display:flex;align-items:center;gap:7px;margin:3px 0;font-size:9px;color:#9ca3af;}}
+.leg-dot{{width:7px;height:7px;border-radius:50%;flex-shrink:0;}}
+#counters{{top:12px;right:12px;text-align:right;min-width:130px;}}
+#counters .lbl{{color:#4b5563;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;}}
+#counters .val{{color:#dc2626;font-size:1.25rem;font-weight:800;line-height:1.2;font-family:monospace;}}
+#feed{{bottom:12px;left:12px;max-width:270px;}}
+#feed h4{{color:#dc2626;font-size:8.5px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:5px;font-weight:700;}}
+.feed-item{{color:#4b5563;font-size:8px;line-height:1.6;margin:2px 0;padding-left:6px;border-left:2px solid rgba(180,30,30,0.2);}}
 .feed-item.new{{color:#f87171;border-color:#dc2626;}}
-#info-panel{{top:14px;left:50%;transform:translateX(-50%);min-width:280px;max-width:340px;display:none;z-index:20;pointer-events:all;}}
-#info-panel h4{{color:#f87171;font-size:11px;margin-bottom:6px;font-weight:700;}}
-#info-panel .score-bar{{background:rgba(220,38,38,0.15);border-radius:4px;height:5px;margin:6px 0;overflow:hidden;}}
-#info-panel .score-fill{{height:100%;background:linear-gradient(90deg,#7f1d1d,#dc2626);border-radius:4px;transition:width 0.4s;}}
-#info-panel p{{color:#9ca3af;font-size:9px;line-height:1.5;margin:3px 0;}}
-#info-panel .groups{{color:#fca5a5;font-size:9px;}}
-#close-info{{position:absolute;top:8px;right:10px;color:#6b7280;cursor:pointer;font-size:14px;background:none;border:none;font-family:inherit;}}
-#zoom-hint{{bottom:50px;right:14px;font-size:9px;color:#374151;text-align:center;}}
+#status-bar{{bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:7px;white-space:nowrap;}}
+.pulse-dot{{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 1.5s infinite;}}
+@keyframes pulse{{0%,100%{{box-shadow:0 0 0 0 rgba(74,222,128,0.5);}}50%{{box-shadow:0 0 0 4px transparent;}}}}
+#status-bar span{{color:#4ade80;font-size:8.5px;letter-spacing:0.06em;}}
+#info-panel{{top:12px;left:50%;transform:translateX(-50%);min-width:260px;max-width:320px;display:none;z-index:20;}}
+#info-panel h4{{color:#f87171;font-size:10.5px;margin-bottom:5px;font-weight:700;}}
+#info-panel .sbar{{background:rgba(220,38,38,0.12);border-radius:3px;height:4px;margin:5px 0;overflow:hidden;}}
+#info-panel .sfill{{height:100%;background:linear-gradient(90deg,#7f1d1d,#dc2626);border-radius:3px;transition:width .4s;}}
+#info-panel p{{color:#9ca3af;font-size:8.5px;line-height:1.6;margin:2px 0;}}
+#info-panel .grp{{color:#fca5a5;font-size:8.5px;}}
+#close-info{{position:absolute;top:7px;right:9px;color:#6b7280;cursor:pointer;font-size:13px;background:none;border:none;}}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
 <div id="overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;">
   <div class="panel" id="legend">
-    <h4>🛡️ Threat Intelligence</h4>
-    <div class="leg-item"><div class="leg-dot" style="background:#ff0000"></div>Score 90–100 (APT Nação)</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#ff5500"></div>Score 70–89 (Alto risco)</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#ffaa00"></div>Score 50–69 (Moderado)</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#00ff88"></div>🇧🇷 Brasil (alvo protegido)</div>
-    <div class="leg-item" style="margin-top:6px;color:#4b5563;">↔ Arraste · Scroll = Zoom · Clique = Info</div>
+    <h4>Threat Intelligence</h4>
+    <div class="leg-item"><div class="leg-dot" style="background:#ff1a1a"></div>Score 90-100 — APT Nação</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#ff6600"></div>Score 70-89 — Alto risco</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#ffaa00"></div>Score 50-69 — Moderado</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#00ff88"></div>Brasil — Alvo protegido</div>
+    <div class="leg-item" style="margin-top:5px;color:#374151;font-size:8px;">Arraste · Scroll = Zoom · Clique = Info</div>
   </div>
   <div class="panel" id="counters">
     <div class="lbl">Ataques detectados</div>
     <div class="val" id="atk-val">0</div>
-    <div class="lbl" style="margin-top:6px;">IPs bloqueados</div>
+    <div class="lbl" style="margin-top:5px;">IPs bloqueados</div>
     <div class="val" id="blk-val">0</div>
-    <div class="lbl" style="margin-top:6px;">Países em alerta</div>
+    <div class="lbl" style="margin-top:5px;">Países em alerta</div>
     <div class="val" id="ctr-val">0</div>
   </div>
   <div class="panel" id="feed">
-    <h4>⚡ Feed ao vivo</h4>
+    <h4>Feed ao vivo</h4>
     <div id="feed-list"></div>
   </div>
-  <div class="panel" id="status">
-    <div class="pulse"></div>
-    <span id="status-txt">THREAT MONITORING ATIVO — TEMPO REAL</span>
+  <div class="panel" id="status-bar">
+    <div class="pulse-dot"></div>
+    <span>THREAT MONITORING — TEMPO REAL</span>
   </div>
-  <div class="panel" id="info-panel">
-    <button id="close-info" onclick="document.getElementById('info-panel').style.display='none'">✕</button>
+  <div class="panel" id="info-panel" style="pointer-events:all;">
+    <button id="close-info" onclick="document.getElementById('info-panel').style.display='none'">&#10005;</button>
     <h4 id="ip-name"></h4>
-    <div class="score-bar"><div class="score-fill" id="ip-bar"></div></div>
+    <div class="sbar"><div class="sfill" id="ip-bar"></div></div>
     <p id="ip-score"></p>
     <p id="ip-target"></p>
-    <div class="groups" id="ip-groups"></div>
+    <div class="grp" id="ip-groups"></div>
   </div>
-  <div class="panel" id="zoom-hint">🔍 Scroll = zoom</div>
 </div>
-
 <script>
-const ARCS = {json.dumps(arcs)};
-const THREATS = {json.dumps(THREAT_INTEL)};
-const THREAT_MAP = {{}};
-THREATS.forEach(t => THREAT_MAP[t.country] = t);
-document.getElementById('ctr-val').textContent = THREATS.length;
+const ARCS={json.dumps(all_arcs)};
+const THREATS={json.dumps(THREAT_INTEL)};
+const TMAP={{}};
+THREATS.forEach(t=>TMAP[t.country]=t);
+document.getElementById('ctr-val').textContent=THREATS.length;
 
-const C = document.getElementById('c');
-const ctx = C.getContext('2d');
-let W, H;
-function resize() {{ W = C.width = window.innerWidth; H = C.height = window.innerHeight; }}
-resize(); window.addEventListener('resize', resize);
+const C=document.getElementById('c');
+const ctx=C.getContext('2d');
+let W,H;
+function resize(){{W=C.width=window.innerWidth;H=C.height=window.innerHeight;}}
+resize(); window.addEventListener('resize',resize);
 
-let rotY = 0.5, rotX = 0.1, zoom = 1.0;
-let isDrag = false, lastX = 0, lastY = 0;
-let frame = 0, ac = 0, bc = 0;
-let particles = [];
-let stars = [];
+let rotY=0.5,rotX=0.12,zoom=1.0,isDrag=false,lastX=0,lastY=0,frame=0,totalAtk=0,totalBlk=0;
+const stars=[];
+for(let i=0;i<300;i++) stars.push({{x:Math.random()*2200,y:Math.random()*1400,r:Math.random()*.9+.15,a:Math.random()*.4+.1}});
 
-for(let i=0;i<300;i++) stars.push({{x:Math.random()*2000,y:Math.random()*1200,r:Math.random()*.9+.2,a:Math.random()*.5+.1}});
+const GR=()=>Math.min(W,H)*0.36*zoom;
 
-const GR = () => Math.min(W, H) * 0.36 * zoom;
-
-function latLonTo3D(lat, lon, r) {{
-    const phi = (90 - lat) * Math.PI / 180;
-    const tht = (lon + 180) * Math.PI / 180;
-    return {{
-        x: r * Math.sin(phi) * Math.cos(tht),
-        y: -r * Math.cos(phi),
-        z: r * Math.sin(phi) * Math.sin(tht)
-    }};
+function ll3d(lat,lon,r){{
+    const phi=(90-lat)*Math.PI/180, tht=(lon+180)*Math.PI/180;
+    return {{x:r*Math.sin(phi)*Math.cos(tht), y:-r*Math.cos(phi), z:r*Math.sin(phi)*Math.sin(tht)}};
+}}
+function proj(x,y,z){{
+    let rx=x*Math.cos(rotY)+z*Math.sin(rotY);
+    let rz=-x*Math.sin(rotY)+z*Math.cos(rotY);
+    let ry2=y*Math.cos(rotX)-rz*Math.sin(rotX);
+    let rz2=y*Math.sin(rotX)+rz*Math.cos(rotX);
+    const fov=1400, sc=fov/(fov-rz2);
+    return {{px:W/2+rx*sc, py:H/2+ry2*sc, scale:sc, z:rz2}};
 }}
 
-function project(x, y, z) {{
-    let rx = x * Math.cos(rotY) + z * Math.sin(rotY);
-    let rz = -x * Math.sin(rotY) + z * Math.cos(rotY);
-    let ry2 = y * Math.cos(rotX) - rz * Math.sin(rotX);
-    let rz2 = y * Math.sin(rotX) + rz * Math.cos(rotX);
-    const fov = 1400;
-    const scale = fov / (fov - rz2);
-    return {{ px: W/2 + rx * scale, py: H/2 + ry2 * scale, scale, z: rz2 }};
-}}
-
-const COUNTRY_BORDERS = [
-    {{name:"Russia",pts:[[68,32],[69,60],[72,105],[68,140],[50,142],[45,135],[44,130],[47,142],[55,120],[60,105],[68,60],[68,32]]}},
-    {{name:"China",pts:[[53,122],[48,135],[40,130],[22,114],[22,108],[25,98],[28,97],[35,76],[40,76],[42,82],[48,87],[50,117],[53,122]]}},
-    {{name:"United States",pts:[[49,-124],[49,-67],[25,-80],[25,-97],[30,-97],[32,-114],[37,-120],[49,-124]]}},
-    {{name:"Brazil",pts:[[-5,-34],[-8,-35],[-15,-38],[-22,-43],[-33,-52],[-34,-58],[-20,-58],[-10,-68],[-4,-72],[-1,-70],[2,-50],[-5,-34]]}},
-    {{name:"Europe",pts:[[70,30],[70,10],[55,8],[44,8],[44,28],[50,30],[55,24],[60,24],[70,30]]}},
-    {{name:"Africa",pts:[[37,10],[37,35],[10,42],[-10,40],[-35,20],[-35,18],[-5,12],[10,-18],[37,10]]}},
-    {{name:"Australia",pts:[[-14,132],[-14,142],[-28,153],[-38,146],[-37,140],[-32,115],[-20,114],[-14,126],[-14,132]]}},
-    {{name:"India",pts:[[36,76],[36,80],[22,88],[8,77],[8,76],[22,70],[28,72],[36,72],[36,76]]}},
-    {{name:"Japan",pts:[[43,143],[45,142],[44,142],[38,141],[34,135],[34,131],[38,141],[43,143]]}},
-    {{name:"Canada",pts:[[83,-70],[70,-60],[50,-53],[45,-64],[45,-82],[49,-90],[49,-124],[60,-140],[72,-140],[83,-100],[83,-70]]}},
-    {{name:"Mexico",pts:[[32,-117],[30,-105],[24,-98],[16,-92],[18,-88],[22,-88],[30,-110],[32,-117]]}},
-    {{name:"Argentina",pts:[[-22,-63],[-22,-53],[-40,-62],[-55,-68],[-55,-66],[-40,-70],[-35,-72],[-22,-68],[-22,-63]]}},
-    {{name:"Saudi Arabia",pts:[[30,38],[30,48],[22,58],[16,52],[15,45],[22,40],[30,38]]}},
-    {{name:"Iran",pts:[[38,44],[38,62],[26,60],[26,56],[30,48],[38,44]]}},
-    {{name:"UK",pts:[[61,-1],[58,0],[53,0],[50,2],[52,5],[58,-4],[61,-1]]}},
-    {{name:"Ukraine",pts:[[51,24],[52,38],[47,38],[45,34],[44,34],[46,30],[46,24],[51,24]]}},
-    {{name:"South Korea",pts:[[38,126],[38,130],[35,130],[34,126],[38,126]]}},
-    {{name:"North Korea",pts:[[42,124],[42,130],[40,130],[38,128],[38,124],[42,124]]}},
-    {{name:"Vietnam",pts:[[22,104],[22,107],[16,108],[10,104],[10,103],[16,105],[22,103],[22,104]]}},
-    {{name:"Turkey",pts:[[42,28],[42,44],[36,44],[36,35],[38,28],[42,28]]}},
-    {{name:"Nigeria",pts:[[14,3],[14,15],[6,15],[4,7],[6,3],[14,3]]}},
+// ── Bordas de países ──────────────────────────────────────────────────────────
+const BORDERS=[
+  {{n:"Russia",pts:[[68,32],[69,60],[72,105],[68,140],[50,142],[45,135],[44,130],[47,142],[55,120],[60,105],[68,60],[68,32]]}},
+  {{n:"China",pts:[[53,122],[48,135],[40,130],[22,114],[22,108],[25,98],[28,97],[35,76],[40,76],[42,82],[48,87],[50,117],[53,122]]}},
+  {{n:"USA",pts:[[49,-124],[49,-67],[25,-80],[25,-97],[30,-97],[32,-114],[37,-120],[49,-124]]}},
+  {{n:"Brazil",pts:[[-5,-34],[-8,-35],[-15,-38],[-22,-43],[-33,-52],[-34,-58],[-20,-58],[-10,-68],[-4,-72],[-1,-70],[2,-50],[-5,-34]]}},
+  {{n:"Europe",pts:[[70,30],[70,10],[55,8],[44,8],[44,28],[50,30],[55,24],[60,24],[70,30]]}},
+  {{n:"Africa",pts:[[37,10],[37,35],[10,42],[-10,40],[-35,20],[-35,18],[-5,12],[10,-18],[37,10]]}},
+  {{n:"Australia",pts:[[-14,132],[-14,142],[-28,153],[-38,146],[-37,140],[-32,115],[-20,114],[-14,126],[-14,132]]}},
+  {{n:"India",pts:[[36,76],[36,80],[22,88],[8,77],[8,76],[22,70],[28,72],[36,72],[36,76]]}},
+  {{n:"Canada",pts:[[83,-70],[70,-60],[50,-53],[45,-64],[45,-82],[49,-90],[49,-124],[60,-140],[72,-140],[83,-100],[83,-70]]}},
+  {{n:"Mexico",pts:[[32,-117],[30,-105],[24,-98],[16,-92],[18,-88],[22,-88],[30,-110],[32,-117]]}},
+  {{n:"Argentina",pts:[[-22,-63],[-22,-53],[-40,-62],[-55,-68],[-55,-66],[-40,-70],[-35,-72],[-22,-68],[-22,-63]]}},
+  {{n:"Iran",pts:[[38,44],[38,62],[26,60],[26,56],[30,48],[38,44]]}},
+  {{n:"Ukraine",pts:[[51,24],[52,38],[47,38],[45,34],[44,34],[46,30],[46,24],[51,24]]}},
+  {{n:"SouthKorea",pts:[[38,126],[38,130],[35,130],[34,126],[38,126]]}},
+  {{n:"NorthKorea",pts:[[42,124],[42,130],[40,130],[38,128],[38,124],[42,124]]}},
+  {{n:"Vietnam",pts:[[22,104],[22,107],[16,108],[10,104],[10,103],[16,105],[22,103],[22,104]]}},
+  {{n:"Turkey",pts:[[42,28],[42,44],[36,44],[36,35],[38,28],[42,28]]}},
+  {{n:"Nigeria",pts:[[14,3],[14,15],[6,15],[4,7],[6,3],[14,3]]}},
+  {{n:"Japan",pts:[[43,143],[45,142],[44,142],[38,141],[34,135],[34,131],[38,141],[43,143]]}},
 ];
 
-function drawBorders() {{
-    const r = GR();
+function drawGlobe(){{
+    const r=GR();
+    // Atmosfera
+    const atm=ctx.createRadialGradient(W/2,H/2,r*.85,W/2,H/2,r*1.18);
+    atm.addColorStop(0,'rgba(0,0,0,0)');
+    atm.addColorStop(.5,'rgba(180,20,20,0.05)');
+    atm.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.arc(W/2,H/2,r*1.18,0,Math.PI*2);
+    ctx.fillStyle=atm; ctx.fill();
+
+    // Corpo do globo
+    const g=ctx.createRadialGradient(W/2-r*.22,H/2-r*.22,r*.04,W/2,H/2,r);
+    g.addColorStop(0,'rgba(30,6,6,0.96)');
+    g.addColorStop(.55,'rgba(14,3,4,0.98)');
+    g.addColorStop(1,'rgba(6,5,8,0.99)');
+    ctx.beginPath(); ctx.arc(W/2,H/2,r,0,Math.PI*2);
+    ctx.fillStyle=g; ctx.fill();
+
+    // Grade lat/lon
     ctx.save();
-    ctx.beginPath(); ctx.arc(W/2, H/2, r, 0, Math.PI*2); ctx.clip();
-    COUNTRY_BORDERS.forEach(cb => {{
-        if(cb.pts.length < 2) return;
-        ctx.beginPath();
-        let first = true;
-        cb.pts.forEach(([lat, lon]) => {{
-            const p3 = latLonTo3D(lat, lon, r + 0.5);
-            const {{px, py, z}} = project(p3.x, p3.y, p3.z);
-            if(z < -r * 0.85) {{ first = true; return; }}
-            const vis = (z + r) / (2 * r);
-            if(first) {{ ctx.moveTo(px, py); first = false; }}
-            else ctx.lineTo(px, py);
+    for(let lat=-80;lat<=80;lat+=15){{
+        ctx.beginPath(); let f=true;
+        for(let lon=-180;lon<=180;lon+=3){{
+            const p=ll3d(lat,lon,r),q=proj(p.x,p.y,p.z);
+            if(q.z<-r*.88){{f=true;continue;}}
+            f?ctx.moveTo(q.px,q.py):ctx.lineTo(q.px,q.py); f=false;
+        }}
+        ctx.strokeStyle=`rgba(140,20,20,${{lat===0?.16:.05}})`;
+        ctx.lineWidth=lat===0?.7:.3; ctx.stroke();
+    }}
+    for(let lon=-180;lon<=180;lon+=15){{
+        ctx.beginPath(); let f=true;
+        for(let lat=-88;lat<=88;lat+=2){{
+            const p=ll3d(lat,lon,r),q=proj(p.x,p.y,p.z);
+            if(q.z<-r*.88){{f=true;continue;}}
+            f?ctx.moveTo(q.px,q.py):ctx.lineTo(q.px,q.py); f=false;
+        }}
+        ctx.strokeStyle='rgba(140,20,20,0.04)'; ctx.lineWidth=.3; ctx.stroke();
+    }}
+
+    // Bordas dos países
+    BORDERS.forEach(b=>{{
+        if(b.pts.length<2) return;
+        ctx.beginPath(); let f=true;
+        b.pts.forEach(([lat,lon])=>{{
+            const p=ll3d(lat,lon,r+.5),q=proj(p.x,p.y,p.z);
+            if(q.z<-r*.85){{f=true;return;}}
+            f?ctx.moveTo(q.px,q.py):ctx.lineTo(q.px,q.py); f=false;
         }});
-        ctx.strokeStyle = 'rgba(180,50,50,0.18)';
-        ctx.lineWidth = 0.6;
-        ctx.stroke();
+        ctx.strokeStyle='rgba(200,60,60,0.22)'; ctx.lineWidth=.7; ctx.stroke();
     }});
     ctx.restore();
-}}
 
-function drawGlobe() {{
-    const r = GR();
-    const grd = ctx.createRadialGradient(W/2, H/2, r*.6, W/2, H/2, r*1.3);
-    grd.addColorStop(0, 'rgba(220,38,38,0.06)'); grd.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.beginPath(); ctx.arc(W/2, H/2, r*1.3, 0, Math.PI*2);
-    ctx.fillStyle = grd; ctx.fill();
-
-    const g2 = ctx.createRadialGradient(W/2-r*.2, H/2-r*.2, r*.05, W/2, H/2, r);
-    g2.addColorStop(0, 'rgba(40,8,8,0.95)'); g2.addColorStop(.55, 'rgba(16,4,4,0.97)'); g2.addColorStop(1, 'rgba(6,5,8,0.99)');
-    ctx.beginPath(); ctx.arc(W/2, H/2, r, 0, Math.PI*2);
-    ctx.fillStyle = g2; ctx.fill();
-
-    ctx.save();
-    for(let lat=-80;lat<=80;lat+=15) {{
-        ctx.beginPath(); let first=true;
-        for(let lon=-180;lon<=180;lon+=3) {{
-            const p3=latLonTo3D(lat,lon,r); const {{px,py,z}}=project(p3.x,p3.y,p3.z);
-            if(z<-r*.9){{first=true;continue;}}
-            if(first){{ctx.moveTo(px,py);first=false;}}else ctx.lineTo(px,py);
-        }}
-        ctx.strokeStyle=`rgba(160,30,30,${{lat===0?0.18:0.06}})`; ctx.lineWidth=lat===0?0.8:0.35; ctx.stroke();
-    }}
-    for(let lon=-180;lon<=180;lon+=15) {{
-        ctx.beginPath(); let first=true;
-        for(let lat=-88;lat<=88;lat+=2) {{
-            const p3=latLonTo3D(lat,lon,r); const {{px,py,z}}=project(p3.x,p3.y,p3.z);
-            if(z<-r*.9){{first=true;continue;}}
-            if(first){{ctx.moveTo(px,py);first=false;}}else ctx.lineTo(px,py);
-        }}
-        ctx.strokeStyle='rgba(160,30,30,0.05)'; ctx.lineWidth=0.35; ctx.stroke();
-    }}
-    ctx.restore();
-
-    drawBorders();
-
-    const rim=ctx.createRadialGradient(W/2,H/2,r*.9,W/2,H/2,r*1.08);
-    rim.addColorStop(0,'rgba(220,38,38,0)'); rim.addColorStop(.4,'rgba(220,38,38,0.08)'); rim.addColorStop(1,'rgba(220,38,38,0)');
-    ctx.beginPath(); ctx.arc(W/2,H/2,r*1.08,0,Math.PI*2); ctx.fillStyle=rim; ctx.fill();
-
+    // Highlights das ameaças
     ctx.save(); ctx.beginPath(); ctx.arc(W/2,H/2,r,0,Math.PI*2); ctx.clip();
+    THREATS.forEach(t=>{{
+        const p=ll3d(t.lat,t.lon,r),q=proj(p.x,p.y,p.z);
+        if(q.z<-r*.86) return;
+        const vis=Math.max(0,(q.z+r)/(2*r));
+        const col=t.score>=90?'255,26,26':t.score>=70?'255,102,0':t.score>=50?'255,170,0':'255,68,136';
+        const sz=(3+t.score/20)*q.scale;
 
-    THREATS.forEach(t => {{
-        const p3=latLonTo3D(t.lat,t.lon,r);
-        const {{px,py,scale,z}}=project(p3.x,p3.y,p3.z);
-        if(z<-r*.88) return;
-        const vis=Math.max(0,(z+r)/(2*r));
-        const col=t.score>=90?'#ff0000':t.score>=70?'#ff5500':t.score>=50?'#ffaa00':'#ff4488';
-        const sz=(3+t.score/18)*scale;
-
-        if(t.score>=80) {{
-            const pulse=0.5+0.5*Math.sin(frame*.07+t.lat);
-            ctx.beginPath(); ctx.arc(px,py,sz*2.2+pulse*5,0,Math.PI*2);
-            ctx.strokeStyle=`rgba(255,0,0,${{vis*0.15*pulse}})`; ctx.lineWidth=1; ctx.stroke();
-            ctx.beginPath(); ctx.arc(px,py,sz*3.5+pulse*8,0,Math.PI*2);
-            ctx.strokeStyle=`rgba(255,0,0,${{vis*0.06*pulse}})`; ctx.lineWidth=0.5; ctx.stroke();
+        if(t.score>=75){{
+            const pulse=.5+.5*Math.sin(frame*.065+t.lat*.3);
+            ctx.beginPath(); ctx.arc(q.px,q.py,sz*2.5+pulse*6,0,Math.PI*2);
+            ctx.strokeStyle=`rgba(${{col}},${{vis*.12*pulse}})`; ctx.lineWidth=1.2; ctx.stroke();
+            ctx.beginPath(); ctx.arc(q.px,q.py,sz*4+pulse*10,0,Math.PI*2);
+            ctx.strokeStyle=`rgba(${{col}},${{vis*.05*pulse}})`; ctx.lineWidth=.6; ctx.stroke();
         }}
 
-        ctx.beginPath(); ctx.arc(px,py,sz,0,Math.PI*2);
-        ctx.globalAlpha=vis; ctx.fillStyle=col; ctx.fill();
+        const gw=ctx.createRadialGradient(q.px,q.py,0,q.px,q.py,sz*4);
+        gw.addColorStop(0,`rgba(${{col}},${{vis*.4}})`);
+        gw.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.beginPath(); ctx.arc(q.px,q.py,sz*4,0,Math.PI*2);
+        ctx.globalAlpha=1; ctx.fillStyle=gw; ctx.fill();
 
-        const glow=ctx.createRadialGradient(px,py,0,px,py,sz*3);
-        glow.addColorStop(0,col.replace('ff','aa')); glow.addColorStop(1,'rgba(0,0,0,0)');
-        ctx.beginPath(); ctx.arc(px,py,sz*3,0,Math.PI*2);
-        ctx.globalAlpha=vis*.3; ctx.fillStyle=glow; ctx.fill();
-        ctx.globalAlpha=1;
+        ctx.beginPath(); ctx.arc(q.px,q.py,sz,0,Math.PI*2);
+        ctx.fillStyle=`rgba(${{col}},${{vis}})`; ctx.fill();
 
-        if(scale>.6) {{
-            ctx.font=`bold ${{Math.round(8*scale)}}px Inter`;
-            ctx.fillStyle=`rgba(230,140,140,${{vis*.85}})`;
-            ctx.fillText(t.country.substring(0,3).toUpperCase(), px+sz+4, py+3);
+        if(q.scale>.55){{
+            ctx.font=`700 ${{Math.round(7.5*q.scale)}}px Inter`;
+            ctx.fillStyle=`rgba(230,150,150,${{vis*.8}})`;
+            ctx.fillText(t.country.substring(0,3).toUpperCase(),q.px+sz+4,q.py+3);
         }}
     }});
 
-    const bz=latLonTo3D(-14.23,-51.92,r); const {{px:bpx,py:bpy,scale:bsc,z:bzz}}=project(bz.x,bz.y,bz.z);
-    if(bzz>-r*.88) {{
-        const vis=Math.max(0,(bzz+r)/(2*r));
-        [12,20,30].forEach((sr,i)=>{{
-            const pulse=0.5+0.5*Math.sin(frame*.05+i*2);
-            ctx.beginPath(); ctx.arc(bpx,bpy,(sr+pulse*4)*bsc,0,Math.PI*2);
-            ctx.strokeStyle=`rgba(0,255,136,${{vis*(0.25-i*.07)}})`;
-            ctx.lineWidth=1; ctx.stroke();
+    // Brasil — alvo protegido
+    const bz=ll3d(-14.23,-51.92,r),bq=proj(bz.x,bz.y,bz.z);
+    if(bq.z>-r*.86){{
+        const vis=Math.max(0,(bq.z+r)/(2*r));
+        [10,18,28].forEach((sr,i)=>{{
+            const pulse=.5+.5*Math.sin(frame*.05+i*2.1);
+            ctx.beginPath(); ctx.arc(bq.px,bq.py,(sr+pulse*4)*bq.scale,0,Math.PI*2);
+            ctx.strokeStyle=`rgba(0,255,136,${{vis*(.22-i*.06)}})`;
+            ctx.lineWidth=1.2; ctx.stroke();
         }});
-        ctx.beginPath(); ctx.arc(bpx,bpy,7*bsc,0,Math.PI*2);
-        ctx.globalAlpha=vis; ctx.fillStyle='#00ff88'; ctx.fill(); ctx.globalAlpha=1;
-        if(bsc>.6) {{
-            ctx.font=`bold ${{Math.round(9*bsc)}}px Inter`;
-            ctx.fillStyle=`rgba(0,255,136,${{vis*.9}})`; ctx.fillText('BRA',bpx+10*bsc,bpy+3);
+        ctx.beginPath(); ctx.arc(bq.px,bq.py,6.5*bq.scale,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,255,136,${{vis}})`; ctx.fill();
+        if(bq.scale>.55){{
+            ctx.font=`700 ${{Math.round(8.5*bq.scale)}}px Inter`;
+            ctx.fillStyle=`rgba(0,255,136,${{vis*.9}})`; ctx.fillText('BRA',bq.px+9*bq.scale,bq.py+3);
         }}
     }}
     ctx.restore();
+
+    // Brilho do rim
+    const rim=ctx.createRadialGradient(W/2,H/2,r*.92,W/2,H/2,r*1.06);
+    rim.addColorStop(0,'rgba(180,30,30,0)');
+    rim.addColorStop(.5,'rgba(180,30,30,0.07)');
+    rim.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.arc(W/2,H/2,r*1.06,0,Math.PI*2);
+    ctx.fillStyle=rim; ctx.fill();
 }}
 
-class Particle {{
-    constructor(arc) {{
-        this.arc=arc; this.t=0; this.spd=0.003+Math.random()*.005; this.trail=[];
-        const th=THREAT_MAP[arc.name];
-        this.col=th?(th.score>=90?'255,0,0':th.score>=70?'255,85,0':th.score>=50?'255,170,0':'255,68,136'):'220,100,50';
-    }}
-    pos(t) {{
+// ── Partículas de ataque estilo Kaspersky ─────────────────────────────────────
+class Missile{{
+    constructor(arc){{
+        this.arc=arc;
+        this.t=0;
+        this.spd=0.0025+Math.random()*.004;
+        this.trail=[];
+        this.maxTrail=32;
+        this.dead=false;
+        this.impactFrame=0;
+        const th=TMAP[arc.name];
+        if(th){{
+            this.col=th.score>=90?[255,26,26]:th.score>=70?[255,102,0]:th.score>=50?[255,170,0]:[255,68,136];
+        }} else {{
+            this.col=[220,100,50];
+        }}
+        // arco bezier com altura proporcional à distância
         const r=GR();
-        const s=latLonTo3D(this.arc.slat,this.arc.slon,r);
-        const d=latLonTo3D(this.arc.dlat,this.arc.dlon,r);
-        const cx=(s.x+d.x)/2, cy=(s.y+d.y)/2-r*.35, cz=(s.z+d.z)/2;
+        const s=ll3d(arc.slat,arc.slon,r);
+        const d=ll3d(arc.dlat,arc.dlon,r);
+        const dist=Math.hypot(s.x-d.x,s.y-d.y,s.z-d.z);
+        this.arcH=dist*.38;
+    }}
+    bezier(t){{
+        const r=GR();
+        const s=ll3d(this.arc.slat,this.arc.slon,r);
+        const d=ll3d(this.arc.dlat,this.arc.dlon,r);
+        // Ponto de controle elevado acima da superfície
+        const mx=(s.x+d.x)/2, my=(s.y+d.y)/2, mz=(s.z+d.z)/2;
+        const len=Math.sqrt(mx*mx+my*my+mz*mz)||1;
+        const cx=mx+mx/len*this.arcH;
+        const cy=my+my/len*this.arcH;
+        const cz=mz+mz/len*this.arcH;
         const u=1-t;
-        return {{x:u*u*s.x+2*u*t*cx+t*t*d.x, y:u*u*s.y+2*u*t*cy+t*t*d.y, z:u*u*s.z+2*u*t*cz+t*t*d.z}};
+        return {{
+            x:u*u*s.x+2*u*t*cx+t*t*d.x,
+            y:u*u*s.y+2*u*t*cy+t*t*d.y,
+            z:u*u*s.z+2*u*t*cz+t*t*d.z
+        }};
     }}
-    update() {{
-        this.t+=this.spd;
-        const p=this.pos(Math.min(this.t,1));
-        const {{px,py,z}}=project(p.x,p.y,p.z);
-        this.trail.push({{px,py,z}});
-        if(this.trail.length>24) this.trail.shift();
-        return this.t<1;
+    update(){{
+        if(this.dead) return false;
+        this.t=Math.min(this.t+this.spd,1);
+        const p=this.bezier(this.t);
+        const q=proj(p.x,p.y,p.z);
+        this.trail.push({{px:q.px,py:q.py,z:q.z,scale:q.scale}});
+        if(this.trail.length>this.maxTrail) this.trail.shift();
+        if(this.t>=1){{
+            this.impactFrame++;
+            if(this.impactFrame>18) this.dead=true;
+        }}
+        return true;
     }}
-    draw() {{
+    draw(){{
         const r=GR();
         if(this.trail.length<2) return;
-        for(let i=1;i<this.trail.length;i++) {{
+        const [cr,cg,cb]=this.col;
+
+        // Rastro com fade e espessura crescente
+        for(let i=1;i<this.trail.length;i++){{
             const a=i/this.trail.length;
             const tp=this.trail[i], pp=this.trail[i-1];
-            if(tp.z<-r*.85) continue;
+            if(tp.z<-r*.88) continue;
             const vis=Math.max(0,(tp.z+r)/(2*r));
             ctx.beginPath(); ctx.moveTo(pp.px,pp.py); ctx.lineTo(tp.px,tp.py);
-            ctx.strokeStyle=`rgba(${{this.col}},${{a*vis*.9}})`;
-            ctx.lineWidth=1.8*a; ctx.stroke();
+            ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{a*vis*.95}})`;
+            ctx.lineWidth=a*2.2; ctx.stroke();
         }}
+
+        // Cabeça do míssil
         const last=this.trail[this.trail.length-1];
-        if(last && last.z>-r*.85) {{
+        if(last && last.z>-r*.88){{
             const vis=Math.max(0,(last.z+r)/(2*r));
-            ctx.beginPath(); ctx.arc(last.px,last.py,3,0,Math.PI*2);
-            ctx.fillStyle=`rgba(${{this.col}},${{vis}})`; ctx.fill();
-            if(this.t>0.97) {{
-                ctx.beginPath(); ctx.arc(last.px,last.py,8*(1-this.t)*10,0,Math.PI*2);
-                ctx.strokeStyle=`rgba(${{this.col}},0.4)`; ctx.lineWidth=1; ctx.stroke();
+            // Glow da cabeça
+            const gw=ctx.createRadialGradient(last.px,last.py,0,last.px,last.py,8*last.scale);
+            gw.addColorStop(0,`rgba(${{cr}},${{cg}},${{cb}},${{vis*.9}})`);
+            gw.addColorStop(1,'rgba(0,0,0,0)');
+            ctx.beginPath(); ctx.arc(last.px,last.py,8*last.scale,0,Math.PI*2);
+            ctx.fillStyle=gw; ctx.fill();
+            // Ponto sólido
+            ctx.beginPath(); ctx.arc(last.px,last.py,2.5*last.scale,0,Math.PI*2);
+            ctx.fillStyle=`rgba(255,255,255,${{vis}})`; ctx.fill();
+
+            // Impacto — onda de choque
+            if(this.t>=1){{
+                const prog=this.impactFrame/18;
+                const rad=(12+prog*30)*last.scale;
+                ctx.beginPath(); ctx.arc(last.px,last.py,rad,0,Math.PI*2);
+                ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{(1-prog)*.6}})`;
+                ctx.lineWidth=2; ctx.stroke();
+                // 2a onda menor
+                ctx.beginPath(); ctx.arc(last.px,last.py,rad*.5,0,Math.PI*2);
+                ctx.strokeStyle=`rgba(${{cr}},${{cg}},${{cb}},${{(1-prog)*.35}})`;
+                ctx.lineWidth=1; ctx.stroke();
             }}
         }}
     }}
 }}
 
-function spawnParticles() {{
-    ARCS.forEach(arc=>{{ if(Math.random()<.07) particles.push(new Particle(arc)); }});
-    const extras=[
-        {{slat:61.52,slon:105.31,dlat:-14.23,dlon:-51.92,name:"Russia",n:50}},
-        {{slat:40.33,slon:127.51,dlat:-14.23,dlon:-51.92,name:"North Korea",n:45}},
-        {{slat:32.43,slon:53.69,dlat:-14.23,dlon:-51.92,name:"Iran",n:35}},
-        {{slat:9.08,slon:8.67,dlat:-14.23,dlon:-51.92,name:"Nigeria",n:30}},
-        {{slat:35.86,slon:104.19,dlat:-14.23,dlon:-51.92,name:"China",n:60}},
-    ];
-    extras.forEach(arc=>{{ if(Math.random()<.05) particles.push(new Particle(arc)); }});
+let missiles=[];
+function spawnMissiles(){{
+    ARCS.forEach(arc=>{{
+        if(Math.random()<.055) missiles.push(new Missile(arc));
+    }});
 }}
 
+// Feed de eventos
 const FEED_MSGS=[
-    "APT28 tentativa de acesso SSH bloqueada · RU","Flood DDoS mitigado — 48Gbps · CN","Brute force detectado · KP",
-    "SQL Injection bloqueado · RU","Ransomware signature detectada · UA","C2 callback bloqueado · IR",
-    "Phishing domain takedown · NG","Credential stuffing · KP","Port scan massivo · CN",
-    "Zero-day exploit tentativa · RU","BEC attack interceptado · NG","DNS hijack attempt · TR",
-    "Mimikatz detectado em memória · RU","Cobalt Strike beacon · CN","Lazarus waterhole attack · KP",
+    "APT28 tentativa SSH bloqueada · RU","Flood DDoS mitigado 48Gbps · CN",
+    "Brute force detectado · KP","SQL Injection bloqueado · RU",
+    "Ransomware signature detectada · UA","C2 callback bloqueado · IR",
+    "Phishing domain takedown · NG","Credential stuffing · KP",
+    "Port scan massivo · CN","Zero-day exploit bloqueado · RU",
+    "BEC attack interceptado · NG","DNS hijack attempt · TR",
+    "Mimikatz detectado em memória · RU","Cobalt Strike beacon · CN",
+    "Lazarus waterhole attack · KP","MuddyWater backdoor · IR",
 ];
 let feedItems=[];
-function addFeed() {{
+function addFeed(){{
     const t=new Date().toLocaleTimeString('pt-BR',{{hour:'2-digit',minute:'2-digit',second:'2-digit'}});
-    feedItems.unshift(`[${{t}}] ${{FEED_MSGS[Math.floor(Math.random()*FEED_MSGS.length)]}}`);
-    if(feedItems.length>5) feedItems.pop();
-    document.getElementById('feed-list').innerHTML=feedItems.map((f,i)=>
-        `<div class="feed-item ${{i===0?'new':""}}">${{f}}</div>`).join('');
+    feedItems.unshift('['+t+'] '+FEED_MSGS[Math.floor(Math.random()*FEED_MSGS.length)]);
+    if(feedItems.length>6) feedItems.pop();
+    document.getElementById('feed-list').innerHTML=
+        feedItems.map((f,i)=>'<div class="feed-item '+(i===0?'new':'')+'" >'+f+'</div>').join('');
 }}
-addFeed(); setInterval(addFeed,2600);
+addFeed(); setInterval(addFeed,2800);
 
-function animate() {{
+// Loop de animação
+function animate(){{
     requestAnimationFrame(animate);
     ctx.clearRect(0,0,W,H);
     ctx.fillStyle='#060508'; ctx.fillRect(0,0,W,H);
 
     stars.forEach(s=>{{
-        ctx.beginPath(); ctx.arc(s.x%W, s.y%H, s.r, 0, Math.PI*2);
-        ctx.fillStyle=`rgba(255,200,200,${{s.a*(0.7+0.3*Math.sin(frame*.02+s.x))}})`; ctx.fill();
+        ctx.beginPath(); ctx.arc(s.x%W,s.y%H,s.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,200,200,${{s.a*(.6+.4*Math.sin(frame*.018+s.x))}})`; ctx.fill();
     }});
 
-    if(!isDrag) rotY += 0.0022;
+    if(!isDrag) rotY+=.0018;
     frame++;
     drawGlobe();
-    if(frame%7===0) spawnParticles();
 
-    particles=particles.filter(p=>{{
-        const alive=p.update(); p.draw();
-        if(!alive) {{ ac++; bc=Math.floor(ac*.71); document.getElementById('atk-val').textContent=ac.toLocaleString(); document.getElementById('blk-val').textContent=bc.toLocaleString(); }}
-        return alive;
+    if(frame%9===0) spawnMissiles();
+    missiles=missiles.filter(m=>{{
+        const alive=m.update(); m.draw();
+        if(m.dead){{
+            totalAtk++; totalBlk=Math.floor(totalAtk*.73);
+            document.getElementById('atk-val').textContent=totalAtk.toLocaleString();
+            document.getElementById('blk-val').textContent=totalBlk.toLocaleString();
+        }}
+        return !m.dead;
     }});
 }}
 
-C.addEventListener('mousedown',e=>{{ isDrag=true; lastX=e.clientX; lastY=e.clientY; C.classList.add('dragging'); }});
-window.addEventListener('mouseup',()=>{{ isDrag=false; C.classList.remove('dragging'); }});
+// Interação
+C.addEventListener('mousedown',e=>{{isDrag=true;lastX=e.clientX;lastY=e.clientY;C.classList.add('dragging');}});
+window.addEventListener('mouseup',()=>{{isDrag=false;C.classList.remove('dragging');}});
 window.addEventListener('mousemove',e=>{{
     if(!isDrag) return;
-    rotY += (e.clientX-lastX)*.005;
-    rotX += (e.clientY-lastY)*.003;
-    rotX = Math.max(-0.8, Math.min(0.8, rotX));
-    lastX=e.clientX; lastY=e.clientY;
+    rotY+=(e.clientX-lastX)*.005; rotX+=(e.clientY-lastY)*.003;
+    rotX=Math.max(-.8,Math.min(.8,rotX)); lastX=e.clientX; lastY=e.clientY;
 }});
 C.addEventListener('wheel',e=>{{
     e.preventDefault();
-    zoom = Math.max(0.5, Math.min(2.5, zoom - e.deltaY*.001));
+    zoom=Math.max(.5,Math.min(2.5,zoom-e.deltaY*.001));
 }},{{passive:false}});
 
-let lastTouchX=0,lastTouchY=0,lastDist=0;
-C.addEventListener('touchstart',e=>{{ e.preventDefault(); lastTouchX=e.touches[0].clientX; lastTouchY=e.touches[0].clientY; if(e.touches.length===2)lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); }},{{passive:false}});
+// Touch
+let ltx=0,lty=0,ldist=0;
+C.addEventListener('touchstart',e=>{{e.preventDefault();ltx=e.touches[0].clientX;lty=e.touches[0].clientY;if(e.touches.length===2)ldist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{{passive:false}});
 C.addEventListener('touchmove',e=>{{
     e.preventDefault();
-    if(e.touches.length===1){{
-        rotY+=(e.touches[0].clientX-lastTouchX)*.005;
-        rotX+=(e.touches[0].clientY-lastTouchY)*.003;
-        rotX=Math.max(-0.8,Math.min(0.8,rotX));
-        lastTouchX=e.touches[0].clientX; lastTouchY=e.touches[0].clientY;
-    }} else if(e.touches.length===2){{
-        const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-        zoom=Math.max(0.5,Math.min(2.5,zoom*(d/lastDist))); lastDist=d;
-    }}
+    if(e.touches.length===1){{rotY+=(e.touches[0].clientX-ltx)*.005;rotX+=(e.touches[0].clientY-lty)*.003;rotX=Math.max(-.8,Math.min(.8,rotX));ltx=e.touches[0].clientX;lty=e.touches[0].clientY;}}
+    else if(e.touches.length===2){{const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);zoom=Math.max(.5,Math.min(2.5,zoom*(d/ldist)));ldist=d;}}
 }},{{passive:false}});
 
+// Click — info do país
 C.addEventListener('click',e=>{{
     const rect=C.getBoundingClientRect();
     const mx=e.clientX-rect.left, my=e.clientY-rect.top;
-    const r=GR();
-    let found=null;
+    const r=GR(); let found=null;
     THREATS.forEach(t=>{{
-        const p3=latLonTo3D(t.lat,t.lon,r);
-        const {{px,py,z}}=project(p3.x,p3.y,p3.z);
-        if(z>-r*.8 && Math.hypot(mx-px,my-py)<20) found=t;
+        const p=ll3d(t.lat,t.lon,r),q=proj(p.x,p.y,p.z);
+        if(q.z>-r*.8 && Math.hypot(mx-q.px,my-q.py)<22) found=t;
     }});
-    if(found) {{
-        const panel=document.getElementById('info-panel');
-        document.getElementById('ip-name').textContent='⚠️ '+found.country;
+    if(found){{
+        document.getElementById('ip-name').textContent=found.country;
         document.getElementById('ip-score').textContent='Threat Score: '+found.score+'/100';
         document.getElementById('ip-target').textContent='Alvos: '+found.target;
         document.getElementById('ip-groups').textContent='Grupos APT: '+found.groups.join(' · ');
         document.getElementById('ip-bar').style.width=found.score+'%';
-        panel.style.display='block';
+        document.getElementById('info-panel').style.display='block';
     }}
 }});
 
@@ -1420,27 +1416,29 @@ animate();
 </script>
 </body>
 </html>"""
+
     components.html(globe_html, height=640, scrolling=False)
 
-    st.markdown("### 🏴‍☠️ Threat Intelligence — Países de Alto Risco")
-    threat_df = pd.DataFrame([{"País":t["country"],"Threat Score":t["score"],"Grupos APT":", ".join(t["groups"]),"Alvos Primários":t["target"]} for t in sorted(THREAT_INTEL, key=lambda x: -x["score"])])
+    st.markdown("### Threat Intelligence — Países de Alto Risco")
+    threat_df = pd.DataFrame([{
+        "País":t["country"],"Threat Score":t["score"],
+        "Grupos APT":", ".join(t["groups"]),"Alvos Primários":t["target"]
+    } for t in sorted(THREAT_INTEL, key=lambda x: -x["score"])])
     st.dataframe(threat_df, use_container_width=True, hide_index=True)
 
     if not cc.empty:
-        st.markdown("### 📊 Ataques por País — Dataset Atual")
-        ta = cc.copy()
-        ta.columns = ["País", "Ataques"]
-        ta["% do Total"] = (ta["Ataques"] / ta["Ataques"].sum() * 100).round(1).astype(str) + "%"
+        st.markdown("### Ataques por País — Dataset Atual")
+        ta = cc.copy(); ta.columns = ["País","Ataques"]
+        ta["% do Total"] = (ta["Ataques"]/ta["Ataques"].sum()*100).round(1).astype(str)+"%"
         st.dataframe(ta, use_container_width=True, hide_index=True)
 
+# ─── TAB 3: SENTINEL BOT ─────────────────────────────────────────────────────
 with tabs[3]:
-    st.markdown("### 🤖 Sentinel Bot — Assistente de Segurança")
-    st.caption("IA especialista em cibersegurança com acesso aos dados do sistema em tempo real. (Groq API)")
-
-    api_ok = True  # Groq API está configurada
+    st.markdown("### Sentinel Bot — Assistente de Segurança")
+    st.caption("IA especialista em cibersegurança com acesso aos dados do sistema em tempo real.")
 
     top_cli = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
-    top_pai = df[df["TIPO INCIDENTE"] == "ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
+    top_pai = df[df["TIPO INCIDENTE"]=="ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
 
     SYSTEM_BOT = f"""Você é o Sentinel Bot, assistente especialista em segurança cibernética da plataforma SentinelAI.
 Responda SEMPRE em português brasileiro, de forma profissional, objetiva e direta.
@@ -1454,20 +1452,23 @@ Top países atacantes: {top_pai}
 Top clientes por prejuízo: {top_cli}
 Status: {df['STATUS'].value_counts().to_dict()}
 Severidades: {df['SEVERIDADE'].value_counts().to_dict()}
-Escopo: {"Todos os clientes" if not CLT else CLT}
-BD: SQLite {db_size}KB ativo"""
+Escopo: {"Todos os clientes" if not CLT else CLT}"""
 
+    # Renderiza histórico
     for msg in st.session_state["chat"]:
-        css = "chat-user" if msg["role"] == "user" else "chat-ai"
-        icon = "👤" if msg["role"] == "user" else "🤖"
-        st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>', unsafe_allow_html=True)
+        css = "chat-user" if msg["role"]=="user" else "chat-ai"
+        label = "Você" if msg["role"]=="user" else "Sentinel Bot"
+        st.markdown(f'<div class="{css}"><strong style="font-size:0.68rem;opacity:0.6;">{label}</strong><br>{msg["content"]}</div>', unsafe_allow_html=True)
 
     if not st.session_state["chat"]:
-        st.markdown("""<div class="chat-ai">🤖 <strong>Sentinel Bot ativo (Groq).</strong><br><br>
-        Olá! Sou o assistente de segurança da SentinelAI. Posso analisar incidentes, identificar padrões de ameaças e recomendar ações.<br><br>Como posso ajudar?</div>""", unsafe_allow_html=True)
+        st.markdown("""<div class="chat-ai">
+        <strong style="font-size:0.68rem;opacity:0.6;">Sentinel Bot</strong><br>
+        Olá! Sou o assistente de segurança da SentinelAI. Analiso incidentes, identifico padrões de ameaças e recomendo ações de mitigação.<br><br>Como posso ajudar?
+        </div>""", unsafe_allow_html=True)
 
-    sugs = ["Qual cliente tem mais prejuízo?", "Quais países mais atacaram?", "Status dos incidentes críticos", "Recomendações urgentes", "Como funciona o modelo IA?", "Explique os grupos APT"]
-    st.markdown("<p style='color:#4b5563;font-size:0.68rem;margin:10px 0 5px;text-transform:uppercase;'>💡 Perguntas rápidas</p>", unsafe_allow_html=True)
+    # Sugestões
+    sugs = ["Qual cliente tem mais prejuízo?","Quais países mais atacaram?","Status dos incidentes críticos","Recomendações urgentes","Como funciona o modelo IA?","Explique os grupos APT"]
+    st.markdown("<p style='color:#4b5563;font-size:0.68rem;margin:10px 0 5px;text-transform:uppercase;letter-spacing:0.06em;'>Perguntas rápidas</p>", unsafe_allow_html=True)
     scols = st.columns(len(sugs))
     sug_click = None
     for i, s in enumerate(sugs):
@@ -1476,58 +1477,68 @@ BD: SQLite {db_size}KB ativo"""
                 sug_click = s
 
     with st.form("chat_f", clear_on_submit=True):
-        ci, cb = st.columns([5, 1])
+        ci, cb = st.columns([5,1])
         with ci:
             q = st.text_input("", placeholder="Digite sua pergunta sobre segurança...", label_visibility="collapsed")
         with cb:
             send = st.form_submit_button("Enviar", use_container_width=True)
 
     if sug_click:
-        q = sug_click
-        send = True
+        q = sug_click; send = True
 
     if send and q:
-        log(USER, "CHAT", q[:80])
-        st.session_state["chat"].append({"role": "user", "content": q})
+        log(USER,"CHAT",q[:80])
+        st.session_state["chat"].append({"role":"user","content":q})
+        # Mostra animação de digitando
+        typing_placeholder = st.empty()
+        typing_placeholder.markdown("""
+        <div class="typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>""", unsafe_allow_html=True)
         msgs = st.session_state["chat"].copy()
         resp = gemini_chat(SYSTEM_BOT, msgs)
-        st.session_state["chat"].append({"role": "assistant", "content": resp})
-        db_salvar_chat(USER, q, resp)
+        typing_placeholder.empty()
+        st.session_state["chat"].append({"role":"assistant","content":resp})
+        db_salvar_chat(USER,q,resp)
         st.rerun()
 
     if st.session_state["chat"]:
-        if st.button("🗑️ Limpar conversa", key="clear_chat"):
+        if st.button("Limpar conversa", key="clear_chat"):
             st.session_state["chat"] = []
             st.rerun()
 
+# ─── TAB 4: SUPORTE ───────────────────────────────────────────────────────────
 with tabs[4]:
-    st.markdown("### 🎫 Suporte ao Cliente — Canal Direto com a SentinelAI")
+    st.markdown("### Suporte ao Cliente — Canal Direto com a SentinelAI")
 
     is_client = bool(CLT)
     is_support_adm = PROF["support_admin"]
 
     SUPPORT_SYS = f"""Você é o agente de suporte da SentinelAI, empresa brasileira de cibersegurança.
 Responda em português, de forma cordial, profissional e objetiva.
-Auxilia clientes empresariais com dúvidas sobre segurança, incidentes e a plataforma.
 Cliente: {CLT or 'Equipe interna'}
 Dados: {len(df)} incidentes · Acurácia IA {ACC:.1%} · Prejuízo R$ {prej:,.0f}
 Nunca revele dados de outros clientes."""
 
     if is_client:
-        st.markdown(f'<div class="info-box-blue">🏢 <strong>Bem-vindo ao suporte, {CLT}!</strong><br>Chat com IA de suporte, consulte seus tickets ou abra um novo chamado.</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-box-blue">Bem-vindo ao suporte, <strong>{CLT}</strong>. Use o chat para dúvidas rápidas ou abra um ticket formal.</div>', unsafe_allow_html=True)
 
-        ctabs = st.tabs(["💬 Chat Suporte", "🎫 Meus Tickets", "➕ Novo Ticket"])
+        ctabs = st.tabs(["Chat Suporte","Meus Tickets","Novo Ticket"])
 
         with ctabs[0]:
-            st.markdown("#### 💬 Chat com Suporte SentinelAI")
+            st.markdown("#### Chat com Suporte SentinelAI")
             if not st.session_state["chat_suporte"]:
-                st.markdown(f"""<div class="chat-support">🛡️ <strong>Suporte SentinelAI ativo.</strong><br><br>Olá, {CLT}! Como posso ajudar hoje?</div>""", unsafe_allow_html=True)
+                st.markdown(f"""<div class="chat-support">
+                <strong style="font-size:0.68rem;opacity:0.7;">Suporte SentinelAI</strong><br>
+                Olá, {CLT}! Como posso ajudar hoje?</div>""", unsafe_allow_html=True)
             for msg in st.session_state["chat_suporte"]:
-                css = "chat-user" if msg["role"] == "user" else "chat-support"
-                icon = "🏢" if msg["role"] == "user" else "🛡️"
-                st.markdown(f'<div class="{css}">{icon} {msg["content"]}</div>', unsafe_allow_html=True)
+                css = "chat-user" if msg["role"]=="user" else "chat-support"
+                label = CLT if msg["role"]=="user" else "Suporte SentinelAI"
+                st.markdown(f'<div class="{css}"><strong style="font-size:0.68rem;opacity:0.6;">{label}</strong><br>{msg["content"]}</div>', unsafe_allow_html=True)
 
-            sup_sugs = [f"Status incidentes {CLT}", "Como interpretar threat score?", "O que fazer em caso de ataque?", "Como exportar relatórios?"]
+            sup_sugs = [f"Status incidentes {CLT}","Como interpretar threat score?","O que fazer em caso de ataque?","Como exportar relatórios?"]
             sc = st.columns(len(sup_sugs))
             sup_click = None
             for i, s in enumerate(sup_sugs):
@@ -1536,163 +1547,165 @@ Nunca revele dados de outros clientes."""
                         sup_click = s
 
             with st.form("chat_sup_f", clear_on_submit=True):
-                si, sb = st.columns([5, 1])
+                si, sb = st.columns([5,1])
                 with si:
                     sq = st.text_input("", placeholder="Mensagem para o suporte...", label_visibility="collapsed")
                 with sb:
                     ssend = st.form_submit_button("Enviar", use_container_width=True)
 
-            if sup_click:
-                sq = sup_click
-                ssend = True
+            if sup_click: sq = sup_click; ssend = True
 
             if ssend and sq:
-                log(USER, "SUPORTE_CHAT", sq[:80])
-                st.session_state["chat_suporte"].append({"role": "user", "content": sq})
+                log(USER,"SUPORTE_CHAT",sq[:80])
+                st.session_state["chat_suporte"].append({"role":"user","content":sq})
+                typing_ph = st.empty()
+                typing_ph.markdown("""<div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>""", unsafe_allow_html=True)
                 sup_resp = gemini_chat(SUPPORT_SYS, st.session_state["chat_suporte"].copy(), temperature=0.6, max_tokens=800)
-                st.session_state["chat_suporte"].append({"role": "assistant", "content": sup_resp})
+                typing_ph.empty()
+                st.session_state["chat_suporte"].append({"role":"assistant","content":sup_resp})
                 st.rerun()
 
             if st.session_state["chat_suporte"]:
-                if st.button("🗑️ Limpar chat", key="clear_sup"):
+                if st.button("Limpar chat", key="clear_sup"):
                     st.session_state["chat_suporte"] = []
                     st.rerun()
 
         with ctabs[1]:
-            st.markdown("#### 🎫 Meus Tickets")
+            st.markdown("#### Meus Tickets")
             tks_cli = db_buscar_tickets(CLT)
             if tks_cli.empty:
                 st.info("Nenhum ticket ainda. Abra um na aba 'Novo Ticket'.")
             else:
                 for _, row in tks_cli.iterrows():
-                    sc_color = {"aberto": "#dc2626", "respondido": "#4ade80", "fechado": "#6b7280"}.get(row["status"], "#f59e0b")
-                    pri_icon = {"urgente": "🔴", "alta": "🟠", "normal": "🟡", "baixa": "🟢"}.get(row["prioridade"], "⚪")
+                    sc_color = {"aberto":"#dc2626","respondido":"#4ade80","fechado":"#6b7280"}.get(row["status"],"#f59e0b")
+                    pri_label = {"urgente":"URGENTE","alta":"ALTA","normal":"NORMAL","baixa":"BAIXA"}.get(row["prioridade"],"NORMAL")
                     st.markdown(f"""<div class="ticket-card">
                       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                        <span style="color:white;font-weight:700;font-size:0.82rem;">{pri_icon} #{row['id']} — {row['assunto']}</span>
-                        <span style="color:{sc_color};font-size:0.7rem;font-weight:700;">{row['status'].upper()}</span>
+                        <span style="color:white;font-weight:700;font-size:0.82rem;">#{row['id']} — {row['assunto']}</span>
+                        <div>
+                          <span style="color:#6b7280;font-size:0.65rem;margin-right:8px;">{pri_label}</span>
+                          <span style="color:{sc_color};font-size:0.7rem;font-weight:700;">{row['status'].upper()}</span>
+                        </div>
                       </div>
-                      <p style="color:#6b7280;font-size:0.7rem;">📅 {row['ts']}</p>
+                      <p style="color:#6b7280;font-size:0.7rem;">{row['ts']}</p>
                     </div>""", unsafe_allow_html=True)
                     with st.expander(f"Ver ticket #{row['id']}"):
                         chat_t = db_buscar_chat_ticket(int(row["id"]))
                         if not chat_t.empty:
                             for _, m in chat_t.iterrows():
                                 is_me = m["remetente"] == CLT
-                                st.markdown(f'<div class="{"chat-user" if is_me else "chat-support"}">{"🏢" if is_me else "🛡️"} <strong>{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="{"chat-user" if is_me else "chat-support"}"><strong style="font-size:0.68rem;opacity:0.6;">{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
                         if row["status"] != "fechado":
                             with st.form(f"reply_{row['id']}"):
                                 rm = st.text_area("Adicionar mensagem", key=f"rm_{row['id']}", height=70)
                                 cr1, cr2 = st.columns(2)
                                 with cr1:
-                                    if st.form_submit_button("📤 Enviar", use_container_width=True):
+                                    if st.form_submit_button("Enviar mensagem", use_container_width=True):
                                         if rm.strip():
-                                            db_adicionar_msg_ticket(int(row["id"]), CLT, rm.strip())
-                                            log(USER, "TICKET_MSG", f"#{row['id']}")
-                                            st.rerun()
+                                            db_adicionar_msg_ticket(int(row["id"]),CLT,rm.strip())
+                                            log(USER,"TICKET_MSG",f"#{row['id']}"); st.rerun()
                                 with cr2:
-                                    if st.form_submit_button("✅ Fechar ticket", use_container_width=True):
-                                        db_responder_ticket(int(row["id"]), "Fechado pelo cliente.", "fechado")
-                                        log(USER, "TICKET_FECHADO", f"#{row['id']}")
-                                        st.rerun()
+                                    if st.form_submit_button("Fechar ticket", use_container_width=True):
+                                        db_responder_ticket(int(row["id"]),"Fechado pelo cliente.","fechado")
+                                        log(USER,"TICKET_FECHADO",f"#{row['id']}"); st.rerun()
 
         with ctabs[2]:
-            st.markdown("#### ➕ Abrir Novo Ticket")
+            st.markdown("#### Abrir Novo Ticket")
             with st.form("novo_ticket"):
                 assunto = st.text_input("Assunto*", placeholder="Ex: Alerta não reconhecido")
-                prioridade = st.selectbox("Prioridade", ["normal", "alta", "urgente", "baixa"])
+                prioridade = st.selectbox("Prioridade", ["normal","alta","urgente","baixa"])
                 mensagem = st.text_area("Descrição*", height=110, placeholder="Descreva o problema, quando ocorreu e o impacto...")
-                submitted = st.form_submit_button("📤 Abrir Ticket", use_container_width=True)
+                submitted = st.form_submit_button("Abrir Ticket", use_container_width=True)
             if submitted:
                 if assunto.strip() and mensagem.strip():
-                    tid = db_criar_ticket(CLT, assunto.strip(), mensagem.strip(), prioridade)
+                    tid = db_criar_ticket(CLT,assunto.strip(),mensagem.strip(),prioridade)
                     if tid:
-                        log(USER, "TICKET_CRIADO", f"id={tid}")
-                        st.success(f"✅ Ticket #{tid} criado!")
-                        auto = gemini_chat(SUPPORT_SYS, [{"role": "user", "content": f"Cliente {CLT} abriu ticket: '{assunto}'. Mensagem: {mensagem}. Responda confirmando recebimento e com orientações iniciais."}], temperature=0.5, max_tokens=400)
-                        db_adicionar_msg_ticket(tid, "SentinelAI", auto)
+                        log(USER,"TICKET_CRIADO",f"id={tid}")
+                        st.success(f"Ticket #{tid} criado com sucesso.")
+                        auto = gemini_chat(SUPPORT_SYS,[{"role":"user","content":f"Cliente {CLT} abriu ticket: '{assunto}'. Mensagem: {mensagem}. Responda confirmando recebimento e com orientações iniciais."}],temperature=0.5,max_tokens=400)
+                        db_adicionar_msg_ticket(tid,"SentinelAI",auto)
                         st.rerun()
-                    else:
-                        st.error("Erro ao criar ticket.")
-                else:
-                    st.warning("Preencha todos os campos.")
+                    else: st.error("Erro ao criar ticket.")
+                else: st.warning("Preencha todos os campos.")
 
     elif is_support_adm:
-        st.markdown('<div class="info-box">🔧 <strong>Painel Administrativo de Suporte</strong> — Gerencie todos os tickets dos clientes.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="info-box">Painel Administrativo de Suporte — Gerencie todos os tickets dos clientes.</div>', unsafe_allow_html=True)
         all_tks = db_buscar_tickets()
         if all_tks.empty:
             st.info("Nenhum ticket registrado.")
         else:
-            n_ab = len(all_tks[all_tks["status"] == "aberto"])
-            n_re = len(all_tks[all_tks["status"] == "respondido"])
-            n_fe = len(all_tks[all_tks["status"] == "fechado"])
-            ma1, ma2, ma3 = st.columns(3)
-            with ma1: st.metric("🔴 Abertos", n_ab)
-            with ma2: st.metric("🟡 Respondidos", n_re)
-            with ma3: st.metric("🟢 Fechados", n_fe)
-            filtro = st.selectbox("Filtrar", ["todos", "aberto", "respondido", "fechado"])
-            tks_f = all_tks if filtro == "todos" else all_tks[all_tks["status"] == filtro]
-            for _, row in tks_f.iterrows():
-                pri_icon = {"urgente": "🔴", "alta": "🟠", "normal": "🟡", "baixa": "🟢"}.get(row["prioridade"], "⚪")
-                with st.expander(f"{pri_icon} #{row['id']} [{row['cliente']}] {row['assunto']} — {row['status'].upper()}"):
+            n_ab=len(all_tks[all_tks["status"]=="aberto"])
+            n_re=len(all_tks[all_tks["status"]=="respondido"])
+            n_fe=len(all_tks[all_tks["status"]=="fechado"])
+            ma1,ma2,ma3 = st.columns(3)
+            with ma1: st.metric("Abertos",n_ab)
+            with ma2: st.metric("Respondidos",n_re)
+            with ma3: st.metric("Fechados",n_fe)
+            filtro = st.selectbox("Filtrar",["todos","aberto","respondido","fechado"])
+            tks_f = all_tks if filtro=="todos" else all_tks[all_tks["status"]==filtro]
+            for _,row in tks_f.iterrows():
+                pri_label = {"urgente":"[URGENTE]","alta":"[ALTA]","normal":"[NORMAL]","baixa":"[BAIXA]"}.get(row["prioridade"],"")
+                with st.expander(f"{pri_label} #{row['id']} [{row['cliente']}] {row['assunto']} — {row['status'].upper()}"):
                     chat_t = db_buscar_chat_ticket(int(row["id"]))
                     if not chat_t.empty:
-                        for _, m in chat_t.iterrows():
-                            is_sen = m["remetente"] == "SentinelAI"
-                            st.markdown(f'<div class="{"chat-support" if is_sen else "chat-user"}">{"🛡️" if is_sen else "🏢"} <strong>{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
-                    if row["status"] != "fechado":
-                        if st.button(f"🤖 Sugestão IA para #{row['id']}", key=f"ia_{row['id']}", use_container_width=True):
-                            sugestao = gemini_chat(SUPPORT_SYS, [{"role": "user", "content": f"Analista precisa responder ticket do cliente {row['cliente']}. Assunto: '{row['assunto']}'. Mensagem: '{row['mensagem']}'. Gere resposta profissional e empática."}], temperature=0.5, max_tokens=400)
-                            st.info(f"💡 Sugestão:\n\n{sugestao}")
+                        for _,m in chat_t.iterrows():
+                            is_sen = m["remetente"]=="SentinelAI"
+                            st.markdown(f'<div class="{"chat-support" if is_sen else "chat-user"}"><strong style="font-size:0.68rem;opacity:0.6;">{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
+                    if row["status"]!="fechado":
+                        if st.button(f"Gerar sugestão IA — #{row['id']}",key=f"ia_{row['id']}",use_container_width=True):
+                            sugestao = gemini_chat(SUPPORT_SYS,[{"role":"user","content":f"Analista responde ticket do cliente {row['cliente']}. Assunto: '{row['assunto']}'. Mensagem: '{row['mensagem']}'. Gere resposta profissional."}],temperature=0.5,max_tokens=400)
+                            st.info(f"Sugestão gerada:\n\n{sugestao}")
                         with st.form(f"adm_{row['id']}"):
-                            resp_adm = st.text_area("Resposta", height=80, key=f"ra_{row['id']}")
-                            ca1, ca2, ca3 = st.columns(3)
+                            resp_adm = st.text_area("Resposta",height=80,key=f"ra_{row['id']}")
+                            ca1,ca2,ca3 = st.columns(3)
                             with ca1:
-                                if st.form_submit_button("📤 Responder", use_container_width=True):
+                                if st.form_submit_button("Responder",use_container_width=True):
                                     if resp_adm.strip():
-                                        db_responder_ticket(int(row["id"]), resp_adm.strip(), "respondido")
-                                        log(USER, "TICKET_RESP", f"#{row['id']}")
-                                        st.rerun()
+                                        db_responder_ticket(int(row["id"]),resp_adm.strip(),"respondido")
+                                        log(USER,"TICKET_RESP",f"#{row['id']}"); st.rerun()
                             with ca2:
-                                if st.form_submit_button("✅ Fechar", use_container_width=True):
-                                    db_responder_ticket(int(row["id"]), resp_adm.strip() or "Resolvido.", "fechado")
-                                    log(USER, "TICKET_FECH", f"#{row['id']}")
-                                    st.rerun()
+                                if st.form_submit_button("Fechar",use_container_width=True):
+                                    db_responder_ticket(int(row["id"]),resp_adm.strip() or "Resolvido.","fechado")
+                                    log(USER,"TICKET_FECH",f"#{row['id']}"); st.rerun()
                             with ca3:
-                                if st.form_submit_button("🚨 Escalar", use_container_width=True):
-                                    db_adicionar_msg_ticket(int(row["id"]), USER, "⚠️ ESCALADO como URGENTE pelo SOC.")
-                                    log(USER, "TICKET_ESC", f"#{row['id']}")
-                                    st.rerun()
+                                if st.form_submit_button("Escalar urgente",use_container_width=True):
+                                    db_adicionar_msg_ticket(int(row["id"]),USER,"ESCALADO como URGENTE pelo SOC.")
+                                    log(USER,"TICKET_ESC",f"#{row['id']}"); st.rerun()
     else:
-        st.markdown('<div class="info-box">⛔ Sem acesso ao módulo de suporte.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="info-box">Sem acesso ao módulo de suporte.</div>', unsafe_allow_html=True)
 
+# ─── TAB 5: BACKUP ───────────────────────────────────────────────────────────
 with tabs[5]:
-    st.markdown("### 💾 Backup e Gerenciamento de Dados")
+    st.markdown("### Backup e Gerenciamento de Dados")
     st.markdown("""
     <div class="info-box">
-      <strong>📍 Onde os dados são armazenados:</strong><br><br>
+      <strong>Onde os dados são armazenados:</strong><br><br>
       <strong style="color:#f87171;">SQLite (atual — sentinelai_backup.db):</strong><br>
-      • Arquivo local no servidor Streamlit Cloud · persiste entre sessões normais<br>
-      • ⚠️ Reseta ao fazer redeploy da aplicação<br><br>
+      Arquivo local no servidor Streamlit Cloud. Persiste entre sessões normais,
+      mas reseta ao fazer redeploy.<br><br>
       <strong style="color:#60a5fa;">MySQL (produção — persistência total):</strong><br>
-      • Configure <code>MYSQL_URL</code> nos Secrets do Streamlit<br>
-      • Serviços gratuitos: <strong>PlanetScale</strong>, <strong>Railway</strong>, <strong>Aiven</strong><br>
-      • Backup automático · sem perda em redeploys<br><br>
-      <strong style="color:#4ade80;">Exportação manual:</strong> use os botões abaixo para CSV/TXT a qualquer momento.
+      Configure <code>MYSQL_URL</code> nos Secrets do Streamlit.
+      Serviços gratuitos: PlanetScale, Railway, Aiven.<br><br>
+      <strong style="color:#4ade80;">Exportação manual:</strong> use os botões abaixo a qualquer momento.
     </div>""", unsafe_allow_html=True)
 
-    with st.expander("⚙️ Como configurar MySQL (PlanetScale / Railway)"):
+    with st.expander("Como configurar MySQL (PlanetScale / Railway)"):
         st.code("""# 1. PlanetScale (planetscale.com) — crie banco 'sentinelai'
 # 2. Copie a connection string
-# 3. No Streamlit Cloud: Settings → Secrets → adicione:
-
+# 3. Streamlit Cloud > Settings > Secrets:
 MYSQL_URL = "mysql://user:senha@host/sentinelai" """, language="bash")
 
-    b1, b2, b3, b4 = st.columns(4)
+    db_ok = os.path.exists(DB_PATH)
+    db_size = round(os.path.getsize(DB_PATH)/1024,1) if db_ok else 0
+    b1,b2,b3,b4 = st.columns(4)
     with b1:
         st.markdown(f"""<div style="background:rgba(0,180,80,0.06);border:1px solid rgba(0,180,80,0.2);border-radius:12px;padding:1rem;text-align:center;">
           <p style="color:#4b5563;font-size:0.6rem;text-transform:uppercase;">SQLite Status</p>
-          <p style="color:#4ade80;font-size:1rem;font-weight:700;">✅ ATIVO</p>
+          <p style="color:#4ade80;font-size:1rem;font-weight:700;">ATIVO</p>
           <p style="color:#6b7280;font-size:0.7rem;">{db_size} KB</p>
         </div>""", unsafe_allow_html=True)
     with b2:
@@ -1714,57 +1727,58 @@ MYSQL_URL = "mysql://user:senha@host/sentinelai" """, language="bash")
           <p style="color:#f59e0b;font-size:1rem;font-weight:700;">{n_logs_db}</p>
         </div>""", unsafe_allow_html=True)
 
-    st.markdown("### 📥 Exportar Dados")
+    st.markdown("### Exportar Dados")
     if not PROF["export"]:
-        st.error("⛔ Apenas Administradores podem exportar.")
+        st.error("Apenas Administradores podem exportar dados.")
     else:
         ts_exp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        e1, e2, e3, e4, e5 = st.columns(5)
+        e1,e2,e3,e4,e5 = st.columns(5)
         with e1:
-            st.download_button("⬇️ Dataset Completo", df_all.to_csv(index=False).encode(), f"sentinel_full_{ts_exp}.csv", "text/csv", use_container_width=True)
+            st.download_button("Dataset Completo", df_all.to_csv(index=False).encode(), f"sentinel_full_{ts_exp}.csv","text/csv",use_container_width=True)
         with e2:
-            df_anon = df_all.drop(columns=["IP_SUSPEITO"], errors="ignore")
-            st.download_button("⬇️ Anonimizado", df_anon.to_csv(index=False).encode(), f"sentinel_anon_{ts_exp}.csv", "text/csv", use_container_width=True)
+            df_anon = df_all.drop(columns=["IP_SUSPEITO"],errors="ignore")
+            st.download_button("Anonimizado", df_anon.to_csv(index=False).encode(), f"sentinel_anon_{ts_exp}.csv","text/csv",use_container_width=True)
         with e3:
             df_inc_exp = db_buscar_incidentes()
             if not df_inc_exp.empty:
-                st.download_button("⬇️ Incidentes DB", df_inc_exp.to_csv(index=False).encode(), f"sentinel_db_{ts_exp}.csv", "text/csv", use_container_width=True)
+                st.download_button("Incidentes DB", df_inc_exp.to_csv(index=False).encode(), f"sentinel_db_{ts_exp}.csv","text/csv",use_container_width=True)
         with e4:
             df_tks_exp = db_buscar_tickets()
             if not df_tks_exp.empty:
-                st.download_button("⬇️ Tickets", df_tks_exp.to_csv(index=False).encode(), f"sentinel_tickets_{ts_exp}.csv", "text/csv", use_container_width=True)
+                st.download_button("Tickets", df_tks_exp.to_csv(index=False).encode(), f"sentinel_tickets_{ts_exp}.csv","text/csv",use_container_width=True)
         with e5:
             if st.session_state.get("logs"):
-                st.download_button("⬇️ Logs Sessão", "\n".join(st.session_state["logs"]).encode(), f"sentinel_logs_{ts_exp}.txt", "text/plain", use_container_width=True)
-        db_meta_backup(USER, "EXPORT_FULL", len(df_all))
+                st.download_button("Logs Sessão", "\n".join(st.session_state["logs"]).encode(), f"sentinel_logs_{ts_exp}.txt","text/plain",use_container_width=True)
+        db_meta_backup(USER,"EXPORT_FULL",len(df_all))
 
-    st.markdown("### 📋 Incidentes no Banco")
+    st.markdown("### Incidentes no Banco")
     df_db_view = db_buscar_incidentes()
     if not df_db_view.empty:
-        st.dataframe(df_db_view, use_container_width=True, height=220)
+        st.dataframe(df_db_view,use_container_width=True,height=220)
     else:
-        st.info("Nenhum incidente registrado. Use Análise para gerar registros.")
+        st.info("Nenhum incidente registrado. Use a aba Análise para gerar registros.")
 
-    st.markdown("### 👁️ Prévia — Dataset Principal")
-    st.dataframe(df.head(20), use_container_width=True, height=200)
+    st.markdown("### Prévia — Dataset Principal")
+    st.dataframe(df.head(20),use_container_width=True,height=200)
     st.caption(f"{len(df)} registros · {len(df.columns)} colunas")
 
+# ─── TAB 6: AUDITORIA ────────────────────────────────────────────────────────
 with tabs[6]:
-    st.markdown("### 📋 Logs de Auditoria — Rastreabilidade Completa")
+    st.markdown("### Logs de Auditoria — Rastreabilidade Completa")
     st.caption("Todas as ações registradas com timestamp · Conformidade LGPD e ISO 27001")
     df_logs = db_buscar_logs()
     if not df_logs.empty:
-        al1, al2, al3 = st.columns(3)
-        with al1: st.metric("Total Eventos", len(df_logs))
-        with al2: st.metric("Usuários Ativos", df_logs["usuario"].nunique())
-        with al3: st.metric("Ações Distintas", df_logs["acao"].nunique())
-        st.dataframe(df_logs, use_container_width=True, height=380)
+        al1,al2,al3 = st.columns(3)
+        with al1: st.metric("Total Eventos",len(df_logs))
+        with al2: st.metric("Usuários Ativos",df_logs["usuario"].nunique())
+        with al3: st.metric("Ações Distintas",df_logs["acao"].nunique())
+        st.dataframe(df_logs,use_container_width=True,height=380)
         if PROF["export"]:
             ts_aud = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            st.download_button("⬇️ Exportar Auditoria", df_logs.to_csv(index=False).encode(), f"auditoria_{ts_aud}.csv", "text/csv")
+            st.download_button("Exportar Auditoria",df_logs.to_csv(index=False).encode(),f"auditoria_{ts_aud}.csv","text/csv")
     else:
         st.info("Nenhum log ainda.")
-    st.markdown("### Logs da Sessão")
+    st.markdown("### Logs da Sessão Atual")
     if st.session_state.get("logs"):
         for l in reversed(st.session_state["logs"][-40:]):
             st.code(l, language=None)
