@@ -826,6 +826,7 @@ with aba_servicos:
         """, unsafe_allow_html=True)
 
 # ─── ABA 3: PLANOS E PREÇOS ──────────────────────────────────────────────────
+# ─── ABA 3: PLANOS E PREÇOS ──────────────────────────────────────────────────
 with aba_precos:
     st.markdown("### Planos para sua empresa")
     
@@ -836,23 +837,44 @@ with aba_precos:
     </div>
     """, unsafe_allow_html=True)
     
+    # Estado do plano selecionado
+    if "plano_selecionado" not in st.session_state:
+        st.session_state["plano_selecionado"] = None
+    
     col_plano1, col_plano2, col_plano3 = st.columns(3)
     
+    # Plano Essential
     with col_plano1:
-        st.markdown("""
-        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));border:1px solid rgba(180,0,0,0.3);border-radius:16px;padding:1.2rem;text-align:center;height:100%;">
+        is_selected = st.session_state["plano_selecionado"] == "Essential"
+        border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
+        shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
+        
+        if st.button("Selecionar Plano Essential", key="btn_essential", use_container_width=True):
+            st.session_state["plano_selecionado"] = "Essential"
+            st.session_state["plano_valor"] = "R$ 4.999,00/mês"
+            st.rerun()
+        
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));
+                    border:{border_style};
+                    border-radius:16px;
+                    padding:1.2rem;
+                    text-align:center;
+                    height:100%;
+                    box-shadow:{shadow_style};
+                    transition: all 0.3s ease;">
             <div style="font-size:1.8rem;">📊</div>
             <h3 style="color:#dc2626;margin:0.5rem 0;">Essential</h3>
-            <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 4.999<span style="font-size:0.8rem;">/mês</span></div>
-            <div style="font-size:0.7rem;color:#6b7280;">ou R$ 54.990/ano (2 meses grátis)</div>
+            <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 4.999,00<span style="font-size:0.8rem;">/mês</span></div>
+            <div style="font-size:0.7rem;color:#6b7280;">ou R$ 54.990,00/ano (12x de R$ 4.582,50)</div>
             <hr style="margin:0.8rem 0;">
             <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
-                ✓ Monitoramento básico 24/7<br>
-                ✓ Dashboard essencial<br>
-                ✓ Relatórios mensais<br>
-                ✓ Suporte comercial<br>
-                ✓ Até 100 endpoints<br>
-                ✓ 30 dias de retenção de logs
+                Monitoramento básico 24/7<br>
+                Dashboard essencial<br>
+                Relatórios mensais<br>
+                Suporte comercial<br>
+                Até 100 endpoints<br>
+                30 dias de retenção de logs
             </p>
             <div style="margin-top:0.8rem;">
                 <span style="background:rgba(0,212,255,0.1);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Para pequenas empresas</span>
@@ -860,25 +882,43 @@ with aba_precos:
         </div>
         """, unsafe_allow_html=True)
     
+    # Plano Professional
     with col_plano2:
-        st.markdown("""
-        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.15),rgba(10,5,7,0.95));border:2px solid #dc2626;border-radius:16px;padding:1.2rem;text-align:center;height:100%;position:relative;">
+        is_selected = st.session_state["plano_selecionado"] == "Professional"
+        border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
+        shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
+        
+        if st.button("Selecionar Plano Professional", key="btn_professional", use_container_width=True):
+            st.session_state["plano_selecionado"] = "Professional"
+            st.session_state["plano_valor"] = "R$ 9.990,00/mês"
+            st.rerun()
+        
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.15),rgba(10,5,7,0.95));
+                    border:{border_style};
+                    border-radius:16px;
+                    padding:1.2rem;
+                    text-align:center;
+                    height:100%;
+                    position:relative;
+                    box-shadow:{shadow_style};
+                    transition: all 0.3s ease;">
             <div style="position:absolute;top:-10px;right:10px;background:#dc2626;color:white;font-size:0.6rem;padding:2px 8px;border-radius:10px;">MAIS VENDIDO</div>
             <div style="font-size:1.8rem;">🛡️</div>
             <h3 style="color:#dc2626;margin:0.5rem 0;">Professional</h3>
-            <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 9.990<span style="font-size:0.8rem;">/mês</span></div>
-            <div style="font-size:0.7rem;color:#6b7280;">ou R$ 109.890/ano (2 meses grátis)</div>
+            <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">R$ 9.990,00<span style="font-size:0.8rem;">/mês</span></div>
+            <div style="font-size:0.7rem;color:#6b7280;">ou R$ 109.890,00/ano (12x de R$ 9.157,50)</div>
             <hr style="margin:0.8rem 0;">
             <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
-                ✓ Monitoramento avançado 24/7<br>
-                ✓ IA Preditiva completa<br>
-                ✓ Threat map em tempo real<br>
-                ✓ Resposta automática<br>
-                ✓ Relatórios semanais<br>
-                ✓ Suporte prioritário<br>
-                ✓ Até 500 endpoints<br>
-                ✓ 90 dias de retenção de logs<br>
-                ✓ Threat hunting proativo
+                Monitoramento avançado 24/7<br>
+                IA Preditiva completa<br>
+                Threat map em tempo real<br>
+                Resposta automática<br>
+                Relatórios semanais<br>
+                Suporte prioritário<br>
+                Até 500 endpoints<br>
+                90 dias de retenção de logs<br>
+                Threat hunting proativo
             </p>
             <div style="margin-top:0.8rem;">
                 <span style="background:rgba(0,212,255,0.15);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Ideal para médias empresas</span>
@@ -886,24 +926,41 @@ with aba_precos:
         </div>
         """, unsafe_allow_html=True)
     
+    # Plano Enterprise
     with col_plano3:
-        st.markdown("""
-        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));border:1px solid rgba(180,0,0,0.3);border-radius:16px;padding:1.2rem;text-align:center;height:100%;">
+        is_selected = st.session_state["plano_selecionado"] == "Enterprise"
+        border_style = "2px solid #00d4ff" if is_selected else "1px solid rgba(180,0,0,0.3)"
+        shadow_style = "0 0 20px rgba(0,212,255,0.3)" if is_selected else "none"
+        
+        if st.button("Selecionar Plano Enterprise", key="btn_enterprise", use_container_width=True):
+            st.session_state["plano_selecionado"] = "Enterprise"
+            st.session_state["plano_valor"] = "Sob consulta (a partir de R$ 29.900,00/mês)"
+            st.rerun()
+        
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg,rgba(139,0,0,0.1),rgba(10,5,7,0.95));
+                    border:{border_style};
+                    border-radius:16px;
+                    padding:1.2rem;
+                    text-align:center;
+                    height:100%;
+                    box-shadow:{shadow_style};
+                    transition: all 0.3s ease;">
             <div style="font-size:1.8rem;">🏢</div>
             <h3 style="color:#dc2626;margin:0.5rem 0;">Enterprise</h3>
             <div style="font-size:1.5rem;font-weight:800;color:#00d4ff;">Sob consulta</div>
-            <div style="font-size:0.7rem;color:#6b7280;">a partir de R$ 29.900/mês</div>
+            <div style="font-size:0.7rem;color:#6b7280;">a partir de R$ 29.900,00/mês</div>
             <hr style="margin:0.8rem 0;">
             <p style="color:#9ca3af;font-size:0.7rem;text-align:left;">
-                ✓ Tudo do Professional<br>
-                ✓ SOC dedicado 24/7<br>
-                ✓ On-premise opcional<br>
-                ✓ SLA 99.99%<br>
-                ✓ Consultoria especializada<br>
-                ✓ Treinamento personalizado<br>
-                ✓ Endpoints ilimitados<br>
-                ✓ Retenção de logs personalizada<br>
-                ✓ Analista dedicado
+                Tudo do Professional<br>
+                SOC dedicado 24/7<br>
+                On-premise opcional<br>
+                SLA 99.99%<br>
+                Consultoria especializada<br>
+                Treinamento personalizado<br>
+                Endpoints ilimitados<br>
+                Retenção de logs personalizada<br>
+                Analista dedicado
             </p>
             <div style="margin-top:0.8rem;">
                 <span style="background:rgba(0,212,255,0.1);color:#00d4ff;padding:2px 8px;border-radius:4px;font-size:0.6rem;">Para grandes corporações</span>
@@ -914,9 +971,8 @@ with aba_precos:
     st.markdown("""
     <div style="margin-top: 1rem; background:rgba(139,0,0,0.06); border-radius:8px; padding:0.8rem; text-align:center;">
         <p style="color:#6b7280; font-size:0.7rem;">
-            <strong>Preços competitivos com o mercado</strong><br>
-            Comparado a montar um SOC interno (R$ 1,5 milhão/ano), nossa solução reduz custos em até 90% [citation:9].
-            Todos os planos incluem suporte em português e conformidade com a LGPD.
+            Comparado a montar um SOC interno (cerca de R$ 1,5 milhão por ano), nossa solução reduz custos em ate 90 por cento.
+            Todos os planos incluem suporte em portugues e conformidade com a LGPD.
         </p>
     </div>
     """, unsafe_allow_html=True)
