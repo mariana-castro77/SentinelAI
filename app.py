@@ -868,44 +868,57 @@ with tabs[0]:
 # ─── TAB 1: DASHBOARD ─────────────────────────────────────────────────────────
 with tabs[1]:
     st.markdown("### Telemetria & Métricas")
-    L = dict(paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",font_color="#94a3b8",font_family="Inter")
-    g1,g2 = st.columns(2)
+    L = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="#94a3b8", font_family="Inter")
+    
+    g1, g2 = st.columns(2)
     with g1:
-        fig = px.pie(df,names="SEVERIDADE",title="Distribuição de Severidade",color_discrete_sequence=["#dc2626","#f59e0b","#22c55e"])
-        fig.update_layout(**L,title_font_color="white")
-        st.plotly_chart(fig,use_container_width=True)
+        ordem_cores = {"crítica": "#dc2626", "média": "#f59e0b", "baixa": "#22c55e"}
+        fig = px.pie(df, names="SEVERIDADE", title="Distribuição de Severidade",
+                     color="SEVERIDADE",
+                     color_discrete_map=ordem_cores)
+        fig.update_layout(**L, title_font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
+    
     with g2:
         vc = df["TIPO INCIDENTE"].value_counts().reset_index()
-        fig = px.bar(vc,x="TIPO INCIDENTE",y="count",title="Incidentes por Tipo",color_discrete_sequence=["#dc2626"])
-        fig.update_layout(**L,title_font_color="white")
-        st.plotly_chart(fig,use_container_width=True)
+        fig = px.bar(vc, x="TIPO INCIDENTE", y="count", title="Incidentes por Tipo", color_discrete_sequence=["#dc2626"])
+        fig.update_layout(**L, title_font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
+    
     dt = df.groupby("DATA").size().reset_index(name="n")
-    fig = px.area(dt,x="DATA",y="n",title="Volume ao Longo do Tempo",color_discrete_sequence=["#dc2626"])
-    fig.update_traces(fill="tozeroy",fillcolor="rgba(220,38,38,0.1)")
-    fig.update_layout(**L,title_font_color="white")
-    st.plotly_chart(fig,use_container_width=True)
-    g3,g4 = st.columns(2)
+    fig = px.area(dt, x="DATA", y="n", title="Volume ao Longo do Tempo", color_discrete_sequence=["#dc2626"])
+    fig.update_traces(fill="tozeroy", fillcolor="rgba(220,38,38,0.1)")
+    fig.update_layout(**L, title_font_color="white")
+    st.plotly_chart(fig, use_container_width=True)
+    
+    g3, g4 = st.columns(2)
     with g3:
-        fig = px.histogram(df,x="PAIS_ATAQUE",title="Ataques por País",color_discrete_sequence=["#b91c1c"])
-        fig.update_layout(**L,title_font_color="white")
-        st.plotly_chart(fig,use_container_width=True)
+        fig = px.histogram(df, x="PAIS_ATAQUE", title="Ataques por País", color_discrete_sequence=["#b91c1c"])
+        fig.update_layout(**L, title_font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
+    
     with g4:
-        dp = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index().sort_values("PREJUIZO_ESTIMADO",ascending=False).head(7)
-        fig = px.bar(dp,x="CLIENTE",y="PREJUIZO_ESTIMADO",title="Prejuízo por Cliente",color_discrete_sequence=["#991b1b"])
-        fig.update_layout(**L,title_font_color="white")
-        st.plotly_chart(fig,use_container_width=True)
+        dp = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().reset_index().sort_values("PREJUIZO_ESTIMADO", ascending=False).head(7)
+        fig = px.bar(dp, x="CLIENTE", y="PREJUIZO_ESTIMADO", title="Prejuízo por Cliente", color_discrete_sequence=["#991b1b"])
+        fig.update_layout(**L, title_font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
+    
     st.markdown("### Performance do Modelo de IA")
-    m1,m2,m3 = st.columns(3)
-    with m1: st.metric("ACURÁCIA", f"{ACC:.1%}")
-    with m2: st.metric("TREINO", f"{int(len(df_all)*0.8):,}")
-    with m3: st.metric("TESTE", f"{int(len(df_all)*0.2):,}")
+    m1, m2, m3 = st.columns(3)
+    with m1:
+        st.metric("ACURÁCIA", f"{ACC:.1%}")
+    with m2:
+        st.metric("TREINO", f"{int(len(df_all)*0.8):,}")
+    with m3:
+        st.metric("TESTE", f"{int(len(df_all)*0.2):,}")
+    
     ypred = MODEL.predict(Xv)
-    cm = confusion_matrix(yv,ypred)
+    cm = confusion_matrix(yv, ypred)
     lbs = ENC["sev"].classes_
-    fig = go.Figure(go.Heatmap(z=cm,x=lbs,y=lbs,colorscale=[[0,"#0a0507"],[0.5,"#7f1d1d"],[1,"#dc2626"]],text=cm,texttemplate="%{text}",showscale=True))
-    fig.update_layout(title="Matriz de Confusão",xaxis_title="Previsto",yaxis_title="Real",height=320,**L,title_font_color="white")
-    st.plotly_chart(fig,use_container_width=True)
-
+    fig = go.Figure(go.Heatmap(z=cm, x=lbs, y=lbs, colorscale=[[0, "#0a0507"], [0.5, "#7f1d1d"], [1, "#dc2626"]], text=cm, texttemplate="%{text}", showscale=True))
+    fig.update_layout(title="Matriz de Confusão", xaxis_title="Previsto", yaxis_title="Real", height=320, **L, title_font_color="white")
+    st.plotly_chart(fig, use_container_width=True)
+    
 # ─── TAB 2: MAPA ─────────────────────────────────────────────────────────────
 with tabs[2]:
     st.markdown("### Mapa Global de Ameaças Cibernéticas")
