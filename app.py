@@ -1116,7 +1116,16 @@ with st.sidebar:
 
 # ─── HEADER ──────────────────────────────────────────────────────────────────
 now = datetime.datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
+
+# Define CLT a partir do usuário logado
+usuario_atual = st.session_state.get('user', None)
+if usuario_atual and usuario_atual in USERS:
+    CLT = USERS[usuario_atual].get('client')
+else:
+    CLT = None
+
 scope = f"Cliente: {CLT}" if CLT else "Visão Global — Todos os Clientes"
+
 st.markdown(f"""
 <div class="soc-header">
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
@@ -1139,16 +1148,38 @@ st.markdown(f"""
   </div>
 </div>""", unsafe_allow_html=True)
 
-c1,c2,c3,c4,c5,c6 = st.columns(6)
-with c1: st.metric("INCIDENTES", f"{total:,}")
-with c2: st.metric("CRÍTICOS", f"{crit:,}")
-with c3: st.metric("IPs BLOQUEADOS", f"{bloq:,}")
-with c4: st.metric("RESOLVIDOS", f"{resol:,}")
-with c5: st.metric("PENDENTES", f"{pend:,}")
-with c6: st.metric("PREJUÍZO", f"R$ {prej/1e6:.2f}Mi")
+# Métricas
+if 'total' not in dir() and 'total' not in locals():
+    total = 0
+if 'crit' not in dir() and 'crit' not in locals():
+    crit = 0
+if 'bloq' not in dir() and 'bloq' not in locals():
+    bloq = 0
+if 'resol' not in dir() and 'resol' not in locals():
+    resol = 0
+if 'pend' not in dir() and 'pend' not in locals():
+    pend = 0
+if 'prej' not in dir() and 'prej' not in locals():
+    prej = 0
+
+c1, c2, c3, c4, c5, c6 = st.columns(6)
+with c1: 
+    st.metric("INCIDENTES", f"{total:,}" if total > 0 else "0")
+with c2: 
+    st.metric("CRÍTICOS", f"{crit:,}" if crit > 0 else "0")
+with c3: 
+    st.metric("IPs BLOQUEADOS", f"{bloq:,}" if bloq > 0 else "0")
+with c4: 
+    st.metric("RESOLVIDOS", f"{resol:,}" if resol > 0 else "0")
+with c5: 
+    st.metric("PENDENTES", f"{pend:,}" if pend > 0 else "0")
+with c6: 
+    st.metric("PREJUÍZO", f"R$ {prej/1e6:.2f}Mi" if prej > 0 else "R$ 0")
+
 st.markdown("<hr>", unsafe_allow_html=True)
 
-tabs = st.tabs(["Análise","Dashboard","Mapa de Ameaças","Sentinel Bot","Suporte","Backup & DB","Auditoria"])
+# Abas principais
+tabs = st.tabs(["Análise", "Dashboard", "Mapa de Ameaças", "Sentinel Bot", "Suporte", "Backup & DB", "Auditoria"])
 
 # ─── TAB 0: ANÁLISE ───────────────────────────────────────────────────────────
 with tabs[0]:
