@@ -1070,8 +1070,11 @@ with st.sidebar:
       <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">OPERADOR</p>""", unsafe_allow_html=True)
     
     # CÓDIGO CORRIGIDO para exibir o nome do usuário dinamicamente
-    nome_usuario = USER if USER else 'Usuário'
-    st.markdown(f'<p style="color:white;font-weight:700;font-size:0.9rem;margin:0;">@{nome_usuario}</p>', unsafe_allow_html=True)
+if 'user' in st.session_state and st.session_state['user']:
+    nome_usuario = st.session_state['user']
+else:
+    nome_usuario = 'Visitante'
+st.markdown(f'<p style="color:white;font-weight:700;font-size:0.9rem;margin:0;">@{nome_usuario}</p>', unsafe_allow_html=True)
     
     st.markdown(f"""
       <span class="badge-online">&#9679; ONLINE</span>
