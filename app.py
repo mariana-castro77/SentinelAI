@@ -1420,6 +1420,7 @@ animate();
         st.dataframe(ta, use_container_width=True, hide_index=True)
 
 # ─── TAB 3: SENTINEL BOT ─────────────────────────────────────────────────────
+# ─── TAB 3: SENTINEL BOT ─────────────────────────────────────────────────────
 with tabs[3]:
     st.markdown("### Sentinel Bot — Assistente de Segurança")
     st.caption("IA especialista em cibersegurança com acesso aos dados do sistema em tempo real.")
@@ -1441,37 +1442,81 @@ Status: {df['STATUS'].value_counts().to_dict()}
 Severidades: {df['SEVERIDADE'].value_counts().to_dict()}
 Escopo: {"Todos os clientes" if not CLT else CLT}"""
 
-    # Renderiza histórico
-    for msg in st.session_state["chat"]:
-        css = "chat-user" if msg["role"]=="user" else "chat-ai"
-        label = "Você" if msg["role"]=="user" else "Sentinel Bot"
-        st.markdown(f'<div class="{css}"><strong style="font-size:0.68rem;opacity:0.6;">{label}</strong><br>{msg["content"]}</div>', unsafe_allow_html=True)
+    # Container para o chat
+    chat_container = st.container()
+    
+    with chat_container:
+        # Renderiza histórico
+        for msg in st.session_state["chat"]:
+            css = "chat-user" if msg["role"]=="user" else "chat-ai"
+            label = "Você" if msg["role"]=="user" else "Sentinel Bot"
+            st.markdown(f'<div class="{css}"><strong style="font-size:0.68rem;opacity:0.6;">{label}</strong><br>{msg["content"]}</div>', unsafe_allow_html=True)
 
-    if not st.session_state["chat"]:
-        st.markdown("""<div class="chat-ai">
-        <strong style="font-size:0.68rem;opacity:0.6;">Sentinel Bot</strong><br>
-        Olá! Sou o assistente de segurança da SentinelAI. Analiso incidentes, identifico padrões de ameaças e recomendo ações de mitigação.<br><br>Como posso ajudar?
-        </div>""", unsafe_allow_html=True)
+        if not st.session_state["chat"]:
+            st.markdown("""<div class="chat-ai">
+            <strong style="font-size:0.68rem;opacity:0.6;">Sentinel Bot</strong><br>
+            Olá! Sou o assistente de segurança da SentinelAI. Analiso incidentes, identifico padrões de ameaças e recomendo ações de mitigação.<br><br>Como posso ajudar?
+            </div>""", unsafe_allow_html=True)
 
-    # Sugestões
-    sugs = ["Qual cliente tem mais prejuízo?","Quais países mais atacaram?","Status dos incidentes críticos","Recomendações urgentes","Como funciona o modelo IA?","Explique os grupos APT"]
-    st.markdown("<p style='color:#4b5563;font-size:0.68rem;margin:10px 0 5px;text-transform:uppercase;letter-spacing:0.06em;'>Perguntas rápidas</p>", unsafe_allow_html=True)
-    scols = st.columns(len(sugs))
-    sug_click = None
-    for i, s in enumerate(sugs):
-        with scols[i]:
-            if st.button(s, key=f"sg{i}", use_container_width=True):
-                sug_click = s
-
+    # Botões de perguntas rápidas
+    st.markdown("---")
+    st.markdown("<p style='color:#4b5563;font-size:0.7rem;margin-bottom:0.8rem;font-weight:600;'>PERGUNTAS RÁPIDAS</p>", unsafe_allow_html=True)
+    
+    # Botões organizados em 3 linhas de 2 botões cada
+    sugs = [
+        "Qual cliente tem mais prejuízo?",
+        "Quais países mais atacaram?",
+        "Status dos incidentes críticos",
+        "Recomendações urgentes",
+        "Como funciona o modelo IA?",
+        "Explique os grupos APT"
+    ]
+    
+    # Linha 1
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button(sugs[0], key="sg0", use_container_width=True):
+            sug_click = sugs[0]
+    with col2:
+        if st.button(sugs[1], key="sg1", use_container_width=True):
+            sug_click = sugs[1]
+    
+    # Linha 2
+    col3, col4 = st.columns(2)
+    with col3:
+        if st.button(sugs[2], key="sg2", use_container_width=True):
+            sug_click = sugs[2]
+    with col4:
+        if st.button(sugs[3], key="sg3", use_container_width=True):
+            sug_click = sugs[3]
+    
+    # Linha 3
+    col5, col6 = st.columns(2)
+    with col5:
+        if st.button(sugs[4], key="sg4", use_container_width=True):
+            sug_click = sugs[4]
+    with col6:
+        if st.button(sugs[5], key="sg5", use_container_width=True):
+            sug_click = sugs[5]
+    
+    st.markdown("---")
+    
+    # Input e botão enviar
     with st.form("chat_f", clear_on_submit=True):
-        ci, cb = st.columns([5,1])
-        with ci:
+        col_input, col_button = st.columns([5,1])
+        with col_input:
             q = st.text_input("", placeholder="Digite sua pergunta sobre segurança...", label_visibility="collapsed")
-        with cb:
+        with col_button:
             send = st.form_submit_button("Enviar", use_container_width=True)
-
+    
+    sug_click = None
+    for i in range(6):
+        if f"sg{i}" in st.session_state and st.session_state[f"sg{i}"]:
+            sug_click = sugs[i]
+    
     if sug_click:
-        q = sug_click; send = True
+        q = sug_click
+        send = True
 
     if send and q:
         log(USER,"CHAT",q[:80])
@@ -1483,6 +1528,7 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
+            <span style="color:#6b7280;font-size:0.7rem;margin-left:8px;">Sentinel Bot está digitando...</span>
         </div>""", unsafe_allow_html=True)
         msgs = st.session_state["chat"].copy()
         resp = gemini_chat(SYSTEM_BOT, msgs)
@@ -1492,9 +1538,11 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
         st.rerun()
 
     if st.session_state["chat"]:
-        if st.button("Limpar conversa", key="clear_chat"):
-            st.session_state["chat"] = []
-            st.rerun()
+        col_clear, _ = st.columns([1,5])
+        with col_clear:
+            if st.button("Limpar conversa", key="clear_chat", use_container_width=True):
+                st.session_state["chat"] = []
+                st.rerun()
 
 # ─── TAB 4: SUPORTE ───────────────────────────────────────────────────────────
 with tabs[4]:
