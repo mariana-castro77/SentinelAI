@@ -273,6 +273,25 @@ details { background:rgba(10,5,7,0.7); border:1px solid rgba(180,0,0,0.15); bord
     .chat-user, .chat-ai, .chat-support { max-width: 92%; }
 }
 .js-plotly-plot .plotly .bg { fill: transparent !important; }
+
+/* Remove o cursor/label estranho dos filtros */
+[data-testid="stSelectbox"] label,
+[data-testid="stSlider"] label,
+[data-testid="stTextInput"] label {
+    display: none !important;
+}
+
+/* Remove a borda de foco dos selects */
+[data-baseweb="select"]:focus-within > div {
+    border-color: rgba(180,0,0,0.3) !important;
+    box-shadow: none !important;
+}
+
+/* Ajusta o placeholder dos inputs */
+input::placeholder, textarea::placeholder {
+    color: #4b5563 !important;
+    font-size: 0.75rem;
+}
 </style>
 <div class="scan-line"></div>
 """, unsafe_allow_html=True)
