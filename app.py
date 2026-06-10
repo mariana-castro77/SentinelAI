@@ -870,10 +870,10 @@ with tabs[1]:
     st.markdown("### Telemetria & Métricas")
     L = dict(paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",font_color="#94a3b8",font_family="Inter")
     g1,g2 = st.columns(2)
-    with g1:
-        fig = px.pie(df,names="SEVERIDADE",title="Distribuição de Severidade",color_discrete_sequence=["#dc2626","#f59e0b","#22c55e"])
-        fig.update_layout(**L,title_font_color="white")
-        st.plotly_chart(fig,use_container_width=True)
+   with g1:
+    fig = px.pie(df,names="SEVERIDADE",title="Distribuição de Severidade",color_discrete_sequence=["#dc2626","#f59e0b","#22c55e"])
+    fig.update_layout(**L,title_font_color="white")
+    st.plotly_chart(fig,use_container_width=True)
     with g2:
         vc = df["TIPO INCIDENTE"].value_counts().reset_index()
         fig = px.bar(vc,x="TIPO INCIDENTE",y="count",title="Incidentes por Tipo",color_discrete_sequence=["#dc2626"])
