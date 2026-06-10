@@ -1069,12 +1069,12 @@ with st.sidebar:
     <div style="background:rgba(139,0,0,0.07);border:1px solid rgba(180,0,0,0.15);border-radius:12px;padding:0.9rem 1rem;margin-bottom:0.8rem;">
       <p style="color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">OPERADOR</p>""", unsafe_allow_html=True)
     
-    # CÓDIGO CORRIGIDO para exibir o nome do usuário dinamicamente
-if 'user' in st.session_state and st.session_state['user']:
-    nome_usuario = st.session_state['user']
-else:
-    nome_usuario = 'Visitante'
-st.markdown(f'<p style="color:white;font-weight:700;font-size:0.9rem;margin:0;">@{nome_usuario}</p>', unsafe_allow_html=True)
+    # CÓDIGO CORRIGIDO - usa st.session_state em vez de USER
+    if 'user' in st.session_state and st.session_state['user']:
+        nome_usuario = st.session_state['user']
+    else:
+        nome_usuario = 'Visitante'
+    st.markdown(f'<p style="color:white;font-weight:700;font-size:0.9rem;margin:0;">@{nome_usuario}</p>', unsafe_allow_html=True)
     
     st.markdown(f"""
       <span class="badge-online">&#9679; ONLINE</span>
@@ -1087,26 +1087,30 @@ st.markdown(f'<p style="color:white;font-weight:700;font-size:0.9rem;margin:0;">
     </div>""", unsafe_allow_html=True)
 
     st.markdown("<p style='color:#4b5563;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;'>PERMISSÕES</p>", unsafe_allow_html=True)
-    for label, flag in [("Análise ML",PROF["analyze"]),("Exportar dados",PROF["export"]),("Ver IPs / PII",PROF["pii"]),("Suporte Admin",PROF["support_admin"])]:
-        c_col, icon = ("#4ade80","✓") if flag else ("#ef4444","✗")
-        st.markdown(f"<p style='color:{c_col};font-size:0.72rem;margin:3px 0;'><b>{icon}</b> {label}</p>", unsafe_allow_html=True)
+    if 'PROF' in dir() or 'PROF' in globals():
+        for label, flag in [("Análise ML",PROF["analyze"]),("Exportar dados",PROF["export"]),("Ver IPs / PII",PROF["pii"]),("Suporte Admin",PROF["support_admin"])]:
+            c_col, icon = ("#4ade80","✓") if flag else ("#ef4444","✗")
+            st.markdown(f"<p style='color:{c_col};font-size:0.72rem;margin:3px 0;'><b>{icon}</b> {label}</p>", unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <div style="background:rgba(139,0,0,0.08);border-radius:10px;padding:0.7rem 1rem;margin:0.8rem 0;text-align:center;">
-      <p style="color:#4b5563;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;">Acurácia IA</p>
-      <p style="color:#dc2626;font-size:1.4rem;font-weight:800;font-family:'JetBrains Mono',monospace;">{ACC:.1%}</p>
-    </div>""", unsafe_allow_html=True)
-
-    tks_side = db_buscar_tickets(CLT if CLT else None)
-    n_abertos_side = len(tks_side[tks_side["status"] == "aberto"]) if not tks_side.empty else 0
-    if n_abertos_side > 0:
-        st.markdown(f"""<div style="background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:10px;padding:0.7rem 1rem;margin-bottom:0.8rem;text-align:center;">
-          <p style="color:#f87171;font-size:0.72rem;font-weight:700;">{n_abertos_side} ticket(s) aberto(s)</p>
+    if 'ACC' in dir() or 'ACC' in globals():
+        st.markdown(f"""
+        <div style="background:rgba(139,0,0,0.08);border-radius:10px;padding:0.7rem 1rem;margin:0.8rem 0;text-align:center;">
+          <p style="color:#4b5563;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;">Acurácia IA</p>
+          <p style="color:#dc2626;font-size:1.4rem;font-weight:800;font-family:'JetBrains Mono',monospace;">{ACC:.1%}</p>
         </div>""", unsafe_allow_html=True)
+
+    if 'CLT' in dir() or 'CLT' in globals():
+        tks_side = db_buscar_tickets(CLT if CLT else None)
+        n_abertos_side = len(tks_side[tks_side["status"] == "aberto"]) if not tks_side.empty else 0
+        if n_abertos_side > 0:
+            st.markdown(f"""<div style="background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:10px;padding:0.7rem 1rem;margin-bottom:0.8rem;text-align:center;">
+              <p style="color:#f87171;font-size:0.72rem;font-weight:700;">{n_abertos_side} ticket(s) aberto(s)</p>
+            </div>""", unsafe_allow_html=True)
 
     st.markdown("<hr>", unsafe_allow_html=True)
     if st.button("Encerrar Sessão", use_container_width=True):
-        log(USER,"LOGOUT")
+        if 'user' in st.session_state:
+            log(st.session_state['user'],"LOGOUT")
         st.session_state.update({"authed":False,"user":None,"chat":[],"chat_suporte":[]})
         st.rerun()
 
