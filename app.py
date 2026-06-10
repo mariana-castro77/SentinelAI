@@ -459,10 +459,7 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
         return f"Erro na API: {str(e)}"
 
 # ─── LGPD ────────────────────────────────────────────────────────────────────
-if not st.session_state["lgpd"]:
-    st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
-
-    lgpd_html = """<!DOCTYPE html>
+lgpd_html = """<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -501,7 +498,9 @@ body{
 .card{
     background:linear-gradient(135deg,rgba(15,5,8,0.98),rgba(10,5,7,0.99));
     border:1px solid rgba(180,0,0,0.25);border-radius:24px;
-    padding:2.5rem 3rem;max-width:700px;width:100%;
+    padding:2rem 2rem;
+    max-width:700px;
+    width:100%;
     position:relative;z-index:10;
     box-shadow:0 40px 120px rgba(139,0,0,0.3),0 0 60px rgba(0,0,0,0.8);
 }
@@ -509,73 +508,81 @@ body{
     content:'';position:absolute;top:0;left:0;right:0;height:1px;border-radius:24px 24px 0 0;
     background:linear-gradient(90deg,transparent,rgba(220,38,38,0.7),transparent);
 }
-.robot-wrap{display:flex;justify-content:center;margin-bottom:1.5rem;}
+.robot-wrap{display:flex;justify-content:center;margin-bottom:1rem;}
 .robot-img{
-    width:110px;height:110px;object-fit:contain;
+    width:90px;height:90px;object-fit:contain;
     animation:robot-float 3s ease-in-out infinite;
     filter:drop-shadow(0 0 20px rgba(220,38,38,0.7)) drop-shadow(0 0 40px rgba(139,0,0,0.5));
 }
 @keyframes robot-float{
     0%,100%{transform:translateY(0px) rotate(-3deg);}
-    25%{transform:translateY(-15px) rotate(2deg);}
-    50%{transform:translateY(-8px) rotate(-1deg);}
-    75%{transform:translateY(-20px) rotate(3deg);}
+    25%{transform:translateY(-12px) rotate(2deg);}
+    50%{transform:translateY(-6px) rotate(-1deg);}
+    75%{transform:translateY(-16px) rotate(3deg);}
 }
-.title{text-align:center;margin-bottom:1.5rem;}
-.title h1{color:white;font-size:2rem;font-weight:900;letter-spacing:-0.5px;}
+.title{text-align:center;margin-bottom:1rem;}
+.title h1{color:white;font-size:1.8rem;font-weight:900;letter-spacing:-0.5px;}
 .title h1 span{color:#dc2626;}
-.title p{color:#6b7280;font-size:0.75rem;margin-top:4px;font-family:'JetBrains Mono',monospace;}
-.badges{display:flex;gap:8px;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap;}
+.title p{color:#6b7280;font-size:0.7rem;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.badges{display:flex;gap:8px;justify-content:center;margin-bottom:1rem;flex-wrap:wrap;}
 .badge-green{
     background:rgba(0,255,100,0.06);border:1px solid rgba(0,255,100,0.22);color:#4ade80;
-    padding:4px 14px;border-radius:20px;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;
+    padding:4px 12px;border-radius:20px;font-size:0.55rem;font-weight:700;
     display:inline-flex;align-items:center;gap:5px;
 }
 .badge-red{
     background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.35);color:#f87171;
-    padding:4px 14px;border-radius:20px;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;
+    padding:4px 12px;border-radius:20px;font-size:0.55rem;font-weight:700;
 }
 .pulse-dot{
-    display:inline-block;width:6px;height:6px;background:#4ade80;border-radius:50%;
+    display:inline-block;width:5px;height:5px;background:#4ade80;border-radius:50%;
     animation:pulse-anim 1.5s infinite;
 }
 @keyframes pulse-anim{
     0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.5);}
-    50%{box-shadow:0 0 0 5px rgba(74,222,128,0);}
+    50%{box-shadow:0 0 0 4px rgba(74,222,128,0);}
 }
 .lgpd-text{
     background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-left:3px solid #dc2626;
-    border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;color:#94a3b8;
-    font-size:0.78rem;line-height:1.8;
+    border-radius:10px;padding:0.8rem 1rem;margin-bottom:1rem;color:#94a3b8;
+    font-size:0.72rem;line-height:1.6;
 }
 .lgpd-text strong{color:#fca5a5;}
-.privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.8rem;}
+.privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1rem;}
 .privacy-item{
     background:rgba(10,5,7,0.8);border:1px solid rgba(180,0,0,0.12);border-radius:8px;
-    padding:0.6rem 0.9rem;display:flex;align-items:center;gap:8px;
-    font-size:0.72rem;color:#9ca3af;
+    padding:0.5rem 0.7rem;display:flex;align-items:center;gap:8px;
+    font-size:0.68rem;color:#9ca3af;
 }
 .priv-icon{
-    width:16px;height:16px;flex-shrink:0;
+    width:14px;height:14px;flex-shrink:0;
     display:inline-block;background:rgba(220,38,38,0.2);
-    border-radius:3px;font-size:10px;line-height:16px;text-align:center;color:#f87171;
+    border-radius:3px;font-size:9px;line-height:14px;text-align:center;color:#f87171;
 }
-.btn-row{display:flex;gap:12px;}
+.btn-row{display:flex;gap:12px;margin-top:0.5rem;}
 .btn-accept{
-    flex:1;padding:0.9rem;border-radius:12px;border:none;cursor:pointer;font-weight:700;
-    font-size:0.82rem;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;
+    flex:1;padding:0.8rem;border-radius:12px;border:none;cursor:pointer;font-weight:700;
+    font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;
     background:linear-gradient(135deg,#7f1d1d,#991b1b,#b91c1c);color:white;
-    box-shadow:0 4px 20px rgba(139,0,0,0.4);font-family:'Inter',sans-serif;
+    box-shadow:0 4px 20px rgba(139,0,0,0.4);
+    font-family:'Inter',sans-serif;
 }
-.btn-accept:hover{background:linear-gradient(135deg,#991b1b,#b91c1c,#dc2626);transform:translateY(-2px);box-shadow:0 8px 30px rgba(220,38,38,0.5);}
+.btn-accept:hover{background:linear-gradient(135deg,#991b1b,#b91c1c,#dc2626);transform:translateY(-2px);}
 .btn-reject{
-    flex:1;padding:0.9rem;border-radius:12px;cursor:pointer;font-weight:700;
-    font-size:0.82rem;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;
+    flex:1;padding:0.8rem;border-radius:12px;cursor:pointer;font-weight:700;
+    font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;
     background:rgba(10,5,7,0.9);border:1px solid rgba(180,0,0,0.25);color:#6b7280;
     font-family:'Inter',sans-serif;
 }
 .btn-reject:hover{border-color:rgba(220,38,38,0.4);color:#f87171;}
-.counter{text-align:center;margin-top:1rem;color:#374151;font-size:0.62rem;font-family:'JetBrains Mono',monospace;}
+.counter{text-align:center;margin-top:0.8rem;color:#374151;font-size:0.55rem;font-family:'JetBrains Mono',monospace;}
+@media (max-width: 600px){
+    .card{padding:1.2rem;}
+    .privacy-grid{grid-template-columns:1fr;}
+    .btn-row{flex-direction:column;}
+    .robot-img{width:60px;height:60px;}
+    .title h1{font-size:1.4rem;}
+}
 </style>
 </head>
 <body>
@@ -585,11 +592,11 @@ body{
 <div class="card">
     <div class="robot-wrap">
         <img class="robot-img" src="https://raw.githubusercontent.com/mariana-castro77/SentinelAI/main/robo.png" alt="Sentinel AI"
-             onerror="this.outerHTML='<div style=font-size:80px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>&#129302;</div>'">
+             onerror="this.outerHTML='<div style=font-size:60px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>&#129302;</div>'">
     </div>
     <div class="title">
         <h1>Sentinel<span>AI</span></h1>
-        <p>SECURITY OPERATIONS CENTER &mdash; ACESSO SEGURO</p>
+        <p>SECURITY OPERATIONS CENTER — ACESSO SEGURO</p>
     </div>
     <div class="badges">
         <span class="badge-green"><span class="pulse-dot"></span>SISTEMA ONLINE</span>
@@ -620,14 +627,14 @@ body{
 </div>
 <script>
 const pc = document.getElementById('particles');
-for(let i=0;i<25;i++){
+for(let i=0;i<20;i++){
     const p=document.createElement('div'); p.className='particle';
     p.style.left=Math.random()*100+'%';
     p.style.animationDuration=(8+Math.random()*12)+'s';
     p.style.animationDelay=(-Math.random()*20)+'s';
-    const sz=1+Math.random()*3;
+    const sz=1+Math.random()*2;
     p.style.width=p.style.height=sz+'px';
-    p.style.background=`rgba(${Math.random()>.5?'220,38,38':'139,0,0'},${0.3+Math.random()*.5})`;
+    p.style.background=`rgba(${Math.random()>.5?'220,38,38':'139,0,0'},${0.2+Math.random()*0.4})`;
     pc.appendChild(p);
 }
 function tick(){ document.getElementById('ctime').textContent=new Date().toLocaleTimeString('pt-BR'); }
@@ -637,20 +644,6 @@ function rejectCookies(){ window.parent.postMessage({type:'streamlit:setComponen
 </script>
 </body>
 </html>"""
-
-    components.html(lgpd_html, height=700, scrolling=True)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("✅ Aceitar e Continuar", use_container_width=True, key="lgpd_accept"):
-            st.session_state["lgpd"] = True
-            log("sistema", "LGPD_ACEITO")
-            st.rerun()
-    with col2:
-        if st.button("❌ Recusar (bloqueia acesso)", use_container_width=True, key="lgpd_reject"):
-            st.error("Você recusou os termos. Acesso bloqueado.")
-            st.stop()
-    st.stop()
 # ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
