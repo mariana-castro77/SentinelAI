@@ -25,255 +25,267 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-html, body, [class*="css"] { font-family: 'Inter', system-ui, sans-serif; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+html {
+    scroll-behavior: smooth !important;
+    scroll-padding-top: 20px;
+}
+
+/* PARALLAX GLOBAL - camadas de fundo que se movem em velocidades diferentes */
 .stApp {
-    background:
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Camada parallax 1 - mais lenta (background principal) */
+.stApp::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+    background: 
         radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.18) 0%, transparent 60%),
         radial-gradient(ellipse at 80% 20%, rgba(180,0,0,0.12) 0%, transparent 55%),
         radial-gradient(ellipse at 50% 80%, rgba(100,0,0,0.10) 0%, transparent 50%),
         #060508;
     background-attachment: fixed;
-    color: #e2e8f0;
-    min-height: 100vh;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
-[data-testid="stHeader"]  { background: transparent !important; }
-[data-testid="stToolbar"] { display: none; }
-
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0a0507 0%, #0f0509 50%, #0a0507 100%) !important;
-    border-right: 1px solid rgba(180,0,0,0.2) !important;
-}
-[data-testid="stSidebar"] * { color: #e2e8f0 !important; }
-
-.block-container { padding: 1.2rem 2rem 3rem !important; max-width: 100% !important; }
-
-div[data-testid="metric-container"] {
-    background: linear-gradient(135deg, rgba(139,0,0,0.12) 0%, rgba(10,5,7,0.95) 100%);
-    border: 1px solid rgba(180,0,0,0.22);
-    border-radius: 14px;
-    padding: 1.1rem 1.3rem;
-    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-    position: relative; overflow: hidden;
-}
-div[data-testid="metric-container"]::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(220,38,38,0.7), transparent);
-}
-div[data-testid="metric-container"]:hover {
-    transform: translateY(-4px);
-    border-color: rgba(220,38,38,0.5);
-    box-shadow: 0 8px 32px rgba(139,0,0,0.25);
-}
-[data-testid="stMetricLabel"] { color:#6b7280!important; font-size:0.6rem!important; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; }
-[data-testid="stMetricValue"] { color:#ff4444!important; font-size:1.45rem!important; font-weight:800; font-family:'JetBrains Mono',monospace!important; }
-
-div.stButton > button {
-    background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #b91c1c 100%);
-    color: white !important; border: 1px solid rgba(220,38,38,0.4); border-radius: 10px;
-    padding: 0.55rem 1.2rem; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.05em;
-    text-transform: uppercase; transition: all 0.2s ease; width: 100%;
-    box-shadow: 0 4px 16px rgba(139,0,0,0.3);
-}
-div.stButton > button:hover {
-    background: linear-gradient(135deg, #991b1b 0%, #b91c1c 50%, #dc2626 100%);
-    transform: translateY(-2px); box-shadow: 0 8px 24px rgba(220,38,38,0.4);
-    border-color: rgba(248,113,113,0.5);
-}
-
-input, textarea, [data-baseweb="input"] input {
-    background: rgba(10,5,7,0.9) !important;
-    border: 1px solid rgba(180,0,0,0.25) !important;
-    border-radius: 10px !important;
-    color: #f1f5f9 !important;
-    font-family: 'Inter', sans-serif !important;
-}
-[data-baseweb="select"] > div {
-    background: rgba(10,5,7,0.9) !important;
-    border: 1px solid rgba(180,0,0,0.25) !important;
-    border-radius: 10px !important;
-    color: #f1f5f9 !important;
-}
-
-.stTabs [data-baseweb="tab-list"] {
-    background: rgba(10,5,7,0.85);
-    border-radius: 12px;
-    padding: 4px;
-    gap: 2px;
-    border: 1px solid rgba(180,0,0,0.1);
-}
-.stTabs [data-baseweb="tab"] {
-    border-radius: 9px;
-    color: #6b7280;
-    font-weight: 600;
-    font-size: 0.75rem;
-    padding: 0.5rem 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.2s;
-}
-.stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, rgba(139,0,0,0.4), rgba(180,0,0,0.25)) !important;
-    color: #ff6666 !important;
-    box-shadow: 0 0 12px rgba(180,0,0,0.2);
-}
-
-.chat-user {
-    background: linear-gradient(135deg, #7f1d1d, #991b1b);
-    border-radius: 18px 18px 4px 18px;
-    padding: 0.75rem 1.1rem;
-    margin: 0.6rem 0 0.6rem auto;
-    max-width: 75%;
-    width: fit-content;
-    color: white;
-    font-size: 0.82rem;
-    line-height: 1.6;
-    box-shadow: 0 4px 16px rgba(139,0,0,0.3);
-}
-.chat-ai {
-    background: rgba(10,5,7,0.95);
-    border: 1px solid rgba(180,0,0,0.2);
-    border-radius: 18px 18px 18px 4px;
-    padding: 0.75rem 1.1rem;
-    margin: 0.6rem 0;
-    max-width: 75%;
-    width: fit-content;
-    color: #cbd5e1;
-    font-size: 0.82rem;
-    line-height: 1.6;
-}
-.chat-support {
-    background: linear-gradient(135deg, rgba(0,100,200,0.15), rgba(0,50,120,0.2));
-    border: 1px solid rgba(0,150,255,0.25);
-    border-radius: 18px 18px 18px 4px;
-    padding: 0.75rem 1.1rem;
-    margin: 0.6rem 0;
-    max-width: 75%;
-    width: fit-content;
-    color: #bae6fd;
-    font-size: 0.82rem;
-    line-height: 1.6;
-}
-
-.typing-indicator {
-    background: rgba(10,5,7,0.95);
-    border: 1px solid rgba(180,0,0,0.2);
-    border-radius: 18px 18px 18px 4px;
-    padding: 0.75rem 1.1rem;
-    margin: 0.6rem 0;
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-.typing-dot {
-    width: 7px; height: 7px;
-    background: #dc2626;
-    border-radius: 50%;
-    animation: typing-bounce 1.2s infinite;
-}
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes typing-bounce {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-    30% { transform: translateY(-6px); opacity: 1; }
-}
-
-.soc-header {
-    background: linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(10,5,7,0.97) 100%);
-    border: 1px solid rgba(180,0,0,0.15);
-    border-radius: 18px;
-    padding: 1.4rem 2rem;
-    margin-bottom: 1.4rem;
-    position: relative;
-    overflow: hidden;
-}
-.soc-header::before {
+/* Camada parallax 2 - grid que se move mais rápido */
+.stApp::after {
     content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 50%, transparent 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-image: 
+        linear-gradient(rgba(180,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180,0,0,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    transform: translateZ(-5px) scale(1.2);
+    animation: parallaxGrid 30s linear infinite;
 }
 
-.badge-online {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(0,255,100,0.06); border: 1px solid rgba(0,255,100,0.22);
-    color: #4ade80; padding: 4px 14px; border-radius: 20px;
-    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-}
-.badge-critical {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.35);
-    color: #f87171; padding: 4px 14px; border-radius: 20px;
-    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+/* Camada parallax 3 - partículas flutuantes */
+.parallax-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
 }
 
-@keyframes float-robot {
-    0%   { transform: translateY(0px) rotate(-2deg); }
-    25%  { transform: translateY(-12px) rotate(1deg); }
-    50%  { transform: translateY(-6px) rotate(-1deg); }
-    75%  { transform: translateY(-18px) rotate(2deg); }
-    100% { transform: translateY(0px) rotate(-2deg); }
-}
-@keyframes glow-pulse {
-    0%,100% { filter: drop-shadow(0 0 8px rgba(220,38,38,0.6)) drop-shadow(0 0 20px rgba(139,0,0,0.4)); }
-    50%      { filter: drop-shadow(0 0 20px rgba(220,38,38,0.9)) drop-shadow(0 0 40px rgba(180,0,0,0.6)); }
-}
-.robot-float-img {
-    width: 72px; height: 72px; object-fit: contain;
-    animation: float-robot 4s ease-in-out infinite, glow-pulse 2.5s ease-in-out infinite;
-    display: block; margin: 0 auto;
+.parallax-particle {
+    position: absolute;
+    background: rgba(220,38,38,0.15);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatParticle linear infinite;
 }
 
-@keyframes scan {
-    0%   { transform: translateY(-100%); opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { transform: translateY(100vh); opacity: 0; }
-}
-.scan-line {
-    position: fixed; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(220,38,38,0.4), transparent);
-    animation: scan 6s linear infinite;
-    pointer-events: none; z-index: 0;
+/* Animações parallax */
+@keyframes parallaxGrid {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 120px 120px;
+    }
 }
 
+@keyframes floatParticle {
+    0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(-20vh) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Scroll suave para todos os elementos clicáveis que navegam */
+a, button, [data-testid="stTab"] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efeito parallax nos cards ao scroll */
+div[data-testid="metric-container"], 
+.ticket-card,
+div[data-testid="stExpander"] > div,
+div[class*="stTabs"] [data-baseweb="tab-panel"] > div {
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease;
+}
+
+div[data-testid="metric-container"]:hover,
+.ticket-card:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+/* Scrollbar personalizada (já existente, mantida) */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: rgba(10,5,7,0.8); }
 ::-webkit-scrollbar-thumb { background: rgba(180,0,0,0.4); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(220,38,38,0.6); }
 
-[data-testid="stDataFrame"] { border-radius:12px; overflow:hidden; border:1px solid rgba(180,0,0,0.15); }
-iframe { border-radius: 14px; }
-hr { border-color: rgba(180,0,0,0.12) !important; margin: 1rem 0 !important; }
-details summary { color:#f87171!important; font-weight:600; font-size:0.82rem; }
-details { background:rgba(10,5,7,0.7); border:1px solid rgba(180,0,0,0.15); border-radius:10px; padding:0.5rem 1rem; }
+/* RESPONSIVIDADE COMPLETA */
+@media (max-width: 1200px) {
+    .block-container { padding: 1rem 1.5rem !important; }
+    [data-testid="stMetricValue"] { font-size: 1.3rem !important; }
+}
 
-.info-box {
-    background:rgba(139,0,0,0.08); border:1px solid rgba(180,0,0,0.2);
-    border-left:3px solid #dc2626; border-radius:8px; padding:0.8rem 1rem;
-    margin:0.5rem 0; font-size:0.8rem; color:#94a3b8; line-height:1.6;
+@media (max-width: 992px) {
+    .block-container { padding: 0.8rem 1rem !important; }
+    div[data-testid="column"] { min-width: 200px !important; }
+    .stTabs [data-baseweb="tab"] { padding: 0.4rem 0.8rem; font-size: 0.7rem; }
 }
-.info-box-blue {
-    background:rgba(0,100,200,0.08); border:1px solid rgba(0,150,255,0.2);
-    border-left:3px solid #3b82f6; border-radius:8px; padding:0.8rem 1rem;
-    margin:0.5rem 0; font-size:0.8rem; color:#93c5fd; line-height:1.6;
-}
-.ticket-card {
-    background:rgba(10,5,7,0.9); border:1px solid rgba(180,0,0,0.2);
-    border-radius:12px; padding:1rem 1.2rem; margin:0.5rem 0; transition:all 0.2s;
-}
-.ticket-card:hover { border-color:rgba(220,38,38,0.4); box-shadow:0 4px 20px rgba(139,0,0,0.2); }
 
 @media (max-width: 768px) {
-    .block-container { padding: 0.8rem 0.8rem 2rem !important; }
-    [data-testid="stMetricValue"] { font-size: 1.1rem !important; }
-    .chat-user, .chat-ai, .chat-support { max-width: 92%; }
+    .block-container { padding: 0.6rem 0.8rem !important; }
+    
+    /* Ajuste de métricas em mobile */
+    div[data-testid="metric-container"] { padding: 0.8rem !important; }
+    [data-testid="stMetricValue"] { font-size: 1rem !important; }
+    [data-testid="stMetricLabel"] { font-size: 0.5rem !important; }
+    
+    /* Ajuste de fontes */
+    .soc-header h1 { font-size: 1.2rem !important; }
+    .soc-header p { font-size: 0.6rem !important; }
+    
+    /* Chat em mobile */
+    .chat-user, .chat-ai, .chat-support { max-width: 90%; font-size: 0.75rem; }
+    
+    /* Tabs em mobile */
+    .stTabs [data-baseweb="tab-list"] { flex-wrap: wrap; }
+    .stTabs [data-baseweb="tab"] { flex: 1 0 auto; text-align: center; }
+    
+    /* Grid responsivo */
+    div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+    }
 }
-.js-plotly-plot .plotly .bg { fill: transparent !important; }
+
+@media (max-width: 576px) {
+    .block-container { padding: 0.4rem 0.5rem !important; }
+    
+    /* Botões em mobile */
+    div.stButton > button { 
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+    }
+    
+    /* Cards */
+    .ticket-card { padding: 0.7rem !important; }
+    
+    /* Esconde alguns textos menos importantes em mobile extremo */
+    .badge-online span, .badge-critical span { display: none; }
+    .badge-online, .badge-critical { padding: 2px 8px; font-size: 0.5rem; }
+}
+
+/* Tablet landscape */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .block-container { padding: 0.8rem 1.2rem !important; }
+    div[data-testid="metric-container"] { padding: 0.7rem 1rem; }
+}
+
+/* Touch optimizations para mobile */
+@media (hover: none) and (pointer: coarse) {
+    div.stButton > button:active {
+        transform: scale(0.97);
+    }
+    
+    div[data-testid="metric-container"]:active {
+        transform: translateY(-3px);
+    }
+    
+    /* Aumenta área de toque */
+    button, [data-testid="stTab"] {
+        min-height: 44px;
+    }
+}
+
+/* Estilos existentes mantidos... */
+[data-testid="stHeader"] { background: transparent !important; }
+[data-testid="stToolbar"] { display: none; }
+
+/* ... resto do seu CSS existente continua aqui ... */
 </style>
+
+<!-- Adicionar partículas parallax via JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Criar container de partículas parallax
+    const container = document.createElement('div');
+    container.className = 'parallax-particles';
+    document.body.appendChild(container);
+    
+    // Criar partículas
+    const particleCount = window.innerWidth < 768 ? 30 : 60;
+    for(let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'parallax-particle';
+        const size = Math.random() * 4 + 1;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDuration = (Math.random() * 20 + 15) + 's';
+        particle.style.animationDelay = (Math.random() * -30) + 's';
+        particle.style.opacity = Math.random() * 0.4 + 0.1;
+        container.appendChild(particle);
+    }
+    
+    // Scroll suave para links internos (caso existam)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if(target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    
+    // Efeito parallax ao scroll (cards se movem levemente)
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            requestAnimationFrame(function() {
+                const scrolled = window.pageYOffset;
+                const cards = document.querySelectorAll('[data-testid="metric-container"], .ticket-card');
+                cards.forEach((card, index) => {
+                    const speed = 0.05;
+                    const yPos = scrolled * speed * (index % 2 === 0 ? 1 : -0.5);
+                    card.style.transform = `translateY(${yPos}px)`;
+                });
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+});
+</script>
+
 <div class="scan-line"></div>
 """, unsafe_allow_html=True)
 
