@@ -1266,7 +1266,7 @@ with c5: st.metric("PENDENTES", f"{pend:,}")
 with c6: st.metric("PREJUIZO", f"R$ {prej/1e6:.2f}Mi")
 st.markdown("<hr>", unsafe_allow_html=True)
 
-tabs = st.tabs(["Análise","Dashboard","Mapa de Ameaças","Ameaças ao Vivo","Sentinel Bot","Suporte","Backup & DB","Auditoria"])
+tabs = st.tabs(["Analise","Dashboard","Mapa de Ameacas","Sentinel Bot","Suporte","Backup & DB","Auditoria"])
 
 # ─── TAB 0: ANÁLISE ───────────────────────────────────────────────────────────
 with tabs[0]:
@@ -1868,134 +1868,7 @@ animate();
         ta["% do Total"] = (ta["Ataques"]/ta["Ataques"].sum()*100).round(1).astype(str)+"%"
         st.dataframe(ta, use_container_width=True, hide_index=True)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 3: AMEAÇAS AO VIVO (KASPERSKY CYBERMAP)
-# ══════════════════════════════════════════════════════════════════════════════
-with tabs[3]:
-    st.markdown("### 🌍 Kaspersky Cybermap - Ameaças em Tempo Real")
-    st.caption("Monitoramento global de ataques cibernéticos - Dados atualizados ao vivo")
-    
-    # Informações sobre o mapa
-    col_info1, col_info2 = st.columns(2)
-    with col_info1:
-        st.markdown("""
-        <div class="info-box" style="border-left-color: #00d4ff; margin-bottom: 0.8rem;">
-            <strong>📊 O que é o Cybermap?</strong><br>
-            O Kaspersky Cybermap mostra ataques cibernéticos <strong>em tempo real</strong> 
-            em todo o mundo, incluindo DDoS, ransomware, phishing e malware.
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col_info2:
-        st.markdown("""
-        <div class="info-box" style="border-left-color: #00d4ff; margin-bottom: 0.8rem;">
-            <strong>🛡️ Dados em tempo real:</strong><br>
-            • Países atacados no momento<br>
-            • Tipos de malware detectados<br>
-            • Estatísticas globais de ameaças
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Kaspersky Cybermap
-    kaspersky_html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <style>
-            body { margin: 0; background: #060508; }
-            .map-container {
-                position: relative;
-                width: 100%;
-                height: 550px;
-                border-radius: 16px;
-                overflow: hidden;
-                border: 1px solid rgba(0,212,255,0.2);
-                background: #060508;
-            }
-            iframe {
-                width: 100%;
-                height: 100%;
-                border: none;
-            }
-            .legend {
-                position: absolute;
-                bottom: 12px;
-                left: 12px;
-                background: rgba(6,5,8,0.9);
-                border: 1px solid rgba(0,212,255,0.3);
-                border-radius: 8px;
-                padding: 6px 12px;
-                font-size: 10px;
-                color: #00d4ff;
-                z-index: 10;
-                pointer-events: none;
-                font-family: monospace;
-            }
-            .credits {
-                position: absolute;
-                bottom: 12px;
-                right: 12px;
-                background: rgba(6,5,8,0.7);
-                border-radius: 6px;
-                padding: 4px 8px;
-                font-size: 9px;
-                color: #6b7280;
-                z-index: 10;
-                pointer-events: none;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="map-container">
-            <iframe 
-                src="https://cybermap.kaspersky.com/en/"
-                title="Kaspersky Cybermap - Live Threat Map"
-                allow="geolocation"
-                loading="lazy">
-            </iframe>
-            <div class="legend">
-                🔴 AMEAÇAS EM TEMPO REAL
-            </div>
-            <div class="credits">
-                Fonte: Kaspersky Lab
-            </div>
-        </div>
-    </body>
-    </html>
-    """
-    
-    components.html(kaspersky_html, height=580, scrolling=False)
-    
-    # Link direto e informações adicionais
-    st.markdown("""
-    <div style="margin-top: 1rem; background:rgba(0,212,255,0.05); border-radius:8px; padding:0.8rem; text-align:center;">
-        <p style="color:#6b7280; font-size:0.7rem;">
-            🌐 <strong style="color:#00d4ff;">Fonte: Kaspersky Cybermap</strong> | 
-            Dados atualizados a cada segundo |
-            <a href="https://cybermap.kaspersky.com" target="_blank" style="color:#00d4ff;">Abrir mapa completo ↗</a>
-        </p>
-        <p style="color:#4b5563; font-size:0.65rem; margin-top:0.3rem;">
-            O mapa interativo mostra ataques cibernéticos acontecendo agora em todo o mundo.
-            Clique nos países para obter mais informações sobre as ameaças detectadas.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Estatísticas rápidas (mockup)
-    with st.expander("📈 Estatísticas Globais (referência Kaspersky)"):
-        col_est1, col_est2, col_est3, col_est4 = st.columns(4)
-        with col_est1:
-            st.metric("🌍 Países monitorados", "180+")
-        with col_est2:
-            st.metric("🎯 Ameaças/dia", "~400.000")
-        with col_est3:
-            st.metric("🛡️ Malware detectados", "1.2M+")
-        with col_est4:
-            st.metric("⏱️ Atualização", "Tempo real")
-    
-    st.info("💡 **Dica:** O mapa é interativo! Você pode arrastar, dar zoom e clicar nos países para ver detalhes das ameaças.")
-
-# ─── TAB 4: SENTINEL BOT ─────────────────────────────────────────────────────
+# ─── TAB 3: SENTINEL BOT ─────────────────────────────────────────────────────
 with tabs[3]:
     st.markdown("### Sentinel Bot — Assistente de Seguranca")
     st.caption("IA especialista em ciberseguranca com acesso aos dados do sistema em tempo real.")
@@ -2107,7 +1980,7 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
                 st.session_state["chat"] = []
                 st.rerun()
 
-# ─── TAB 5: SUPORTE ───────────────────────────────────────────────────────────
+# ─── TAB 4: SUPORTE ───────────────────────────────────────────────────────────
 with tabs[4]:
     st.markdown("### Suporte ao Cliente — Canal Direto com a SentinelAI")
 
@@ -2276,7 +2149,7 @@ Nunca revele dados de outros clientes."""
     else:
         st.markdown('<div class="info-box">Sem acesso ao modulo de suporte.</div>', unsafe_allow_html=True)
 
-# ─── TAB 6: BACKUP ───────────────────────────────────────────────────────────
+# ─── TAB 5: BACKUP ───────────────────────────────────────────────────────────
 with tabs[5]:
     st.markdown("### Backup e Gerenciamento de Dados")
     st.markdown("""
@@ -2376,7 +2249,7 @@ MYSQL_URL = "mysql://user:senha@host/sentinelai" """, language="bash")
     st.dataframe(df.head(20),use_container_width=True,height=200)
     st.caption(f"{len(df)} registros · {len(df.columns)} colunas")
 
-# ─── TAB 7: AUDITORIA ────────────────────────────────────────────────────────
+# ─── TAB 6: AUDITORIA ────────────────────────────────────────────────────────
 with tabs[6]:
     st.markdown("### Logs de Auditoria — Rastreabilidade Completa")
     st.caption("Todas as acoes registradas com timestamp · Conformidade LGPD e ISO 27001")
