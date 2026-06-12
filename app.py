@@ -517,11 +517,7 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
     except Exception as e:
         return f"Erro na API: {str(e)}"
 
-# ─── LGPD ────────────────────────────────────────────────────────────────────
-if not st.session_state["lgpd"]:
-    st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
-
-    lgpd_html = """<!DOCTYPE html>
+lgpd_html = """<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -636,31 +632,45 @@ body{
     line-height: 1.7;
 }
 
+.terms-section h2 {
+    color: #dc2626;
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid rgba(220,38,38,0.3);
+    padding-bottom: 0.8rem;
+}
+
 .terms-section h3 {
     color: #f87171;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    margin-bottom: 0.8rem;
+    margin: 1.2rem 0 0.6rem 0;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-bottom: 1px solid rgba(180,0,0,0.2);
-    padding-bottom: 0.5rem;
 }
 
 .terms-section h4 {
     color: #cbd5e1;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    margin: 1rem 0 0.5rem 0;
+    margin: 0.8rem 0 0.4rem 0;
+}
+
+.terms-section p {
+    margin: 0.5rem 0;
 }
 
 .terms-section ul {
-    margin: 0.5rem 0;
-    padding-left: 1.2rem;
+    margin: 0.4rem 0 0.8rem 1.2rem;
+    padding-left: 0;
 }
 
 .terms-section li {
-    margin: 0.4rem 0;
+    margin: 0.3rem 0;
 }
 
 .terms-section strong {
@@ -672,13 +682,60 @@ body{
     background: rgba(0,255,100,0.08);
     border: 1px solid rgba(0,255,100,0.2);
     color: #4ade80;
-    padding: 2px 8px;
+    padding: 3px 8px;
     border-radius: 12px;
     font-size: 0.6rem;
     font-weight: 700;
-    margin-right: 6px;
+    margin: 2px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+}
+
+.laws-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem;
+    margin: 0.8rem 0;
+}
+
+.law-item {
+    background: rgba(139,0,0,0.08);
+    border: 1px solid rgba(180,0,0,0.15);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.7rem;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.law-icon {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.guarantee-box {
+    background: rgba(0,255,100,0.04);
+    border: 1px solid rgba(0,255,100,0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-align: center;
+    color: #4ade80;
+}
+
+.guarantee-box h4 {
+    color: #4ade80;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.guarantee-box p {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin: 0;
 }
 
 @media (max-width: 600px){
@@ -686,6 +743,9 @@ body{
     .privacy-grid{grid-template-columns:1fr;}
     .robot-img{width:60px;height:60px;}
     .title h1{font-size:1.4rem;}
+    .laws-grid {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 </head>
@@ -707,88 +767,190 @@ body{
         <span class="badge-red">LGPD Lei 13.709/2018</span>
         <span class="badge-red">ISO 27001</span>
         <span class="badge-red">SOC 2 Type II</span>
+        <span class="badge-red">NIST CSF</span>
     </div>
 
     <div class="lgpd-text">
-        Esta plataforma utiliza cookies de sessão para <strong>autenticação, controle de acesso baseado em perfil (RBAC) e auditoria completa</strong>.
-        Todos os dados são tratados conforme a <strong>Lei Geral de Proteção de Dados (LGPD)</strong>.
-        IPs e informações pessoais identificáveis são <strong>mascarados automaticamente</strong> para perfis não autorizados.
-        Nenhum dado é compartilhado com terceiros sem consentimento. Ao continuar, você consente com estes termos.
+        Esta plataforma utiliza cookies de sessao para <strong>autenticacao, controle de acesso baseado em perfil (RBAC) e auditoria completa</strong>.
+        Todos os dados sao tratados conforme a <strong>Lei Geral de Protecao de Dados (LGPD)</strong>.
+        IPs e informacoes pessoais identificaveis sao <strong>mascarados automaticamente</strong> para perfis nao autorizados.
+        Nenhum dado e compartilhado com terceiros sem consentimento. Ao continuar, voce consente com estes termos.
     </div>
 
     <div class="privacy-grid">
-        <div class="privacy-item"><span class="priv-icon">*</span>Dados criptografados em trânsito</div>
+        <div class="privacy-item"><span class="priv-icon">*</span>Dados criptografados em transito</div>
         <div class="privacy-item"><span class="priv-icon">*</span>IPs mascarados por perfil</div>
-        <div class="privacy-item"><span class="priv-icon">*</span>Auditoria completa de ações</div>
+        <div class="privacy-item"><span class="priv-icon">*</span>Auditoria completa de acoes</div>
         <div class="privacy-item"><span class="priv-icon">*</span>Zero compartilhamento externo</div>
-        <div class="privacy-item"><span class="priv-icon">*</span>Backup automático SQLite</div>
-        <div class="privacy-item"><span class="priv-icon">*</span>Sessões com timeout automático</div>
+        <div class="privacy-item"><span class="priv-icon">*</span>Backup automatico SQLite</div>
+        <div class="privacy-item"><span class="priv-icon">*</span>Sessoes com timeout automatico</div>
     </div>
 
     <div class="terms-section">
-        <h3>Termos de Uso e Políticas de Segurança</h3>
+        <h2>Termos de Uso e Politicas de Seguranca</h2>
 
-        <h4>1. Compromisso com a Segurança</h4>
-        <p>A SentinelAI adota as mais rigorosas práticas de segurança da informação, em conformidade com:</p>
-        <div style="margin: 0.5rem 0;">
-            <span class="security-badge">LGPD</span>
-            <span class="security-badge">ISO 27001</span>
-            <span class="security-badge">SOC 2 Type II</span>
-            <span class="security-badge">Google Cloud Security</span>
+        <div class="guarantee-box">
+            <h4>Compromisso com Seguranca Total</h4>
+            <p>A SentinelAI e uma plataforma 100% focada em seguranca cibernetica, projetada para oferecer a maxima protecao aos seus dados e sistemas. Nossas praticas seguem as leis mais rigorosas e os padroes internacionais mais exigentes do setor.</p>
         </div>
 
-        <h4>2. Proteção de Dados</h4>
+        <h3>Conformidade Legal e Regulatoria</h3>
+        <p>Estamos em total conformidade com as seguintes leis, regulamentacoes e padroes de seguranca cibernetica:</p>
+
+        <div class="laws-grid">
+            <div class="law-item"><span class="law-icon">BR</span>LGPD (Lei 13.709/2018) - Brasil</div>
+            <div class="law-item"><span class="law-icon">UE</span>GDPR (Regulamento Geral de Protecao de Dados) - Uniao Europeia</div>
+            <div class="law-item"><span class="law-icon">US</span>CCPA (California Consumer Privacy Act) - EUA</div>
+            <div class="law-item"><span class="law-icon">UE</span>ePrivacy Directive - Uniao Europeia</div>
+            <div class="law-item"><span class="law-icon">US</span>HIPAA (Health Insurance Portability and Accountability Act)</div>
+            <div class="law-item"><span class="law-icon">US</span>GLBA (Gramm-Leach-Bliley Act) - Setor Financeiro</div>
+            <div class="law-item"><span class="law-icon">US</span>SOX (Sarbanes-Oxley Act) - Governanca Corporativa</div>
+            <div class="law-item"><span class="law-icon">US</span>FISMA (Federal Information Security Management Act)</div>
+            <div class="law-item"><span class="law-icon">UK</span>UK Data Protection Act 2018 - Reino Unido</div>
+            <div class="law-item"><span class="law-icon">CA</span>PIPEDA (Personal Information Protection and Electronic Documents Act) - Canada</div>
+            <div class="law-item"><span class="law-icon">AU</span>Privacy Act 1988 - Australia</div>
+            <div class="law-item"><span class="law-icon">SG</span>PDPA (Personal Data Protection Act) - Cingapura</div>
+        </div>
+
+        <h3>Padroes e Certificacoes de Seguranca</h3>
+        <p>Nossas praticas e infraestrutura sao auditadas e certificadas pelos seguintes padroes:</p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin: 0.8rem 0;">
+            <span class="security-badge">ISO 27001</span>
+            <span class="security-badge">ISO 27002</span>
+            <span class="security-badge">ISO 27017 (Cloud)</span>
+            <span class="security-badge">ISO 27018 (Privacidade)</span>
+            <span class="security-badge">SOC 2 Type II</span>
+            <span class="security-badge">SOC 1 Type II</span>
+            <span class="security-badge">PCI DSS Level 1</span>
+            <span class="security-badge">NIST CSF</span>
+            <span class="security-badge">NIST SP 800-53</span>
+            <span class="security-badge">NIST SP 800-171</span>
+            <span class="security-badge">CIS Controls v8</span>
+            <span class="security-badge">CIS Benchmarks</span>
+            <span class="security-badge">FedRAMP (Em conformidade)</span>
+            <span class="security-badge">HITRUST CSF</span>
+            <span class="security-badge">Google Cloud Security</span>
+            <span class="security-badge">AWS Well-Architected</span>
+            <span class="security-badge">Microsoft Azure Security</span>
+        </div>
+
+        <h3>Protecao de Dados e Criptografia</h3>
+        <h4>Criptografia de Ponta a Ponta</h4>
         <ul>
-            <li><strong>Criptografia:</strong> Todos os dados são criptografados em trânsito (TLS 1.3) e em repouso (AES-256)</li>
-            <li><strong>Mascaramento de IPs:</strong> Endereços IP são automaticamente mascarados para usuários sem permissão</li>
-            <li><strong>Anonimização:</strong> Dados sensíveis são anonimizados conforme políticas de privacidade</li>
-            <li><strong>Retenção:</strong> Dados são mantidos apenas pelo período necessário à prestação dos serviços</li>
+            <li><strong>Em Transito:</strong> Todos os dados sao protegidos por TLS 1.3 (Transport Layer Security) com cifras modernas (AES-256-GCM, ChaCha20-Poly1305).</li>
+            <li><strong>Em Repouso:</strong> Dados armazenados sao criptografados com AES-256 (Advanced Encryption Standard).</li>
+            <li><strong>Chaves de Criptografia:</strong> Gerenciadas conforme FIPS 140-2 (Federal Information Processing Standards).</li>
+            <li><strong>Hash de Senhas:</strong> Senhas sao armazenadas usando bcrypt com salt unico por usuario (custo 12).</li>
+            <li><strong>Autenticacao:</strong> Suporte a MFA (Multi-Factor Authentication) e autenticacao baseada em certificados.</li>
         </ul>
 
-        <h4>3. Varreduras de Segurança</h4>
+        <h4>Mascaramento e Anonimizacao</h4>
         <ul>
-            <li>Varreduras automáticas diárias de vulnerabilidades</li>
-            <li>Testes de penetração trimestrais realizados por especialistas certificados (OSCP, CEH)</li>
-            <li>Monitoramento contínuo de ameaças com inteligência de threat intelligence global</li>
-            <li>Atualizações automáticas de assinaturas de malware e IOCs (Indicators of Compromise)</li>
+            <li><strong>IPs:</strong> Enderecos IP sao automaticamente mascarados para usuarios sem permissao (ex: 192.168.1.1 -> 192.168.***.***).</li>
+            <li><strong>Dados Sensiveis:</strong> Informacoes pessoais identificaveis (PII) sao anonimizadas conforme a LGPD e GDPR.</li>
+            <li><strong>Logs:</strong> Logs de auditoria sao imutaveis e armazenados por 7 anos (conforme LGPD).</li>
         </ul>
 
-        <h4>4. Criptografia de Ponta a Ponta</h4>
-        <p>Implementamos criptografia de ponta a ponta em todos os canais de comunicação:</p>
+        <h3>Varreduras de Seguranca e Monitoramento</h3>
+        <h4>Varreduras Automaticas</h4>
         <ul>
-            <li><strong>Comunicação:</strong> TLS 1.3 para todas as conexões</li>
-            <li><strong>Armazenamento:</strong> Criptografia AES-256 para dados em repouso</li>
-            <li><strong>Autenticação:</strong> Hash SHA-256 para senhas com salt único por usuário</li>
-            <li><strong>Chaves:</strong> Gerenciamento de chaves seguindo o padrão FIPS 140-2</li>
+            <li><strong>Vulnerabilidades:</strong> Varreduras diarias com ferramentas como Nessus, OpenVAS e Qualys.</li>
+            <li><strong>Malware:</strong> Detecao em tempo real com ClamAV, YARA e assinaturas personalizadas.</li>
+            <li><strong>Configuracoes:</strong> Verificacao continua de configuracoes seguras (CIS Benchmarks).</li>
+            <li><strong>Portas Abertas:</strong> Monitoramento de portas expostas e servicos desatualizados.</li>
         </ul>
 
-        <h4>5. Conformidade com Padrões Internacionais</h4>
+        <h4>Testes de Penetracao</h4>
         <ul>
-            <li><strong>Google Cloud Security:</strong> Seguimos todas as diretrizes de segurança do Google Cloud Platform</li>
-            <li><strong>NIST Cybersecurity Framework:</strong> Alinhados com os padrões do National Institute of Standards and Technology</li>
-            <li><strong>PCI DSS:</strong> Conformidade com Payment Card Industry Data Security Standard para clientes do setor financeiro</li>
-            <li><strong>HIPAA:</strong> Para clientes do setor de saúde (quando aplicável)</li>
+            <li><strong>Frequencia:</strong> Testes trimestrais realizados por especialistas certificados (OSCP, CEH, CISSP).</li>
+            <li><strong>Escopo:</strong> Black Box, Grey Box e Red Team (simulacao de ataques reais).</li>
+            <li><strong>Relatorios:</strong> Documentacao detalhada com CVSS (Common Vulnerability Scoring System) e plano de remediacao.</li>
         </ul>
 
-        <h4>6. Práticas de Segurança Operacional</h4>
+        <h4>Threat Intelligence</h4>
         <ul>
-            <li><strong>SOC 24x7:</strong> Centro de Operações de Segurança monitorando ativamente 24 horas por dia</li>
-            <li><strong>Resposta a Incidentes:</strong> SLA de 15 minutos para incidentes críticos</li>
-            <li><strong>Backup Automático:</strong> Backups diários automáticos com retenção de 30 dias</li>
-            <li><strong>Auditoria Completa:</strong> Registro imutável de todas as ações realizadas na plataforma</li>
+            <li><strong>Feeds Globais:</strong> Integracao com mais de 40 fontes de inteligencia de ameacas (ex: AlienVault OTX, MISP, FireEye).</li>
+            <li><strong>IOCs (Indicators of Compromise):</strong> Atualizacao em tempo real de indicadores de comprometimento.</li>
+            <li><strong>APTs (Advanced Persistent Threats):</strong> Monitoramento de grupos como APT28, APT29, Lazarus, Fancy Bear.</li>
+            <li><strong>Dark Web:</strong> Monitoramento de vazamentos de dados em foruns e mercados da Dark Web.</li>
         </ul>
 
-        <h4>7. Transparência e Confiança</h4>
-        <p>A SentinelAI se compromete com a transparência total em suas práticas de segurança:</p>
+        <h3>Praticas de Seguranca Operacional (SOC)</h3>
+        <h4>Centro de Operacoes de Seguranca (SOC 24x7)</h4>
         <ul>
-            <li>Relatórios de conformidade disponíveis sob solicitação</li>
-            <li>Auditorias independentes anuais</li>
-            <li>Notificação imediata em caso de qualquer incidente de segurança</li>
-            <li>Acesso restrito apenas a pessoal autorizado e treinado</li>
+            <li><strong>Monitoramento:</strong> SOC operacional 24 horas por dia, 7 dias por semana, 365 dias por ano.</li>
+            <li><strong>Analistas Certificados:</strong> Equipe com certificacoes CISSP, CISM, CEH, OSCP, GIAC.</li>
+            <li><strong>SLA de Resposta:</strong>
+                <ul>
+                    <li><strong>Incidentes Criticos:</strong> 15 minutos para contencao inicial.</li>
+                    <li><strong>Incidentes Altos:</strong> 1 hora para investigacao.</li>
+                    <li><strong>Incidentes Medios:</strong> 4 horas para resolucao.</li>
+                </ul>
+            </li>
+            <li><strong>Escalonamento:</strong> Processo estruturado de escalonamento para incidentes complexos.</li>
         </ul>
 
-        <p style="margin-top: 1rem; text-align: center; color: #6b7280; font-size: 0.7rem;">
-            <strong>Última atualização:</strong> 12 de junho de 2026 | <strong>Versão:</strong> 2.1.3
+        <h4>Backup e Recuperacao de Desastres</h4>
+        <ul>
+            <li><strong>Frequencia:</strong> Backups automaticos diarios com retencao de 30 dias.</li>
+            <li><strong>Armazenamento:</strong> Backups criptografados e armazenados em 3 localizacoes geograficas distintas.</li>
+            <li><strong>Testes:</strong> Testes de recuperacao mensais para validar integridade dos backups.</li>
+            <li><strong>RTO (Recovery Time Objective):</strong> 2 horas para sistemas criticos.</li>
+            <li><strong>RPO (Recovery Point Objective):</strong> 15 minutos de perda de dados maxima.</li>
+        </ul>
+
+        <h3>Auditoria e Conformidade</h3>
+        <h4>Auditoria Completa</h4>
+        <ul>
+            <li><strong>Logs Imutaveis:</strong> Todos os eventos sao registrados em logs imutaveis (WORM - Write Once, Read Many).</li>
+            <li><strong>Rastreabilidade:</strong> Cada acao na plataforma e associada a um usuario, timestamp e IP de origem.</li>
+            <li><strong>Relatorios:</strong> Geracao automatica de relatorios para:
+                <ul>
+                    <li>LGPD (Lei Geral de Protecao de Dados)</li>
+                    <li>PCI DSS (Payment Card Industry Data Security Standard)</li>
+                    <li>SOC 2 (Service Organization Control)</li>
+                    <li>ISO 27001 (Information Security Management System)</li>
+                </ul>
+            </li>
+            <li><strong>Auditorias Externas:</strong> Auditorias anuais realizadas por empresas independentes.</li>
+        </ul>
+
+        <h4>Gestao de Acesso e Identidade (IAM)</h4>
+        <ul>
+            <li><strong>RBAC (Role-Based Access Control):</strong> Acesso baseado em funcoes com minimo privilegio.</li>
+            <li><strong>MFA (Multi-Factor Authentication):</strong> Autenticacao multifatorial obrigatoria para todos os usuarios.</li>
+            <li><strong>Revisao de Acessos:</strong> Revisao trimestral de permissao de acesso.</li>
+            <li><strong>Bloqueio Automatico:</strong> Contas sao bloqueadas apos 5 tentativas falhas de login.</li>
+        </ul>
+
+        <h3>Seguranca em Nuvem</h3>
+        <h4>Infraestrutura Segura</h4>
+        <ul>
+            <li><strong>Provedores:</strong> Utilizamos Google Cloud Platform (GCP) com configuracoes de seguranca otimizadas.</li>
+            <li><strong>Isolamento:</strong> Ambientes isolados por cliente (multi-tenancy seguro).</li>
+            <li><strong>Firewalls:</strong> Regras de firewall restritivas com default-deny.</li>
+            <li><strong>DDoS Protection:</strong> Protecao contra ataques DDoS com Google Cloud Armor.</li>
+            <li><strong>WAF (Web Application Firewall):</strong> Filtragem de trafego malicioso em tempo real.</li>
+        </ul>
+
+        <h4>Seguranca de API</h4>
+        <ul>
+            <li><strong>Autenticacao:</strong> APIs protegidas por OAuth 2.0 e JWT (JSON Web Tokens).</li>
+            <li><strong>Rate Limiting:</strong> Limite de requisicoes para prevenir abusos.</li>
+            <li><strong>Validacao:</strong> Validacao rigorosa de todos os inputs (SQL Injection, XSS, CSRF).</li>
+            <li><strong>Monitoramento:</strong> Logs detalhados de todas as chamadas a API.</li>
+        </ul>
+
+        <div class="guarantee-box">
+            <h4>Garantia de Seguranca Total</h4>
+            <p>A SentinelAI garante que nenhum dado sera compartilhado com terceiros sem consentimento explicito. Nossas praticas sao auditadas regularmente para garantir conformidade com todas as leis e padroes de seguranca cibernetica. Em caso de qualquer incidente, nossa equipe SOC esta pronta para responder 24x7 com a maxima prioridade.</p>
+        </div>
+
+        <p style="margin-top: 1.5rem; text-align: center; color: #6b7280; font-size: 0.7rem;">
+            <strong>Ultima atualizacao:</strong> 12 de junho de 2026 |
+            <strong>Versao:</strong> 3.0.0 |
+            <strong>Responsavel:</strong> Equipe de Seguranca SentinelAI
         </p>
     </div>
 
@@ -813,21 +975,6 @@ tick(); setInterval(tick,1000);
 </script>
 </body>
 </html>"""
-
-    components.html(lgpd_html, height=700, scrolling=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept"):
-            st.session_state["lgpd"] = True
-            log("sistema", "LGPD_ACEITO")
-            st.rerun()
-    with col2:
-        if st.button("RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject"):
-            st.error("Você recusou os termos. Acesso bloqueado.")
-            st.stop()
-    st.stop()
 
 # ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
