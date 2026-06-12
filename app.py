@@ -1951,7 +1951,6 @@ with tabs[3]:
     top_cli = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
     top_pai = df[df["TIPO INCIDENTE"]=="ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
 
-    # --- CONTEXTO DA UNIFECAF E EXPOTECH ADICIONADO AO SYSTEM_BOT ---
     SYSTEM_BOT = f"""Voce e o Sentinel Bot, assistente especialista em ciberseguranca da plataforma SentinelAI.
 Responda SEMPRE em portugues brasileiro, de forma profissional, objetiva e direta.
 Use dados reais do sistema nas respostas. Nao invente informacoes.
@@ -2045,7 +2044,7 @@ ExpoTech: Evento anual organizado pela UniFECAF, onde alunos apresentam projetos
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
-            <span style="color:#6b7280;font-size:0.7rem;margin-left:8px;">Sentinel Bot esta digitando...</span>
+            <span style="color:#6b7563;font-size:0.7rem;margin-left:8px;">Sentinel Bot esta digitando...</span>
         </div>""", unsafe_allow_html=True)
         msgs = st.session_state["chat"].copy()
         resp = gemini_chat(SYSTEM_BOT, msgs)
@@ -2060,7 +2059,6 @@ ExpoTech: Evento anual organizado pela UniFECAF, onde alunos apresentam projetos
             if st.button("Limpar conversa", key="clear_chat", use_container_width=True):
                 st.session_state["chat"] = []
                 st.rerun()
-
 # ─── TAB 5: BACKUP ───────────────────────────────────────────────────────────
 with tabs[5]:
     st.markdown("### Backup e Gerenciamento de Dados")
