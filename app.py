@@ -546,7 +546,6 @@ body {
     position: relative;
 }
 
-/* Grid de fundo estilo "matrix leve" */
 .bg-grid {
     position: fixed;
     top: 0;
@@ -560,7 +559,6 @@ body {
     background-size: 40px 40px;
 }
 
-/* Linha de scan animada */
 .scan-line {
     position: fixed;
     top: 0;
@@ -578,7 +576,6 @@ body {
     100% { top: 100vh; }
 }
 
-/* Container principal */
 .terms-container {
     max-width: 1000px;
     margin: 0 auto;
@@ -586,14 +583,15 @@ body {
     z-index: 10;
 }
 
-/* Header com logo */
 .terms-header {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.robot-icon {
-    font-size: 4rem;
+.robot-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
     animation: float-robot 3s ease-in-out infinite;
     filter: drop-shadow(0 0 20px rgba(220,38,38,0.6));
     margin-bottom: 1rem;
@@ -621,7 +619,6 @@ body {
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* Badges de segurança */
 .security-badges {
     display: flex;
     justify-content: center;
@@ -672,7 +669,6 @@ body {
     50% { opacity: 1; transform: scale(1.2); }
 }
 
-/* Card de termos */
 .terms-card {
     background: linear-gradient(135deg, rgba(15, 5, 8, 0.98), rgba(10, 5, 7, 0.99));
     border: 1px solid rgba(180, 0, 0, 0.25);
@@ -696,18 +692,12 @@ body {
     text-transform: uppercase;
 }
 
-.terms-card-header h2 i {
-    color: #dc2626;
-    margin-right: 8px;
-}
-
 .terms-card-body {
     padding: 2rem;
     max-height: 60vh;
     overflow-y: auto;
 }
 
-/* Scrollbar personalizada */
 .terms-card-body::-webkit-scrollbar {
     width: 5px;
 }
@@ -720,7 +710,6 @@ body {
     border-radius: 10px;
 }
 
-/* Conteúdo dos termos */
 .terms-content {
     color: #cbd5e1;
     font-size: 0.85rem;
@@ -782,10 +771,6 @@ body {
     align-items: flex-start;
 }
 
-.security-box .icon {
-    font-size: 1.5rem;
-}
-
 .security-box .text {
     flex: 1;
 }
@@ -794,7 +779,6 @@ body {
     color: #4ade80;
 }
 
-/* Accordion para detalhes */
 details {
     background: rgba(10, 5, 7, 0.6);
     border: 1px solid rgba(180, 0, 0, 0.15);
@@ -815,7 +799,6 @@ details summary:hover {
     color: #dc2626;
 }
 
-/* Footer com aceitação */
 .terms-footer {
     background: rgba(10, 5, 7, 0.95);
     border: 1px solid rgba(180, 0, 0, 0.2);
@@ -872,7 +855,6 @@ details summary:hover {
     color: #f87171;
 }
 
-/* Contador de segurança */
 .security-counter {
     text-align: center;
     margin-top: 1.5rem;
@@ -881,7 +863,6 @@ details summary:hover {
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
     .terms-card-body {
         padding: 1rem;
@@ -902,9 +883,10 @@ details summary:hover {
 
 <div class="terms-container">
     <div class="terms-header">
-        <div class="robot-icon">🛡️🤖</div>
+        <img src="https://raw.githubusercontent.com/mariana-castro77/SentinelAI/main/robo.png" class="robot-img" alt="Sentinel AI"
+             onerror="this.outerHTML='<div style=font-size:60px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>S</div>'">
         <h1>Sentinel<span style="color:#dc2626;">AI</span></h1>
-        <div class="sub">Termos de Uso · Política de Privacidade · LGPD</div>
+        <div class="sub">Termos de Uso · Politica de Privacidade · LGPD</div>
     </div>
 
     <div class="security-badges">
@@ -917,180 +899,177 @@ details summary:hover {
 
     <div class="terms-card">
         <div class="terms-card-header">
-            <h2><i>📜</i> TERMOS DE USO E POLÍTICA DE PRIVACIDADE</h2>
+            <h2>TERMOS DE USO E POLITICA DE PRIVACIDADE</h2>
         </div>
         <div class="terms-card-body">
             <div class="terms-content">
 
                 <div class="security-box">
-                    <div class="icon">🔐</div>
                     <div class="text">
                         <strong>Ambiente 100% Seguro e Criptografado</strong><br>
-                        Este documento formaliza o compromisso da SentinelAI com a proteção dos seus dados. 
-                        Todas as informações trafegam com criptografia ponta a ponta (TLS 1.3 + AES-256).
+                        Este documento formaliza o compromisso da SentinelAI com a protecao dos seus dados. 
+                        Todas as informacoes trafegam com criptografia ponta a ponta (TLS 1.3 + AES-256).
                     </div>
                 </div>
 
                 <h3>1. SOBRE A SENTINELAI</h3>
-                <p>A SentinelAI é uma plataforma de Security Operations Center (SOC) que utiliza Inteligência Artificial para detecção, análise e resposta a incidentes cibernéticos. Nossa missão é proteger empresas contra ameaças digitais com tecnologia de ponta e conformidade total com as leis aplicáveis.</p>
+                <p>A SentinelAI e uma plataforma de Security Operations Center (SOC) que utiliza Inteligencia Artificial para deteccao, analise e resposta a incidentes ciberneticos. Nossa missao e proteger empresas contra ameacas digitais com tecnologia de ponta e conformidade total com as leis aplicaveis.</p>
 
-                <h3>2. LEIS E REGULAMENTAÇÕES APLICÁVEIS</h3>
-                <p>Nossa plataforma opera em conformidade com as seguintes legislações:</p>
+                <h3>2. LEIS E REGULAMENTACOES APLICAVEIS</h3>
+                <p>Nossa plataforma opera em conformidade com as seguintes legislacoes:</p>
                 <ul>
-                    <li><strong>Lei Geral de Proteção de Dados (LGPD) - Lei 13.709/2018</strong> — Marco legal brasileiro para proteção de dados pessoais.</li>
-                    <li><strong>Marco Civil da Internet - Lei 12.965/2014</strong> — Estabelece princípios e garantias para o uso da internet no Brasil.</li>
-                    <li><strong>GDPR (Regulamento Geral de Proteção de Dados da UE)</strong> — Para clientes com operações na Europa.</li>
-                    <li><strong>ISO/IEC 27001:2022</strong> — Certificação internacional de segurança da informação.</li>
-                    <li><strong>PCI DSS (Payment Card Industry Data Security Standard)</strong> — Para processamento seguro de dados de cartões.</li>
-                    <li><strong>Lei de Segurança Cibernética (EUA) - Executive Order 14028</strong> — Práticas de segurança para fornecedores do governo americano.</li>
+                    <li><strong>Lei Geral de Protecao de Dados (LGPD) - Lei 13.709/2018</strong> — Marco legal brasileiro para protecao de dados pessoais.</li>
+                    <li><strong>Marco Civil da Internet - Lei 12.965/2014</strong> — Estabelece principios e garantias para o uso da internet no Brasil.</li>
+                    <li><strong>GDPR (Regulamento Geral de Protecao de Dados da UE)</strong> — Para clientes com operacoes na Europa.</li>
+                    <li><strong>ISO/IEC 27001:2022</strong> — Certificacao internacional de seguranca da informacao.</li>
+                    <li><strong>PCI DSS (Payment Card Industry Data Security Standard)</strong> — Para processamento seguro de dados de cartoes.</li>
+                    <li><strong>Lei de Seguranca Cibernetica (EUA) - Executive Order 14028</strong> — Praticas de seguranca para fornecedores do governo americano.</li>
                     <li><strong>NIST Cybersecurity Framework</strong> — Diretrizes do National Institute of Standards and Technology.</li>
                 </ul>
 
                 <div class="law-reference">
-                    📌 BASE LEGAL: Art. 7º da LGPD — Legítimo interesse e consentimento do titular.
+                    BASE LEGAL: Art. 7° da LGPD — Legitimo interesse e consentimento do titular.
                 </div>
 
-                <h3>3. PROTEÇÃO DE DADOS E PRIVACIDADE (LGPD - CAPÍTULOS I AO VI)</h3>
-                <p>Em conformidade com a Lei 13.709/2018, a SentinelAI adota as seguintes práticas:</p>
+                <h3>3. PROTECAO DE DADOS E PRIVACIDADE (LGPD - CAPITULOS I AO VI)</h3>
+                <p>Em conformidade com a Lei 13.709/2018, a SentinelAI adota as seguintes praticas:</p>
                 <ul>
-                    <li><strong>Consentimento explícito (Art. 5º, XII):</strong> Solicitamos sua autorização antes de qualquer coleta de dados.</li>
-                    <li><strong>Finalidade (Art. 6º, I):</strong> Os dados são usados exclusivamente para operações de segurança cibernética.</li>
-                    <li><strong>Transparência (Art. 6º, VI):</strong> Você pode solicitar a qualquer momento quais dados temos sobre você.</li>
-                    <li><strong>Segurança (Art. 46 e 48):</strong> Implementamos criptografia, firewall, IDS/IPS e monitoramento 24x7.</li>
-                    <li><strong>Direito de revogação (Art. 8º, §5º):</strong> Você pode retirar seu consentimento a qualquer momento.</li>
-                    <li><strong>Eliminação de dados (Art. 16):</strong> Dados são anonimizados ou eliminados após o fim da relação contratual.</li>
+                    <li><strong>Consentimento explicito (Art. 5°, XII):</strong> Solicitamos sua autorizacao antes de qualquer coleta de dados.</li>
+                    <li><strong>Finalidade (Art. 6°, I):</strong> Os dados sao usados exclusivamente para operacoes de seguranca cibernetica.</li>
+                    <li><strong>Transparencia (Art. 6°, VI):</strong> Voce pode solicitar a qualquer momento quais dados temos sobre voce.</li>
+                    <li><strong>Seguranca (Art. 46 e 48):</strong> Implementamos criptografia, firewall, IDS/IPS e monitoramento 24x7.</li>
+                    <li><strong>Direito de revogacao (Art. 8°, §5°):</strong> Voce pode retirar seu consentimento a qualquer momento.</li>
+                    <li><strong>Eliminacao de dados (Art. 16):</strong> Dados sao anonimizados ou eliminados apos o fim da relacao contratual.</li>
                 </ul>
 
                 <details>
-                    <summary>📋 Lista completa de dados coletados (transparência total)</summary>
+                    <summary>Lista completa de dados coletados (transparencia total)</summary>
                     <ul style="margin-top: 10px;">
-                        <li>Endereço IP (anonimizado em relatórios públicos)</li>
-                        <li>Dados de navegação (tipo de dispositivo, navegador, SO)</li>
-                        <li>Logs de incidentes de segurança</li>
-                        <li>Informações de tickets de suporte</li>
+                        <li>Endereco IP (anonimizado em relatorios publicos)</li>
+                        <li>Dados de navegacao (tipo de dispositivo, navegador, SO)</li>
+                        <li>Logs de incidentes de seguranca</li>
+                        <li>Informacoes de tickets de suporte</li>
                         <li>Dados corporativos (empresa, segmento, porte — apenas para contato comercial)</li>
-                        <li>Histórico de interações com o chatbot</li>
-                        <li>NUNCA coletamos: dados biométricos, senhas em texto puro, informações de cartão de crédito</li>
+                        <li>Historico de interacoes com o chatbot</li>
+                        <li>NUNCA coletamos: dados biometricos, senhas em texto puro, informacoes de cartao de credito</li>
                     </ul>
                 </details>
 
-                <h3>4. CRIPTOGRAFIA E SEGURANÇA TÉCNICA</h3>
-                <p>A SentinelAI implementa as mais avançadas tecnologias de segurança:</p>
+                <h3>4. CRIPTOGRAFIA E SEGURANCA TECNICA</h3>
+                <p>A SentinelAI implementa as mais avancadas tecnologias de seguranca:</p>
                 <ul>
-                    <li><strong>Criptografia ponta a ponta:</strong> TLS 1.3 para dados em trânsito, AES-256-GCM para dados em repouso.</li>
+                    <li><strong>Criptografia ponta a ponta:</strong> TLS 1.3 para dados em transito, AES-256-GCM para dados em repouso.</li>
                     <li><strong>Hashing de senhas:</strong> SHA-256 com salt, nunca armazenadas em texto puro.</li>
-                    <li><strong>Firewall de aplicação web (WAF):</strong> Proteção contra SQL Injection, XSS, CSRF e outros ataques OWASP Top 10.</li>
-                    <li><strong>IDS/IPS:</strong> Monitoramento contínuo de tráfego com detecção de intrusão.</li>
-                    <li><strong>Auditoria completa:</strong> Logs imutáveis de todas as ações na plataforma.</li>
-                    <li><strong>Backup automático:</strong> Com retenção mínima de 90 dias.</li>
+                    <li><strong>Firewall de aplicacao web (WAF):</strong> Protecao contra SQL Injection, XSS, CSRF e outros ataques OWASP Top 10.</li>
+                    <li><strong>IDS/IPS:</strong> Monitoramento continuo de trafego com deteccao de intrusao.</li>
+                    <li><strong>Auditoria completa:</strong> Logs imutaveis de todas as acoes na plataforma.</li>
+                    <li><strong>Backup automatico:</strong> Com retencao minima de 90 dias.</li>
                     <li><strong>Isolamento de ambiente:</strong> Clientes enterprise com ambiente dedicado.</li>
                 </ul>
 
                 <div class="law-reference">
-                    🔒 CRIPTOGRAFIA: Todas as conexões utilizam TLS 1.3 (RFC 8446) — padrão mais seguro disponível.
+                    CRIPTOGRAFIA: Todas as conexoes utilizam TLS 1.3 (RFC 8446) — padrao mais seguro disponivel.
                 </div>
 
-                <h3>5. CONFORMIDADE COM O GOOGLE CLOUD E PRÁTICAS DE PROTEÇÃO</h3>
-                <p>A SentinelAI segue rigorosamente as políticas de segurança do Google Cloud Platform, incluindo:</p>
+                <h3>5. CONFORMIDADE COM O GOOGLE CLOUD E PRATICAS DE PROTECAO</h3>
+                <p>A SentinelAI segue rigorosamente as politicas de seguranca do Google Cloud Platform, incluindo:</p>
                 <ul>
-                    <li><strong>Google Cloud Armor:</strong> Proteção contra ataques DDoS e aplicação de regras de segurança.</li>
-                    <li><strong>Cloud Security Command Center:</strong> Monitoramento de vulnerabilidades e ameaças.</li>
-                    <li><strong>Security Key Enforcement:</strong> Autenticação multifator obrigatória para administradores.</li>
-                    <li><strong>Data Loss Prevention (DLP):</strong> Prevenção contra vazamento de dados sensíveis.</li>
-                    <li><strong>Google's GDPR Compliance:</strong> A infraestrutura Google Cloud é certificada GDPR e LGPD.</li>
+                    <li><strong>Google Cloud Armor:</strong> Protecao contra ataques DDoS e aplicacao de regras de seguranca.</li>
+                    <li><strong>Cloud Security Command Center:</strong> Monitoramento de vulnerabilidades e ameacas.</li>
+                    <li><strong>Security Key Enforcement:</strong> Autenticacao multifator obrigatoria para administradores.</li>
+                    <li><strong>Data Loss Prevention (DLP):</strong> Prevencao contra vazamento de dados sensiveis.</li>
+                    <li><strong>Google's GDPR Compliance:</strong> A infraestrutura Google Cloud e certificada GDPR e LGPD.</li>
                     <li><strong>Certificate Authority Service (CAS):</strong> Gerenciamento seguro de certificados TLS.</li>
                 </ul>
-                <p>Além disso, realizamos varreduras de segurança automatizadas (DAST/SAST) a cada deploy e testes de penetração trimestrais com equipes independentes certificadas (OSCP/CEH).</p>
+                <p>Além disso, realizamos varreduras de seguranca automatizadas (DAST/SAST) a cada deploy e testes de penetracao trimestrais com equipes independentes certificadas (OSCP/CEH).</p>
 
-                <h3>6. VARREDURA DE SEGURANÇA CONTÍNUA</h3>
-                <p>Nossa plataforma é submetida a:</p>
+                <h3>6. VARREDURA DE SEGURANCA CONTINUA</h3>
+                <p>Nossa plataforma e submetida a:</p>
                 <ul>
-                    <li><strong>Análise estática de código (SAST):</strong> Verificação de vulnerabilidades no código fonte a cada commit.</li>
-                    <li><strong>Análise dinâmica (DAST):</strong> Testes automatizados contra ataques conhecidos.</li>
-                    <li><strong>Software Composition Analysis (SCA):</strong> Identificação de dependências vulneráveis.</li>
+                    <li><strong>Analise estatica de codigo (SAST):</strong> Verificacao de vulnerabilidades no codigo fonte a cada commit.</li>
+                    <li><strong>Analise dinamica (DAST):</strong> Testes automatizados contra ataques conhecidos.</li>
+                    <li><strong>Software Composition Analysis (SCA):</strong> Identificacao de dependencias vulneraveis.</li>
                     <li><strong>Pentests trimestrais:</strong> Realizados por consultorias externas certificadas.</li>
                     <li><strong>Bug bounty program:</strong> Programa de recompensa por descoberta de vulnerabilidades.</li>
                     <li><strong>Monitoramento 24x7:</strong> Nossa equipe SOC supervisiona todos os sistemas em tempo real.</li>
                 </ul>
 
-                <h3>7. DIREITOS DO TITULAR DOS DADOS (LGPD - CAPÍTULO III)</h3>
-                <p>Como titular, você tem direito a:</p>
+                <h3>7. DIREITOS DO TITULAR DOS DADOS (LGPD - CAPITULO III)</h3>
+                <p>Como titular, voce tem direito a:</p>
                 <ul>
-                    <li>Confirmar a existência de tratamento dos seus dados.</li>
+                    <li>Confirmar a existencia de tratamento dos seus dados.</li>
                     <li>Acessar seus dados a qualquer momento.</li>
                     <li>Corrigir dados incompletos, inexatos ou desatualizados.</li>
-                    <li>Anonimizar, bloquear ou eliminar dados desnecessários.</li>
-                    <li>Revogar seu consentimento (Art. 8º, §5º).</li>
+                    <li>Anonimizar, bloquear ou eliminar dados desnecessarios.</li>
+                    <li>Revogar seu consentimento (Art. 8°, §5°).</li>
                     <li>Solicitar a portabilidade dos dados a outro fornecedor.</li>
-                    <li>Solicitar a eliminação dos dados tratados com consentimento.</li>
+                    <li>Solicitar a eliminacao dos dados tratados com consentimento.</li>
                 </ul>
                 <p>Para exercer qualquer um desses direitos, envie um e-mail para: <strong style="color:#f87171;">privacidade@sentinelai.com.br</strong></p>
 
                 <details>
-                    <summary>⚙️ Como solicitamos seus dados (processo formal LGPD)</summary>
+                    <summary>Como solicitamos seus dados (processo formal LGPD)</summary>
                     <ol style="margin-top: 10px;">
-                        <li>Envie e-mail para privacidade@sentinelai.com.br com assunto "LGPD - Solicitação de Dados"</li>
-                        <li>Nossa equipe de DPO (Data Protection Officer) responderá em até 5 dias úteis</li>
+                        <li>Envie e-mail para privacidade@sentinelai.com.br com assunto "LGPD - Solicitacao de Dados"</li>
+                        <li>Nossa equipe de DPO (Data Protection Officer) respondera em ate 5 dias uteis</li>
                         <li>Validamos sua identidade por um processo seguro</li>
                         <li>Entregamos seus dados em formato estruturado (CSV/JSON) dentro de 15 dias</li>
-                        <li>Em caso de solicitação de eliminação, confirmamos a exclusão em até 30 dias</li>
+                        <li>Em caso de solicitacao de eliminacao, confirmamos a exclusao em ate 30 dias</li>
                     </ol>
                 </details>
 
-                <h3>8. MEDIDAS DE SEGURANÇA APLICADAS NESTA PLATAFORMA</h3>
+                <h3>8. MEDIDAS DE SEGURANCA APLICADAS NESTA PLATAFORMA</h3>
                 <div class="security-box">
-                    <div class="icon">🛡️</div>
                     <div class="text">
-                        <strong>Proteções ativas neste ambiente:</strong><br>
-                        • Mascaramento automático de IPs para perfis não autorizados<br>
+                        <strong>Protecoes ativas neste ambiente:</strong><br>
+                        • Mascaramento automatico de IPs para perfis nao autorizados<br>
                         • Controle de acesso baseado em perfis (RBAC)<br>
-                        • Logs de auditoria imutáveis<br>
-                        • Rate limiting para prevenir ataques de força bruta<br>
-                        • Sanitização de inputs para prevenir XSS e SQL Injection<br>
-                        • Sessões com timeout automático após inatividade<br>
-                        • Backup automático a cada 24 horas
+                        • Logs de auditoria imutaveis<br>
+                        • Rate limiting para prevenir ataques de forca bruta<br>
+                        • Sanitizacao de inputs para prevenir XSS e SQL Injection<br>
+                        • Sessoes com timeout automatico apos inatividade<br>
+                        • Backup automatico a cada 24 horas
                     </div>
                 </div>
 
                 <h3>9. COMPARTILHAMENTO DE DADOS</h3>
-                <p><strong>A SentinelAI NUNCA vende ou aluga dados pessoais.</strong> O compartilhamento ocorre apenas nos seguintes casos estritamente necessários:</p>
+                <p><strong>A SentinelAI NUNCA vende ou aluga dados pessoais.</strong> O compartilhamento ocorre apenas nos seguintes casos estritamente necessarios:</p>
                 <ul>
-                    <li>Com nosso time técnico para suporte e manutenção (sob NDA).</li>
-                    <li>Com autoridades judiciais mediante ordem expressa (Art. 10, §2º da LGPD).</li>
-                    <li>Com subprocessadores que atuam em nosso nome (ex: Google Cloud, AWS), todos certificados e com contratos de proteção de dados.</li>
+                    <li>Com nosso time tecnico para suporte e manutencao (sob NDA).</li>
+                    <li>Com autoridades judiciais mediante ordem expressa (Art. 10, §2° da LGPD).</li>
+                    <li>Com subprocessadores que atuam em nosso nome (ex: Google Cloud, AWS), todos certificados e com contratos de protecao de dados.</li>
                 </ul>
 
-                <h3>10. RETENÇÃO DE DADOS</h3>
-                <p>Seguimos a política de retenção mínima necessária:</p>
+                <h3>10. RETENCAO DE DADOS</h3>
+                <p>Seguimos a politica de retencao minima necessaria:</p>
                 <ul>
                     <li><strong>Logs de acesso:</strong> 6 meses (conforme Marco Civil da Internet).</li>
-                    <li><strong>Incidentes de segurança:</strong> 5 anos (requisito de conformidade).</li>
-                    <li><strong>Tickets de suporte:</strong> 3 anos após fechamento.</li>
-                    <li><strong>Dados de clientes inativos:</strong> Eliminados após 12 meses sem renovação.</li>
+                    <li><strong>Incidentes de seguranca:</strong> 5 anos (requisito de conformidade).</li>
+                    <li><strong>Tickets de suporte:</strong> 3 anos apos fechamento.</li>
+                    <li><strong>Dados de clientes inativos:</strong> Eliminados apos 12 meses sem renovacao.</li>
                 </ul>
 
                 <h3>11. DPO (DATA PROTECTION OFFICER)</h3>
-                <p>Nosso Encarregado de Proteção de Dados é responsável por garantir a conformidade com a LGPD. Você pode contatá-lo diretamente:</p>
+                <p>Nosso Encarregado de Protecao de Dados e responsavel por garantir a conformidade com a LGPD. Voce pode contata-lo diretamente:</p>
                 <ul>
                     <li><strong>Nome:</strong> Dra. Mariana Castro, CIPP/E, CIPM</li>
                     <li><strong>E-mail:</strong> dpo@sentinelai.com.br</li>
                     <li><strong>Telefone:</strong> (11) 4000-2929</li>
-                    <li><strong>Endereço:</strong> Av. Paulista, 1000 — São Paulo/SP — CEP 01310-100</li>
+                    <li><strong>Endereco:</strong> Av. Paulista, 1000 — Sao Paulo/SP — CEP 01310-100</li>
                 </ul>
 
-                <h3>12. ATUALIZAÇÕES DESTES TERMOS</h3>
-                <p>Esta versão dos Termos de Uso foi atualizada em <strong>Novembro de 2024</strong>. Qualquer alteração significativa será comunicada previamente por e-mail e exibida na plataforma. O histórico de versões está disponível mediante solicitação.</p>
+                <h3>12. ATUALIZACOES DESTES TERMOS</h3>
+                <p>Esta versao dos Termos de Uso foi atualizada em <strong>Novembro de 2024</strong>. Qualquer alteracao significativa sera comunicada previamente por e-mail e exibida na plataforma. O historico de versoes esta disponivel mediante solicitacao.</p>
 
                 <div class="security-box">
-                    <div class="icon">✅</div>
                     <div class="text">
                         <strong>Compromisso SentinelAI</strong><br>
-                        "Segurança não é um produto, é um processo contínuo. Estamos sempre evoluindo nossas práticas de proteção e conformidade."
+                        "Seguranca nao e um produto, e um processo continuo. Estamos sempre evoluindo nossas praticas de protecao e conformidade."
                     </div>
                 </div>
 
                 <p style="text-align: center; margin-top: 1.5rem; font-size: 0.7rem; color: #374151;">
-                    ✦ Servidor protegido por WAF + IDS/IPS ✦ Criptografia ponta a ponta ✦ Auditoria em tempo real ✦
+                    Servidor protegido por WAF + IDS/IPS | Criptografia ponta a ponta | Auditoria em tempo real
                 </p>
             </div>
         </div>
@@ -1098,15 +1077,15 @@ details summary:hover {
 
     <div class="terms-footer">
         <p>
-            Ao clicar em <strong>"ACEITAR E CONTINUAR"</strong>, você declara que leu, compreendeu e concorda com todos os termos acima,<br>
-            incluindo a coleta e tratamento de seus dados conforme a <strong>Lei Geral de Proteção de Dados (LGPD - 13.709/2018)</strong>.
+            Ao clicar em <strong>"ACEITAR E CONTINUAR"</strong>, voce declara que leu, compreendeu e concorda com todos os termos acima,<br>
+            incluindo a coleta e tratamento de seus dados conforme a <strong>Lei Geral de Protecao de Dados (LGPD - 13.709/2018)</strong>.
         </p>
         <div class="button-group">
-            <button class="btn btn-accept" onclick="window.parent.postMessage('accept_lgpd', '*')">✅ ACEITAR E CONTINUAR</button>
-            <button class="btn btn-reject" onclick="window.parent.postMessage('reject_lgpd', '*')">❌ RECUSAR (BLOQUEIA ACESSO)</button>
+            <button class="btn btn-accept" onclick="window.parent.postMessage('accept_lgpd', '*')">ACEITAR E CONTINUAR</button>
+            <button class="btn btn-reject" onclick="window.parent.postMessage('reject_lgpd', '*')">RECUSAR (BLOQUEIA ACESSO)</button>
         </div>
         <div class="security-counter">
-            🔒 Ambiente seguro | Certificado TLS ativo | Varredura contínua | Conformidade LGPD/GDPR
+            Ambiente seguro | Certificado TLS ativo | Varredura continua | Conformidade LGPD/GDPR
         </div>
     </div>
 </div>
@@ -1114,7 +1093,6 @@ details summary:hover {
 <script>
     window.addEventListener('message', function(event) {
         if (event.data === 'accept_lgpd') {
-            // Comunicação com o Streamlit
             const streamlitData = {type: "accept"};
             window.parent.postMessage(streamlitData, "*");
         } else if (event.data === 'reject_lgpd') {
@@ -1130,26 +1108,16 @@ details summary:hover {
 
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Captura os cliques via JavaScript
-    accept_clicked = False
-    reject_clicked = False
-    
-    # Usando componentes HTML para capturar o retorno
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("✅ ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept_btn"):
-            accept_clicked = True
+        if st.button("ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept_btn"):
+            st.session_state["lgpd"] = True
+            log("sistema", "LGPD_ACEITO", "Termos completos aceitos")
+            st.rerun()
     with col2:
-        if st.button("❌ RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject_btn"):
-            reject_clicked = True
-    
-    if accept_clicked:
-        st.session_state["lgpd"] = True
-        log("sistema", "LGPD_ACEITO", "Termos completos aceitos")
-        st.rerun()
-    elif reject_clicked:
-        st.error("Você recusou os termos de uso e a política de privacidade. O acesso à plataforma está bloqueado conforme a LGPD (Art. 8º, §5º).")
-        st.stop()
+        if st.button("RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject_btn"):
+            st.error("Voce recusou os termos de uso e a politica de privacidade. O acesso a plataforma esta bloqueado conforme a LGPD (Art. 8°, §5°).")
+            st.stop()
     
     st.stop()
     
