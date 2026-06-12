@@ -818,6 +818,7 @@ details summary:hover {
     gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
+    margin-bottom: 1rem;
 }
 
 .btn {
@@ -857,7 +858,6 @@ details summary:hover {
 
 .security-counter {
     text-align: center;
-    margin-top: 1.5rem;
     font-size: 0.65rem;
     color: #374151;
     font-family: 'JetBrains Mono', monospace;
@@ -1081,8 +1081,8 @@ details summary:hover {
             incluindo a coleta e tratamento de seus dados conforme a <strong>Lei Geral de Protecao de Dados (LGPD - 13.709/2018)</strong>.
         </p>
         <div class="button-group">
-            <button class="btn btn-accept" onclick="window.parent.postMessage('accept_lgpd', '*')">ACEITAR E CONTINUAR</button>
-            <button class="btn btn-reject" onclick="window.parent.postMessage('reject_lgpd', '*')">RECUSAR (BLOQUEIA ACESSO)</button>
+            <button class="btn btn-accept" onclick="parent.acceptTerms()">ACEITAR E CONTINUAR</button>
+            <button class="btn btn-reject" onclick="parent.rejectTerms()">RECUSAR (BLOQUEIA ACESSO)</button>
         </div>
         <div class="security-counter">
             Ambiente seguro | Certificado TLS ativo | Varredura continua | Conformidade LGPD/GDPR
@@ -1091,33 +1091,41 @@ details summary:hover {
 </div>
 
 <script>
-    window.addEventListener('message', function(event) {
-        if (event.data === 'accept_lgpd') {
-            const streamlitData = {type: "accept"};
-            window.parent.postMessage(streamlitData, "*");
-        } else if (event.data === 'reject_lgpd') {
-            const streamlitData = {type: "reject"};
-            window.parent.postMessage(streamlitData, "*");
-        }
-    });
+    function acceptTerms() {
+        parent.postMessage({type: 'streamlit:setComponentValue', value: 'accept'}, '*');
+    }
+    function rejectTerms() {
+        parent.postMessage({type: 'streamlit:setComponentValue', value: 'reject'}, '*');
+    }
 </script>
 </body>
 </html>"""
 
-    components.html(lgpd_html, height=700, scrolling=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
+    # Renderiza o HTML
+    result = components.html(lgpd_html, height=750, scrolling=True)
     
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept_btn"):
-            st.session_state["lgpd"] = True
-            log("sistema", "LGPD_ACEITO", "Termos completos aceitos")
-            st.rerun()
-    with col2:
-        if st.button("RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject_btn"):
-            st.error("Voce recusou os termos de uso e a politica de privacidade. O acesso a plataforma esta bloqueado conforme a LGPD (Art. 8°, §5°).")
-            st.stop()
+    # Verifica se o usuário clicou em algum botão via session state
+    if 'lgpd_choice' not in st.session_state:
+        st.session_state.lgpd_choice = None
+    
+    # Botões de fallback caso o JavaScript não funcione (visíveis apenas se necessário)
+    if st.session_state.lgpd_choice is None:
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("ACEITAR E CONTINUAR (fallback)", use_container_width=True, key="lgpd_accept_fallback"):
+                st.session_state.lgpd_choice = "accept"
+        with col2:
+            if st.button("RECUSAR (BLOQUEIA ACESSO) (fallback)", use_container_width=True, key="lgpd_reject_fallback"):
+                st.session_state.lgpd_choice = "reject"
+    
+    # Processa a escolha
+    if st.session_state.lgpd_choice == "accept":
+        st.session_state["lgpd"] = True
+        log("sistema", "LGPD_ACEITO", "Termos completos aceitos")
+        st.rerun()
+    elif st.session_state.lgpd_choice == "reject":
+        st.error("Voce recusou os termos de uso e a politica de privacidade. O acesso a plataforma esta bloqueado conforme a LGPD (Art. 8°, §5°).")
+        st.stop()
     
     st.stop()
     
