@@ -2052,24 +2052,24 @@ SAUDACAO INICIAL: Ola! Sou o Sentinel Bot, assistente de seguranca cibernetica d
     # Primeira linha de botoes (Seguranca)
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        sg0 = st.button("📊 Qual cliente tem mais prejuizo?", key="sg0", use_container_width=True)
+        sg0 = st.button("Qual cliente tem mais prejuizo?", key="sg0", use_container_width=True)
     with col2:
-        sg1 = st.button("🌍 Paises que mais atacam?", key="sg1", use_container_width=True)
+        sg1 = st.button("Paises que mais atacam?", key="sg1", use_container_width=True)
     with col3:
-        sg2 = st.button("⚠️ Status incidentes criticos", key="sg2", use_container_width=True)
+        sg2 = st.button("Status incidentes criticos", key="sg2", use_container_width=True)
     with col4:
-        sg3 = st.button("🛡️ Recomendacoes urgentes", key="sg3", use_container_width=True)
+        sg3 = st.button("Recomendacoes urgentes", key="sg3", use_container_width=True)
     
     # Segunda linha de botoes (Seguranca + Instituicao)
     col5, col6, col7, col8 = st.columns(4)
     with col5:
-        sg4 = st.button("🤖 Como funciona a IA?", key="sg4", use_container_width=True)
+        sg4 = st.button("Como funciona a IA?", key="sg4", use_container_width=True)
     with col6:
-        sg5 = st.button("🔍 Explique os grupos APT", key="sg5", use_container_width=True)
+        sg5 = st.button("Explique os grupos APT", key="sg5", use_container_width=True)
     with col7:
-        sg6 = st.button("🏫 O que e a UniFECAF?", key="sg6", use_container_width=True)
+        sg6 = st.button("O que e a UniFECAF?", key="sg6", use_container_width=True)
     with col8:
-        sg7 = st.button("📱 O que e a ExpoTech?", key="sg7", use_container_width=True)
+        sg7 = st.button("O que e a ExpoTech?", key="sg7", use_container_width=True)
     
     st.markdown("---")
     
@@ -2118,7 +2118,6 @@ SAUDACAO INICIAL: Ola! Sou o Sentinel Bot, assistente de seguranca cibernetica d
             if st.button("Limpar conversa", key="clear_chat", use_container_width=True):
                 st.session_state["chat"] = []
                 st.rerun()
-
 # ─── TAB 4: SUPORTE ───────────────────────────────────────────────────────────
 with tabs[4]:
     st.markdown("### Suporte ao Cliente — Canal Direto com a SentinelAI")
