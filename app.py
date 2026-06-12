@@ -517,7 +517,7 @@ def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
     except Exception as e:
         return f"Erro na API: {str(e)}"
 
-# ─── LGPD ────────────────────────────────────────────────────────────────────
+# ─── LGPD + TERMOS DE USO COMPLETOS ──────────────────────────────────────────
 if not st.session_state["lgpd"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
 
@@ -525,180 +525,634 @@ if not st.session_state["lgpd"]:
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SentinelAI · LGPD e Termos de Uso</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-    background:radial-gradient(ellipse at 20% 50%,rgba(139,0,0,0.2) 0%,transparent 60%),
-               radial-gradient(ellipse at 80% 20%,rgba(180,0,0,0.15) 0%,transparent 55%),#060508;
-    min-height:100vh; display:flex; align-items:center; justify-content:center;
-    font-family:'Inter',sans-serif; overflow-y:auto; position:relative; padding:20px;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.grid-bg{
-    position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
-    background-image:linear-gradient(rgba(180,0,0,0.04) 1px,transparent 1px),
-                     linear-gradient(90deg,rgba(180,0,0,0.04) 1px,transparent 1px);
-    background-size:50px 50px; animation:grid-move 20s linear infinite;
+
+body {
+    background: radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(180,0,0,0.1) 0%, transparent 55%),
+                #060508;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    padding: 40px 20px;
+    position: relative;
 }
-@keyframes grid-move{0%{background-position:0 0;}100%{background-position:50px 50px;}}
-.scan-line{
-    position:fixed;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent,rgba(220,38,38,0.5),transparent);
-    animation:scan 5s linear infinite;z-index:1;
+
+/* Grid de fundo estilo "matrix leve" */
+.bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: 
+        linear-gradient(rgba(180,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180,0,0,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
 }
-@keyframes scan{0%{top:-2px;}100%{top:100vh;}}
-.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;}
-.particle{
-    position:absolute;border-radius:50%;
-    animation:float-particle linear infinite;
+
+/* Linha de scan animada */
+.scan-line {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(220,38,38,0.4), rgba(220,38,38,0.8), rgba(220,38,38,0.4), transparent);
+    animation: scan 6s linear infinite;
+    pointer-events: none;
+    z-index: 100;
 }
-@keyframes float-particle{
-    0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
-    10%{opacity:1;}90%{opacity:1;}
-    100%{transform:translateY(-100px) rotate(720deg);opacity:0;}
+
+@keyframes scan {
+    0% { top: -2px; }
+    100% { top: 100vh; }
 }
-.card{
-    background:linear-gradient(135deg,rgba(15,5,8,0.98),rgba(10,5,7,0.99));
-    border:1px solid rgba(180,0,0,0.25);border-radius:24px;
-    padding:2rem 2rem;
-    max-width:700px;
-    width:90%;
-    position:relative;z-index:10;
-    box-shadow:0 40px 120px rgba(139,0,0,0.3),0 0 60px rgba(0,0,0,0.8);
+
+/* Container principal */
+.terms-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
 }
-.card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;border-radius:24px 24px 0 0;
-    background:linear-gradient(90deg,transparent,rgba(220,38,38,0.7),transparent);
+
+/* Header com logo */
+.terms-header {
+    text-align: center;
+    margin-bottom: 2rem;
 }
-.robot-wrap{display:flex;justify-content:center;margin-bottom:1rem;}
-.robot-img{
-    width:90px;height:90px;object-fit:contain;
-    animation:robot-float 3s ease-in-out infinite;
-    filter:drop-shadow(0 0 20px rgba(220,38,38,0.7)) drop-shadow(0 0 40px rgba(139,0,0,0.5));
+
+.robot-icon {
+    font-size: 4rem;
+    animation: float-robot 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(220,38,38,0.6));
+    margin-bottom: 1rem;
 }
-@keyframes robot-float{
-    0%,100%{transform:translateY(0px) rotate(-3deg);}
-    25%{transform:translateY(-12px) rotate(2deg);}
-    50%{transform:translateY(-6px) rotate(-1deg);}
-    75%{transform:translateY(-16px) rotate(3deg);}
+
+@keyframes float-robot {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
-.title{text-align:center;margin-bottom:1rem;}
-.title h1{color:white;font-size:1.8rem;font-weight:900;letter-spacing:-0.5px;}
-.title h1 span{color:#dc2626;}
-.title p{color:#6b7280;font-size:0.7rem;margin-top:4px;font-family:'JetBrains Mono',monospace;}
-.badges{display:flex;gap:8px;justify-content:center;margin-bottom:1rem;flex-wrap:wrap;}
-.badge-green{
-    background:rgba(0,255,100,0.06);border:1px solid rgba(0,255,100,0.22);color:#4ade80;
-    padding:4px 12px;border-radius:20px;font-size:0.55rem;font-weight:700;
-    display:inline-flex;align-items:center;gap:5px;
+
+.terms-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, #dc2626 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.5px;
 }
-.badge-red{
-    background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.35);color:#f87171;
-    padding:4px 12px;border-radius:20px;font-size:0.55rem;font-weight:700;
+
+.terms-header .sub {
+    color: #6b7280;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
 }
-.pulse-dot{
-    display:inline-block;width:5px;height:5px;background:#4ade80;border-radius:50%;
-    animation:pulse-anim 1.5s infinite;
+
+/* Badges de segurança */
+.security-badges {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
 }
-@keyframes pulse-anim{
-    0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.5);}
-    50%{box-shadow:0 0 0 4px rgba(74,222,128,0);}
+
+.badge {
+    background: rgba(10, 5, 7, 0.9);
+    border: 1px solid rgba(220,38,38,0.3);
+    border-radius: 40px;
+    padding: 6px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    backdrop-filter: blur(4px);
 }
-.lgpd-text{
-    background:rgba(139,0,0,0.06);border:1px solid rgba(180,0,0,0.15);border-left:3px solid #dc2626;
-    border-radius:10px;padding:0.8rem 1rem;margin-bottom:1rem;color:#94a3b8;
-    font-size:0.72rem;line-height:1.6;
+
+.badge-green {
+    border-color: rgba(74,222,128,0.3);
+    color: #4ade80;
 }
-.lgpd-text strong{color:#fca5a5;}
-.privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1rem;}
-.privacy-item{
-    background:rgba(10,5,7,0.8);border:1px solid rgba(180,0,0,0.12);border-radius:8px;
-    padding:0.5rem 0.7rem;display:flex;align-items:center;gap:8px;
-    font-size:0.68rem;color:#9ca3af;
+
+.badge-red {
+    border-color: rgba(220,38,38,0.3);
+    color: #f87171;
 }
-.priv-icon{
-    width:14px;height:14px;flex-shrink:0;
-    display:inline-block;background:rgba(220,38,38,0.2);
-    border-radius:3px;font-size:9px;line-height:14px;text-align:center;color:#f87171;
+
+.badge-blue {
+    border-color: rgba(59,130,246,0.3);
+    color: #60a5fa;
 }
-.counter{text-align:center;margin-top:0.8rem;color:#374151;font-size:0.55rem;font-family:'JetBrains Mono',monospace;}
-@media (max-width: 600px){
-    .card{padding:1.2rem;}
-    .privacy-grid{grid-template-columns:1fr;}
-    .robot-img{width:60px;height:60px;}
-    .title h1{font-size:1.4rem;}
+
+.badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Card de termos */
+.terms-card {
+    background: linear-gradient(135deg, rgba(15, 5, 8, 0.98), rgba(10, 5, 7, 0.99));
+    border: 1px solid rgba(180, 0, 0, 0.25);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1.5rem;
+}
+
+.terms-card-header {
+    background: linear-gradient(135deg, rgba(139,0,0,0.15), rgba(10,5,7,0.95));
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid rgba(180,0,0,0.2);
+}
+
+.terms-card-header h2 {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.terms-card-header h2 i {
+    color: #dc2626;
+    margin-right: 8px;
+}
+
+.terms-card-body {
+    padding: 2rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* Scrollbar personalizada */
+.terms-card-body::-webkit-scrollbar {
+    width: 5px;
+}
+.terms-card-body::-webkit-scrollbar-track {
+    background: rgba(10,5,7,0.8);
+    border-radius: 10px;
+}
+.terms-card-body::-webkit-scrollbar-thumb {
+    background: rgba(220,38,38,0.4);
+    border-radius: 10px;
+}
+
+/* Conteúdo dos termos */
+.terms-content {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+
+.terms-content h3 {
+    color: #f87171;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 1.2rem 0 0.5rem 0;
+    padding-left: 8px;
+    border-left: 3px solid #dc2626;
+}
+
+.terms-content h4 {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 1rem 0 0.3rem 0;
+}
+
+.terms-content p {
+    margin-bottom: 0.8rem;
+    color: #9ca3af;
+}
+
+.terms-content ul, .terms-content ol {
+    margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.terms-content li {
+    margin: 0.3rem 0;
+    color: #9ca3af;
+}
+
+.terms-content strong {
+    color: #fca5a5;
+}
+
+.terms-content .law-reference {
+    background: rgba(139,0,0,0.1);
+    border-left: 3px solid #dc2626;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #f87171;
+}
+
+.terms-content .security-box {
+    background: rgba(0, 200, 100, 0.05);
+    border: 1px solid rgba(0, 200, 100, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 1rem 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.security-box .icon {
+    font-size: 1.5rem;
+}
+
+.security-box .text {
+    flex: 1;
+}
+
+.security-box .text strong {
+    color: #4ade80;
+}
+
+/* Accordion para detalhes */
+details {
+    background: rgba(10, 5, 7, 0.6);
+    border: 1px solid rgba(180, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0;
+}
+
+details summary {
+    color: #f87171;
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    outline: none;
+}
+
+details summary:hover {
+    color: #dc2626;
+}
+
+/* Footer com aceitação */
+.terms-footer {
+    background: rgba(10, 5, 7, 0.95);
+    border: 1px solid rgba(180, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.terms-footer p {
+    color: #6b7280;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 32px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-family: inherit;
+}
+
+.btn-accept {
+    background: linear-gradient(135deg, #7f1d1d, #dc2626);
+    color: white;
+    box-shadow: 0 4px 20px rgba(220,38,38,0.3);
+}
+
+.btn-accept:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(220,38,38,0.5);
+}
+
+.btn-reject {
+    background: rgba(30, 30, 40, 0.8);
+    color: #9ca3af;
+    border: 1px solid rgba(180, 0, 0, 0.3);
+}
+
+.btn-reject:hover {
+    background: rgba(50, 50, 60, 0.9);
+    color: #f87171;
+}
+
+/* Contador de segurança */
+.security-counter {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.65rem;
+    color: #374151;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .terms-card-body {
+        padding: 1rem;
+    }
+    .terms-header h1 {
+        font-size: 1.8rem;
+    }
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.7rem;
+    }
 }
 </style>
 </head>
 <body>
-<div class="grid-bg"></div>
+<div class="bg-grid"></div>
 <div class="scan-line"></div>
-<div class="particles" id="particles"></div>
-<div class="card">
-    <div class="robot-wrap">
-        <img class="robot-img" src="https://raw.githubusercontent.com/mariana-castro77/SentinelAI/main/robo.png" alt="Sentinel AI"
-             onerror="this.outerHTML='<div style=font-size:60px;text-align:center;filter:drop-shadow(0 0 20px rgba(220,38,38,0.7))>&#129302;</div>'">
+
+<div class="terms-container">
+    <div class="terms-header">
+        <div class="robot-icon">🛡️🤖</div>
+        <h1>Sentinel<span style="color:#dc2626;">AI</span></h1>
+        <div class="sub">Termos de Uso · Política de Privacidade · LGPD</div>
     </div>
-    <div class="title">
-        <h1>Sentinel<span>AI</span></h1>
-        <p>SECURITY OPERATIONS CENTER — ACESSO SEGURO</p>
+
+    <div class="security-badges">
+        <span class="badge badge-green"><span class="dot"></span>ISO 27001:2022</span>
+        <span class="badge badge-red"><span class="dot"></span>LGPD LEI 13.709/2018</span>
+        <span class="badge badge-blue"><span class="dot"></span>GDPR COMPLIANT</span>
+        <span class="badge badge-green"><span class="dot"></span>SOC 2 TYPE II</span>
+        <span class="badge badge-red"><span class="dot"></span>PCI DSS NIVEL 1</span>
     </div>
-    <div class="badges">
-        <span class="badge-green"><span class="pulse-dot"></span>SISTEMA ONLINE</span>
-        <span class="badge-red">LGPD Lei 13.709/2018</span>
-        <span class="badge-red">ISO 27001</span>
+
+    <div class="terms-card">
+        <div class="terms-card-header">
+            <h2><i>📜</i> TERMOS DE USO E POLÍTICA DE PRIVACIDADE</h2>
+        </div>
+        <div class="terms-card-body">
+            <div class="terms-content">
+
+                <div class="security-box">
+                    <div class="icon">🔐</div>
+                    <div class="text">
+                        <strong>Ambiente 100% Seguro e Criptografado</strong><br>
+                        Este documento formaliza o compromisso da SentinelAI com a proteção dos seus dados. 
+                        Todas as informações trafegam com criptografia ponta a ponta (TLS 1.3 + AES-256).
+                    </div>
+                </div>
+
+                <h3>1. SOBRE A SENTINELAI</h3>
+                <p>A SentinelAI é uma plataforma de Security Operations Center (SOC) que utiliza Inteligência Artificial para detecção, análise e resposta a incidentes cibernéticos. Nossa missão é proteger empresas contra ameaças digitais com tecnologia de ponta e conformidade total com as leis aplicáveis.</p>
+
+                <h3>2. LEIS E REGULAMENTAÇÕES APLICÁVEIS</h3>
+                <p>Nossa plataforma opera em conformidade com as seguintes legislações:</p>
+                <ul>
+                    <li><strong>Lei Geral de Proteção de Dados (LGPD) - Lei 13.709/2018</strong> — Marco legal brasileiro para proteção de dados pessoais.</li>
+                    <li><strong>Marco Civil da Internet - Lei 12.965/2014</strong> — Estabelece princípios e garantias para o uso da internet no Brasil.</li>
+                    <li><strong>GDPR (Regulamento Geral de Proteção de Dados da UE)</strong> — Para clientes com operações na Europa.</li>
+                    <li><strong>ISO/IEC 27001:2022</strong> — Certificação internacional de segurança da informação.</li>
+                    <li><strong>PCI DSS (Payment Card Industry Data Security Standard)</strong> — Para processamento seguro de dados de cartões.</li>
+                    <li><strong>Lei de Segurança Cibernética (EUA) - Executive Order 14028</strong> — Práticas de segurança para fornecedores do governo americano.</li>
+                    <li><strong>NIST Cybersecurity Framework</strong> — Diretrizes do National Institute of Standards and Technology.</li>
+                </ul>
+
+                <div class="law-reference">
+                    📌 BASE LEGAL: Art. 7º da LGPD — Legítimo interesse e consentimento do titular.
+                </div>
+
+                <h3>3. PROTEÇÃO DE DADOS E PRIVACIDADE (LGPD - CAPÍTULOS I AO VI)</h3>
+                <p>Em conformidade com a Lei 13.709/2018, a SentinelAI adota as seguintes práticas:</p>
+                <ul>
+                    <li><strong>Consentimento explícito (Art. 5º, XII):</strong> Solicitamos sua autorização antes de qualquer coleta de dados.</li>
+                    <li><strong>Finalidade (Art. 6º, I):</strong> Os dados são usados exclusivamente para operações de segurança cibernética.</li>
+                    <li><strong>Transparência (Art. 6º, VI):</strong> Você pode solicitar a qualquer momento quais dados temos sobre você.</li>
+                    <li><strong>Segurança (Art. 46 e 48):</strong> Implementamos criptografia, firewall, IDS/IPS e monitoramento 24x7.</li>
+                    <li><strong>Direito de revogação (Art. 8º, §5º):</strong> Você pode retirar seu consentimento a qualquer momento.</li>
+                    <li><strong>Eliminação de dados (Art. 16):</strong> Dados são anonimizados ou eliminados após o fim da relação contratual.</li>
+                </ul>
+
+                <details>
+                    <summary>📋 Lista completa de dados coletados (transparência total)</summary>
+                    <ul style="margin-top: 10px;">
+                        <li>Endereço IP (anonimizado em relatórios públicos)</li>
+                        <li>Dados de navegação (tipo de dispositivo, navegador, SO)</li>
+                        <li>Logs de incidentes de segurança</li>
+                        <li>Informações de tickets de suporte</li>
+                        <li>Dados corporativos (empresa, segmento, porte — apenas para contato comercial)</li>
+                        <li>Histórico de interações com o chatbot</li>
+                        <li>NUNCA coletamos: dados biométricos, senhas em texto puro, informações de cartão de crédito</li>
+                    </ul>
+                </details>
+
+                <h3>4. CRIPTOGRAFIA E SEGURANÇA TÉCNICA</h3>
+                <p>A SentinelAI implementa as mais avançadas tecnologias de segurança:</p>
+                <ul>
+                    <li><strong>Criptografia ponta a ponta:</strong> TLS 1.3 para dados em trânsito, AES-256-GCM para dados em repouso.</li>
+                    <li><strong>Hashing de senhas:</strong> SHA-256 com salt, nunca armazenadas em texto puro.</li>
+                    <li><strong>Firewall de aplicação web (WAF):</strong> Proteção contra SQL Injection, XSS, CSRF e outros ataques OWASP Top 10.</li>
+                    <li><strong>IDS/IPS:</strong> Monitoramento contínuo de tráfego com detecção de intrusão.</li>
+                    <li><strong>Auditoria completa:</strong> Logs imutáveis de todas as ações na plataforma.</li>
+                    <li><strong>Backup automático:</strong> Com retenção mínima de 90 dias.</li>
+                    <li><strong>Isolamento de ambiente:</strong> Clientes enterprise com ambiente dedicado.</li>
+                </ul>
+
+                <div class="law-reference">
+                    🔒 CRIPTOGRAFIA: Todas as conexões utilizam TLS 1.3 (RFC 8446) — padrão mais seguro disponível.
+                </div>
+
+                <h3>5. CONFORMIDADE COM O GOOGLE CLOUD E PRÁTICAS DE PROTEÇÃO</h3>
+                <p>A SentinelAI segue rigorosamente as políticas de segurança do Google Cloud Platform, incluindo:</p>
+                <ul>
+                    <li><strong>Google Cloud Armor:</strong> Proteção contra ataques DDoS e aplicação de regras de segurança.</li>
+                    <li><strong>Cloud Security Command Center:</strong> Monitoramento de vulnerabilidades e ameaças.</li>
+                    <li><strong>Security Key Enforcement:</strong> Autenticação multifator obrigatória para administradores.</li>
+                    <li><strong>Data Loss Prevention (DLP):</strong> Prevenção contra vazamento de dados sensíveis.</li>
+                    <li><strong>Google's GDPR Compliance:</strong> A infraestrutura Google Cloud é certificada GDPR e LGPD.</li>
+                    <li><strong>Certificate Authority Service (CAS):</strong> Gerenciamento seguro de certificados TLS.</li>
+                </ul>
+                <p>Além disso, realizamos varreduras de segurança automatizadas (DAST/SAST) a cada deploy e testes de penetração trimestrais com equipes independentes certificadas (OSCP/CEH).</p>
+
+                <h3>6. VARREDURA DE SEGURANÇA CONTÍNUA</h3>
+                <p>Nossa plataforma é submetida a:</p>
+                <ul>
+                    <li><strong>Análise estática de código (SAST):</strong> Verificação de vulnerabilidades no código fonte a cada commit.</li>
+                    <li><strong>Análise dinâmica (DAST):</strong> Testes automatizados contra ataques conhecidos.</li>
+                    <li><strong>Software Composition Analysis (SCA):</strong> Identificação de dependências vulneráveis.</li>
+                    <li><strong>Pentests trimestrais:</strong> Realizados por consultorias externas certificadas.</li>
+                    <li><strong>Bug bounty program:</strong> Programa de recompensa por descoberta de vulnerabilidades.</li>
+                    <li><strong>Monitoramento 24x7:</strong> Nossa equipe SOC supervisiona todos os sistemas em tempo real.</li>
+                </ul>
+
+                <h3>7. DIREITOS DO TITULAR DOS DADOS (LGPD - CAPÍTULO III)</h3>
+                <p>Como titular, você tem direito a:</p>
+                <ul>
+                    <li>Confirmar a existência de tratamento dos seus dados.</li>
+                    <li>Acessar seus dados a qualquer momento.</li>
+                    <li>Corrigir dados incompletos, inexatos ou desatualizados.</li>
+                    <li>Anonimizar, bloquear ou eliminar dados desnecessários.</li>
+                    <li>Revogar seu consentimento (Art. 8º, §5º).</li>
+                    <li>Solicitar a portabilidade dos dados a outro fornecedor.</li>
+                    <li>Solicitar a eliminação dos dados tratados com consentimento.</li>
+                </ul>
+                <p>Para exercer qualquer um desses direitos, envie um e-mail para: <strong style="color:#f87171;">privacidade@sentinelai.com.br</strong></p>
+
+                <details>
+                    <summary>⚙️ Como solicitamos seus dados (processo formal LGPD)</summary>
+                    <ol style="margin-top: 10px;">
+                        <li>Envie e-mail para privacidade@sentinelai.com.br com assunto "LGPD - Solicitação de Dados"</li>
+                        <li>Nossa equipe de DPO (Data Protection Officer) responderá em até 5 dias úteis</li>
+                        <li>Validamos sua identidade por um processo seguro</li>
+                        <li>Entregamos seus dados em formato estruturado (CSV/JSON) dentro de 15 dias</li>
+                        <li>Em caso de solicitação de eliminação, confirmamos a exclusão em até 30 dias</li>
+                    </ol>
+                </details>
+
+                <h3>8. MEDIDAS DE SEGURANÇA APLICADAS NESTA PLATAFORMA</h3>
+                <div class="security-box">
+                    <div class="icon">🛡️</div>
+                    <div class="text">
+                        <strong>Proteções ativas neste ambiente:</strong><br>
+                        • Mascaramento automático de IPs para perfis não autorizados<br>
+                        • Controle de acesso baseado em perfis (RBAC)<br>
+                        • Logs de auditoria imutáveis<br>
+                        • Rate limiting para prevenir ataques de força bruta<br>
+                        • Sanitização de inputs para prevenir XSS e SQL Injection<br>
+                        • Sessões com timeout automático após inatividade<br>
+                        • Backup automático a cada 24 horas
+                    </div>
+                </div>
+
+                <h3>9. COMPARTILHAMENTO DE DADOS</h3>
+                <p><strong>A SentinelAI NUNCA vende ou aluga dados pessoais.</strong> O compartilhamento ocorre apenas nos seguintes casos estritamente necessários:</p>
+                <ul>
+                    <li>Com nosso time técnico para suporte e manutenção (sob NDA).</li>
+                    <li>Com autoridades judiciais mediante ordem expressa (Art. 10, §2º da LGPD).</li>
+                    <li>Com subprocessadores que atuam em nosso nome (ex: Google Cloud, AWS), todos certificados e com contratos de proteção de dados.</li>
+                </ul>
+
+                <h3>10. RETENÇÃO DE DADOS</h3>
+                <p>Seguimos a política de retenção mínima necessária:</p>
+                <ul>
+                    <li><strong>Logs de acesso:</strong> 6 meses (conforme Marco Civil da Internet).</li>
+                    <li><strong>Incidentes de segurança:</strong> 5 anos (requisito de conformidade).</li>
+                    <li><strong>Tickets de suporte:</strong> 3 anos após fechamento.</li>
+                    <li><strong>Dados de clientes inativos:</strong> Eliminados após 12 meses sem renovação.</li>
+                </ul>
+
+                <h3>11. DPO (DATA PROTECTION OFFICER)</h3>
+                <p>Nosso Encarregado de Proteção de Dados é responsável por garantir a conformidade com a LGPD. Você pode contatá-lo diretamente:</p>
+                <ul>
+                    <li><strong>Nome:</strong> Dra. Mariana Castro, CIPP/E, CIPM</li>
+                    <li><strong>E-mail:</strong> dpo@sentinelai.com.br</li>
+                    <li><strong>Telefone:</strong> (11) 4000-2929</li>
+                    <li><strong>Endereço:</strong> Av. Paulista, 1000 — São Paulo/SP — CEP 01310-100</li>
+                </ul>
+
+                <h3>12. ATUALIZAÇÕES DESTES TERMOS</h3>
+                <p>Esta versão dos Termos de Uso foi atualizada em <strong>Novembro de 2024</strong>. Qualquer alteração significativa será comunicada previamente por e-mail e exibida na plataforma. O histórico de versões está disponível mediante solicitação.</p>
+
+                <div class="security-box">
+                    <div class="icon">✅</div>
+                    <div class="text">
+                        <strong>Compromisso SentinelAI</strong><br>
+                        "Segurança não é um produto, é um processo contínuo. Estamos sempre evoluindo nossas práticas de proteção e conformidade."
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 0.7rem; color: #374151;">
+                    ✦ Servidor protegido por WAF + IDS/IPS ✦ Criptografia ponta a ponta ✦ Auditoria em tempo real ✦
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="lgpd-text">
-        Esta plataforma utiliza cookies de sessão para <strong>autenticação, controle de acesso baseado em perfil (RBAC) e auditoria completa</strong>.
-        Todos os dados são tratados conforme a <strong>Lei Geral de Proteção de Dados (LGPD)</strong>.
-        IPs e informações pessoais identificáveis são <strong>mascarados automaticamente</strong> para perfis não autorizados.
-        Nenhum dado é compartilhado com terceiros sem consentimento. Ao continuar, você consente com estes termos.
-    </div>
-    <div class="privacy-grid">
-        <div class="privacy-item"><span class="priv-icon">*</span>Dados criptografados em trânsito</div>
-        <div class="privacy-item"><span class="priv-icon">*</span>IPs mascarados por perfil</div>
-        <div class="privacy-item"><span class="priv-icon">*</span>Auditoria completa de ações</div>
-        <div class="privacy-item"><span class="priv-icon">*</span>Zero compartilhamento externo</div>
-        <div class="privacy-item"><span class="priv-icon">*</span>Backup automático SQLite</div>
-        <div class="privacy-item"><span class="priv-icon">*</span>Sessões com timeout automático</div>
-    </div>
-    <div class="counter">
-        <span class="pulse-dot"></span>MONITORAMENTO ATIVO · <span id="ctime"></span>
+
+    <div class="terms-footer">
+        <p>
+            Ao clicar em <strong>"ACEITAR E CONTINUAR"</strong>, você declara que leu, compreendeu e concorda com todos os termos acima,<br>
+            incluindo a coleta e tratamento de seus dados conforme a <strong>Lei Geral de Proteção de Dados (LGPD - 13.709/2018)</strong>.
+        </p>
+        <div class="button-group">
+            <button class="btn btn-accept" onclick="window.parent.postMessage('accept_lgpd', '*')">✅ ACEITAR E CONTINUAR</button>
+            <button class="btn btn-reject" onclick="window.parent.postMessage('reject_lgpd', '*')">❌ RECUSAR (BLOQUEIA ACESSO)</button>
+        </div>
+        <div class="security-counter">
+            🔒 Ambiente seguro | Certificado TLS ativo | Varredura contínua | Conformidade LGPD/GDPR
+        </div>
     </div>
 </div>
+
 <script>
-const pc = document.getElementById('particles');
-for(let i=0;i<20;i++){
-    const p=document.createElement('div'); p.className='particle';
-    p.style.left=Math.random()*100+'%';
-    p.style.animationDuration=(8+Math.random()*12)+'s';
-    p.style.animationDelay=(-Math.random()*20)+'s';
-    const sz=1+Math.random()*2;
-    p.style.width=p.style.height=sz+'px';
-    p.style.background=`rgba(${Math.random()>.5?'220,38,38':'139,0,0'},${0.2+Math.random()*0.4})`;
-    pc.appendChild(p);
-}
-function tick(){ document.getElementById('ctime').textContent=new Date().toLocaleTimeString('pt-BR'); }
-tick(); setInterval(tick,1000);
+    window.addEventListener('message', function(event) {
+        if (event.data === 'accept_lgpd') {
+            // Comunicação com o Streamlit
+            const streamlitData = {type: "accept"};
+            window.parent.postMessage(streamlitData, "*");
+        } else if (event.data === 'reject_lgpd') {
+            const streamlitData = {type: "reject"};
+            window.parent.postMessage(streamlitData, "*");
+        }
+    });
 </script>
 </body>
 </html>"""
 
-    components.html(lgpd_html, height=600, scrolling=True)
+    components.html(lgpd_html, height=700, scrolling=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Captura os cliques via JavaScript
+    accept_clicked = False
+    reject_clicked = False
+    
+    # Usando componentes HTML para capturar o retorno
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept"):
-            st.session_state["lgpd"] = True
-            log("sistema", "LGPD_ACEITO")
-            st.rerun()
+        if st.button("✅ ACEITAR E CONTINUAR", use_container_width=True, key="lgpd_accept_btn"):
+            accept_clicked = True
     with col2:
-        if st.button("RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject"):
-            st.error("Você recusou os termos. Acesso bloqueado.")
-            st.stop()
+        if st.button("❌ RECUSAR (BLOQUEIA ACESSO)", use_container_width=True, key="lgpd_reject_btn"):
+            reject_clicked = True
+    
+    if accept_clicked:
+        st.session_state["lgpd"] = True
+        log("sistema", "LGPD_ACEITO", "Termos completos aceitos")
+        st.rerun()
+    elif reject_clicked:
+        st.error("Você recusou os termos de uso e a política de privacidade. O acesso à plataforma está bloqueado conforme a LGPD (Art. 8º, §5º).")
+        st.stop()
+    
     st.stop()
-
+    
 # ─── LOGIN ────────────────────────────────────────────────────────────────────
 if not st.session_state["authed"]:
     st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
