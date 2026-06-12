@@ -1951,11 +1951,63 @@ with tabs[3]:
     top_cli = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
     top_pai = df[df["TIPO INCIDENTE"]=="ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
 
-    SYSTEM_BOT = f"""Voce e o Sentinel Bot, assistente especialista em seguranca cibernetica da plataforma SentinelAI.
+    # INFORMAÇÕES SOBRE A UNIFECAF E EXPOTECH
+    INFO_INSTITUCIONAL = """
+=== INFORMACOES INSTITUCIONAIS (UNIFECAF) ===
+
+SOBRE A UNIFECAF:
+- A UniFECAF (Faculdade de Tecnologia e Ciencias da Administracao de Sao Paulo) e uma instituicao de ensino superior localizada na cidade de Sao Paulo, fundada em 1971, com mais de 50 anos de tradicao no ensino brasileiro.
+- Localizada na Avenida General Ataliba Leonel, 2450 - Santana, Sao Paulo/SP, a faculdade conta com infraestrutura moderna, laboratorios equipados e corpo docente qualificado.
+- Oferece cursos de graduacao, pos-graduacao e extensao nas areas de:
+  * Tecnologia da Informacao (Analise e Desenvolvimento de Sistemas, Redes de Computadores, Banco de Dados)
+  * Gestao da Tecnologia da Informacao (GTI)
+  * Administracao
+  * Ciencias Contabeis
+  * Gestao de Recursos Humanos
+  * Marketing
+  * Logistica
+  * Processos Gerenciais
+- A UniFECAF se destaca pelo compromisso com a inovacao, inclusao e preparacao dos alunos para o mercado de trabalho.
+
+SOBRE A EXPOTECH:
+A ExpoTech e o principal evento de tecnologia da UniFECAF, realizado anualmente no campus da faculdade.
+
+CARACTERISTICAS DA EXPOTECH:
+- Evento que reune alunos, professores, empresas e profissionais da area de tecnologia.
+- Objetivo: Apresentar os projetos inovadores desenvolvidos pelos estudantes durante o semestre letivo, integrando conhecimentos de diversas disciplinas.
+- Os projetos sao avaliados por uma banca de professores e convidados do mercado, e os melhores recebem premiacoes e destaque academico.
+- A ExpoTech e uma vitrine para o talento dos alunos e uma ponte com o mercado de trabalho, onde empresas parceiras conhecem os trabalhos e recrutam talentos.
+- Edicoes anteriores contaram com projetos nas areas de:
+  * Inteligencia Artificial e Machine Learning
+  * Seguranca Cibernetica (como o SentinelAI)
+  * Desenvolvimento de aplicativos mobile e web
+  * Automacao industrial e residencial
+  * Analise de dados e Business Intelligence
+  * Solucoes de acessibilidade e inclusao digital
+
+RELACAO COM O SENTINELAI:
+O projeto SentinelAI foi desenvolvido por alunos do curso de Gestao da Tecnologia da Informacao (GTI) da UniFECAF especificamente para apresentacao na ExpoTech. O sistema demonstra conceitos avancados de:
+- Seguranca cibernetica e SOC (Security Operations Center)
+- Inteligencia Artificial aplicada a seguranca (via API Groq/Llama)
+- Conformidade com a LGPD e boas praticas de protecao de dados
+- Analise de dados com Machine Learning (Decision Tree Classifier)
+- Desenvolvimento de sistemas interativos com Streamlit
+- Threat intelligence e monitoramento global de ameacas
+
+PARA SABER MAIS:
+- Site oficial: https://www.unifecaf.com.br
+- Instagram: @unifecaf
+- E-mail para contato: contato@unifecaf.com.br
+"""
+
+    SYSTEM_BOT = f"""Voce e o Sentinel Bot, assistente especialista em seguranca cibernetica da plataforma SentinelAI, desenvolvida por alunos da UniFECAF para a ExpoTech.
+
 Responda SEMPRE em portugues brasileiro, de forma profissional, objetiva e direta.
 Use dados reais do sistema nas respostas. Nao invente informacoes.
 
-=== DADOS ATUAIS ===
+{INFO_INSTITUCIONAL}
+
+=== DADOS ATUAIS DO SENTINELAI ===
 Total incidentes: {len(df)} | Criticos: {crit} ({crit/max(total,1)*100:.1f}%)
 IPs bloqueados: {bloq} | Resolvidos: {resol} | Pendentes: {pend}
 Prejuizo total: R$ {prej:,.0f} | Acuracia IA: {ACC:.1%}
@@ -1963,7 +2015,20 @@ Top paises atacantes: {top_pai}
 Top clientes por prejuizo: {top_cli}
 Status: {df['STATUS'].value_counts().to_dict()}
 Severidades: {df['SEVERIDADE'].value_counts().to_dict()}
-Escopo: {"Todos os clientes" if not CLT else CLT}"""
+Escopo: {"Todos os clientes" if not CLT else CLT}
+
+INSTRUCOES IMPORTANTES:
+1. Quando perguntarem sobre a UniFECAF, responda com entusiasmo e orgulho, destacando a qualidade da instituicao, seus cursos e sua historia de mais de 50 anos.
+2. Quando perguntarem sobre a ExpoTech, explique detalhadamente o evento, seu proposito, como funciona e a importancia para os alunos.
+3. Relacione o SentinelAI com a ExpoTech sempre que possivel, mostrando que este projeto foi desenvolvido especialmente para o evento.
+4. Se perguntarem sobre os criadores, diga que foi desenvolvido por alunos de GTI da UniFECAF sob orientacao dos professores.
+5. Seja sempre positivo e destaque o aprendizado proporcionado pela faculdade e pelo evento.
+6. Para perguntas sobre seguranca cibernetica, use os dados do sistema e conhecimentos tecnicos.
+7. Responda em ate 3 paragrafos, seja objetivo e direto.
+8. Se nao souber algo, diga que nao tem informacao e sugira falar com os desenvolvedores.
+
+SAUDACAO INICIAL: Ola! Sou o Sentinel Bot, assistente de seguranca cibernetica da SentinelAI. Este sistema foi desenvolvido por alunos da UniFECAF para apresentacao na ExpoTech. Posso falar sobre ciberseguranca e tambem sobre a faculdade e o evento! Como posso ajudar voce hoje?
+"""
 
     chat_container = st.container()
     
@@ -1976,55 +2041,54 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
         if not st.session_state["chat"]:
             st.markdown("""<div class="chat-ai">
             <strong style="font-size:0.68rem;opacity:0.6;">Sentinel Bot</strong><br>
-            Ola! Sou o assistente de seguranca da SentinelAI. Analiso incidentes, identifico padroes de ameacas e recomendo acoes de mitigacao.<br><br>Como posso ajudar?
+            Ola! Sou o assistente de seguranca da SentinelAI, projeto desenvolvido por alunos da <strong>UniFECAF</strong> para a <strong>ExpoTech</strong>.<br><br>
+            Posso falar sobre ciberseguranca, analisar incidentes, recomendar acoes de mitigacao e tambem contar sobre a faculdade e o evento!<br><br>
+            Como posso ajudar?
             </div>""", unsafe_allow_html=True)
 
     st.markdown("---")
     st.markdown("<p style='color:#4b5563;font-size:0.7rem;margin-bottom:0.8rem;font-weight:600;'>PERGUNTAS RAPIDAS</p>", unsafe_allow_html=True)
     
-    sugs = [
-        "Qual cliente tem mais prejuizo?",
-        "Quais paises mais atacaram?",
-        "Status dos incidentes criticos",
-        "Recomendacoes urgentes",
-        "Como funciona o modelo IA?",
-        "Explique os grupos APT"
-    ]
-    
-    col1, col2 = st.columns(2)
+    # Primeira linha de botoes (Seguranca)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
-        sg0 = st.button(sugs[0], key="sg0", use_container_width=True)
+        sg0 = st.button("📊 Qual cliente tem mais prejuizo?", key="sg0", use_container_width=True)
     with col2:
-        sg1 = st.button(sugs[1], key="sg1", use_container_width=True)
-    
-    col3, col4 = st.columns(2)
+        sg1 = st.button("🌍 Paises que mais atacam?", key="sg1", use_container_width=True)
     with col3:
-        sg2 = st.button(sugs[2], key="sg2", use_container_width=True)
+        sg2 = st.button("⚠️ Status incidentes criticos", key="sg2", use_container_width=True)
     with col4:
-        sg3 = st.button(sugs[3], key="sg3", use_container_width=True)
+        sg3 = st.button("🛡️ Recomendacoes urgentes", key="sg3", use_container_width=True)
     
-    col5, col6 = st.columns(2)
+    # Segunda linha de botoes (Seguranca + Instituicao)
+    col5, col6, col7, col8 = st.columns(4)
     with col5:
-        sg4 = st.button(sugs[4], key="sg4", use_container_width=True)
+        sg4 = st.button("🤖 Como funciona a IA?", key="sg4", use_container_width=True)
     with col6:
-        sg5 = st.button(sugs[5], key="sg5", use_container_width=True)
+        sg5 = st.button("🔍 Explique os grupos APT", key="sg5", use_container_width=True)
+    with col7:
+        sg6 = st.button("🏫 O que e a UniFECAF?", key="sg6", use_container_width=True)
+    with col8:
+        sg7 = st.button("📱 O que e a ExpoTech?", key="sg7", use_container_width=True)
     
     st.markdown("---")
     
     with st.form("chat_f", clear_on_submit=True):
         col_input, col_button = st.columns([5,1])
         with col_input:
-            q = st.text_input("", placeholder="Digite sua pergunta sobre seguranca...", label_visibility="collapsed")
+            q = st.text_input("", placeholder="Digite sua pergunta sobre seguranca ou sobre a UniFECAF/ExpoTech...", label_visibility="collapsed")
         with col_button:
             send = st.form_submit_button("Enviar", use_container_width=True)
 
     sug_click = None
-    if sg0: sug_click = sugs[0]
-    elif sg1: sug_click = sugs[1]
-    elif sg2: sug_click = sugs[2]
-    elif sg3: sug_click = sugs[3]
-    elif sg4: sug_click = sugs[4]
-    elif sg5: sug_click = sugs[5]
+    if sg0: sug_click = "Qual cliente tem mais prejuizo?"
+    elif sg1: sug_click = "Quais paises mais atacam o Brasil?"
+    elif sg2: sug_click = "Status dos incidentes criticos"
+    elif sg3: sug_click = "Recomendacoes urgentes de seguranca"
+    elif sg4: sug_click = "Como funciona o modelo de IA?"
+    elif sg5: sug_click = "Explique os grupos APT de ameaca"
+    elif sg6: sug_click = "Fale sobre a UniFECAF"
+    elif sg7: sug_click = "O que e a ExpoTech?"
 
     if sug_click:
         q = sug_click
