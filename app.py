@@ -2265,25 +2265,59 @@ Nunca revele dados de outros clientes."""
                             is_sen = m["remetente"]=="SentinelAI"
                             st.markdown(f'<div class="{"chat-support" if is_sen else "chat-user"}"><strong style="font-size:0.68rem;opacity:0.6;">{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
                     if row["status"]!="fechado":
-                        if st.button(f"Gerar sugestao IA — #{row['id']}",key=f"ia_{row['id']}",use_container_width=True):
-                            sugestao = gemini_chat(SUPPORT_SYS,[{"role":"user","content":f"Analista responde ticket do cliente {row['cliente']}. Assunto: '{row['assunto']}'. Mensagem: '{row['mensagem']}'. Gere resposta profissional."}],temperature=0.5,max_tokens=400)
-                            st.info(f"Sugestao gerada:\n\n{sugestao}")
+                        # Botão GERAR SUGESTÃO IA - com mensagem fixa de aviso (ADICIONADO)
+                        if st.button(f"Gerar sugestao IA — #{row['id']}", key=f"ia_{row['id']}", use_container_width=True):
+                            with st.spinner("Gerando sugestão de resposta com IA..."):
+                                sugestao = gemini_chat(SUPPORT_SYS, [{"role":"user", "content": f"""Analista de suporte precisa responder o ticket do cliente {row['cliente']}. 
+                                Assunto: '{row['assunto']}'
+                                Mensagem original do cliente: '{row['mensagem']}'
+                                
+                                Por favor, gere uma resposta profissional e cordial para este cliente. 
+                                A resposta deve:
+                                1. Agradecer o contato
+                                2. Demonstrar empatia com o problema
+                                3. Oferecer uma solução ou orientação inicial
+                                4. Ser educada e profissional
+                                5. Ter no máximo 3 paragrafos
+                                """}], temperature=0.5, max_tokens=500)
+                                
+                                # Mensagem fixa de aviso que será exibida junto com a sugestão (ADICIONADO)
+                                st.info("💡 **SUGESTÃO GERADA POR IA - USE COMO REFERÊNCIA**\n\n"
+                                       "A mensagem abaixo foi gerada automaticamente pelo Sentinel Bot para auxiliar no atendimento. "
+                                       "Revise, edite se necessário e depois copie para a resposta ou adapte conforme o contexto.\n\n"
+                                       "---\n\n"
+                                       f"{sugestao}\n\n"
+                                       "---\n"
+                                       "✏️ Você pode editar esta mensagem antes de enviar ao cliente.")
+                        
                         with st.form(f"adm_{row['id']}"):
-                            resp_adm = st.text_area("Resposta",height=80,key=f"ra_{row['id']}")
-                            ca1,ca2,ca3 = st.columns(3)
+                            resp_adm = st.text_area("Resposta (edite conforme necessário)", height=120, key=f"ra_{row['id']}", 
+                                                   placeholder="Digite aqui sua resposta para o cliente...")
+                            ca1, ca2, ca3 = st.columns(3)
                             with ca1:
-                                if st.form_submit_button("Responder",use_container_width=True):
+                                if st.form_submit_button("Responder", use_container_width=True):
                                     if resp_adm.strip():
-                                        db_responder_ticket(int(row["id"]),resp_adm.strip(),"respondido")
-                                        log(USER,"TICKET_RESP",f"#{row['id']}"); st.rerun()
+                                        db_responder_ticket(int(row["id"]), resp_adm.strip(), "respondido")
+                                        log(USER, "TICKET_RESP", f"#{row['id']}")
+                                        st.success("Resposta enviada ao cliente com sucesso!")
+                                        st.rerun()
+                                    else:
+                                        st.warning("Digite uma resposta antes de enviar.")
                             with ca2:
-                                if st.form_submit_button("Fechar",use_container_width=True):
-                                    db_responder_ticket(int(row["id"]),resp_adm.strip() or "Resolvido.","fechado")
-                                    log(USER,"TICKET_FECH",f"#{row['id']}"); st.rerun()
+                                if st.form_submit_button("Fechar", use_container_width=True):
+                                    if resp_adm.strip():
+                                        db_responder_ticket(int(row["id"]), resp_adm.strip(), "fechado")
+                                    else:
+                                        db_responder_ticket(int(row["id"]), "Ticket fechado pela equipe de suporte.", "fechado")
+                                    log(USER, "TICKET_FECH", f"#{row['id']}")
+                                    st.success("Ticket fechado com sucesso!")
+                                    st.rerun()
                             with ca3:
-                                if st.form_submit_button("Escalar urgente",use_container_width=True):
-                                    db_adicionar_msg_ticket(int(row["id"]),USER,"ESCALADO como URGENTE pelo SOC.")
-                                    log(USER,"TICKET_ESC",f"#{row['id']}"); st.rerun()
+                                if st.form_submit_button("Escalar urgente", use_container_width=True):
+                                    db_adicionar_msg_ticket(int(row["id"]), USER, "ESCALADO como URGENTE pelo SOC - Prioridade máxima.")
+                                    log(USER, "TICKET_ESC", f"#{row['id']}")
+                                    st.warning("Ticket escalado como URGENTE! Equipe notificada.")
+                                    st.rerun()
     else:
         st.markdown('<div class="info-box">Sem acesso ao modulo de suporte.</div>', unsafe_allow_html=True)
 
