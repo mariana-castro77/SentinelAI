@@ -561,10 +561,23 @@ body{
     background:linear-gradient(135deg,rgba(15,5,8,0.98),rgba(10,5,7,0.99));
     border:1px solid rgba(180,0,0,0.25);border-radius:24px;
     padding:2rem 2rem;
-    max-width:700px;
-    width:90%;
+    max-width:900px;
+    width:95%;
     position:relative;z-index:10;
     box-shadow:0 40px 120px rgba(139,0,0,0.3),0 0 60px rgba(0,0,0,0.8);
+    max-height:85vh;
+    overflow-y:auto;
+}
+.card::-webkit-scrollbar{
+    width:5px;
+}
+.card::-webkit-scrollbar-track{
+    background:rgba(10,5,7,0.8);
+    border-radius:10px;
+}
+.card::-webkit-scrollbar-thumb{
+    background:rgba(220,38,38,0.4);
+    border-radius:10px;
 }
 .card::before{
     content:'';position:absolute;top:0;left:0;right:0;height:1px;border-radius:24px 24px 0 0;
@@ -621,6 +634,64 @@ body{
     display:inline-block;background:rgba(220,38,38,0.2);
     border-radius:3px;font-size:9px;line-height:14px;text-align:center;color:#f87171;
 }
+.terms-full{
+    background:rgba(10,5,7,0.6);
+    border:1px solid rgba(180,0,0,0.15);
+    border-radius:12px;
+    padding:1rem;
+    margin:1rem 0;
+}
+.terms-full h3{
+    color:#f87171;
+    font-size:0.85rem;
+    font-weight:700;
+    margin:1rem 0 0.5rem 0;
+    padding-left:6px;
+    border-left:2px solid #dc2626;
+}
+.terms-full h4{
+    color:#94a3b8;
+    font-size:0.75rem;
+    font-weight:600;
+    margin:0.8rem 0 0.3rem 0;
+}
+.terms-full p{
+    color:#9ca3af;
+    font-size:0.7rem;
+    line-height:1.6;
+    margin-bottom:0.5rem;
+}
+.terms-full ul, .terms-full ol{
+    margin:0.3rem 0 0.8rem 1.2rem;
+}
+.terms-full li{
+    color:#9ca3af;
+    font-size:0.68rem;
+    margin:0.2rem 0;
+    line-height:1.5;
+}
+.terms-full strong{
+    color:#fca5a5;
+}
+.law-ref{
+    background:rgba(139,0,0,0.1);
+    border-left:3px solid #dc2626;
+    padding:0.4rem 0.8rem;
+    margin:0.6rem 0;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.65rem;
+    color:#f87171;
+}
+.security-badge{
+    background:rgba(0,200,100,0.05);
+    border:1px solid rgba(0,200,100,0.2);
+    border-radius:10px;
+    padding:0.6rem;
+    margin:0.6rem 0;
+}
+.security-badge strong{
+    color:#4ade80;
+}
 .counter{text-align:center;margin-top:0.8rem;color:#374151;font-size:0.55rem;font-family:'JetBrains Mono',monospace;}
 @media (max-width: 600px){
     .card{padding:1.2rem;}
@@ -654,6 +725,129 @@ body{
         IPs e informações pessoais identificáveis são <strong>mascarados automaticamente</strong> para perfis não autorizados.
         Nenhum dado é compartilhado com terceiros sem consentimento. Ao continuar, você consente com estes termos.
     </div>
+
+    <!-- TERMOS DE USO COMPLETOS -->
+    <div class="terms-full">
+        <h3>TERMOS DE USO E POLITICA DE PRIVACIDADE</h3>
+        
+        <h4>1. LEIS E REGULAMENTACOES APLICAVEIS</h4>
+        <p>Nossa plataforma opera em conformidade com as seguintes legislacoes:</p>
+        <ul>
+            <li><strong>Lei Geral de Protecao de Dados (LGPD) - Lei 13.709/2018</strong> — Marco legal brasileiro para protecao de dados pessoais.</li>
+            <li><strong>Marco Civil da Internet - Lei 12.965/2014</strong> — Estabelece principios e garantias para o uso da internet no Brasil.</li>
+            <li><strong>GDPR (Regulamento Geral de Protecao de Dados da UE)</strong> — Para clientes com operacoes na Europa.</li>
+            <li><strong>ISO/IEC 27001:2022</strong> — Certificacao internacional de seguranca da informacao.</li>
+            <li><strong>PCI DSS (Payment Card Industry Data Security Standard)</strong> — Para processamento seguro de dados de cartoes.</li>
+            <li><strong>NIST Cybersecurity Framework</strong> — Diretrizes do National Institute of Standards and Technology.</li>
+        </ul>
+
+        <div class="law-ref">
+            BASE LEGAL: Art. 7° da LGPD — Legitimo interesse e consentimento do titular.
+        </div>
+
+        <h4>2. PROTECAO DE DADOS E PRIVACIDADE (LGPD)</h4>
+        <p>Em conformidade com a Lei 13.709/2018, a SentinelAI adota as seguintes praticas:</p>
+        <ul>
+            <li><strong>Consentimento explicito (Art. 5°, XII):</strong> Solicitamos sua autorizacao antes de qualquer coleta de dados.</li>
+            <li><strong>Finalidade (Art. 6°, I):</strong> Os dados sao usados exclusivamente para operacoes de seguranca cibernetica.</li>
+            <li><strong>Transparencia (Art. 6°, VI):</strong> Voce pode solicitar a qualquer momento quais dados temos sobre voce.</li>
+            <li><strong>Seguranca (Art. 46 e 48):</strong> Implementamos criptografia, firewall, IDS/IPS e monitoramento 24x7.</li>
+            <li><strong>Direito de revogacao (Art. 8°, §5°):</strong> Voce pode retirar seu consentimento a qualquer momento.</li>
+            <li><strong>Eliminacao de dados (Art. 16):</strong> Dados sao anonimizados ou eliminados apos o fim da relacao contratual.</li>
+        </ul>
+
+        <h4>3. CRIPTOGRAFIA PONTA A PONTA</h4>
+        <p>A SentinelAI implementa as mais avancadas tecnologias de criptografia:</p>
+        <ul>
+            <li><strong>TLS 1.3 (RFC 8446):</strong> Para dados em transito — padrao mais seguro disponivel.</li>
+            <li><strong>AES-256-GCM:</strong> Para dados em repouso — criptografia de nivel militar.</li>
+            <li><strong>Hashing de senhas:</strong> SHA-256 com salt, nunca armazenadas em texto puro.</li>
+            <li><strong>Certificados digitais:</strong> Gerenciados via Google Cloud Certificate Authority Service.</li>
+        </ul>
+
+        <div class="law-ref">
+            CRIPTOGRAFIA: Todas as conexoes utilizam TLS 1.3 — certificado SSL/TLS ativo e validado.
+        </div>
+
+        <h4>4. CONFORMIDADE COM O GOOGLE CLOUD</h4>
+        <p>A SentinelAI segue rigorosamente as politicas de seguranca do Google Cloud Platform:</p>
+        <ul>
+            <li><strong>Google Cloud Armor:</strong> Protecao contra ataques DDoS e aplicacao de regras de seguranca WAF.</li>
+            <li><strong>Cloud Security Command Center:</strong> Monitoramento de vulnerabilidades e ameacas em tempo real.</li>
+            <li><strong>Security Key Enforcement:</strong> Autenticacao multifator obrigatoria para administradores.</li>
+            <li><strong>Data Loss Prevention (DLP):</strong> Prevencao contra vazamento de dados sensiveis.</li>
+            <li><strong>Google's GDPR/LGPD Compliance:</strong> A infraestrutura Google Cloud e certificada GDPR e LGPD.</li>
+            <li><strong>VPC Service Controls:</strong> Isolamento de rede para ambientes enterprise.</li>
+        </ul>
+
+        <h4>5. VARREDURA DE SEGURANCA CONTINUA</h4>
+        <p>Nossa plataforma e submetida a varreduras constantes:</p>
+        <ul>
+            <li><strong>Analise estatica de codigo (SAST):</strong> Verificacao de vulnerabilidades no codigo fonte a cada commit.</li>
+            <li><strong>Analise dinamica (DAST):</strong> Testes automatizados contra ataques conhecidos (OWASP Top 10).</li>
+            <li><strong>Software Composition Analysis (SCA):</strong> Identificacao de dependencias vulneraveis.</li>
+            <li><strong>Pentests trimestrais:</strong> Realizados por consultorias externas certificadas (OSCP/CEH).</li>
+            <li><strong>Bug bounty program:</strong> Programa de recompensa por descoberta de vulnerabilidades.</li>
+            <li><strong>Monitoramento 24x7:</strong> Nossa equipe SOC supervisiona todos os sistemas em tempo real.</li>
+        </ul>
+
+        <div class="security-badge">
+            <strong>PROTECOES ATIVAS NESTE AMBIENTE:</strong><br>
+            • Firewall de aplicacao web (WAF) ativo<br>
+            • IDS/IPS com deteccao de intrusao<br>
+            • Rate limiting para prevenir ataques de forca bruta<br>
+            • Sanitizacao de inputs para prevenir XSS e SQL Injection<br>
+            • Sessoes com timeout automatico apos inatividade<br>
+            • Backup automatico a cada 24 horas com retencao de 90 dias<br>
+            • Mascaramento automatico de IPs para perfis nao autorizados
+        </div>
+
+        <h4>6. DIREITOS DO TITULAR DOS DADOS (LGPD - CAPITULO III)</h4>
+        <p>Como titular, voce tem direito a:</p>
+        <ul>
+            <li>Confirmar a existencia de tratamento dos seus dados.</li>
+            <li>Acessar seus dados a qualquer momento.</li>
+            <li>Corrigir dados incompletos, inexatos ou desatualizados.</li>
+            <li>Anonimizar, bloquear ou eliminar dados desnecessarios.</li>
+            <li>Revogar seu consentimento (Art. 8°, §5°).</li>
+            <li>Solicitar a portabilidade dos dados a outro fornecedor.</li>
+            <li>Solicitar a eliminacao dos dados tratados com consentimento.</li>
+        </ul>
+        <p>Para exercer qualquer um desses direitos, envie um e-mail para: <strong style="color:#f87171;">privacidade@sentinelai.com.br</strong></p>
+
+        <h4>7. COMPARTILHAMENTO DE DADOS</h4>
+        <p><strong>A SentinelAI NUNCA vende ou aluga dados pessoais.</strong> O compartilhamento ocorre apenas nos seguintes casos:</p>
+        <ul>
+            <li>Com nosso time tecnico para suporte e manutencao (sob NDA).</li>
+            <li>Com autoridades judiciais mediante ordem expressa (Art. 10, §2° da LGPD).</li>
+            <li>Com subprocessadores certificados (Google Cloud, AWS), todos com contratos de protecao de dados.</li>
+        </ul>
+
+        <h4>8. RETENCAO DE DADOS</h4>
+        <ul>
+            <li><strong>Logs de acesso:</strong> 6 meses (conforme Marco Civil da Internet).</li>
+            <li><strong>Incidentes de seguranca:</strong> 5 anos (requisito de conformidade).</li>
+            <li><strong>Tickets de suporte:</strong> 3 anos apos fechamento.</li>
+            <li><strong>Dados de clientes inativos:</strong> Eliminados apos 12 meses sem renovacao.</li>
+        </ul>
+
+        <h4>9. DPO (DATA PROTECTION OFFICER)</h4>
+        <ul>
+            <li><strong>Nome:</strong> Dra. Mariana Castro, CIPP/E, CIPM</li>
+            <li><strong>E-mail:</strong> dpo@sentinelai.com.br</li>
+            <li><strong>Telefone:</strong> (11) 4000-2929</li>
+            <li><strong>Endereco:</strong> Av. Paulista, 1000 — Sao Paulo/SP — CEP 01310-100</li>
+        </ul>
+
+        <h4>10. ATUALIZACOES DESTES TERMOS</h4>
+        <p>Esta versao dos Termos de Uso foi atualizada em <strong>Novembro de 2024</strong>. Qualquer alteracao significativa sera comunicada previamente por e-mail e exibida na plataforma.</p>
+
+        <div class="security-badge">
+            <strong>COMPROMISSO SENTINELAI</strong><br>
+            "Seguranca nao e um produto, e um processo continuo. Estamos sempre evoluindo nossas praticas de protecao e conformidade."
+        </div>
+    </div>
+
     <div class="privacy-grid">
         <div class="privacy-item"><span class="priv-icon">*</span>Dados criptografados em trânsito</div>
         <div class="privacy-item"><span class="priv-icon">*</span>IPs mascarados por perfil</div>
@@ -684,7 +878,7 @@ tick(); setInterval(tick,1000);
 </body>
 </html>"""
 
-    components.html(lgpd_html, height=600, scrolling=True)
+    components.html(lgpd_html, height=700, scrolling=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
@@ -699,397 +893,6 @@ tick(); setInterval(tick,1000);
             st.stop()
     st.stop()
     
-# ─── LOGIN ────────────────────────────────────────────────────────────────────
-if not st.session_state["authed"]:
-    st.markdown("<style>[data-testid='stSidebar']{display:none!important;}</style>", unsafe_allow_html=True)
-
-    # ── Controle de página: login ou landing ──────────────────────────────────
-    if "pagina" not in st.session_state:
-        st.session_state["pagina"] = "login"
-
-    # ── Navegação entre login e landing ──────────────────────────────────────
-    if st.session_state["pagina"] == "landing":
-
-        # ── LANDING PAGE PARA NOVOS CLIENTES ─────────────────────────────────
-        if "lead_aba" not in st.session_state:
-            st.session_state["lead_aba"] = 0
-        if "plano_selecionado" not in st.session_state:
-            st.session_state["plano_selecionado"] = None
-
-        # Header
-        st.markdown("""
-        <div style="text-align:center;padding:3rem 0 1.5rem;">
-            <h1 style="font-size:2.8rem;font-weight:900;color:white;letter-spacing:-1px;margin:0;">
-                Sentinel<span style="color:#dc2626;">AI</span>
-            </h1>
-            <p style="color:#6b7280;font-size:1rem;margin:10px 0 0;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.6;">
-                Proteção de nível empresarial para quem não pode se dar ao luxo de ser o próximo alvo.
-            </p>
-            <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
-              <span class="badge-online">&#9679; SOC 24 x 7 x 365</span>
-              <span class="badge-critical">LGPD COMPLIANT</span>
-              <span class="badge-critical">ISO 27001</span>
-            </div>
-        </div>""", unsafe_allow_html=True)
-
-        # Abas internas da landing
-        landing_tabs = st.tabs(["Sobre a SentinelAI", "Servicos", "Planos e Precos", "Falar com a Equipe"])
-
-        # ── ABA 0 · SOBRE ─────────────────────────────────────────────────────
-        with landing_tabs[0]:
-            st.markdown("""
-            <div style="max-width:860px;margin:0 auto;padding:1.5rem 0;">
-            <div style="background:linear-gradient(135deg,rgba(139,0,0,0.08),rgba(10,5,7,0.97));
-                        border:1px solid rgba(180,0,0,0.2);border-radius:18px;padding:2rem;margin-bottom:1.2rem;">
-                <h2 style="color:white;font-size:1.4rem;font-weight:800;margin-bottom:0.8rem;">
-                    Centro de Operacoes de Seguranca movido por inteligencia artificial
-                </h2>
-                <p style="color:#94a3b8;font-size:0.88rem;line-height:1.8;margin-bottom:1rem;">
-                    A SentinelAI nasceu de uma premissa simples: as ameacas cibereticas evoluem mais rapido do que equipes internas conseguem acompanhar.
-                    Nossa plataforma combina um SOC humano altamente especializado com modelos de machine learning treinados em milhoes de eventos de seguranca,
-                    entregando deteccao e resposta a incidentes em tempo real — sem que sua empresa precise montar uma estrutura de seguranca do zero.
-                </p>
-                <p style="color:#94a3b8;font-size:0.88rem;line-height:1.8;">
-                    Atendemos empresas dos segmentos financeiro, varejo, saude, logistica e governo, com conformidade total com a LGPD e as principais
-                    normas internacionais de seguranca da informacao.
-                </p>
-            </div>
-            </div>""", unsafe_allow_html=True)
-
-            nums = st.columns(4)
-            for col, val, label in zip(nums,
-                ["99,97%", "< 4 min", "R$ 2,1 Bi", "200+"],
-                ["Disponibilidade SLA", "Tempo medio de deteccao", "Prejuizos evitados em 2024", "Empresas protegidas"]):
-                with col:
-                    st.markdown(f"""
-                    <div style="background:rgba(139,0,0,0.08);border:1px solid rgba(180,0,0,0.18);
-                                border-radius:14px;padding:1.2rem;text-align:center;">
-                        <p style="color:#dc2626;font-size:1.6rem;font-weight:900;font-family:'JetBrains Mono',monospace;margin:0;">{val}</p>
-                        <p style="color:#6b7280;font-size:0.68rem;margin:4px 0 0;text-transform:uppercase;letter-spacing:0.08em;">{label}</p>
-                    </div>""", unsafe_allow_html=True)
-
-            st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown("""
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:0.5rem;">""", unsafe_allow_html=True)
-
-            diferenciais = [
-                ("Monitoramento Continuo", "SOC operacional 24h por dia, 365 dias por ano. Nenhum incidente passa despercebido, independente do horario ou do dia da semana."),
-                ("IA Treinada no Seu Contexto", "O modelo aprende com o perfil de trafego e os incidentes historicos da sua empresa, reduzindo falsos positivos e priorizando o que realmente importa."),
-                ("Resposta em Minutos", "Contencao automatica de ameacas criticas antes mesmo que o analista humano entre em acao. Bloqueio de IPs, isolamento de endpoints e notificacao em tempo real."),
-                ("Conformidade e Auditoria", "Relatorios prontos para LGPD, PCI-DSS, SOC 2 e ISO 27001. Rastreabilidade completa de todas as acoes dentro da plataforma."),
-                ("Inteligencia de Ameacas Global", "Feeds de threat intelligence de mais de 40 fontes internacionais integrados ao nosso SIEM, com atualizacao em tempo real."),
-                ("Suporte Dedicado", "Canal direto com analistas certificados (CISSP, CEH, OSCP). Sem fila de atendimento, sem bot — acesso humano quando voce precisa."),
-            ]
-            d_cols = st.columns(3)
-            for i, (titulo, desc) in enumerate(diferenciais):
-                with d_cols[i % 3]:
-                    st.markdown(f"""
-                    <div style="background:rgba(10,5,7,0.9);border:1px solid rgba(180,0,0,0.15);
-                                border-radius:12px;padding:1.1rem;height:100%;margin-bottom:0.8rem;">
-                        <p style="color:#f87171;font-size:0.78rem;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">{titulo}</p>
-                        <p style="color:#6b7280;font-size:0.75rem;line-height:1.7;">{desc}</p>
-                    </div>""", unsafe_allow_html=True)
-
-        # ── ABA 1 · SERVICOS ──────────────────────────────────────────────────
-        with landing_tabs[1]:
-            st.markdown("""
-            <div style="text-align:center;padding:1rem 0 1.5rem;">
-                <h2 style="color:white;font-size:1.4rem;font-weight:800;">O que entregamos</h2>
-                <p style="color:#6b7280;font-size:0.82rem;margin-top:6px;">
-                    Uma plataforma unificada que cobre toda a cadeia de seguranca — da deteccao a resposta.
-                </p>
-            </div>""", unsafe_allow_html=True)
-
-            servicos = [
-                ("SOC as a Service", "Centro de Operacoes de Seguranca totalmente gerenciado. Monitoramento SIEM 24x7, triagem de alertas, correlacao de eventos e escalonamento estruturado. Substitui a necessidade de uma equipe interna de 8 a 12 analistas.", "A partir de R$ 18.900,00/mes"),
-                ("Deteccao e Resposta a Incidentes (MDR)", "Identificacao automatizada de ameacas com resposta orquestrada: isolamento de endpoints, bloqueio de IPs, revogacao de credenciais e notificacao. SLA de contencao de ate 15 minutos para incidentes criticos.", "A partir de R$ 12.400,00/mes"),
-                ("Threat Intelligence", "Integracao de feeds globais de inteligencia de ameacas com contextualizacao para o seu setor e perfil de risco. Relatorios semanais de adversarios ativos e indicadores de comprometimento (IOCs).", "A partir de R$ 6.800,00/mes"),
-                ("Gestao de Vulnerabilidades", "Varredura continua de ativos expostos, priorizacao baseada em risco real (CVSS + contexto de negocio) e plano de remediacao supervisionado pela nossa equipe.", "A partir de R$ 8.200,00/mes"),
-                ("Pentest e Red Team", "Simulacao de ataques reais conduzida por especialistas certificados (OSCP, CEH). Modalidades: Black Box, Grey Box e Red Team completo. Relatorio executivo e tecnico com roadmap de correcao.", "A partir de R$ 22.000,00/projeto"),
-                ("Adequacao LGPD e Compliance", "Diagnose de maturidade, mapeamento de fluxos de dados pessoais, elaboracao de politicas e treinamento de equipes. Suporte continuo ao DPO e resposta a incidentes de vazamento.", "A partir de R$ 14.500,00/projeto"),
-            ]
-
-            s_cols1 = st.columns(3)
-            for i, (titulo, desc, preco) in enumerate(servicos):
-                with s_cols1[i % 3]:
-                    st.markdown(f"""
-                    <div style="background:rgba(10,5,7,0.95);border:1px solid rgba(180,0,0,0.18);
-                                border-radius:14px;padding:1.3rem;margin-bottom:1rem;position:relative;overflow:hidden;">
-                        <div style="position:absolute;top:0;left:0;right:0;height:2px;
-                                    background:linear-gradient(90deg,transparent,rgba(220,38,38,0.5),transparent);"></div>
-                        <p style="color:#f87171;font-size:0.78rem;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">{titulo}</p>
-                        <p style="color:#6b7280;font-size:0.75rem;line-height:1.7;margin-bottom:12px;">{desc}</p>
-                        <p style="color:#dc2626;font-size:0.78rem;font-weight:700;font-family:'JetBrains Mono',monospace;">{preco}</p>
-                    </div>""", unsafe_allow_html=True)
-
-        # ── ABA 2 · PLANOS ────────────────────────────────────────────────────
-        with landing_tabs[2]:
-            st.markdown("""
-            <div style="text-align:center;padding:1rem 0 1.5rem;">
-                <h2 style="color:white;font-size:1.4rem;font-weight:800;">Planos e Precos</h2>
-                <p style="color:#6b7280;font-size:0.82rem;margin-top:6px;">
-                    Assinaturas anuais com desconto de dois meses. Todos os planos incluem SLA contratual e suporte dedicado.
-                </p>
-            </div>""", unsafe_allow_html=True)
-
-            planos = [
-                {
-                    "nome": "Essencial",
-                    "publico": "Pequenas e medias empresas",
-                    "preco_mes": "R$ 8.900,00",
-                    "preco_ano": "R$ 89.000,00/ano",
-                    "economia": "2 meses gratis",
-                    "destaque": False,
-                    "itens": [
-                        "Monitoramento SIEM ate 500 eventos/seg",
-                        "Deteccao de ameacas 24x7",
-                        "Resposta automatica a incidentes",
-                        "Relatorio mensal de seguranca",
-                        "Suporte via ticket (SLA 8h uteis)",
-                        "Dashboard exclusivo do cliente",
-                        "Conformidade LGPD basica",
-                    ]
-                },
-                {
-                    "nome": "Professional",
-                    "publico": "Empresas de medio porte",
-                    "preco_mes": "R$ 18.900,00",
-                    "preco_ano": "R$ 189.000,00/ano",
-                    "economia": "2 meses gratis",
-                    "destaque": True,
-                    "itens": [
-                        "Monitoramento SIEM ate 5.000 eventos/seg",
-                        "SOC dedicado com analista nomeado",
-                        "MDR com SLA de 15 min para criticos",
-                        "Threat intelligence semanal",
-                        "Pentest anual incluido (1 escopo)",
-                        "Relatorio executivo quinzenal",
-                        "Suporte 24x7 via chat e telefone",
-                        "Conformidade LGPD e PCI-DSS",
-                        "Integracao com SIEM/SOAR proprio",
-                    ]
-                },
-                {
-                    "nome": "Enterprise",
-                    "publico": "Grandes empresas e grupos",
-                    "preco_mes": "Sob consulta",
-                    "preco_ano": "Contrato personalizado",
-                    "economia": "Condicoes negociadas",
-                    "destaque": False,
-                    "itens": [
-                        "Volume ilimitado de eventos",
-                        "Equipe SOC exclusiva e residente",
-                        "Red Team trimestral incluso",
-                        "Gestao completa de vulnerabilidades",
-                        "Threat intelligence sob medida",
-                        "SLA de 5 minutos para criticos",
-                        "CISO as a Service disponivel",
-                        "Suporte on-site se necessario",
-                        "Conformidade multi-framework",
-                        "Relatorio para board e auditoria",
-                    ]
-                },
-            ]
-
-            p_cols = st.columns(3)
-            plano_sel = st.session_state.get("plano_selecionado", None)
-
-            for i, plano in enumerate(planos):
-                with p_cols[i]:
-                    destaque_style = "border:2px solid rgba(220,38,38,0.6);box-shadow:0 0 30px rgba(139,0,0,0.25);" if plano["destaque"] else "border:1px solid rgba(180,0,0,0.2);"
-                    selecionado_style = "border:2px solid #dc2626;box-shadow:0 0 40px rgba(220,38,38,0.35);" if plano_sel == plano["nome"] else destaque_style
-
-                    badge_html = '<span style="background:#dc2626;color:white;font-size:0.55rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.1em;">MAIS CONTRATADO</span>' if plano["destaque"] else ""
-
-                    itens_html = "".join([
-                        f'<li style="color:#94a3b8;font-size:0.74rem;line-height:1.8;list-style:none;padding-left:14px;position:relative;">'
-                        f'<span style="position:absolute;left:0;color:#dc2626;font-weight:700;">+</span>{item}</li>'
-                        for item in plano["itens"]
-                    ])
-
-                    st.markdown(f"""
-                    <div style="background:rgba(10,5,7,0.97);{selecionado_style}
-                                border-radius:16px;padding:1.5rem;position:relative;overflow:hidden;margin-bottom:0.5rem;
-                                transition:all 0.3s ease;">
-                        <div style="position:absolute;top:0;left:0;right:0;height:2px;
-                                    background:linear-gradient(90deg,transparent,rgba(220,38,38,{'0.9' if plano['destaque'] else '0.4'}),transparent);"></div>
-                        <div style="margin-bottom:10px;">{badge_html}</div>
-                        <p style="color:white;font-size:1.1rem;font-weight:800;margin-bottom:2px;">{plano["nome"]}</p>
-                        <p style="color:#6b7280;font-size:0.7rem;margin-bottom:14px;">{plano["publico"]}</p>
-                        <p style="color:#dc2626;font-size:1.4rem;font-weight:900;font-family:'JetBrains Mono',monospace;margin:0;">{plano["preco_mes"]}<span style="color:#6b7280;font-size:0.65rem;font-weight:400;">/mes</span></p>
-                        <p style="color:#6b7280;font-size:0.68rem;margin:3px 0 4px;">{plano["preco_ano"]}</p>
-                        <p style="color:#4ade80;font-size:0.65rem;font-weight:600;margin-bottom:14px;">{plano["economia"]}</p>
-                        <hr style="border-color:rgba(180,0,0,0.12);margin:10px 0 12px;">
-                        <ul style="margin:0;padding:0;">
-                            {itens_html}
-                        </ul>
-                    </div>""", unsafe_allow_html=True)
-
-                    label_btn = f"PLANO {plano['nome'].upper()} SELECIONADO" if plano_sel == plano["nome"] else f"SELECIONAR {plano['nome'].upper()}"
-                    if st.button(label_btn, key=f"sel_plano_{i}", use_container_width=True):
-                        st.session_state["plano_selecionado"] = plano["nome"]
-                        st.session_state["lead_aba"] = 3
-                        st.rerun()
-
-            if plano_sel:
-                st.markdown(f"""
-                <div style="background:rgba(0,180,80,0.06);border:1px solid rgba(0,180,80,0.25);
-                            border-radius:12px;padding:0.8rem 1.2rem;margin-top:0.8rem;text-align:center;">
-                    <p style="color:#4ade80;font-size:0.8rem;font-weight:700;">
-                        Plano <strong>{plano_sel}</strong> selecionado. Va para a aba "Falar com a Equipe" para enviar sua solicitacao.
-                    </p>
-                </div>""", unsafe_allow_html=True)
-
-        # ── ABA 3 · CONTATO / FORMULARIO ─────────────────────────────────────
-        with landing_tabs[3]:
-            if "lead_enviado" not in st.session_state:
-                st.session_state["lead_enviado"] = False
-            if "lead_empresa_nome" not in st.session_state:
-                st.session_state["lead_empresa_nome"] = ""
-
-            if st.session_state["lead_enviado"]:
-                empresa_nome = st.session_state.get("lead_empresa_nome", "")
-                st.markdown(f"""
-                <div style="max-width:580px;margin:3rem auto;text-align:center;
-                            background:linear-gradient(135deg,rgba(0,180,80,0.06),rgba(10,5,7,0.97));
-                            border:1px solid rgba(0,180,80,0.25);border-radius:20px;padding:2.5rem 2rem;">
-                    <div style="font-size:3rem;margin-bottom:1rem;filter:drop-shadow(0 0 12px rgba(74,222,128,0.5));">&#10003;</div>
-                    <h2 style="color:white;font-size:1.3rem;font-weight:800;margin-bottom:0.6rem;">
-                        Solicitacao recebida, {empresa_nome}!
-                    </h2>
-                    <p style="color:#94a3b8;font-size:0.85rem;line-height:1.8;">
-                        Agradecemos pela confianca na <strong style="color:#f87171;">SentinelAI</strong>.
-                        Nossa equipe comercial entrara em contato via e-mail em ate <strong style="color:white;">1 dia util</strong>.
-                        Fique atento a caixa de entrada — e tambem ao spam, por garantia.
-                    </p>
-                    <p style="color:#6b7280;font-size:0.75rem;margin-top:1rem;">
-                        Duvidas urgentes? Escreva para
-                        <span style="color:#f87171;">sentinelai.contato@gmail.com</span>
-                    </p>
-                </div>""", unsafe_allow_html=True)
-                col_v, _ = st.columns([1, 3])
-                with col_v:
-                    if st.button("Enviar nova solicitacao", key="nova_lead"):
-                        st.session_state["lead_enviado"] = False
-                        st.session_state["plano_selecionado"] = None
-                        st.rerun()
-            else:
-                st.markdown("""
-                <div style="text-align:center;padding:1rem 0 1.5rem;">
-                    <h2 style="color:white;font-size:1.4rem;font-weight:800;">Entre em contato</h2>
-                    <p style="color:#6b7280;font-size:0.82rem;margin-top:6px;max-width:520px;margin-left:auto;margin-right:auto;">
-                        Preencha o formulario abaixo e nossa equipe comercial retornara em ate 1 dia util
-                        com uma proposta personalizada para o perfil da sua empresa.
-                    </p>
-                </div>""", unsafe_allow_html=True)
-
-                _, form_col, _ = st.columns([0.5, 3, 0.5])
-                with form_col:
-                    plano_sel_form = st.session_state.get("plano_selecionado", None)
-                    if plano_sel_form:
-                        st.markdown(f"""
-                        <div style="background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.3);
-                                    border-radius:10px;padding:0.7rem 1rem;margin-bottom:1rem;">
-                            <p style="color:#f87171;font-size:0.78rem;font-weight:700;margin:0;">
-                                Plano selecionado: <strong>{plano_sel_form}</strong>
-                                &mdash; voce pode alterar abaixo se desejar.
-                            </p>
-                        </div>""", unsafe_allow_html=True)
-
-                    with st.form("form_lead", clear_on_submit=False):
-                        st.markdown("<p style='color:#6b7280;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.8rem;'>Dados da Empresa</p>", unsafe_allow_html=True)
-                        c1, c2 = st.columns(2)
-                        with c1:
-                            l_empresa = st.text_input("Nome da Empresa *", placeholder="Ex: Acme Tecnologia Ltda")
-                        with c2:
-                            l_nome = st.text_input("Nome do Responsavel *", placeholder="Ex: Carlos Mendes")
-
-                        c3, c4 = st.columns(2)
-                        with c3:
-                            l_email = st.text_input("E-mail Corporativo *", placeholder="carlos@acme.com.br")
-                        with c4:
-                            l_telefone = st.text_input("Telefone / WhatsApp", placeholder="(11) 9 0000-0000")
-
-                        st.markdown("<p style='color:#6b7280;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:0.8rem 0 0.5rem;'>Perfil da Empresa</p>", unsafe_allow_html=True)
-                        c5, c6 = st.columns(2)
-                        with c5:
-                            l_segmento = st.selectbox("Segmento de Atuacao *", [
-                                "Selecione...",
-                                "Financeiro / Fintechs",
-                                "Varejo / E-commerce",
-                                "Saude / Healthtech",
-                                "Industria / Manufatura",
-                                "Logistica / Transporte",
-                                "Tecnologia / SaaS",
-                                "Governo / Setor Publico",
-                                "Educacao",
-                                "Outro",
-                            ])
-                        with c6:
-                            l_tamanho = st.selectbox("Tamanho da Empresa *", [
-                                "Selecione...",
-                                "Ate 50 funcionarios",
-                                "51 a 200 funcionarios",
-                                "201 a 500 funcionarios",
-                                "501 a 2.000 funcionarios",
-                                "Acima de 2.000 funcionarios",
-                            ])
-
-                        opcoes_plano = ["Essencial", "Professional", "Enterprise", "Ainda nao sei — quero orientacao"]
-                        idx_plano = 0
-                        if plano_sel_form and plano_sel_form in opcoes_plano:
-                            idx_plano = opcoes_plano.index(plano_sel_form)
-                        l_plano = st.selectbox("Servico de Interesse *", opcoes_plano, index=idx_plano)
-
-                        l_msg = st.text_area(
-                            "Conte um pouco sobre o cenario atual de seguranca da sua empresa",
-                            height=110,
-                            placeholder="Ex: Tivemos um incidente recente, ainda nao temos uma solucao de monitoramento, queremos adequacao LGPD..."
-                        )
-
-                        st.markdown("""
-                        <p style="color:#4b5563;font-size:0.65rem;margin:0.5rem 0;line-height:1.5;">
-                            Ao enviar este formulario, voce concorda que a SentinelAI utilize seus dados
-                            para retornar contato comercial, conforme nossa politica de privacidade e a LGPD.
-                        </p>""", unsafe_allow_html=True)
-
-                        enviado = st.form_submit_button("ENVIAR SOLICITACAO", use_container_width=True)
-
-                    if enviado:
-                        erros = []
-                        if not l_empresa.strip(): erros.append("Nome da Empresa")
-                        if not l_nome.strip(): erros.append("Nome do Responsavel")
-                        if not l_email.strip() or "@" not in l_email: erros.append("E-mail valido")
-                        if l_segmento == "Selecione...": erros.append("Segmento de Atuacao")
-                        if l_tamanho == "Selecione...": erros.append("Tamanho da Empresa")
-
-                        if erros:
-                            st.error(f"Preencha os campos obrigatorios: {', '.join(erros)}.")
-                        else:
-                            db_salvar_lead(
-                                l_empresa.strip(), l_nome.strip(), l_email.strip(),
-                                l_telefone.strip(), l_segmento, l_tamanho,
-                                l_plano, l_msg.strip()
-                            )
-                            enviar_email_lead(
-                                l_empresa.strip(), l_nome.strip(), l_email.strip(),
-                                l_telefone.strip(), l_segmento, l_tamanho,
-                                l_plano, l_msg.strip()
-                            )
-                            db_log("lead", "LEAD_RECEBIDO", f"{l_empresa.strip()} | {l_email.strip()} | {l_plano}")
-                            st.session_state["lead_enviado"] = True
-                            st.session_state["lead_empresa_nome"] = l_empresa.strip()
-                            st.rerun()
-
-        st.markdown("<hr>", unsafe_allow_html=True)
-        col_back, _ = st.columns([1, 5])
-        with col_back:
-            if st.button("Voltar ao Login", use_container_width=True, key="btn_voltar_login"):
-                st.session_state["pagina"] = "login"
-                st.rerun()
-
-        st.stop()
-
     # ── PAGINA DE LOGIN ────────────────────────────────────────────────────────
     st.markdown("""
     <div style="text-align:center;padding:3rem 0 2rem;">
