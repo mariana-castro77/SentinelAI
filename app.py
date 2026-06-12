@@ -1951,7 +1951,14 @@ with tabs[3]:
     top_cli = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
     top_pai = df[df["TIPO INCIDENTE"]=="ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
 
-    SYSTEM_BOT = f"""Voce e o Sentinel Bot, assistente especialista em seguranca cibernetica da plataforma SentinelAI.
+    # --- CONTEXTO DA UNIFECAF E EXPOTECH ADICIONADO ---
+    UNIFECAF_CONTEXT = """
+    ### Contexto sobre a UniFECAF e ExpoTech:
+    - **UniFECAF**: Fundada em 2015 como Faculdade FECAF, hoje é o Centro Universitário UniFECAF. Sua visão é ser a maior e melhor experiência educacional do Brasil, com foco em qualidade acadêmica, valores acessíveis e formação conectada à prática. A instituição é voltada para o aluno e atenta às transformações do mercado.
+    - **ExpoTech**: Evento anual organizado pela UniFECAF, onde alunos apresentam projetos inovadores desenvolvidos ao longo do semestre. O objetivo é conectar a educação com o mercado de trabalho, mostrando o talento e a criatividade dos estudantes. Áreas de destaque: Desenvolvimento de Sistemas, Inteligência Artificial, Segurança Cibernética, IoT, entre outras. Público: empresas, professores, alunos e entusiastas de tecnologia.
+    """
+
+    SYSTEM_BOT = f"""Voce e o Sentinel Bot, assistente especialista em ciberseguranca da plataforma SentinelAI.
 Responda SEMPRE em portugues brasileiro, de forma profissional, objetiva e direta.
 Use dados reais do sistema nas respostas. Nao invente informacoes.
 
@@ -1963,10 +1970,14 @@ Top paises atacantes: {top_pai}
 Top clientes por prejuizo: {top_cli}
 Status: {df['STATUS'].value_counts().to_dict()}
 Severidades: {df['SEVERIDADE'].value_counts().to_dict()}
-Escopo: {"Todos os clientes" if not CLT else CLT}"""
+Escopo: {"Todos os clientes" if not CLT else CLT}
+
+=== CONTEXTO UNIFECAF E EXPOTECH ===
+{UNIFECAF_CONTEXT}
+"""
 
     chat_container = st.container()
-    
+
     with chat_container:
         for msg in st.session_state["chat"]:
             css = "chat-user" if msg["role"]=="user" else "chat-ai"
@@ -1981,36 +1992,44 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
 
     st.markdown("---")
     st.markdown("<p style='color:#4b5563;font-size:0.7rem;margin-bottom:0.8rem;font-weight:600;'>PERGUNTAS RAPIDAS</p>", unsafe_allow_html=True)
-    
+
     sugs = [
         "Qual cliente tem mais prejuizo?",
         "Quais paises mais atacaram?",
         "Status dos incidentes criticos",
         "Recomendacoes urgentes",
         "Como funciona o modelo IA?",
-        "Explique os grupos APT"
+        "Explique os grupos APT",
+        "O que é a UniFECAF?",  # Nova sugestão
+        "O que é a ExpoTech?"    # Nova sugestão
     ]
-    
+
     col1, col2 = st.columns(2)
     with col1:
         sg0 = st.button(sugs[0], key="sg0", use_container_width=True)
     with col2:
         sg1 = st.button(sugs[1], key="sg1", use_container_width=True)
-    
+
     col3, col4 = st.columns(2)
     with col3:
         sg2 = st.button(sugs[2], key="sg2", use_container_width=True)
     with col4:
         sg3 = st.button(sugs[3], key="sg3", use_container_width=True)
-    
+
     col5, col6 = st.columns(2)
     with col5:
         sg4 = st.button(sugs[4], key="sg4", use_container_width=True)
     with col6:
         sg5 = st.button(sugs[5], key="sg5", use_container_width=True)
-    
+
+    col7, col8 = st.columns(2)
+    with col7:
+        sg6 = st.button(sugs[6], key="sg6", use_container_width=True)  # Botão para UniFECAF
+    with col8:
+        sg7 = st.button(sugs[7], key="sg7", use_container_width=True)  # Botão para ExpoTech
+
     st.markdown("---")
-    
+
     with st.form("chat_f", clear_on_submit=True):
         col_input, col_button = st.columns([5,1])
         with col_input:
@@ -2025,6 +2044,8 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
     elif sg3: sug_click = sugs[3]
     elif sg4: sug_click = sugs[4]
     elif sg5: sug_click = sugs[5]
+    elif sg6: sug_click = sugs[6]  # UniFECAF
+    elif sg7: sug_click = sugs[7]  # ExpoTech
 
     if sug_click:
         q = sug_click
@@ -2054,175 +2075,6 @@ Escopo: {"Todos os clientes" if not CLT else CLT}"""
             if st.button("Limpar conversa", key="clear_chat", use_container_width=True):
                 st.session_state["chat"] = []
                 st.rerun()
-
-# ─── TAB 4: SUPORTE ───────────────────────────────────────────────────────────
-with tabs[4]:
-    st.markdown("### Suporte ao Cliente — Canal Direto com a SentinelAI")
-
-    is_client = bool(CLT)
-    is_support_adm = PROF["support_admin"]
-
-    SUPPORT_SYS = f"""Voce e o agente de suporte da SentinelAI, empresa brasileira de ciberseguranca.
-Responda em portugues, de forma cordial, profissional e objetiva.
-Cliente: {CLT or 'Equipe interna'}
-Dados: {len(df)} incidentes · Acuracia IA {ACC:.1%} · Prejuizo R$ {prej:,.0f}
-Nunca revele dados de outros clientes."""
-
-    if is_client:
-        st.markdown(f'<div class="info-box-blue">Bem-vindo ao suporte, <strong>{CLT}</strong>. Use o chat para duvidas rapidas ou abra um ticket formal.</div>', unsafe_allow_html=True)
-
-        ctabs = st.tabs(["Chat Suporte","Meus Tickets","Novo Ticket"])
-
-        with ctabs[0]:
-            st.markdown("#### Chat com Suporte SentinelAI")
-            if not st.session_state["chat_suporte"]:
-                st.markdown(f"""<div class="chat-support">
-                <strong style="font-size:0.68rem;opacity:0.7;">Suporte SentinelAI</strong><br>
-                Ola, {CLT}! Como posso ajudar hoje?</div>""", unsafe_allow_html=True)
-            for msg in st.session_state["chat_suporte"]:
-                css = "chat-user" if msg["role"]=="user" else "chat-support"
-                label = CLT if msg["role"]=="user" else "Suporte SentinelAI"
-                st.markdown(f'<div class="{css}"><strong style="font-size:0.68rem;opacity:0.6;">{label}</strong><br>{msg["content"]}</div>', unsafe_allow_html=True)
-
-            sup_sugs = [f"Status incidentes {CLT}","Como interpretar threat score?","O que fazer em caso de ataque?","Como exportar relatorios?"]
-            sc = st.columns(len(sup_sugs))
-            sup_click = None
-            for i, s in enumerate(sup_sugs):
-                with sc[i]:
-                    if st.button(s, key=f"sup_sg{i}", use_container_width=True):
-                        sup_click = s
-
-            with st.form("chat_sup_f", clear_on_submit=True):
-                si, sb = st.columns([5,1])
-                with si:
-                    sq = st.text_input("", placeholder="Mensagem para o suporte...", label_visibility="collapsed")
-                with sb:
-                    ssend = st.form_submit_button("Enviar", use_container_width=True)
-
-            if sup_click: sq = sup_click; ssend = True
-
-            if ssend and sq:
-                log(USER,"SUPORTE_CHAT",sq[:80])
-                st.session_state["chat_suporte"].append({"role":"user","content":sq})
-                typing_ph = st.empty()
-                typing_ph.markdown("""<div class="typing-indicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>""", unsafe_allow_html=True)
-                sup_resp = gemini_chat(SUPPORT_SYS, st.session_state["chat_suporte"].copy(), temperature=0.6, max_tokens=800)
-                typing_ph.empty()
-                st.session_state["chat_suporte"].append({"role":"assistant","content":sup_resp})
-                st.rerun()
-
-            if st.session_state["chat_suporte"]:
-                if st.button("Limpar chat", key="clear_sup"):
-                    st.session_state["chat_suporte"] = []
-                    st.rerun()
-
-        with ctabs[1]:
-            st.markdown("#### Meus Tickets")
-            tks_cli = db_buscar_tickets(CLT)
-            if tks_cli.empty:
-                st.info("Nenhum ticket ainda. Abra um na aba 'Novo Ticket'.")
-            else:
-                for _, row in tks_cli.iterrows():
-                    sc_color = {"aberto":"#dc2626","respondido":"#4ade80","fechado":"#6b7280"}.get(row["status"],"#f59e0b")
-                    pri_label = {"urgente":"URGENTE","alta":"ALTA","normal":"NORMAL","baixa":"BAIXA"}.get(row["prioridade"],"NORMAL")
-                    st.markdown(f"""<div class="ticket-card">
-                      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                        <span style="color:white;font-weight:700;font-size:0.82rem;">#{row['id']} — {row['assunto']}</span>
-                        <div>
-                          <span style="color:#6b7280;font-size:0.65rem;margin-right:8px;">{pri_label}</span>
-                          <span style="color:{sc_color};font-size:0.7rem;font-weight:700;">{row['status'].upper()}</span>
-                        </div>
-                      </div>
-                      <p style="color:#6b7280;font-size:0.7rem;">{row['ts']}</p>
-                    </div>""", unsafe_allow_html=True)
-                    with st.expander(f"Ver ticket #{row['id']}"):
-                        chat_t = db_buscar_chat_ticket(int(row["id"]))
-                        if not chat_t.empty:
-                            for _, m in chat_t.iterrows():
-                                is_me = m["remetente"] == CLT
-                                st.markdown(f'<div class="{"chat-user" if is_me else "chat-support"}"><strong style="font-size:0.68rem;opacity:0.6;">{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
-                        if row["status"] != "fechado":
-                            with st.form(f"reply_{row['id']}"):
-                                rm = st.text_area("Adicionar mensagem", key=f"rm_{row['id']}", height=70)
-                                cr1, cr2 = st.columns(2)
-                                with cr1:
-                                    if st.form_submit_button("Enviar mensagem", use_container_width=True):
-                                        if rm.strip():
-                                            db_adicionar_msg_ticket(int(row["id"]),CLT,rm.strip())
-                                            log(USER,"TICKET_MSG",f"#{row['id']}"); st.rerun()
-                                with cr2:
-                                    if st.form_submit_button("Fechar ticket", use_container_width=True):
-                                        db_responder_ticket(int(row["id"]),"Fechado pelo cliente.","fechado")
-                                        log(USER,"TICKET_FECHADO",f"#{row['id']}"); st.rerun()
-
-        with ctabs[2]:
-            st.markdown("#### Abrir Novo Ticket")
-            with st.form("novo_ticket"):
-                assunto = st.text_input("Assunto*", placeholder="Ex: Alerta nao reconhecido")
-                prioridade = st.selectbox("Prioridade", ["normal","alta","urgente","baixa"])
-                mensagem = st.text_area("Descricao*", height=110, placeholder="Descreva o problema, quando ocorreu e o impacto...")
-                submitted = st.form_submit_button("Abrir Ticket", use_container_width=True)
-            if submitted:
-                if assunto.strip() and mensagem.strip():
-                    tid = db_criar_ticket(CLT,assunto.strip(),mensagem.strip(),prioridade)
-                    if tid:
-                        log(USER,"TICKET_CRIADO",f"id={tid}")
-                        st.success(f"Ticket #{tid} criado com sucesso.")
-                        auto = gemini_chat(SUPPORT_SYS,[{"role":"user","content":f"Cliente {CLT} abriu ticket: '{assunto}'. Mensagem: {mensagem}. Responda confirmando recebimento e com orientacoes iniciais."}],temperature=0.5,max_tokens=400)
-                        db_adicionar_msg_ticket(tid,"SentinelAI",auto)
-                        st.rerun()
-                    else: st.error("Erro ao criar ticket.")
-                else: st.warning("Preencha todos os campos.")
-
-    elif is_support_adm:
-        st.markdown('<div class="info-box">Painel Administrativo de Suporte — Gerencie todos os tickets dos clientes.</div>', unsafe_allow_html=True)
-        all_tks = db_buscar_tickets()
-        if all_tks.empty:
-            st.info("Nenhum ticket registrado.")
-        else:
-            n_ab=len(all_tks[all_tks["status"]=="aberto"])
-            n_re=len(all_tks[all_tks["status"]=="respondido"])
-            n_fe=len(all_tks[all_tks["status"]=="fechado"])
-            ma1,ma2,ma3 = st.columns(3)
-            with ma1: st.metric("Abertos",n_ab)
-            with ma2: st.metric("Respondidos",n_re)
-            with ma3: st.metric("Fechados",n_fe)
-            filtro = st.selectbox("Filtrar",["todos","aberto","respondido","fechado"])
-            tks_f = all_tks if filtro=="todos" else all_tks[all_tks["status"]==filtro]
-            for _,row in tks_f.iterrows():
-                pri_label = {"urgente":"[URGENTE]","alta":"[ALTA]","normal":"[NORMAL]","baixa":"[BAIXA]"}.get(row["prioridade"],"")
-                with st.expander(f"{pri_label} #{row['id']} [{row['cliente']}] {row['assunto']} — {row['status'].upper()}"):
-                    chat_t = db_buscar_chat_ticket(int(row["id"]))
-                    if not chat_t.empty:
-                        for _,m in chat_t.iterrows():
-                            is_sen = m["remetente"]=="SentinelAI"
-                            st.markdown(f'<div class="{"chat-support" if is_sen else "chat-user"}"><strong style="font-size:0.68rem;opacity:0.6;">{m["remetente"]}</strong> · {m["ts"]}<br>{m["mensagem"]}</div>', unsafe_allow_html=True)
-                    if row["status"]!="fechado":
-                        if st.button(f"Gerar sugestao IA — #{row['id']}",key=f"ia_{row['id']}",use_container_width=True):
-                            sugestao = gemini_chat(SUPPORT_SYS,[{"role":"user","content":f"Analista responde ticket do cliente {row['cliente']}. Assunto: '{row['assunto']}'. Mensagem: '{row['mensagem']}'. Gere resposta profissional."}],temperature=0.5,max_tokens=400)
-                            st.info(f"Sugestao gerada:\n\n{sugestao}")
-                        with st.form(f"adm_{row['id']}"):
-                            resp_adm = st.text_area("Resposta",height=80,key=f"ra_{row['id']}")
-                            ca1,ca2,ca3 = st.columns(3)
-                            with ca1:
-                                if st.form_submit_button("Responder",use_container_width=True):
-                                    if resp_adm.strip():
-                                        db_responder_ticket(int(row["id"]),resp_adm.strip(),"respondido")
-                                        log(USER,"TICKET_RESP",f"#{row['id']}"); st.rerun()
-                            with ca2:
-                                if st.form_submit_button("Fechar",use_container_width=True):
-                                    db_responder_ticket(int(row["id"]),resp_adm.strip() or "Resolvido.","fechado")
-                                    log(USER,"TICKET_FECH",f"#{row['id']}"); st.rerun()
-                            with ca3:
-                                if st.form_submit_button("Escalar urgente",use_container_width=True):
-                                    db_adicionar_msg_ticket(int(row["id"]),USER,"ESCALADO como URGENTE pelo SOC.")
-                                    log(USER,"TICKET_ESC",f"#{row['id']}"); st.rerun()
-    else:
-        st.markdown('<div class="info-box">Sem acesso ao modulo de suporte.</div>', unsafe_allow_html=True)
 
 # ─── TAB 5: BACKUP ───────────────────────────────────────────────────────────
 with tabs[5]:
