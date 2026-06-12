@@ -1951,13 +1951,7 @@ with tabs[3]:
     top_cli = df.groupby("CLIENTE")["PREJUIZO_ESTIMADO"].sum().nlargest(5).to_dict()
     top_pai = df[df["TIPO INCIDENTE"]=="ataque"]["PAIS_ATAQUE"].value_counts().head(5).to_dict()
 
-    # --- CONTEXTO DA UNIFECAF E EXPOTECH ADICIONADO ---
-    UNIFECAF_CONTEXT = """
-    ### Contexto sobre a UniFECAF e ExpoTech:
-    - **UniFECAF**: Fundada em 2015 como Faculdade FECAF, hoje é o Centro Universitário UniFECAF. Sua visão é ser a maior e melhor experiência educacional do Brasil, com foco em qualidade acadêmica, valores acessíveis e formação conectada à prática. A instituição é voltada para o aluno e atenta às transformações do mercado.
-    - **ExpoTech**: Evento anual organizado pela UniFECAF, onde alunos apresentam projetos inovadores desenvolvidos ao longo do semestre. O objetivo é conectar a educação com o mercado de trabalho, mostrando o talento e a criatividade dos estudantes. Áreas de destaque: Desenvolvimento de Sistemas, Inteligência Artificial, Segurança Cibernética, IoT, entre outras. Público: empresas, professores, alunos e entusiastas de tecnologia.
-    """
-
+    # --- CONTEXTO DA UNIFECAF E EXPOTECH ADICIONADO AO SYSTEM_BOT ---
     SYSTEM_BOT = f"""Voce e o Sentinel Bot, assistente especialista em ciberseguranca da plataforma SentinelAI.
 Responda SEMPRE em portugues brasileiro, de forma profissional, objetiva e direta.
 Use dados reais do sistema nas respostas. Nao invente informacoes.
@@ -1973,7 +1967,8 @@ Severidades: {df['SEVERIDADE'].value_counts().to_dict()}
 Escopo: {"Todos os clientes" if not CLT else CLT}
 
 === CONTEXTO UNIFECAF E EXPOTECH ===
-{UNIFECAF_CONTEXT}
+UniFECAF: Fundada em 2015 como Faculdade FECAF, hoje é o Centro Universitário UniFECAF. Visão: ser a maior e melhor experiência educacional do Brasil, com foco em qualidade acadêmica, valores acessíveis e formação conectada à prática. A instituição é voltada para o aluno e atenta às transformações do mercado.
+ExpoTech: Evento anual organizado pela UniFECAF, onde alunos apresentam projetos inovadores desenvolvidos ao longo do semestre. Objetivo: conectar a educação com o mercado de trabalho, mostrando o talento e a criatividade dos estudantes. Áreas de destaque: Desenvolvimento de Sistemas, Inteligência Artificial, Segurança Cibernética, IoT. Público: empresas, professores, alunos e entusiastas de tecnologia.
 """
 
     chat_container = st.container()
@@ -1999,9 +1994,7 @@ Escopo: {"Todos os clientes" if not CLT else CLT}
         "Status dos incidentes criticos",
         "Recomendacoes urgentes",
         "Como funciona o modelo IA?",
-        "Explique os grupos APT",
-        "O que é a UniFECAF?",  # Nova sugestão
-        "O que é a ExpoTech?"    # Nova sugestão
+        "Explique os grupos APT"
     ]
 
     col1, col2 = st.columns(2)
@@ -2022,12 +2015,6 @@ Escopo: {"Todos os clientes" if not CLT else CLT}
     with col6:
         sg5 = st.button(sugs[5], key="sg5", use_container_width=True)
 
-    col7, col8 = st.columns(2)
-    with col7:
-        sg6 = st.button(sugs[6], key="sg6", use_container_width=True)  # Botão para UniFECAF
-    with col8:
-        sg7 = st.button(sugs[7], key="sg7", use_container_width=True)  # Botão para ExpoTech
-
     st.markdown("---")
 
     with st.form("chat_f", clear_on_submit=True):
@@ -2044,8 +2031,6 @@ Escopo: {"Todos os clientes" if not CLT else CLT}
     elif sg3: sug_click = sugs[3]
     elif sg4: sug_click = sugs[4]
     elif sg5: sug_click = sugs[5]
-    elif sg6: sug_click = sugs[6]  # UniFECAF
-    elif sg7: sug_click = sugs[7]  # ExpoTech
 
     if sug_click:
         q = sug_click
