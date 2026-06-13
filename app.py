@@ -782,7 +782,7 @@ if not st.session_state["authed"]:
     if "pagina" not in st.session_state:
         st.session_state["pagina"] = "login"
 
-    # ── Navegação entre login e landing ──────────────────────────────────────
+       # ── Navegação entre login e landing ──────────────────────────────────────
     if st.session_state["pagina"] == "landing":
 
         # ── LANDING PAGE PARA NOVOS CLIENTES ─────────────────────────────────
@@ -801,7 +801,7 @@ if not st.session_state["authed"]:
                 Proteção de nível empresarial para quem não pode se dar ao luxo de ser o próximo alvo.
             </p>
             <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
-              <span class="badge-online">&#9679; SOC 24 x 7 x 365</span>
+              <span class="badge-online">● SOC 24 x 7 x 365</span>
               <span class="badge-critical">LGPD COMPLIANT</span>
               <span class="badge-critical">ISO 27001</span>
             </div>
@@ -866,155 +866,155 @@ if not st.session_state["authed"]:
                     </div>""", unsafe_allow_html=True)
 
         # ── ABA 1 · SERVICOS ──────────────────────────────────────────────────
-with landing_tabs[1]:
-    st.markdown("""
-    <div style="text-align:center;padding:1rem 0 1.5rem;">
-        <h2 style="color:white;font-size:1.4rem;font-weight:800;">O que entregamos</h2>
-        <p style="color:#6b7280;font-size:0.82rem;margin-top:6px;">
-            Uma plataforma unificada que cobre toda a cadeia de seguranca — da deteccao a resposta.
-        </p>
-    </div>""", unsafe_allow_html=True)
-
-    servicos = [
-        ("SOC as a Service", "Centro de Operacoes de Seguranca totalmente gerenciado. Monitoramento SIEM 24x7, triagem de alertas, correlacao de eventos e escalonamento estruturado. Substitui a necessidade de uma equipe interna de 8 a 12 analistas.", "A partir de R$ 8.900,00/mes"),
-        ("Deteccao e Resposta a Incidentes (MDR)", "Identificacao automatizada de ameacas com resposta orquestrada: isolamento de endpoints, bloqueio de IPs, revogacao de credenciais e notificacao. SLA de contencao de ate 15 minutos para incidentes criticos.", "A partir de R$ 5.900,00/mes"),
-        ("Threat Intelligence", "Integracao de feeds globais de inteligencia de ameacas com contextualizacao para o seu setor e perfil de risco. Relatorios semanais de adversarios ativos e indicadores de comprometimento (IOCs).", "A partir de R$ 3.500,00/mes"),
-        ("Gestao de Vulnerabilidades", "Varredura continua de ativos expostos, priorizacao baseada em risco real (CVSS + contexto de negocio) e plano de remediacao supervisionado pela nossa equipe.", "A partir de R$ 3.900,00/mes"),
-        ("Pentest e Red Team", "Simulacao de ataques reais conduzida por especialistas certificados (OSCP, CEH). Modalidades: Black Box, Grey Box e Red Team completo. Relatorio executivo e tecnico com roadmap de correcao.", "A partir de R$ 12.000,00/projeto"),
-        ("Adequacao LGPD e Compliance", "Diagnose de maturidade, mapeamento de fluxos de dados pessoais, elaboracao de politicas e treinamento de equipes. Suporte continuo ao DPO e resposta a incidentes de vazamento.", "A partir de R$ 7.500,00/projeto"),
-    ]
-
-    s_cols1 = st.columns(3)
-    for i, (titulo, desc, preco) in enumerate(servicos):
-        with s_cols1[i % 3]:
-            st.markdown(f"""
-            <div style="background:rgba(10,5,7,0.95);border:1px solid rgba(180,0,0,0.18);
-                        border-radius:14px;padding:1.3rem;margin-bottom:1rem;position:relative;overflow:hidden;">
-                <div style="position:absolute;top:0;left:0;right:0;height:2px;
-                            background:linear-gradient(90deg,transparent,rgba(220,38,38,0.5),transparent);"></div>
-                <p style="color:#f87171;font-size:0.78rem;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">{titulo}</p>
-                <p style="color:#6b7280;font-size:0.75rem;line-height:1.7;margin-bottom:12px;">{desc}</p>
-                <p style="color:#dc2626;font-size:0.78rem;font-weight:700;font-family:'JetBrains Mono',monospace;">{preco}</p>
+        with landing_tabs[1]:
+            st.markdown("""
+            <div style="text-align:center;padding:1rem 0 1.5rem;">
+                <h2 style="color:white;font-size:1.4rem;font-weight:800;">O que entregamos</h2>
+                <p style="color:#6b7280;font-size:0.82rem;margin-top:6px;">
+                    Uma plataforma unificada que cobre toda a cadeia de seguranca — da deteccao a resposta.
+                </p>
             </div>""", unsafe_allow_html=True)
+
+            servicos = [
+                ("SOC as a Service", "Centro de Operacoes de Seguranca totalmente gerenciado. Monitoramento SIEM 24x7, triagem de alertas, correlacao de eventos e escalonamento estruturado. Substitui a necessidade de uma equipe interna de 8 a 12 analistas.", "A partir de R$ 8.900,00/mes"),
+                ("Deteccao e Resposta a Incidentes (MDR)", "Identificacao automatizada de ameacas com resposta orquestrada: isolamento de endpoints, bloqueio de IPs, revogacao de credenciais e notificacao. SLA de contencao de ate 15 minutos para incidentes criticos.", "A partir de R$ 5.900,00/mes"),
+                ("Threat Intelligence", "Integracao de feeds globais de inteligencia de ameacas com contextualizacao para o seu setor e perfil de risco. Relatorios semanais de adversarios ativos e indicadores de comprometimento (IOCs).", "A partir de R$ 3.500,00/mes"),
+                ("Gestao de Vulnerabilidades", "Varredura continua de ativos expostos, priorizacao baseada em risco real (CVSS + contexto de negocio) e plano de remediacao supervisionado pela nossa equipe.", "A partir de R$ 3.900,00/mes"),
+                ("Pentest e Red Team", "Simulacao de ataques reais conduzida por especialistas certificados (OSCP, CEH). Modalidades: Black Box, Grey Box e Red Team completo. Relatorio executivo e tecnico com roadmap de correcao.", "A partir de R$ 12.000,00/projeto"),
+                ("Adequacao LGPD e Compliance", "Diagnose de maturidade, mapeamento de fluxos de dados pessoais, elaboracao de politicas e treinamento de equipes. Suporte continuo ao DPO e resposta a incidentes de vazamento.", "A partir de R$ 7.500,00/projeto"),
+            ]
+
+            s_cols1 = st.columns(3)
+            for i, (titulo, desc, preco) in enumerate(servicos):
+                with s_cols1[i % 3]:
+                    st.markdown(f"""
+                    <div style="background:rgba(10,5,7,0.95);border:1px solid rgba(180,0,0,0.18);
+                                border-radius:14px;padding:1.3rem;margin-bottom:1rem;position:relative;overflow:hidden;">
+                        <div style="position:absolute;top:0;left:0;right:0;height:2px;
+                                    background:linear-gradient(90deg,transparent,rgba(220,38,38,0.5),transparent);"></div>
+                        <p style="color:#f87171;font-size:0.78rem;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">{titulo}</p>
+                        <p style="color:#6b7280;font-size:0.75rem;line-height:1.7;margin-bottom:12px;">{desc}</p>
+                        <p style="color:#dc2626;font-size:0.78rem;font-weight:700;font-family:'JetBrains Mono',monospace;">{preco}</p>
+                    </div>""", unsafe_allow_html=True)
 
         # ── ABA 2 · PLANOS ────────────────────────────────────────────────────
-with landing_tabs[2]:
-    st.markdown("""
-    <div style="text-align:center;padding:1rem 0 1.5rem;">
-        <h2 style="color:white;font-size:1.4rem;font-weight:800;">Planos e Precos</h2>
-        <p style="color:#6b7280;font-size:0.82rem;margin-top:6px;">
-            Assinaturas anuais com desconto de dois meses. Todos os planos incluem SLA contratual e suporte dedicado.
-        </p>
-    </div>""", unsafe_allow_html=True)
-
-    planos = [
-        {
-            "nome": "Essencial",
-            "publico": "Pequenas e medias empresas",
-            "preco_mes": "R$ 4.900,00",
-            "preco_ano": "R$ 49.000,00/ano",
-            "economia": "2 meses gratis",
-            "destaque": False,
-            "itens": [
-                "Monitoramento SIEM ate 500 eventos/seg",
-                "Deteccao de ameacas 24x7",
-                "Resposta automatica a incidentes",
-                "Relatorio mensal de seguranca",
-                "Suporte via ticket (SLA 8h uteis)",
-                "Dashboard exclusivo do cliente",
-                "Conformidade LGPD basica",
-            ]
-        },
-        {
-            "nome": "Professional",
-            "publico": "Empresas de medio porte",
-            "preco_mes": "R$ 9.900,00",
-            "preco_ano": "R$ 99.000,00/ano",
-            "economia": "2 meses gratis",
-            "destaque": True,
-            "itens": [
-                "Monitoramento SIEM ate 5.000 eventos/seg",
-                "SOC dedicado com analista nomeado",
-                "MDR com SLA de 15 min para criticos",
-                "Threat intelligence semanal",
-                "Pentest anual incluido (1 escopo)",
-                "Relatorio executivo quinzenal",
-                "Suporte 24x7 via chat e telefone",
-                "Conformidade LGPD e PCI-DSS",
-                "Integracao com SIEM/SOAR proprio",
-            ]
-        },
-        {
-            "nome": "Enterprise",
-            "publico": "Grandes empresas e grupos",
-            "preco_mes": "Sob consulta",
-            "preco_ano": "Contrato personalizado",
-            "economia": "Condicoes negociadas",
-            "destaque": False,
-            "itens": [
-                "Volume ilimitado de eventos",
-                "Equipe SOC exclusiva e residente",
-                "Red Team trimestral incluso",
-                "Gestao completa de vulnerabilidades",
-                "Threat intelligence sob medida",
-                "SLA de 5 minutos para criticos",
-                "CISO as a Service disponivel",
-                "Suporte on-site se necessario",
-                "Conformidade multi-framework",
-                "Relatorio para board e auditoria",
-            ]
-        },
-    ]
-
-    p_cols = st.columns(3)
-    plano_sel = st.session_state.get("plano_selecionado", None)
-
-    for i, plano in enumerate(planos):
-        with p_cols[i]:
-            destaque_style = "border:2px solid rgba(220,38,38,0.6);box-shadow:0 0 30px rgba(139,0,0,0.25);" if plano["destaque"] else "border:1px solid rgba(180,0,0,0.2);"
-            selecionado_style = "border:2px solid #dc2626;box-shadow:0 0 40px rgba(220,38,38,0.35);" if plano_sel == plano["nome"] else destaque_style
-
-            badge_html = '<span style="background:#dc2626;color:white;font-size:0.55rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.1em;">MAIS CONTRATADO</span>' if plano["destaque"] else ""
-
-            itens_html = "".join([
-                f'<li style="color:#94a3b8;font-size:0.74rem;line-height:1.8;list-style:none;padding-left:14px;position:relative;">'
-                f'<span style="position:absolute;left:0;color:#dc2626;font-weight:700;">+</span>{item}</li>'
-                for item in plano["itens"]
-            ])
-
-            st.markdown(f"""
-            <div style="background:rgba(10,5,7,0.97);{selecionado_style}
-                        border-radius:16px;padding:1.5rem;position:relative;overflow:hidden;margin-bottom:0.5rem;
-                        transition:all 0.3s ease;">
-                <div style="position:absolute;top:0;left:0;right:0;height:2px;
-                            background:linear-gradient(90deg,transparent,rgba(220,38,38,{'0.9' if plano['destaque'] else '0.4'}),transparent);"></div>
-                <div style="margin-bottom:10px;">{badge_html}</div>
-                <p style="color:white;font-size:1.1rem;font-weight:800;margin-bottom:2px;">{plano["nome"]}</p>
-                <p style="color:#6b7280;font-size:0.7rem;margin-bottom:14px;">{plano["publico"]}</p>
-                <p style="color:#dc2626;font-size:1.4rem;font-weight:900;font-family:'JetBrains Mono',monospace;margin:0;">{plano["preco_mes"]}<span style="color:#6b7280;font-size:0.65rem;font-weight:400;">/mes</span></p>
-                <p style="color:#6b7280;font-size:0.68rem;margin:3px 0 4px;">{plano["preco_ano"]}</p>
-                <p style="color:#4ade80;font-size:0.65rem;font-weight:600;margin-bottom:14px;">{plano["economia"]}</p>
-                <hr style="border-color:rgba(180,0,0,0.12);margin:10px 0 12px;">
-                <ul style="margin:0;padding:0;">
-                    {itens_html}
-                </ul>
+        with landing_tabs[2]:
+            st.markdown("""
+            <div style="text-align:center;padding:1rem 0 1.5rem;">
+                <h2 style="color:white;font-size:1.4rem;font-weight:800;">Planos e Precos</h2>
+                <p style="color:#6b7280;font-size:0.82rem;margin-top:6px;">
+                    Assinaturas anuais com desconto de dois meses. Todos os planos incluem SLA contratual e suporte dedicado.
+                </p>
             </div>""", unsafe_allow_html=True)
 
-            label_btn = f"PLANO {plano['nome'].upper()} SELECIONADO" if plano_sel == plano["nome"] else f"SELECIONAR {plano['nome'].upper()}"
-            if st.button(label_btn, key=f"sel_plano_{i}", use_container_width=True):
-                st.session_state["plano_selecionado"] = plano["nome"]
-                st.session_state["lead_aba"] = 3
-                st.rerun()
+            planos = [
+                {
+                    "nome": "Essencial",
+                    "publico": "Pequenas e medias empresas",
+                    "preco_mes": "R$ 4.900,00",
+                    "preco_ano": "R$ 49.000,00/ano",
+                    "economia": "2 meses gratis",
+                    "destaque": False,
+                    "itens": [
+                        "Monitoramento SIEM ate 500 eventos/seg",
+                        "Deteccao de ameacas 24x7",
+                        "Resposta automatica a incidentes",
+                        "Relatorio mensal de seguranca",
+                        "Suporte via ticket (SLA 8h uteis)",
+                        "Dashboard exclusivo do cliente",
+                        "Conformidade LGPD basica",
+                    ]
+                },
+                {
+                    "nome": "Professional",
+                    "publico": "Empresas de medio porte",
+                    "preco_mes": "R$ 9.900,00",
+                    "preco_ano": "R$ 99.000,00/ano",
+                    "economia": "2 meses gratis",
+                    "destaque": True,
+                    "itens": [
+                        "Monitoramento SIEM ate 5.000 eventos/seg",
+                        "SOC dedicado com analista nomeado",
+                        "MDR com SLA de 15 min para criticos",
+                        "Threat intelligence semanal",
+                        "Pentest anual incluido (1 escopo)",
+                        "Relatorio executivo quinzenal",
+                        "Suporte 24x7 via chat e telefone",
+                        "Conformidade LGPD e PCI-DSS",
+                        "Integracao com SIEM/SOAR proprio",
+                    ]
+                },
+                {
+                    "nome": "Enterprise",
+                    "publico": "Grandes empresas e grupos",
+                    "preco_mes": "Sob consulta",
+                    "preco_ano": "Contrato personalizado",
+                    "economia": "Condicoes negociadas",
+                    "destaque": False,
+                    "itens": [
+                        "Volume ilimitado de eventos",
+                        "Equipe SOC exclusiva e residente",
+                        "Red Team trimestral incluso",
+                        "Gestao completa de vulnerabilidades",
+                        "Threat intelligence sob medida",
+                        "SLA de 5 minutos para criticos",
+                        "CISO as a Service disponivel",
+                        "Suporte on-site se necessario",
+                        "Conformidade multi-framework",
+                        "Relatorio para board e auditoria",
+                    ]
+                },
+            ]
 
-    if plano_sel:
-        st.markdown(f"""
-        <div style="background:rgba(0,180,80,0.06);border:1px solid rgba(0,180,80,0.25);
-                    border-radius:12px;padding:0.8rem 1.2rem;margin-top:0.8rem;text-align:center;">
-            <p style="color:#4ade80;font-size:0.8rem;font-weight:700;">
-                Plano <strong>{plano_sel}</strong> selecionado. Va para a aba "Falar com a Equipe" para enviar sua solicitacao.
-            </p>
-        </div>""", unsafe_allow_html=True)
-        
+            p_cols = st.columns(3)
+            plano_sel = st.session_state.get("plano_selecionado", None)
+
+            for i, plano in enumerate(planos):
+                with p_cols[i]:
+                    destaque_style = "border:2px solid rgba(220,38,38,0.6);box-shadow:0 0 30px rgba(139,0,0,0.25);" if plano["destaque"] else "border:1px solid rgba(180,0,0,0.2);"
+                    selecionado_style = "border:2px solid #dc2626;box-shadow:0 0 40px rgba(220,38,38,0.35);" if plano_sel == plano["nome"] else destaque_style
+
+                    badge_html = '<span style="background:#dc2626;color:white;font-size:0.55rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.1em;">MAIS CONTRATADO</span>' if plano["destaque"] else ""
+
+                    itens_html = "".join([
+                        f'<li style="color:#94a3b8;font-size:0.74rem;line-height:1.8;list-style:none;padding-left:14px;position:relative;">'
+                        f'<span style="position:absolute;left:0;color:#dc2626;font-weight:700;">+</span>{item}</li>'
+                        for item in plano["itens"]
+                    ])
+
+                    st.markdown(f"""
+                    <div style="background:rgba(10,5,7,0.97);{selecionado_style}
+                                border-radius:16px;padding:1.5rem;position:relative;overflow:hidden;margin-bottom:0.5rem;
+                                transition:all 0.3s ease;">
+                        <div style="position:absolute;top:0;left:0;right:0;height:2px;
+                                    background:linear-gradient(90deg,transparent,rgba(220,38,38,{'0.9' if plano['destaque'] else '0.4'}),transparent);"></div>
+                        <div style="margin-bottom:10px;">{badge_html}</div>
+                        <p style="color:white;font-size:1.1rem;font-weight:800;margin-bottom:2px;">{plano["nome"]}</p>
+                        <p style="color:#6b7280;font-size:0.7rem;margin-bottom:14px;">{plano["publico"]}</p>
+                        <p style="color:#dc2626;font-size:1.4rem;font-weight:900;font-family:'JetBrains Mono',monospace;margin:0;">{plano["preco_mes"]}<span style="color:#6b7280;font-size:0.65rem;font-weight:400;">/mes</span></p>
+                        <p style="color:#6b7280;font-size:0.68rem;margin:3px 0 4px;">{plano["preco_ano"]}</p>
+                        <p style="color:#4ade80;font-size:0.65rem;font-weight:600;margin-bottom:14px;">{plano["economia"]}</p>
+                        <hr style="border-color:rgba(180,0,0,0.12);margin:10px 0 12px;">
+                        <ul style="margin:0;padding:0;">
+                            {itens_html}
+                        </ul>
+                    </div>""", unsafe_allow_html=True)
+
+                    label_btn = f"PLANO {plano['nome'].upper()} SELECIONADO" if plano_sel == plano["nome"] else f"SELECIONAR {plano['nome'].upper()}"
+                    if st.button(label_btn, key=f"sel_plano_{i}", use_container_width=True):
+                        st.session_state["plano_selecionado"] = plano["nome"]
+                        st.session_state["lead_aba"] = 3
+                        st.rerun()
+
+            if plano_sel:
+                st.markdown(f"""
+                <div style="background:rgba(0,180,80,0.06);border:1px solid rgba(0,180,80,0.25);
+                            border-radius:12px;padding:0.8rem 1.2rem;margin-top:0.8rem;text-align:center;">
+                    <p style="color:#4ade80;font-size:0.8rem;font-weight:700;">
+                        Plano <strong>{plano_sel}</strong> selecionado. Va para a aba "Falar com a Equipe" para enviar sua solicitacao.
+                    </p>
+                </div>""", unsafe_allow_html=True)
+
         # ── ABA 3 · CONTATO / FORMULARIO ─────────────────────────────────────
         with landing_tabs[3]:
             if "lead_enviado" not in st.session_state:
@@ -1028,7 +1028,7 @@ with landing_tabs[2]:
                 <div style="max-width:580px;margin:3rem auto;text-align:center;
                             background:linear-gradient(135deg,rgba(0,180,80,0.06),rgba(10,5,7,0.97));
                             border:1px solid rgba(0,180,80,0.25);border-radius:20px;padding:2.5rem 2rem;">
-                    <div style="font-size:3rem;margin-bottom:1rem;filter:drop-shadow(0 0 12px rgba(74,222,128,0.5));">&#10003;</div>
+                    <div style="font-size:3rem;margin-bottom:1rem;filter:drop-shadow(0 0 12px rgba(74,222,128,0.5));">✓</div>
                     <h2 style="color:white;font-size:1.3rem;font-weight:800;margin-bottom:0.6rem;">
                         Solicitacao recebida, {empresa_nome}!
                     </h2>
@@ -1067,7 +1067,7 @@ with landing_tabs[2]:
                                     border-radius:10px;padding:0.7rem 1rem;margin-bottom:1rem;">
                             <p style="color:#f87171;font-size:0.78rem;font-weight:700;margin:0;">
                                 Plano selecionado: <strong>{plano_sel_form}</strong>
-                                &mdash; voce pode alterar abaixo se desejar.
+                                — voce pode alterar abaixo se desejar.
                             </p>
                         </div>""", unsafe_allow_html=True)
 
