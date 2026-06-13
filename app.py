@@ -820,7 +820,7 @@ if not st.session_state["authed"]:
                     Centro de Operacoes de Seguranca movido por inteligencia artificial
                 </h2>
                 <p style="color:#94a3b8;font-size:0.88rem;line-height:1.8;margin-bottom:1rem;">
-                    A SentinelAI nasceu de uma premissa simples: as ameacas cibereticas evoluem mais rapido do que equipes internas conseguem acompanhar.
+                    A SentinelAI nasceu de uma premissa simples: as ameacas cibernéticas evoluem mais rapido do que equipes internas conseguem acompanhar.
                     Nossa plataforma combina um SOC humano altamente especializado com modelos de machine learning treinados em milhoes de eventos de seguranca,
                     entregando deteccao e resposta a incidentes em tempo real — sem que sua empresa precise montar uma estrutura de seguranca do zero.
                 </p>
