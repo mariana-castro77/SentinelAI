@@ -10,9 +10,10 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
+import hashlib, datetime, random, time, json, sqlite3, os, requests, smtplib
 from groq import Groq
 
-groq_client = Groq(api_key="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")
+groq_client = Groq(api_key=st.secrets.get("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") or os.environ.get("Ggsk_Ve2a0QBbl0IH0I7voKTDWGdyb3FYiPxZNvYk4dAkVpiYsxQveEFY", ""))
 
 st.set_page_config(
     page_title="SentinelAI — SOC Platform",
