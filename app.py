@@ -1,4 +1,9 @@
-import hashlib, datetime, random, time, json, sqlite3, os, requests, smtplib, httpx
+import streamlit as st
+import streamlit.components.v1 as components
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import hashlib, datetime, random, time, json, sqlite3, os, requests, smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from sklearn.preprocessing import LabelEncoder
@@ -7,32 +12,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 from groq import Groq
 
-groq_client = Groq(
-    api_key=st.secrets.get("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") or os.environ.get("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", ""),
-    http_client=httpx.Client(timeout=30.0)
-)
+groq_client = Groq(api_key="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")
 
-def gemini_chat(system_prompt, messages, temperature=0.7, max_tokens=1000):
-    try:
-        openai_messages = [{"role": "system", "content": system_prompt}]
-        for m in messages:
-            openai_messages.append({"role": m["role"], "content": m["content"]})
-        
-        client = Groq(
-            api_key=st.secrets.get("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") or os.environ.get("Ggsk_Ve2a0QBbl0IH0I7voKTDWGdyb3FYiPxZNvYk4dAkVpiYsxQveEFY", ""),
-            http_client=httpx.Client(timeout=30.0)
-        )
-        
-        response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=openai_messages,
-            temperature=temperature,
-            max_tokens=max_tokens
-        )
-        return response.choices[0].message.content
-    except Exception as e:
-        return f"Erro na API: {str(e)}"
-        
 st.set_page_config(
     page_title="SentinelAI — SOC Platform",
     page_icon="robo.png" if os.path.exists("robo.png") else "🛡️",
